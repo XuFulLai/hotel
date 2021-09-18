@@ -75,6 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/open/**").permitAll()
 
                 // 需要拦截验证的地址
+                .anyRequest().authenticated()
 //                .antMatchers("/tasks/**").authenticated()
 //                .antMatchers("/proprietor/**").authenticated()
 //                .antMatchers("/guard/**").authenticated()
