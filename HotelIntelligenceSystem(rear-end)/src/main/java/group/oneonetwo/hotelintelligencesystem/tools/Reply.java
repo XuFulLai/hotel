@@ -106,4 +106,21 @@ public class Reply<T> implements Serializable {
     public void setAnnex(Object annex) {
         this.annex = annex;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"code\":\"")
+                .append(code).append('\"');
+        sb.append(",\"data\":")
+                .append(data);
+        sb.append(",\"time\":")
+                .append(time);
+        sb.append(",\"msg\":\"")
+                .append(msg).append('\"');
+        sb.append(",\"annex\":")
+                .append(annex);
+        sb.append('}');
+        return sb.toString();
+    }
 }
