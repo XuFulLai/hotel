@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.user.model.po;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -38,16 +39,16 @@ public class UserPO implements Serializable {
     @TableField("is_deleted")
     private Integer isDeleted;
 
-    @TableField("create_by")
+//    @TableField(fill = FieldFill.INSERT)
     private String createdBy;
 
-    @TableField("create_time")
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
-    @TableField("update_by")
+    @TableField(fill = FieldFill.UPDATE)
     private String updateBy;
 
-    @TableField("update_time")
+    @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
 
     public String getId() {
