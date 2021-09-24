@@ -27,7 +27,7 @@ public class UserController {
     @ApiOperation("根据id查询用户的接口")
     @ApiImplicitParam(name = "id", value = "用户id", defaultValue = "1", required = true)
     @GetMapping("get/{id}")
-    public Reply<UserVO> seleteOneById(@PathVariable("id") String id) {
+    public Reply<UserVO> selectOneById(@PathVariable("id") String id) {
         return userService.selectOneById(id);
     }
 

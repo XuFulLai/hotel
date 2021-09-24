@@ -73,9 +73,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 放行地址
                 .antMatchers("/open/**").permitAll()
+//                .antMatchers("/swagger-ui.html").permitAll()
 
                 // 需要拦截验证的地址
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
 //                .antMatchers("/tasks/**").authenticated()
 //                .antMatchers("/proprietor/**").authenticated()
 //                .antMatchers("/guard/**").authenticated()
@@ -83,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/public/**").authenticated()
 
                 // 其他都放行了
-//                .anyRequest().permitAll()
+                .anyRequest().permitAll()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))

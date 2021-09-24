@@ -21,7 +21,7 @@ public class ConvertUtil {
      * @param <T>
      * @return
      */
-    public static <T> List<T> transforList(List<?> sources, Class<T> clazz) {
+    public static <T> List<T> transferList(List<?> sources, Class<T> clazz) {
         List list = new ArrayList<T>();
         if (sources == null) {
             return list;
@@ -61,7 +61,7 @@ public class ConvertUtil {
         targetPage.setTotal(sourcePage.getTotal());
         targetPage.setOrders(sourcePage.getOrders());
         if (sourcePage.getRecords() != null) {
-            List<T2> targetList = ConvertUtil.transforList(sourcePage.getRecords(), targetClass);
+            List<T2> targetList = ConvertUtil.transferList(sourcePage.getRecords(), targetClass);
             targetPage.setRecords(targetList);
         }
         return targetPage;

@@ -25,7 +25,7 @@ class HotalIntelligenceSystemApplicationTests {
         userPO.setDept("456");
         userPOS.add(userPO);
 
-        List<UserVO> userVOS1 = ConvertUtil.transforList(userPOS, UserVO.class);
+        List<UserVO> userVOS1 = ConvertUtil.transferList(userPOS, UserVO.class);
         System.out.println(userVOS1);
 
     }

@@ -10,6 +10,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.Query;
 
@@ -18,6 +19,7 @@ import javax.management.Query;
  * @description 部门服务层实现类
  */
 @Service
+@Transactional(rollbackFor = RuntimeException.class)
 public class DeptServiceImpl implements IDeptService {
 
     @Autowired
