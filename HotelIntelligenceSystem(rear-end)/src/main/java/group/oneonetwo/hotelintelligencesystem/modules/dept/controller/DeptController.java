@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @description dept操作类
  */
 @RestController
-@RequestMapping("dept")
+@RequestMapping("api/dept")
 public class DeptController {
 }

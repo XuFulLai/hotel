@@ -5,10 +5,14 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableSwagger2
@@ -20,11 +24,19 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("group.oneonetwo.hotelintelligencesystem"))
                 .paths(PathSelectors.any())
-                .build().apiInfo(new ApiInfoBuilder()
+                .build().securitySchemes(unifiedAuth())
+                .apiInfo(new ApiInfoBuilder()
                         .title("酒店智慧系统-接口管理")
                         .description("HotelIntelligenceSystem by one-one-two club")
-                        .version("9.0")
+                        .version("1.0")
                         .contact(new Contact("Tomato_Simon"," "," "))
                         .build());
+    }
+
+    private static List<ApiKey> unifiedAuth() {
+        List<ApiKey> arrayList = new ArrayList();
+        arrayList.add(new ApiKey("app-token", "app-token", "header"));
+        arrayList.add(new ApiKey("app-type", "app-type", "header"));
+        return arrayList;
     }
 }
