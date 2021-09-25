@@ -75,8 +75,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("application/json; charset=utf-8");
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                String reason = Reply.failed("202","用户名或密码错误",null).toString();
-                response.getWriter().write(new ObjectMapper().writeValueAsString(reason));
+//                String reason = Reply.failed("202","用户名或密码错误",null).toString();
+                response.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed("202","用户名或密码错误",null)));
                 response.getWriter().flush();
             }catch (Exception ex){
                 logger.error(e.toString() + " : " + e.getMessage());

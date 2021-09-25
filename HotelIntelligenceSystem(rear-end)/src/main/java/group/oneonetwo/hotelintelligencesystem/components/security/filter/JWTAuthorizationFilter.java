@@ -64,8 +64,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            String reason = Reply.failed("1040",e.getMessage(),null).toString();
-            response.getWriter().write(new ObjectMapper().writeValueAsString(reason));
+//            String reason = Reply.failed("1040",e.getMessage(),null).toString();
+            response.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed("1040", e.getMessage(), null)));
             response.getWriter().flush();
             return;
         }
