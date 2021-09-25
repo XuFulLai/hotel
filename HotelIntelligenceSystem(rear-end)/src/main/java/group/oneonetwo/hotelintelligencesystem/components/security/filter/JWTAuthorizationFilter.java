@@ -74,11 +74,11 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     // 这里从token中获取用户信息并新建一个token
     private UsernamePasswordAuthenticationToken getAuthentication(String tokenHeader) throws TokenIsExpiredException {
-        String token = tokenHeader.replace(JwtTokenUtils.TOKEN_PREFIX, "");
+        String token = tokenHeader.replace(JwtTokenUtils.TOKEN_PREFIX, "").substring(1);
         //检查是否redis中存在传过来的token值,若不存在则过期
 //        boolean expiration = redisUtil.hasKey(tokenHeader);
         boolean expiration = JwtTokenUtils.isExpiration(token);
-        if (Boolean.FALSE.equals(expiration)) {
+        if (Boolean.TRUE.equals(expiration)) {
             throw new TokenIsExpiredException("token过期,请重新登录");
         } else {
             //获取token中的信息,并进行把用户角色告诉security进行鉴权操作

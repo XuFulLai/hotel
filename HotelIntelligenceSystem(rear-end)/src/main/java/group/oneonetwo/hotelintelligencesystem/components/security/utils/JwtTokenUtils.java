@@ -39,7 +39,7 @@ public class JwtTokenUtils {
     private static final String ROLE_CLAIMS = "rol";
 
     //过期时间
-    private static final long EXPIRATION = 3600L;
+    private static final long EXPIRATION = 3600000L;
 
 //    // 选择了记住我之后的过期时间为7天
 //    private static final long EXPIRATION_REMEMBER = 604800L;
@@ -55,7 +55,12 @@ public class JwtTokenUtils {
         HashMap<String, Object> map = new HashMap<>();
         //获取当前时间,以计算过期时间
         long time = System.currentTimeMillis();
+//        long e = EXPIRATION;
+//        long end = time + e;
+//        System.out.println(new Date(time));
+//        System.out.println(new Date(end));
         map.put(ROLE_CLAIMS, role);
+
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .setClaims(map)
