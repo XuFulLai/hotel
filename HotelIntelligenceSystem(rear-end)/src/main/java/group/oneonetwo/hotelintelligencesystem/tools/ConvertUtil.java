@@ -53,7 +53,7 @@ public class ConvertUtil {
      * @param <T2>
      * @return
      */
-    public static <T2> Page<T2> transfer(Page sourcePage, Class<T2> targetClass) {
+    public static <T2> Page<T2> transferPage(Page sourcePage, Class<T2> targetClass) {
         Page<T2> targetPage = new Page<>();
         targetPage.setPages(sourcePage.getPages());
         targetPage.setCurrent(sourcePage.getCurrent());

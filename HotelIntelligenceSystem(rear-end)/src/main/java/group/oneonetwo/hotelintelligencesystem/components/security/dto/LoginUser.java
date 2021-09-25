@@ -27,6 +27,9 @@ public class LoginUser {
     }
 
     public Integer getRememberMe() {
+        if (rememberMe == null) {
+            this.rememberMe = 0;
+        }
         return rememberMe;
     }
 

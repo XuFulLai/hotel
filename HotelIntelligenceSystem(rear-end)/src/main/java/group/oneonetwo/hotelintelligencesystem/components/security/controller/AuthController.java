@@ -33,4 +33,10 @@ public class AuthController {
         return userService.register(userVO);
     }
 
+    @PostMapping("/test")
+    @ApiOperation("登录接口【POST】:\"/auth/login\"，需要参数:username,password")
+    public void login(){
+
+    }
+
 }
