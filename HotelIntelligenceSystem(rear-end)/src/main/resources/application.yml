@@ -30,7 +30,7 @@ jwt:
   # 令牌自定义标识
   header: Authorization
   # 令牌秘钥
-  secret: abcdefghijklmnopqrstuvwxyz
+  secret: 12d8sxsm+xswxyy+2d8sxswxyybmaik/2dwzmztbdwtb/3rggdxfnjppspaparggdxfnjppspapapa+hbgwjybqyl+++++
   # 令牌有效期（默认30分钟）
   expireTime: 3600000
   token-prefix: Bearer
