@@ -112,7 +112,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             role = authority.getAuthority();
         }
 
-        String token = JwtTokenUtils.createToken(jwtUser.getUsername(), role);
+        String token = JwtTokenUtils.createToken(jwtUser.getId(), role);
         //写入redis(存入uid,role,username)
         Map<String,Object> map = new HashMap<>();
         map.put("uid",jwtUser.getId());

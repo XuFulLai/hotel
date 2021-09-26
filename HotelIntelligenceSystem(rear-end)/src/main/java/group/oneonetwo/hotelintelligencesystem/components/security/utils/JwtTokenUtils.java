@@ -47,11 +47,11 @@ public class JwtTokenUtils {
     /**
      * 创建token
      * @author 文
-     * @param username
+     * @param uid
      * @param role
      * @return
      */
-    public static String createToken(String username,String role) {
+    public static String createToken(String uid,String role) {
         HashMap<String, Object> map = new HashMap<>();
         //获取当前时间,以计算过期时间
         long time = System.currentTimeMillis();
@@ -65,7 +65,7 @@ public class JwtTokenUtils {
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .setClaims(map)
                 .setIssuer(ISS)
-                .setSubject(username)
+                .setSubject(uid)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(time + EXPIRATION))
                 .compact();

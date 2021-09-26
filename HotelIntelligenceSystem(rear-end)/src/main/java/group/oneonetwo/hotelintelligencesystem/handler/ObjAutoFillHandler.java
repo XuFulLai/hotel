@@ -18,14 +18,20 @@ public class ObjAutoFillHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         this.setFieldValByName("createTime", new Date(), metaObject);
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String s = authentication.getName();
-//        System.out.println("authentication.getAuthorities()=====================" + s);
-//        this.setFieldValByName("createBy", new Date(), metaObject);
+        String uid = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (uid == null) {
+            uid = "0";
+        }
+        this.setFieldValByName("createBy", uid, metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         this.setFieldValByName("updateTime", new Date(), metaObject);
+        String uid = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (uid == null) {
+            uid = "0";
+        }
+        this.setFieldValByName("updateBy", uid, metaObject);
     }
 }

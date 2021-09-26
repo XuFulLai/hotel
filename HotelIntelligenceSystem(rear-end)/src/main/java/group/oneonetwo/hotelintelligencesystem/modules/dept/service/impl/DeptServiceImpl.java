@@ -55,19 +55,19 @@ public class DeptServiceImpl implements IDeptService {
     @Override
     public DeptPO save(DeptVO deptVO) {
         if (deptVO == null) {
-            throw new CommonException(501,"user实体为空");
+            throw new CommonException(501,"dept实体为空");
         }
         DeptVO check = selectOneByIdReturnVO(deptVO.getId());
         if (check == null) {
             throw new CommonException(4004,"找不到id为'" + deptVO.getId() + "'的数据");
         }
-        DeptPO userPO = new DeptPO();
-        BeanUtils.copyProperties(deptVO,userPO);
-        int save = deptMapper.updateById(userPO);
+        DeptPO deptPO = new DeptPO();
+        BeanUtils.copyProperties(deptVO,deptPO);
+        int save = deptMapper.updateById(deptPO);
         if (save > 0) {
-            return userPO;
+            return deptMapper.selectById(deptPO.getId());
         }
-        throw new SavaException("更改用户失败");
+        throw new SavaException("更改部门失败");
     }
 
     @Override

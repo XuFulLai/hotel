@@ -33,17 +33,17 @@ public class DeptPO implements Serializable {
     @TableField("is_deleted")
     private Integer isDeleted;
 
-//    //    @TableField(fill = FieldFill.INSERT)
-//    private String createdBy;
-//
-//    @TableField(fill = FieldFill.INSERT)
-//    private Date createTime;
-//
-//    @TableField(fill = FieldFill.UPDATE)
-//    private String updateBy;
-//
-//    @TableField(fill = FieldFill.UPDATE)
-//    private Date updateTime;
+    @TableField(value = "create_by",fill = FieldFill.INSERT)
+    private String createdBy;
+
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
+    private Date createTime;
+
+    @TableField(value = "update_by",fill = FieldFill.UPDATE)
+    private String updateBy;
+
+    @TableField(value = "update_time",fill = FieldFill.UPDATE)
+    private Date updateTime;
 
     public String getId() {
         return id;
@@ -93,35 +93,35 @@ public class DeptPO implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-//    public String getCreatedBy() {
-//        return createdBy;
-//    }
-//
-//    public void setCreatedBy(String createdBy) {
-//        this.createdBy = createdBy;
-//    }
-//
-//    public Date getCreateTime() {
-//        return createTime;
-//    }
-//
-//    public void setCreateTime(Date createTime) {
-//        this.createTime = createTime;
-//    }
-//
-//    public String getUpdateBy() {
-//        return updateBy;
-//    }
-//
-//    public void setUpdateBy(String updateBy) {
-//        this.updateBy = updateBy;
-//    }
-//
-//    public Date getUpdateTime() {
-//        return updateTime;
-//    }
-//
-//    public void setUpdateTime(Date updateTime) {
-//        this.updateTime = updateTime;
-//    }
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 }

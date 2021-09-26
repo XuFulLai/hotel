@@ -7,10 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 文
@@ -18,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = "用户管理相关接口")
 @RestController
-@RequestMapping("open/api/user")
+@RequestMapping("api/user")
 public class UserController {
 
     @Autowired
@@ -29,6 +26,12 @@ public class UserController {
     @GetMapping("get/{id}")
     public Reply<UserVO> selectOneById(@PathVariable("id") String id) {
         return userService.selectOneById(id);
+    }
+
+    @ApiOperation("更新用户信息")
+    @PutMapping()
+    public Reply<UserVO> save(@RequestBody UserVO userVO) {
+        return userService.update(userVO);
     }
 
 
