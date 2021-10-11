@@ -1,4 +1,4 @@
-package group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo;
+package group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,27 +6,23 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author 文
- * @description dept实体
- */
-@ApiModel("部门(权限)实体")
-public class DeptVO implements Serializable {
-
+@ApiModel("床的类型实体")
+public class BedTypeVO implements Serializable {
     @ApiModelProperty("主键")
     private String id;
 
-    @ApiModelProperty("部门名")
+    @ApiModelProperty("床的名字")
     private String name;
 
-    @ApiModelProperty("父id")
-    private String pId;
+    @ApiModelProperty("规格")
+    private String specifition;
 
-    @ApiModelProperty("排序")
-    private String sort;
+    @ApiModelProperty("最大容量单位(人)")
+    private Integer maxLoad;
 
-    @ApiModelProperty("权限标识")
-    private String role;
+    @ApiModelProperty("硬度(0:超软,1:偏软,2:适中,3:偏硬,4:硬")
+    private String hardness;
+
 
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
@@ -59,28 +55,28 @@ public class DeptVO implements Serializable {
         this.name = name;
     }
 
-    public String getpId() {
-        return pId;
+    public String getSpecifition() {
+        return specifition;
     }
 
-    public void setpId(String pId) {
-        this.pId = pId;
+    public void setSpecifition(String specifition) {
+        this.specifition = specifition;
     }
 
-    public String getRole() {
-        return role;
+    public Integer getMaxLoad() {
+        return maxLoad;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setMaxLoad(Integer maxLoad) {
+        this.maxLoad = maxLoad;
     }
 
-    public String getSort() {
-        return sort;
+    public String getHardness() {
+        return hardness;
     }
 
-    public void setSort(String sort) {
-        this.sort = sort;
+    public void setHardness(String hardness) {
+        this.hardness = hardness;
     }
 
     public Integer getIsDeleted() {
@@ -124,13 +120,13 @@ public class DeptVO implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "DeptVO{" +
+    public String toString(){
+        return "BedTypeVO{"+
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", pId='" + pId + '\'' +
-                ", sort='" + sort + '\'' +
-                ", role='" + role + '\'' +
+                ", specification='" + specifition + '\'' +
+                ", maxLoad='" + maxLoad + '\'' +
+                ", hardness='" + hardness + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +

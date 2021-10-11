@@ -88,6 +88,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+<!--        连接数据库依赖-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

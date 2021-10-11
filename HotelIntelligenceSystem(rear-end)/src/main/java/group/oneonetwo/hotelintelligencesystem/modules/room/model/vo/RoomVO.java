@@ -1,4 +1,4 @@
-package group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo;
+package group.oneonetwo.hotelintelligencesystem.modules.room.model.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,30 +6,25 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author 文
- * @description dept实体
- */
-@ApiModel("部门(权限)实体")
-public class DeptVO implements Serializable {
-
+@ApiModel("房间实体")
+public class RoomVO implements Serializable {
     @ApiModelProperty("主键")
     private String id;
 
-    @ApiModelProperty("部门名")
+    @ApiModelProperty("房间名称")
     private String name;
 
-    @ApiModelProperty("父id")
-    private String pId;
+    @ApiModelProperty("房间类型")
+    private String type;
 
-    @ApiModelProperty("排序")
-    private String sort;
+    @ApiModelProperty("房间状态0未用,1已用,2已预订,3暂定")
+    private Integer status;
 
-    @ApiModelProperty("权限标识")
-    private String role;
+    @ApiModelProperty("楼层")
+    private String floor;
 
-    @ApiModelProperty("是否删除")
-    private Integer isDeleted;
+    @ApiModelProperty("房间朝向")
+    private String direction;
 
     @ApiModelProperty("创建人")
     private String createBy;
@@ -42,6 +37,9 @@ public class DeptVO implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    @ApiModelProperty("是否删除")
+    private Integer isDeleted;
 
     public String getId() {
         return id;
@@ -59,36 +57,36 @@ public class DeptVO implements Serializable {
         this.name = name;
     }
 
-    public String getpId() {
-        return pId;
+    public String getType() {
+        return type;
     }
 
-    public void setpId(String pId) {
-        this.pId = pId;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getRole() {
-        return role;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
-    public String getSort() {
-        return sort;
+    public String getFloor() {
+        return floor;
     }
 
-    public void setSort(String sort) {
-        this.sort = sort;
+    public void setFloor(String floor) {
+        this.floor = floor;
     }
 
-    public Integer getIsDeleted() {
-        return isDeleted;
+    public String getDirection() {
+        return direction;
     }
 
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
     public String getCreateBy() {
@@ -123,14 +121,22 @@ public class DeptVO implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     @Override
-    public String toString() {
-        return "DeptVO{" +
+    public String toString(){
+        return "RoomVO{"+
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", pId='" + pId + '\'' +
-                ", sort='" + sort + '\'' +
-                ", role='" + role + '\'' +
+                ", type='" + type + '\'' +
+                ", status='" + status + '\'' +
+                ", floor='" + floor + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +

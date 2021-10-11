@@ -9,7 +9,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
  */
 public interface IDeptService {
 
-    public DeptPO selectOneById(String id);
+    DeptPO selectOneById(String id);
 
     DeptPO add(DeptVO deptVO);
 

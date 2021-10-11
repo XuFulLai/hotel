@@ -1,4 +1,4 @@
-package group.oneonetwo.hotelintelligencesystem.modules.dept.model.po;
+package group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.po;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -8,27 +8,22 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author 文
- * @description dept实体
- */
-@TableName("dept")
-public class DeptPO implements Serializable {
-
+@TableName("bed_type")
+public class BedTypePO implements Serializable {
     @TableId("id")
     private String id;
 
     @TableField("name")
     private String name;
 
-    @TableField("p_id")
-    private String pId;
+    @TableField("specification")
+    private String specification;
 
-    @TableField("sort")
-    private String sort;
+    @TableField("max_load")
+    private Integer maxLoad;
 
-    @TableField("role")
-    private String role;
+    @TableField("hardness")
+    private String hardness;
 
     @TableField("is_deleted")
     private Integer isDeleted;
@@ -61,28 +56,28 @@ public class DeptPO implements Serializable {
         this.name = name;
     }
 
-    public String getpId() {
-        return pId;
+    public String getSpecification() {
+        return specification;
     }
 
-    public void setpId(String pId) {
-        this.pId = pId;
+    public void setSpecification(String specification) {
+        this.specification = specification;
     }
 
-    public String getSort() {
-        return sort;
+    public Integer getMaxLoad() {
+        return maxLoad;
     }
 
-    public void setSort(String sort) {
-        this.sort = sort;
+    public void setMaxLoad(Integer maxLoad) {
+        this.maxLoad = maxLoad;
     }
 
-    public String getRole() {
-        return role;
+    public String getHardness() {
+        return hardness;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setHardness(String hardness) {
+        this.hardness = hardness;
     }
 
     public Integer getIsDeleted() {

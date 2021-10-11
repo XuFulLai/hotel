@@ -1,37 +1,33 @@
-package group.oneonetwo.hotelintelligencesystem.modules.dept.model.po;
+package group.oneonetwo.hotelintelligencesystem.modules.room.model.po;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author 文
- * @description dept实体
- */
-@TableName("dept")
-public class DeptPO implements Serializable {
-
+@TableName("room")
+public class RoomPO implements Serializable {
     @TableId("id")
     private String id;
 
     @TableField("name")
-    private String name;
+    private  String name;
 
-    @TableField("p_id")
-    private String pId;
+    @TableField("type")
+    private String type;
 
-    @TableField("sort")
-    private String sort;
+    @TableField("status")
+    private Integer status;
 
-    @TableField("role")
-    private String role;
+    @TableField("floor")
+    private String floor;
 
-    @TableField("is_deleted")
-    private Integer isDeleted;
+    @TableField("direction")
+    private String direction;
 
     @TableField(value = "create_by",fill = FieldFill.INSERT)
     private String createBy;
@@ -40,10 +36,13 @@ public class DeptPO implements Serializable {
     private Date createTime;
 
     @TableField(value = "update_by",fill = FieldFill.UPDATE)
-    private String updateBy;
+    private String  updateBy;
 
     @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
+
+    @TableField("is_deleted")
+    private Integer isDeleted;
 
     public String getId() {
         return id;
@@ -61,36 +60,36 @@ public class DeptPO implements Serializable {
         this.name = name;
     }
 
-    public String getpId() {
-        return pId;
+    public String getType() {
+        return type;
     }
 
-    public void setpId(String pId) {
-        this.pId = pId;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getSort() {
-        return sort;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setSort(String sort) {
-        this.sort = sort;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
-    public String getRole() {
-        return role;
+    public String getFloor() {
+        return floor;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setFloor(String floor) {
+        this.floor = floor;
     }
 
-    public Integer getIsDeleted() {
-        return isDeleted;
+    public String getDirection() {
+        return direction;
     }
 
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
     public String getCreateBy() {
@@ -123,5 +122,13 @@ public class DeptPO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

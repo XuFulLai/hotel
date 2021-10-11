@@ -1,46 +1,52 @@
-package group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo;
+package group.oneonetwo.hotelintelligencesystem.modules.menu.model.po;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author 文
- * @description dept实体
- */
-@ApiModel("部门(权限)实体")
-public class DeptVO implements Serializable {
-
-    @ApiModelProperty("主键")
+@TableName("menu")
+public class MenuPO implements Serializable {
+    @TableId("id")
     private String id;
 
-    @ApiModelProperty("部门名")
+    @TableField("name")
     private String name;
 
-    @ApiModelProperty("父id")
+    @TableField("p_id")
     private String pId;
 
-    @ApiModelProperty("排序")
+    @TableField("sort")
     private String sort;
 
-    @ApiModelProperty("权限标识")
-    private String role;
+    @TableField("path")
+    private String path;
 
-    @ApiModelProperty("是否删除")
+    @TableField("visible")
+    private String visible;
+
+    @TableField("remark")
+    private String remark;
+
+    @TableField("level")
+    private Integer level;
+
+    @TableField("is_deleted")
     private Integer isDeleted;
 
-    @ApiModelProperty("创建人")
+    @TableField(value = "create_by",fill = FieldFill.INSERT)
     private String createBy;
 
-    @ApiModelProperty("创建时间")
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
     private Date createTime;
 
-    @ApiModelProperty("更新人")
+    @TableField(value = "update_by",fill = FieldFill.UPDATE)
     private String updateBy;
 
-    @ApiModelProperty("更新时间")
+    @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
 
     public String getId() {
@@ -67,20 +73,44 @@ public class DeptVO implements Serializable {
         this.pId = pId;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public String getSort() {
         return sort;
     }
 
     public void setSort(String sort) {
         this.sort = sort;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getVisible() {
+        return visible;
+    }
+
+    public void setVisible(String visible) {
+        this.visible = visible;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public Integer getIsDeleted() {
@@ -121,21 +151,5 @@ public class DeptVO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "DeptVO{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", pId='" + pId + '\'' +
-                ", sort='" + sort + '\'' +
-                ", role='" + role + '\'' +
-                ", isDeleted=" + isDeleted +
-                ", createBy='" + createBy + '\'' +
-                ", createTime=" + createTime +
-                ", updateBy='" + updateBy + '\'' +
-                ", updateTime=" + updateTime +
-                '}';
     }
 }

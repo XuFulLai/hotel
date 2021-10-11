@@ -1,22 +1,18 @@
-package group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo;
+package group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author 文
- * @description dept实体
- */
-@ApiModel("部门(权限)实体")
-public class DeptVO implements Serializable {
-
+@ApiModel("菜单实体")
+public class MenuVO implements Serializable {
     @ApiModelProperty("主键")
     private String id;
 
-    @ApiModelProperty("部门名")
+    @ApiModelProperty("菜单名")
     private String name;
 
     @ApiModelProperty("父id")
@@ -25,8 +21,17 @@ public class DeptVO implements Serializable {
     @ApiModelProperty("排序")
     private String sort;
 
-    @ApiModelProperty("权限标识")
-    private String role;
+    @ApiModelProperty("路由地址")
+    private String path;
+
+    @ApiModelProperty("是否显示(0:没有,1:显示)")
+    private String visible;
+
+    @ApiModelProperty("备注")
+    private String remark;
+
+    @ApiModelProperty("等级")
+    private Integer level;
 
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
@@ -67,20 +72,44 @@ public class DeptVO implements Serializable {
         this.pId = pId;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public String getSort() {
         return sort;
     }
 
     public void setSort(String sort) {
         this.sort = sort;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getVisible() {
+        return visible;
+    }
+
+    public void setVisible(String visible) {
+        this.visible = visible;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public Integer getIsDeleted() {
@@ -124,13 +153,16 @@ public class DeptVO implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "DeptVO{" +
+    public String toString(){
+        return "MenuVO{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", pId='" + pId + '\'' +
                 ", sort='" + sort + '\'' +
-                ", role='" + role + '\'' +
+                ", path='" + path + '\'' +
+                ", visible='" + visible + '\'' +
+                ", remark='" + remark + '\'' +
+                ", level='" + level + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +

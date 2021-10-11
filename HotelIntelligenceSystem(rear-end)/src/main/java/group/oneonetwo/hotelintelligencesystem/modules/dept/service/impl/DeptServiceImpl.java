@@ -28,7 +28,7 @@ public class DeptServiceImpl implements IDeptService {
     @Override
     public DeptPO add(DeptVO deptVO) {
         if (deptVO == null) {
-            throw new SavaException("插入用户失败：user实体为空");
+            throw new SavaException("插入用户失败：部门实体为空");
         }
         DeptPO deptPO = new DeptPO();
         BeanUtils.copyProperties(deptVO,deptPO);

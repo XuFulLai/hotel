@@ -1,4 +1,4 @@
-package group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo;
+package group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,27 +6,13 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author 文
- * @description dept实体
- */
-@ApiModel("部门(权限)实体")
-public class DeptVO implements Serializable {
+@ApiModel("菜单部门权限实体")
+public class MenuDeptVO implements Serializable {
+    @ApiModelProperty("部门id主键")
+    private String deptId;
 
-    @ApiModelProperty("主键")
-    private String id;
-
-    @ApiModelProperty("部门名")
-    private String name;
-
-    @ApiModelProperty("父id")
-    private String pId;
-
-    @ApiModelProperty("排序")
-    private String sort;
-
-    @ApiModelProperty("权限标识")
-    private String role;
+    @ApiModelProperty("菜单id")
+    private String menuId;
 
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
@@ -43,44 +29,20 @@ public class DeptVO implements Serializable {
     @ApiModelProperty("更新时间")
     private Date updateTime;
 
-    public String getId() {
-        return id;
+    public String getDeptId() {
+        return deptId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
     }
 
-    public String getName() {
-        return name;
+    public String getMenuId() {
+        return menuId;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getpId() {
-        return pId;
-    }
-
-    public void setpId(String pId) {
-        this.pId = pId;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
+    public void setMenuId(String menuId) {
+        this.menuId = menuId;
     }
 
     public Integer getIsDeleted() {
@@ -122,15 +84,11 @@ public class DeptVO implements Serializable {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
-
     @Override
-    public String toString() {
-        return "DeptVO{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", pId='" + pId + '\'' +
-                ", sort='" + sort + '\'' +
-                ", role='" + role + '\'' +
+    public String toString(){
+        return "MenuDeptVO{"+
+                "deptId='" + deptId + '\'' +
+                ", menuId'" + menuId + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +

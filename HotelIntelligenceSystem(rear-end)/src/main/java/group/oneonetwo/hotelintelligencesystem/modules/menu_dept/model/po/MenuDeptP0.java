@@ -1,4 +1,4 @@
-package group.oneonetwo.hotelintelligencesystem.modules.dept.model.po;
+package group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.po;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -8,27 +8,13 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author 文
- * @description dept实体
- */
-@TableName("dept")
-public class DeptPO implements Serializable {
+@TableName("menu_dept")
+public class MenuDeptP0 implements Serializable {
+    @TableId("dept_id")
+    private String DeptId;
 
-    @TableId("id")
-    private String id;
-
-    @TableField("name")
-    private String name;
-
-    @TableField("p_id")
-    private String pId;
-
-    @TableField("sort")
-    private String sort;
-
-    @TableField("role")
-    private String role;
+    @TableId("menu_id")
+    private String menuId;
 
     @TableField("is_deleted")
     private Integer isDeleted;
@@ -45,44 +31,20 @@ public class DeptPO implements Serializable {
     @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
 
-    public String getId() {
-        return id;
+    public String getDeptId() {
+        return DeptId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setDeptId(String deptId) {
+        DeptId = deptId;
     }
 
-    public String getName() {
-        return name;
+    public String getMenuId() {
+        return menuId;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getpId() {
-        return pId;
-    }
-
-    public void setpId(String pId) {
-        this.pId = pId;
-    }
-
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
+    public void setMenuId(String menuId) {
+        this.menuId = menuId;
     }
 
     public Integer getIsDeleted() {
