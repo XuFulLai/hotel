@@ -22,4 +22,6 @@ public interface IUserService {
     Reply register(UserVO userVO) throws SavaException;
 
     Reply<UserVO> update(UserVO userVO);
+
+    UserVO addOneUser(UserVO userVO);
 }
