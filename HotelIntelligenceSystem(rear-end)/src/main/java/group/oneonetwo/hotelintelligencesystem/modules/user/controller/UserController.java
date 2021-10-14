@@ -34,5 +34,10 @@ public class UserController {
         return userService.update(userVO);
     }
 
+    @PostMapping("add")
+    public Reply<UserVO> add(@RequestBody UserVO userVO) {
+        return Reply.success(userService.addOneUser(userVO));
+    }
+
 
 }

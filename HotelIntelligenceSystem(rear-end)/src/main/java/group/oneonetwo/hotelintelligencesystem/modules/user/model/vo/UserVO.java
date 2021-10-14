@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.user.model.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -21,6 +22,12 @@ public class UserVO implements Serializable {
 
     @ApiModelProperty("昵称")
     private String nickname;
+
+    @ApiModelProperty("头像")
+    private String heads;
+
+    @ApiModelProperty("电话")
+    private String phone;
 
     @ApiModelProperty("部门")
     private String dept;
@@ -48,6 +55,22 @@ public class UserVO implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    public String getHeads() {
+        return heads;
+    }
+
+    public void setHeads(String heads) {
+        this.heads = heads;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getId() {
         return id;

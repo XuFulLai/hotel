@@ -24,6 +24,12 @@ public class UserPO implements Serializable {
     @TableField("nickname")
     private String nickname;
 
+    @TableField("heads")
+    private String heads;
+
+    @TableField("phone")
+    private String phone;
+
     @TableField("dept")
     private String dept;
 
@@ -113,6 +119,22 @@ public class UserPO implements Serializable {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public String getHeads() {
+        return heads;
+    }
+
+    public void setHeads(String heads) {
+        this.heads = heads;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getCreatedBy() {
