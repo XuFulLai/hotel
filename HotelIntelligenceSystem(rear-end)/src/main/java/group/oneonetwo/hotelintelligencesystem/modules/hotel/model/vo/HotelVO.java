@@ -10,6 +10,10 @@ public class HotelVO implements Serializable {
     @ApiModelProperty("主键")
     private String id;
 
+    @ApiModelProperty("部门id")
+    private  String deptId;
+
+
     @ApiModelProperty("酒店名")
     private String name;
 
@@ -50,6 +54,14 @@ public class HotelVO implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
 
     public String getName() {
         return name;
@@ -143,6 +155,7 @@ public class HotelVO implements Serializable {
     public String toString(){
         return "HotelVO{"+
                 "id='"+id+'\''+
+                ",dept_id='"+deptId+'\''+
                 ",name='"+name+'\''+
                 ",address='"+address+'\''+
                 ",parking_lot='"+parkingLot+'\''+

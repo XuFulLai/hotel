@@ -12,6 +12,17 @@ public class HotelP0 implements Serializable {
     @TableId("id")
     private String id;
 
+    @TableField("dept_id")
+    private String deptId;
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
     @TableField("name")
     private String name;
 
