@@ -2,16 +2,12 @@ package group.oneonetwo.hotelintelligencesystem.modules.hotel.service.impl;
 
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
-import group.oneonetwo.hotelintelligencesystem.modules.dept.dao.DeptMapper;
-import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
-import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.dao.HotelMapper;
-import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelP0;
+import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelPO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.server.authentication.AnonymousAuthenticationWebFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +18,11 @@ public class HotelServiceImpl implements IHotelService {
     HotelMapper hotelMapper;
 
     @Override
-    public HotelP0 add(HotelVO hotelVO){
+    public HotelPO add(HotelVO hotelVO){
         if(hotelVO==null){
             throw new SavaException("插入用户失败:酒店实体为空");
         }
-        HotelP0 hotelP0=new HotelP0();
+        HotelPO hotelP0=new HotelPO();
         BeanUtils.copyProperties(hotelVO,hotelP0);
         int insert=hotelMapper.insert(hotelP0);
         if(insert>0){
@@ -40,7 +36,7 @@ public class HotelServiceImpl implements IHotelService {
         if(id==null){
             throw new CommonException(501,"参数为空");
         }
-        HotelP0 hotelP0=hotelMapper.selectById(id);
+        HotelPO hotelP0=hotelMapper.selectById(id);
         HotelVO hotelVO=new HotelVO();
         if(hotelVO!=null){
             BeanUtils.copyProperties(hotelP0,hotelVO);
@@ -49,7 +45,7 @@ public class HotelServiceImpl implements IHotelService {
     }
 
     @Override
-    public HotelP0 save(HotelVO hotelVO){
+    public HotelPO save(HotelVO hotelVO){
         if(hotelVO==null){
             throw new CommonException(501,"hotel实体为空");
         }
@@ -57,11 +53,11 @@ public class HotelServiceImpl implements IHotelService {
         if (check==null){
             throw new CommonException(4004,"找不到id为'"+hotelVO.getId()+"'的数据");
         }
-        HotelP0 hotelP0=new HotelP0();
-        BeanUtils.copyProperties(hotelVO,hotelP0);
-        int save=hotelMapper.updateById(hotelP0);
+        HotelPO hotelPO =new HotelPO();
+        BeanUtils.copyProperties(hotelVO, hotelPO);
+        int save=hotelMapper.updateById(hotelPO);
         if(save>0){
-            return hotelMapper.selectById(hotelP0.getId());
+            return hotelMapper.selectById(hotelPO.getId());
         }
         throw  new SavaException("更改酒店失败");
     }
@@ -76,9 +72,9 @@ public class HotelServiceImpl implements IHotelService {
         return i;
     }
     @Override
-    public HotelP0 selectOneById(String id){
-        HotelP0 hotelP0=hotelMapper.selectById(id);
-        return hotelP0;
+    public HotelPO selectOneById(String id){
+        HotelPO hotelPO =hotelMapper.selectById(id);
+        return hotelPO;
     }
 
 }

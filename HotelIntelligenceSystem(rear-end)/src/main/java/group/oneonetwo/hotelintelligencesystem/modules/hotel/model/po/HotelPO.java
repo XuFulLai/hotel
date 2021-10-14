@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.security.SecureRandom;
 
 @TableName("hotel")
-public class HotelP0 implements Serializable {
+public class HotelPO implements Serializable {
     @TableId("id")
     private String id;
 

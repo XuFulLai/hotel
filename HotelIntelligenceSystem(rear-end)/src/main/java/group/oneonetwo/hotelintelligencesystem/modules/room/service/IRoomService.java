@@ -1,6 +1,5 @@
 package group.oneonetwo.hotelintelligencesystem.modules.room.service;
 
-import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelP0;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.po.RoomPO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 
