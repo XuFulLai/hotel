@@ -8,6 +8,10 @@ spring:
   sql:
     init:
       mode: never
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 mybatis-plus:
   configuration:
     # 驼峰
@@ -34,3 +38,4 @@ jwt:
   # 令牌有效期（默认30分钟）
   expireTime: 3600000
   token-prefix: Bearer
+

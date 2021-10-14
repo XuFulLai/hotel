@@ -2,6 +2,9 @@ package group.oneonetwo.hotelintelligencesystem.modules.dept.service;
 
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.po.DeptPO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
+import group.oneonetwo.hotelintelligencesystem.tools.Reply;
+
+import java.util.List;
 
 /**
  * @author 文
@@ -19,4 +22,5 @@ public interface IDeptService {
 
     Integer deleteById(String id);
 
+    Reply batchAdd(List<DeptVO> deptVOS);
 }
