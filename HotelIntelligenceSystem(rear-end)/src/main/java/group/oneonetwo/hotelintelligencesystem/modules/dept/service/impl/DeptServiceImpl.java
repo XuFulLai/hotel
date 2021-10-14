@@ -7,12 +7,15 @@ import group.oneonetwo.hotelintelligencesystem.modules.dept.dao.DeptMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.po.DeptPO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
+import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.Query;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author 文
@@ -78,6 +81,16 @@ public class DeptServiceImpl implements IDeptService {
         }
         int i = deptMapper.deleteById(id);
         return i;
+    }
+
+    @Override
+    public Reply batchAdd(List<DeptVO> deptVOS) {
+
+        Iterator<DeptVO> iterator = deptVOS.iterator();
+        while (iterator.hasNext()) {
+            add(iterator.next());
+        }
+        return Reply.success();
     }
 
 
