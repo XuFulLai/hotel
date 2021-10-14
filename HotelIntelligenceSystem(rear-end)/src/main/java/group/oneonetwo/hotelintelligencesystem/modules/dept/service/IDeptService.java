@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.dept.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.po.DeptPO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -23,4 +24,6 @@ public interface IDeptService {
     Integer deleteById(String id);
 
     Reply batchAdd(List<DeptVO> deptVOS);
+
+    Page<DeptVO> getPage(DeptVO deptVO);
 }

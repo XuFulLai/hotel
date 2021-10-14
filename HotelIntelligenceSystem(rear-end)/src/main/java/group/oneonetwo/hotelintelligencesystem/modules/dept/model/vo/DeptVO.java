@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo;
 
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -42,6 +43,16 @@ public class DeptVO implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public String getId() {
         return id;
