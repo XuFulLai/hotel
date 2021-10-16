@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.components.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.components.security.dto.LoginUser;
 import group.oneonetwo.hotelintelligencesystem.components.security.entity.JwtUser;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.JwtTokenUtils;
@@ -140,7 +141,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         map.put("username",JwtTokenUtils.getUsername(token));
         map.put("role",JwtTokenUtils.getUserRole(token));
         map.put("menuList",menuTree);
-        response.getWriter().write(Reply.success("登录成功",map).toString());
+        Gson gson = new Gson();
+        response.getWriter().write(Reply.success("login success!",gson.toJson(map)).toString());
 
     }
 
