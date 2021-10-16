@@ -20,4 +20,21 @@
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
+
+    <select id="getMenuTreeByDeptId" resultType="group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO">
+        SELECT
+            *
+        FROM
+            menu
+        WHERE
+            id IN (
+            SELECT
+                menu_id
+            FROM
+                menu_dept
+            WHERE
+                dept_id = #{id}
+            )
+        order by p_id
+    </select>
 </mapper>

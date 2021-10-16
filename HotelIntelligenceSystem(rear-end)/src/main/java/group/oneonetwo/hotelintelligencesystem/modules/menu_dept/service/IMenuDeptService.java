@@ -1,17 +1,20 @@
 package group.oneonetwo.hotelintelligencesystem.modules.menu_dept.service;
 
-import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.po.MenuDeptP0;
+import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.po.MenuDeptPO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.vo.MenuDeptVO;
-import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO;
 
 public interface IMenuDeptService {
-    MenuDeptP0 selectOneById(String id);
+    MenuDeptPO selectOneById(String id);
 
-    MenuDeptP0 add(RoomTypeVO roomTypeVO);
+    MenuDeptPO add(MenuDeptVO menuDeptVO);
 
-    MenuDeptP0 save(RoomTypeVO roomTypeVO);
+    MenuDeptPO save(MenuDeptVO menuDeptVO);
 
-    Integer deleteById(String id);
+    Integer deleteAllByMenuId(String id);
 
     MenuDeptVO selectOneByIdReturnVO(String id);
+
+//    List<MenuDeptVO> getMenuDeptByDeptId()
+
+    Integer batchAdd(String menuId,String deptId);
 }

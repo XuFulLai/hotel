@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @TableName("menu_dept")
-public class MenuDeptP0 implements Serializable {
+public class MenuDeptPO implements Serializable {
     @TableId("dept_id")
     private String DeptId;
 

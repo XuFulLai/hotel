@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @ApiModel("菜单实体")
 public class MenuVO implements Serializable {
@@ -47,6 +48,26 @@ public class MenuVO implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    private String deptId;
+
+    private List<MenuVO> children;
+
+    public List<MenuVO> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<MenuVO> children) {
+        this.children = children;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
 
     public String getId() {
         return id;
@@ -153,21 +174,39 @@ public class MenuVO implements Serializable {
     }
 
     @Override
-    public String toString(){
-        return "MenuVO{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", pId='" + pId + '\'' +
-                ", sort='" + sort + '\'' +
-                ", path='" + path + '\'' +
-                ", visible='" + visible + '\'' +
-                ", remark='" + remark + '\'' +
-                ", level='" + level + '\'' +
-                ", isDeleted=" + isDeleted +
-                ", createBy='" + createBy + '\'' +
-                ", createTime=" + createTime +
-                ", updateBy='" + updateBy + '\'' +
-                ", updateTime=" + updateTime +
-                '}';
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"id\":\"")
+                .append(id).append('\"');
+        sb.append(",\"name\":\"")
+                .append(name).append('\"');
+        sb.append(",\"pId\":\"")
+                .append(pId).append('\"');
+        sb.append(",\"sort\":\"")
+                .append(sort).append('\"');
+        sb.append(",\"path\":\"")
+                .append(path).append('\"');
+        sb.append(",\"visible\":\"")
+                .append(visible).append('\"');
+        sb.append(",\"remark\":\"")
+                .append(remark).append('\"');
+        sb.append(",\"level\":")
+                .append(level);
+        sb.append(",\"isDeleted\":")
+                .append(isDeleted);
+        sb.append(",\"createBy\":\"")
+                .append(createBy).append('\"');
+        sb.append(",\"createTime\":\"")
+                .append(createTime).append('\"');
+        sb.append(",\"updateBy\":\"")
+                .append(updateBy).append('\"');
+        sb.append(",\"updateTime\":\"")
+                .append(updateTime).append('\"');
+        sb.append(",\"deptId\":\"")
+                .append(deptId).append('\"');
+        sb.append(",\"children\":")
+                .append(children);
+        sb.append('}');
+        return sb.toString();
     }
 }
