@@ -28,8 +28,8 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        String reason = Reply.failed(String.valueOf(201),"用户未登录",null).toString();
+//        String reason = Reply.failed(String.valueOf(201),"用户未登录",null).toString();
         logger.error("code:201,具体原因:" + authException.getMessage());
-        response.getWriter().write(new ObjectMapper().writeValueAsString(reason));
+        response.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed(String.valueOf(201),"用户未登录",null)));
     }
 }

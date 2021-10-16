@@ -25,8 +25,8 @@ public class JWTAccessDeniedHandler implements AccessDeniedHandler {
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json; charset=utf-8");
         httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        String reason = Reply.failed(String.valueOf(204),"无权访问",null).toString();
+//        String reason = Reply.failed(String.valueOf(204),"无权访问",null).toString();
         logger.error("code:204,具体原因:" + e.getMessage());
-        httpServletResponse.getWriter().write(new ObjectMapper().writeValueAsString(reason));
+        httpServletResponse.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed(String.valueOf(204),"无权访问",null)));
     }
 }

@@ -1,9 +1,15 @@
 package group.oneonetwo.hotelintelligencesystem.components.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.components.security.dto.LoginUser;
 import group.oneonetwo.hotelintelligencesystem.components.security.entity.JwtUser;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.JwtTokenUtils;
+import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
+import group.oneonetwo.hotelintelligencesystem.modules.dept.service.impl.DeptServiceImpl;
+import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
+import group.oneonetwo.hotelintelligencesystem.modules.menu.service.impl.MenuServiceImpl;
+import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.service.impl.MenuDeptServiceImpl;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +29,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 文
@@ -39,6 +42,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private AuthenticationManager authenticationManager;
 
 //    private RedisUtil redisUtil;
+
+    private MenuServiceImpl menuService;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -75,8 +80,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("application/json; charset=utf-8");
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                String reason = Reply.failed("202","用户名或密码错误",null).toString();
-                response.getWriter().write(new ObjectMapper().writeValueAsString(reason));
+//                String reason = Reply.failed("202","用户名或密码错误",null).toString();
+                response.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed("202","用户名或密码错误",null)));
                 response.getWriter().flush();
             }catch (Exception ex){
                 logger.error(e.toString() + " : " + e.getMessage());
@@ -102,19 +107,26 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
+        //获取容器
+        ServletContext context = request.getServletContext();
+        ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(context);
+        assert ac != null;
+        menuService = ac.getBean(MenuServiceImpl.class);
 
         JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
         logger.info("jwtUser:" + jwtUser.toString());
-
+        List<MenuVO> menuTree = menuService.getMenuTreeByDeptId(jwtUser.getId());
         String role = "";
         Collection<? extends GrantedAuthority> authorities = jwtUser.getAuthorities();
         for (GrantedAuthority authority : authorities){
             role = authority.getAuthority();
         }
 
-        String token = JwtTokenUtils.createToken(jwtUser.getUsername(), role);
+        String token = JwtTokenUtils.createToken(jwtUser.getId(), role);
+
         //写入redis(存入uid,role,username)
         Map<String,Object> map = new HashMap<>();
+
         map.put("uid",jwtUser.getId());
         map.put("role",role);
         map.put("username",jwtUser.getUsername());
@@ -128,7 +140,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         map.put("token",JwtTokenUtils.TOKEN_PREFIX + " " + token);
         map.put("username",JwtTokenUtils.getUsername(token));
         map.put("role",JwtTokenUtils.getUserRole(token));
-        response.getWriter().write(Reply.success("登录成功",map).toString());
+        map.put("menuList",menuTree);
+        Gson gson = new Gson();
+        response.getWriter().write(Reply.success("login success!",gson.toJson(map)).toString());
 
     }
 

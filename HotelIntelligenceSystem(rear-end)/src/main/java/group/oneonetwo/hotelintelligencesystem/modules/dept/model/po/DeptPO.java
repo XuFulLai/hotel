@@ -33,16 +33,16 @@ public class DeptPO implements Serializable {
     @TableField("is_deleted")
     private Integer isDeleted;
 
-    //    @TableField(fill = FieldFill.INSERT)
-    private String createdBy;
+    @TableField(value = "create_by",fill = FieldFill.INSERT)
+    private String createBy;
 
-    @TableField(fill = FieldFill.INSERT)
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
     private Date createTime;
 
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(value = "update_by",fill = FieldFill.UPDATE)
     private String updateBy;
 
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
 
     public String getId() {
@@ -93,12 +93,12 @@ public class DeptPO implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public String getCreateBy() {
+        return createBy;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
     }
 
     public Date getCreateTime() {

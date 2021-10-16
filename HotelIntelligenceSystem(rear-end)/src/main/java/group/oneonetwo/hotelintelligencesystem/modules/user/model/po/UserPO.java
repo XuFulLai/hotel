@@ -24,6 +24,12 @@ public class UserPO implements Serializable {
     @TableField("nickname")
     private String nickname;
 
+    @TableField("heads")
+    private String heads;
+
+    @TableField("phone")
+    private String phone;
+
     @TableField("dept")
     private String dept;
 
@@ -39,16 +45,16 @@ public class UserPO implements Serializable {
     @TableField("is_deleted")
     private Integer isDeleted;
 
-//    @TableField(fill = FieldFill.INSERT)
+    @TableField(value = "create_by",fill = FieldFill.INSERT)
     private String createdBy;
 
-    @TableField(fill = FieldFill.INSERT)
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
     private Date createTime;
 
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(value = "update_by",fill = FieldFill.UPDATE)
     private String updateBy;
 
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
 
     public String getId() {
@@ -113,6 +119,22 @@ public class UserPO implements Serializable {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public String getHeads() {
+        return heads;
+    }
+
+    public void setHeads(String heads) {
+        this.heads = heads;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getCreatedBy() {

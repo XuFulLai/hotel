@@ -7,12 +7,16 @@ import group.oneonetwo.hotelintelligencesystem.modules.user.dao.UserMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.po.UserPO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
+import group.oneonetwo.hotelintelligencesystem.tools.QiNiuUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * @author 文
@@ -33,6 +37,7 @@ public class UserServiceImpl implements IUserService {
         if (userVO == null) {
             throw new SavaException("插入用户失败：user实体为空");
         }
+        userVO.setPassword(bCryptPasswordEncoder.encode(userVO.getPassword()));
         UserPO userPO = new UserPO();
         BeanUtils.copyProperties(userVO,userPO);
         int insert = userMapper.insert(userPO);
@@ -45,7 +50,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserVO selectOneByIdReturnVO(String id) {
         if (id == null) {
-            throw new CommonException(501,"参数为空");
+            throw new CommonException(501,"id参数为空");
         }
         UserPO userPO = userMapper.selectById(id);
         UserVO userVO = new UserVO();
@@ -68,7 +73,7 @@ public class UserServiceImpl implements IUserService {
         BeanUtils.copyProperties(userVO,userPO);
         int save = userMapper.updateById(userPO);
         if (save > 0) {
-            return userPO;
+            return userMapper.selectById(userPO.getId());
         }
         throw new SavaException("更改用户失败");
     }
@@ -107,6 +112,20 @@ public class UserServiceImpl implements IUserService {
         UserPO add = this.add(userVO);
         BeanUtils.copyProperties(add,userVO);
         return Reply.success(userVO);
+    }
+
+    @Override
+    public Reply<UserVO> update(UserVO userVO) {
+        UserPO save = save(userVO);
+        BeanUtils.copyProperties(save,userVO);
+        return Reply.success(userVO);
+    }
+
+    @Override
+    public UserVO addOneUser(UserVO userVO) {
+        UserPO add = add(userVO);
+        BeanUtils.copyProperties(add,userVO);
+        return userVO;
     }
 
 

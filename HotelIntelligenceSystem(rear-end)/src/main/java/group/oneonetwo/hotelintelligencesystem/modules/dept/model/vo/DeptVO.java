@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo;
 
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -32,7 +33,7 @@ public class DeptVO implements Serializable {
     private Integer isDeleted;
 
     @ApiModelProperty("创建人")
-    private String createdBy;
+    private String createBy;
 
     @ApiModelProperty("创建时间")
     private Date createTime;
@@ -42,6 +43,16 @@ public class DeptVO implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public String getId() {
         return id;
@@ -91,12 +102,12 @@ public class DeptVO implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public String getCreateBy() {
+        return createBy;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
     }
 
     public Date getCreateTime() {
@@ -132,7 +143,7 @@ public class DeptVO implements Serializable {
                 ", sort='" + sort + '\'' +
                 ", role='" + role + '\'' +
                 ", isDeleted=" + isDeleted +
-                ", createdBy='" + createdBy + '\'' +
+                ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +

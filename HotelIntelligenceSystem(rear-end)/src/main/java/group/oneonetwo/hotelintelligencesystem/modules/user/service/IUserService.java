@@ -20,4 +20,8 @@ public interface IUserService {
     UserPO findByUsername(String s);
 
     Reply register(UserVO userVO) throws SavaException;
+
+    Reply<UserVO> update(UserVO userVO);
+
+    UserVO addOneUser(UserVO userVO);
 }

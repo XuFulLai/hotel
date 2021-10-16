@@ -73,6 +73,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 放行地址
                 .antMatchers("/open/**").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/swagger-ui.html#").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/v2/**").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
 
                 // 需要拦截验证的地址
                 .anyRequest().authenticated()

@@ -9,6 +9,8 @@
          <result property="id" column="id"/>
          <result property="nickname" column="nickname"/>
          <result property="username" column="username"/>
+         <result property="phone" column="phone"/>
+         <result property="heads" column="heads"/>
          <result property="password" column="password"/>
          <result property="dept" column="dept"/>
          <result property="description" column="description"/>

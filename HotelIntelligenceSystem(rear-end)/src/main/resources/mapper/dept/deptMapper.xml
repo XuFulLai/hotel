@@ -17,4 +17,17 @@
          <result property="updateBy" column="update_by"/>
          <result property="updateTime" column="update_time"/>
     </resultMap>
+
+     <sql id="baseSelect">
+          select * from dept
+     </sql>
+
+     <select id="getPage" resultType="group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO">
+          <include refid="baseSelect" />
+          <where>
+               <if test="vo.pId != null and vo.pId != ''">
+                    p_id = #{vo.pId}
+               </if>
+          </where>
+     </select>
 </mapper>
