@@ -110,7 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
         //开放哪些ip、端口、域名的访问权限，*表示开放所有域
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOriginPattern("*");
         //允许HTTP请求中的携带哪些Header信息,*放行全部原始头信息
         configuration.addAllowedHeader("*");
         //开放哪些Http方法，允许跨域访问,*允许所有请求方法跨域调用

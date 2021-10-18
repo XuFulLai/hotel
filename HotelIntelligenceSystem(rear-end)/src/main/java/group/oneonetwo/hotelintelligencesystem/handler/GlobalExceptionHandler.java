@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.handler;
 
+import group.oneonetwo.hotelintelligencesystem.components.security.exception.TokenIsExpiredException;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.apache.ibatis.javassist.NotFoundException;
@@ -213,16 +214,16 @@ public class GlobalExceptionHandler {
         return resultFormat(1016, ex);
     }
 
-//    /**
-//     * token过期异常
-//     * @author 文
-//     * @param ex
-//     * @return
-//     */
-//    @ExceptionHandler({TokenIsExpiredException.class})
-//    public String tokenExpired(TokenIsExpiredException ex){
-//        return resultFormat(1040,ex);
-//    }
+    /**
+     * token过期异常
+     * @author 文
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler({TokenIsExpiredException.class})
+    public Reply tokenExpired(TokenIsExpiredException ex){
+        return resultFormat(1040,ex);
+    }
 
     /**
      * 通用异常处理
