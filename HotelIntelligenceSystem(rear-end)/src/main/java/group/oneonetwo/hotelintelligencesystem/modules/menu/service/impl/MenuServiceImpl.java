@@ -1,11 +1,13 @@
 package group.oneonetwo.hotelintelligencesystem.modules.menu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.dao.MenuMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.po.MenuPO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.IMenuService;
 import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.service.IMenuDeptService;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,9 +58,46 @@ public class MenuServiceImpl implements IMenuService {
     }
 
     @Override
+    public Integer delete(String id) {
+        selectByIdReturnVO(id);
+        int i = menuMapper.deleteById(id);
+        return i;
+    }
+
+    @Override
     public List<MenuVO> getMenuTreeByDeptId(String id) {
         // 获取该id有权限访问的所有菜单
         List<MenuVO> allMenu = menuMapper.getMenuTreeByDeptId(id);
+        return list2Tree(allMenu);
+    }
+
+    @Override
+    public MenuVO selectByIdReturnVO(String id) {
+        MenuPO menuPO = menuMapper.selectById(id);
+        if (menuPO == null) {
+            throw new CommonException("该数据不存在");
+        }
+        MenuVO menuVO = new MenuVO();
+        BeanUtils.copyProperties(menuPO,menuVO);
+        return menuVO;
+    }
+
+    @Override
+    public List<MenuVO> getMenuTree(MenuVO menuVO) {
+        // 构建查询条件
+        QueryWrapper<MenuPO> wrapper = new QueryWrapper<>();
+        if (!"".equals(menuVO.getName()) || menuVO.getName() != null) {
+            wrapper.like("name",menuVO.getName());
+        }
+        if (!"".equals(menuVO.getVisible()) || menuVO.getVisible() != null) {
+            wrapper.eq("visible",menuVO.getVisible());
+        }
+        wrapper.orderByAsc("p_id").orderByAsc("sort");
+        List<MenuPO> menuPOS = menuMapper.selectList(wrapper);
+        return list2Tree(ConvertUtil.transferList(menuPOS,MenuVO.class));
+    }
+
+    private List<MenuVO> list2Tree(List<MenuVO> allMenu) {
         List<MenuVO> resMenu = new ArrayList<>();
         for (MenuVO item : allMenu) {
             if (!"0".equals(item.getpId())) {

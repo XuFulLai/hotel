@@ -35,6 +35,6 @@
             WHERE
                 dept_id = #{id}
             )
-        order by p_id
+        order by p_id,sort
     </select>
 </mapper>

@@ -7,5 +7,11 @@ import java.util.List;
 public interface IMenuService {
     MenuVO add(MenuVO vo);
 
+    Integer delete(String id);
+
     List<MenuVO> getMenuTreeByDeptId(String id);
+
+    MenuVO selectByIdReturnVO(String id);
+
+    List<MenuVO> getMenuTree(MenuVO menuVO);
 }

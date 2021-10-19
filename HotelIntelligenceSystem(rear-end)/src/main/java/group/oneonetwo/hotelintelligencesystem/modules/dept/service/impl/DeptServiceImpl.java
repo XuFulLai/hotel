@@ -163,7 +163,7 @@ public class DeptServiceImpl implements IDeptService {
         if (!"".equals(deptVO.getStatus()) || deptVO.getStatus() != null) {
             wrapper.eq("status",deptVO.getStatus());
         }
-        wrapper.orderByDesc("p_id").orderByAsc("sort");
+        wrapper.orderByAsc("p_id").orderByAsc("sort");
         List<DeptPO> pos = deptMapper.selectList(wrapper);
         List<DeptVO> allDept = ConvertUtil.transferList(pos, DeptVO.class);
         List<DeptVO> resDept = new ArrayList<>();
