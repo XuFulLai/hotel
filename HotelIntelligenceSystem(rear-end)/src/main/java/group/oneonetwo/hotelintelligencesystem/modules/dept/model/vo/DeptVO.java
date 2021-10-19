@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 文
@@ -29,6 +30,9 @@ public class DeptVO implements Serializable {
     @ApiModelProperty("权限标识")
     private String role;
 
+    @ApiModelProperty("状态:0为停用,1为正常")
+    private String status;
+
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
 
@@ -44,7 +48,25 @@ public class DeptVO implements Serializable {
     @ApiModelProperty("更新时间")
     private Date updateTime;
 
+    private List<DeptVO> children;
+
     private Page page;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<DeptVO> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<DeptVO> children) {
+        this.children = children;
+    }
 
     public Page getPage() {
         return page;

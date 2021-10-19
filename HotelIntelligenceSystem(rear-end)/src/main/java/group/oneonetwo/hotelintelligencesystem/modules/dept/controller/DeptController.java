@@ -7,10 +7,7 @@ import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,10 +29,29 @@ public class DeptController {
         return deptService.batchAdd(deptVOS);
     }
 
-    @PostMapping("page")
-    @ApiOperation("获取分页列表")
-    public Reply<Page<DeptVO>> getPage(@RequestBody DeptVO deptVO) {
-        return Reply.success(deptService.getPage(deptVO));
+    @PostMapping("list")
+    @ApiOperation("获取部门列表")
+    public Reply<List<DeptVO>> getList(@RequestBody DeptVO deptVO) {
+        return Reply.success(deptService.getList(deptVO));
     }
+
+    @PostMapping("add")
+    @ApiOperation("增加部门")
+    public Reply<DeptVO> add(@RequestBody DeptVO deptVO) {
+        return Reply.success(deptService.insertOne(deptVO));
+    }
+
+    @GetMapping("delete/{id}")
+    @ApiOperation("删除部门")
+    public Reply deleteById(@PathVariable("id") String id) {
+        return deptService.deleteById(id) > 0 ? Reply.success() : Reply.failed();
+    }
+
+    @PostMapping("modify")
+    @ApiOperation("更改部门")
+    public Reply<DeptVO> modify(@RequestBody DeptVO deptVO) {
+        return Reply.success(deptService.saveOne(deptVO));
+    }
+
 
 }

@@ -21,7 +21,7 @@ public class UserController {
     @Autowired
     IUserService userService;
 
-    @ApiOperation("根据id查询用户的接口")
+    @ApiOperation("根据id查询用户")
     @ApiImplicitParam(name = "id", value = "用户id", defaultValue = "1", required = true)
     @GetMapping("get/{id}")
     public Reply<UserVO> selectOneById(@PathVariable("id") String id) {
@@ -29,11 +29,12 @@ public class UserController {
     }
 
     @ApiOperation("更新用户信息")
-    @PutMapping()
+    @PostMapping("save")
     public Reply<UserVO> save(@RequestBody UserVO userVO) {
         return userService.update(userVO);
     }
 
+    @ApiOperation("新增用户")
     @PostMapping("add")
     public Reply<UserVO> add(@RequestBody UserVO userVO) {
         return Reply.success(userService.addOneUser(userVO));

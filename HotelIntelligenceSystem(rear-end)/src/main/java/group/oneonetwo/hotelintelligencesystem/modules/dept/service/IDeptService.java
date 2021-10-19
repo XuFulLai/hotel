@@ -26,4 +26,10 @@ public interface IDeptService {
     Reply batchAdd(List<DeptVO> deptVOS);
 
     Page<DeptVO> getPage(DeptVO deptVO);
+
+    DeptVO insertOne(DeptVO deptVO);
+
+    DeptVO saveOne(DeptVO deptVO);
+
+    List<DeptVO> getList(DeptVO deptVO);
 }

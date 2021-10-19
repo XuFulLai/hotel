@@ -30,6 +30,9 @@ public class DeptPO implements Serializable {
     @TableField("role")
     private String role;
 
+    @TableField("status")
+    private String status;
+
     @TableField("is_deleted")
     private Integer isDeleted;
 
@@ -44,6 +47,14 @@ public class DeptPO implements Serializable {
 
     @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getId() {
         return id;
