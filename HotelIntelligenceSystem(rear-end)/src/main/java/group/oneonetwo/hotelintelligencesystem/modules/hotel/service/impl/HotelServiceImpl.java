@@ -18,7 +18,7 @@ public class HotelServiceImpl implements IHotelService {
     HotelMapper hotelMapper;
 
     @Override
-    public HotelPO add(HotelVO hotelVO){
+    public HotelVO add(HotelVO hotelVO){
         if(hotelVO==null){
             throw new SavaException("插入用户失败:酒店实体为空");
         }
@@ -26,7 +26,7 @@ public class HotelServiceImpl implements IHotelService {
         BeanUtils.copyProperties(hotelVO,hotelP0);
         int insert=hotelMapper.insert(hotelP0);
         if(insert>0){
-            return hotelP0;
+            return hotelVO;
         }
         throw new SavaException("插入用户失败");
     }
@@ -45,7 +45,7 @@ public class HotelServiceImpl implements IHotelService {
     }
 
     @Override
-    public HotelPO save(HotelVO hotelVO){
+    public HotelVO save(HotelVO hotelVO){
         if(hotelVO==null){
             throw new CommonException(501,"hotel实体为空");
         }
@@ -57,7 +57,7 @@ public class HotelServiceImpl implements IHotelService {
         BeanUtils.copyProperties(hotelVO, hotelPO);
         int save=hotelMapper.updateById(hotelPO);
         if(save>0){
-            return hotelMapper.selectById(hotelPO.getId());
+            return hotelVO;
         }
         throw  new SavaException("更改酒店失败");
     }

@@ -5,8 +5,8 @@ import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 
 public interface IHotelService {
     HotelPO selectOneById(String id);
-    HotelPO add(HotelVO hotelVO);
+    HotelVO add(HotelVO hotelVO);
     HotelVO selectOneByIdReturnVO(String id);
-    HotelPO save(HotelVO hotelVO);
+    HotelVO save(HotelVO hotelVO);
     Integer deleteById(String id);
 }
