@@ -1,11 +1,15 @@
 package group.oneonetwo.hotelintelligencesystem.modules.hotel.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.dao.HotelMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelPO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +75,19 @@ public class HotelServiceImpl implements IHotelService {
         int i= hotelMapper.deleteById(id);
         return i;
     }
+
+    @Override
+    public Page<HotelVO> getPage(HotelVO hotelVO) {
+        // 构建查询条件
+        QueryWrapper<HotelPO> wrapper = new QueryWrapper<>();
+        if (!"".equals(hotelVO.getName()) && hotelVO.getName() != null) {
+            wrapper.like("name",hotelVO.getName());
+        }
+        Page<HotelPO> page = new Page<>(hotelVO.getPage().getPage(), hotelVO.getPage().getSize());
+        Page<HotelPO> poiPage = (Page<HotelPO>) hotelMapper.selectPage(page, wrapper);
+        return ConvertUtil.transferPage(poiPage,HotelVO.class);
+    }
+
     @Override
     public HotelPO selectOneById(String id){
         HotelPO hotelPO =hotelMapper.selectById(id);

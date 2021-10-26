@@ -27,7 +27,7 @@
           <include refid="baseSelect" />
           <where>
                <if test="vo.pId != null and vo.pId != ''">
-                    p_id = #{vo.pId}
+                    and p_id = #{vo.pId}
                </if>
           </where>
      </select>

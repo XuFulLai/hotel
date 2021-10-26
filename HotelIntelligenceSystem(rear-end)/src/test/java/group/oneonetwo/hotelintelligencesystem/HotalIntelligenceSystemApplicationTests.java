@@ -1,10 +1,13 @@
 package group.oneonetwo.hotelintelligencesystem;
 
+import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
+import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.IMenuService;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.po.UserPO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +21,9 @@ class HotalIntelligenceSystemApplicationTests {
 
     @Autowired
     IMenuService menuService;
+
+    @Autowired
+    IHotelService hotelService;
 
     @Test
     void contextLoads() {
@@ -49,6 +55,16 @@ class HotalIntelligenceSystemApplicationTests {
         List<MenuVO> menuTreeByDeptId = menuService.getMenuTreeByDeptId("1");
         System.out.println(menuTreeByDeptId.toString());
 
+    }
+
+    @Test
+    void getPage() {
+        HotelVO hotelVO = new HotelVO();
+        Page<HotelVO> hotelVOPage = new Page<>();
+        hotelVOPage.setPage(1);
+        hotelVOPage.setSize(10);
+        hotelVO.setPage(hotelVOPage);
+        hotelService.getPage(hotelVO);
     }
 
 }

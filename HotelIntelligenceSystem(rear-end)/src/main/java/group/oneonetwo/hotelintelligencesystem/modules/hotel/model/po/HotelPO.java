@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
-import java.security.SecureRandom;
 
 @TableName("hotel")
 public class HotelPO implements Serializable {
@@ -50,8 +49,8 @@ public class HotelPO implements Serializable {
     @TableField("policy_cancel")
     private String policyCancel;
 
-    @TableField("policy_addbed")
-    private String policyAddbed;
+    @TableField("policy_add_bed")
+    private String policyAddBed;
 
     @TableField("policy_other")
     private String policyOther;
@@ -136,12 +135,12 @@ public class HotelPO implements Serializable {
         this.policyCancel = policyCancel;
     }
 
-    public String getPolicyAddbed() {
-        return policyAddbed;
+    public String getPolicyAddBed() {
+        return policyAddBed;
     }
 
-    public void setPolicyAddbed(String policyAddbed) {
-        this.policyAddbed = policyAddbed;
+    public void setPolicyAddBed(String policyAddBed) {
+        this.policyAddBed = policyAddBed;
     }
 
     public String getPolicyOther() {
