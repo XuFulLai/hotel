@@ -15,13 +15,13 @@ import java.util.List;
 @RequestMapping("open/menuDept")
 public class MenuDeptController {
 
-    @Autowired
-    MenuDeptMapper menuDeptMapper;
-
-    @PostMapping
-    public Reply<List<MenuDeptPO>> get() {
-        QueryWrapper<MenuDeptPO> wrapper = new QueryWrapper<>();
-        return Reply.success(menuDeptMapper.selectList(wrapper));
-    }
+//    @Autowired
+//    MenuDeptMapper menuDeptMapper;
+//
+//    @PostMapping
+//    public Reply<List<MenuDeptPO>> get() {
+//        QueryWrapper<MenuDeptPO> wrapper = new QueryWrapper<>();
+//        return Reply.success(menuDeptMapper.selectList(wrapper));
+//    }
 
 }

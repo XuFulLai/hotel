@@ -3,16 +3,22 @@ package group.oneonetwo.hotelintelligencesystem.components.security.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.components.security.dto.LoginUser;
+import group.oneonetwo.hotelintelligencesystem.components.security.entity.BaseUser;
 import group.oneonetwo.hotelintelligencesystem.components.security.entity.JwtUser;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.JwtTokenUtils;
+import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.impl.DeptServiceImpl;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.impl.MenuServiceImpl;
 import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.service.impl.MenuDeptServiceImpl;
+import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
+import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
+import group.oneonetwo.hotelintelligencesystem.modules.user.service.impl.UserServiceImpl;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,9 +47,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private AuthenticationManager authenticationManager;
 
+    private IUserService userService;
+
 //    private RedisUtil redisUtil;
 
     private MenuServiceImpl menuService;
+
+    private IDeptService deptService;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -112,10 +122,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(context);
         assert ac != null;
         menuService = ac.getBean(MenuServiceImpl.class);
+        userService = ac.getBean(UserServiceImpl.class);
+        deptService = ac.getBean(DeptServiceImpl.class);
 
         JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
         logger.info("jwtUser:" + jwtUser.toString());
-        List<MenuVO> menuTree = menuService.getMenuTreeByDeptId(jwtUser.getId());
+
         String role = "";
         Collection<? extends GrantedAuthority> authorities = jwtUser.getAuthorities();
         for (GrantedAuthority authority : authorities){
@@ -124,22 +136,21 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String token = JwtTokenUtils.createToken(jwtUser.getId(), role);
 
-        //写入redis(存入uid,role,username)
         Map<String,Object> map = new HashMap<>();
-
-        map.put("uid",jwtUser.getId());
-        map.put("role",role);
-        map.put("username",jwtUser.getUsername());
-//        redisUtil.hset(JwtTokenUtils.TOKEN_PREFIX + " " + token, (HashMap<String, Object>) map,1800000L);
+        List<MenuVO> menuTree = menuService.getMenuTreeByDeptId(jwtUser.getId());
+        UserVO userVO = userService.selectOneByIdReturnVO(jwtUser.getId());
+        DeptVO deptVO = deptService.selectOneByIdReturnVO(userVO.getDept());
+        BaseUser baseUser = new BaseUser();
+        BeanUtils.copyProperties(userVO,baseUser);
+        baseUser.setRole(role);
+        map.put("userInfo",baseUser);
         // 返回创建成功的token
         // 但是这里创建的token只是单纯的token
         // 按照jwt的规定，最后请求的时候应该是 `Bearer token`
         // 往请求头中写入token,并返回信息(token,username,role)
         response.setHeader("token", JwtTokenUtils.TOKEN_PREFIX + " " + token);
-        map.remove("uid");
         map.put("token",JwtTokenUtils.TOKEN_PREFIX + " " + token);
-        map.put("username",JwtTokenUtils.getUsername(token));
-        map.put("role",JwtTokenUtils.getUserRole(token));
+//        map.put("role",JwtTokenUtils.getUserRole(token));
         map.put("menuList",menuTree);
         Gson gson = new Gson();
         response.getWriter().write(Reply.success("login success!",gson.toJson(map)).toString());

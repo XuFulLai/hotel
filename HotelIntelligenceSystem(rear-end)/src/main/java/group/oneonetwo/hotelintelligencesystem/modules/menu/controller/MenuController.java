@@ -3,6 +3,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.menu.controller;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.IMenuService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
  * @author 文
  * @description 菜单控制层
  */
+@Api(tags="菜单相关接口")
 @RestController
 @RequestMapping("/api/menu")
 public class MenuController {
