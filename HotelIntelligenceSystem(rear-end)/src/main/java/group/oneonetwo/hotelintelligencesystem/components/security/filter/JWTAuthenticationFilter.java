@@ -117,6 +117,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=utf-8");
         //获取容器
         ServletContext context = request.getServletContext();
         ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(context);
@@ -143,6 +145,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         BaseUser baseUser = new BaseUser();
         BeanUtils.copyProperties(userVO,baseUser);
         baseUser.setRole(role);
+        baseUser.setDeptName(deptVO.getName());
         map.put("userInfo",baseUser);
         // 返回创建成功的token
         // 但是这里创建的token只是单纯的token
