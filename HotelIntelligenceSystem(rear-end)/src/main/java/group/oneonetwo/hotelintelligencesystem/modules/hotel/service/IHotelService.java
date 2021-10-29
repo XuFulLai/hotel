@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.hotel.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelPO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 
@@ -9,4 +10,6 @@ public interface IHotelService {
     HotelVO selectOneByIdReturnVO(String id);
     HotelVO save(HotelVO hotelVO);
     Integer deleteById(String id);
+
+    Page<HotelVO> getPage(HotelVO hotelVO);
 }

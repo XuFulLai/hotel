@@ -1,10 +1,14 @@
 package group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo;
 
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
+/**
+ * @author 文
+ */
 @ApiModel("酒店实体")
 public class HotelVO implements Serializable {
     @ApiModelProperty("主键")
@@ -42,10 +46,20 @@ public class HotelVO implements Serializable {
     private  String policyCancel;
 
     @ApiModelProperty("政策床位增加")
-    private String policyaAddbed;
+    private String policyAddBed;
 
     @ApiModelProperty("政策其他")
     private String policyOther;
+
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public String getId() {
         return id;
@@ -135,12 +149,12 @@ public class HotelVO implements Serializable {
         this.policyCancel = policyCancel;
     }
 
-    public String getPolicyaAddbed() {
-        return policyaAddbed;
+    public String getPolicyAddBed() {
+        return policyAddBed;
     }
 
-    public void setPolicyaAddbed(String policyaAddbed) {
-        this.policyaAddbed = policyaAddbed;
+    public void setPolicyAddBed(String policyAddBed) {
+        this.policyAddBed = policyAddBed;
     }
 
     public String getPolicyOther() {
@@ -165,7 +179,7 @@ public class HotelVO implements Serializable {
                 ",recreation='"+recreation+'\''+
                 ",other='"+other+'\''+
                 ",policy_cancel='"+policyCancel+'\''+
-                ",policy_addbed='"+policyaAddbed+'\''+
+                ",policy_addbed='"+ policyAddBed +'\''+
                 ",policy_other='"+policyOther+
                 '}';
 

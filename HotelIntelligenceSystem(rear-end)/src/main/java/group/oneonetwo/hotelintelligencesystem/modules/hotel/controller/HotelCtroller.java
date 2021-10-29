@@ -1,7 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.hotel.controller;
 
 
-import com.baomidou.mybatisplus.extension.api.R;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -25,7 +25,11 @@ public class HotelCtroller {
         return Reply.success(hotelService.add(hotelVO));
     }
 
-
+    @ApiOperation("查询酒店列表(分页)")
+    @PostMapping("page")
+    public Reply<Page<HotelVO>> getPage(@RequestBody HotelVO hotelVO) {
+        return Reply.success(hotelService.getPage(hotelVO));
+    }
 
     @PostMapping("delete/{id}")
     @ApiOperation("删除酒店")
