@@ -26,6 +26,10 @@ public class RoomVO implements Serializable {
     @ApiModelProperty("房间朝向")
     private String direction;
 
+
+    @ApiModelProperty("酒店id")
+    private String hotelId;
+
     @ApiModelProperty("创建人")
     private String createBy;
 
@@ -40,6 +44,15 @@ public class RoomVO implements Serializable {
 
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
+
+    public String getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(String hotelId) {
+        this.hotelId = hotelId;
+    }
+
 
     public String getId() {
         return id;
@@ -130,18 +143,20 @@ public class RoomVO implements Serializable {
     }
 
     @Override
-    public String toString(){
-        return "RoomVO{"+
+    public String toString() {
+        return "RoomVO{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 ", floor='" + floor + '\'' +
-                ", isDeleted=" + isDeleted +
+                ", direction='" + direction + '\'' +
+                ", hotelId='" + hotelId + '\'' +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 }
