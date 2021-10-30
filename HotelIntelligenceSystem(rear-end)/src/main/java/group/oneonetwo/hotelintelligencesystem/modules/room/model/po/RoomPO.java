@@ -28,6 +28,17 @@ public class RoomPO implements Serializable {
     @TableField("direction")
     private String direction;
 
+    @TableField("hotel_id")
+    private String hotelId;
+
+    public String getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(String hotelId) {
+        this.hotelId = hotelId;
+    }
+
     @TableField(value = "create_by",fill = FieldFill.INSERT)
     private String createBy;
 

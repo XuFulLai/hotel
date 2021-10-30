@@ -35,6 +35,7 @@ public class HotelPO implements Serializable {
     private  String invoice;
 
     @TableField("reception")
+
     private String reception;
 
     @TableField("room")

@@ -12,6 +12,7 @@
         <result property="status" column="status"/>
         <result property="floor" column="floor"/>
         <result property="direction" column="direction"/>
+        <result property="hotelId" column="hotel_id"/>
         <result property="createBy" column="create_by"/>
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
