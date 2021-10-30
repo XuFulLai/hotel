@@ -157,10 +157,10 @@ public class DeptServiceImpl implements IDeptService {
     public List<DeptVO> getList(DeptVO deptVO) {
         QueryWrapper<DeptPO> wrapper = new QueryWrapper<>();
         // 构造条件
-        if (!"".equals(deptVO.getName()) || deptVO.getName() != null) {
+        if (!"".equals(deptVO.getName()) && deptVO.getName() != null) {
             wrapper.like("name",deptVO.getName());
         }
-        if (!"".equals(deptVO.getStatus()) || deptVO.getStatus() != null) {
+        if (!"".equals(deptVO.getStatus()) && deptVO.getStatus() != null) {
             wrapper.eq("status",deptVO.getStatus());
         }
         wrapper.orderByAsc("p_id").orderByAsc("sort");
