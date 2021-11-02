@@ -40,3 +40,5 @@ jwt:
   token-prefix: Bearer
 server:
   port: 8081
+  tomcat:
+    basedir: /data/temp
