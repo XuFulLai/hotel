@@ -42,6 +42,9 @@ public class UserPO implements Serializable {
     @TableField("review_status")
     private Integer reviewStatus;
 
+    @TableField("chat_online")
+    private String chatOnline;
+
     @TableField("is_deleted")
     private Integer isDeleted;
 
@@ -56,6 +59,14 @@ public class UserPO implements Serializable {
 
     @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
+
+    public String getChatOnline() {
+        return chatOnline;
+    }
+
+    public void setChatOnline(String chatOnline) {
+        this.chatOnline = chatOnline;
+    }
 
     public String getId() {
         return id;

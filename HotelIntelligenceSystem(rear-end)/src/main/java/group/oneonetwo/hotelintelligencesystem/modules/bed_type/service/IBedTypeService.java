@@ -6,12 +6,14 @@ import group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.vo.BedType
 public interface IBedTypeService {
     BedTypePO selectOneById(String id);
 
-    BedTypePO add(BedTypeVO bedTypeVO);
+    BedTypeVO add(BedTypeVO bedTypeVO);
 
     BedTypeVO selectOneByIdReturnVO(String id);
 
     BedTypePO save(BedTypeVO bedTypeVO);
 
     Integer deleteById(String id);
+
+    BedTypeVO saveone(BedTypeVO bedTypeVO);
 
 }

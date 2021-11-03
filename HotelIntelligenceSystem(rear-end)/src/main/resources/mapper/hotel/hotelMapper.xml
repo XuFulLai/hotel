@@ -10,14 +10,12 @@
         <result property="name" column="name"/>
         <result property="address" column="address"/>
         <result property="parkingLot" column="parking_lot"/>
-        <result property="invoice" column="invoice"/>
-        <result property="reception" column="reception"/>
-        <result property="room" column="room"/>
-        <result property="recreation" column="recreation"/>
-        <result property="other" column="other"/>
-        <result property="policyCancel" column="policy_cancel"/>
-        <result property="policyAddbed" column="policy_addbed"/>
-        <result property="policyOther" column="policy_other"/>
-
+       <result property="otherPolicy" column="other_policy"/>
+        <result property="cover" column="cover"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 </mapper>

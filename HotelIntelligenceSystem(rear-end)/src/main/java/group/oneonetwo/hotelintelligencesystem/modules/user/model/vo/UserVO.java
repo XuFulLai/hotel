@@ -41,6 +41,9 @@ public class UserVO implements Serializable {
     @ApiModelProperty("审核状态")
     private Integer reviewStatus;
 
+    @ApiModelProperty("在线聊天")
+    private String chatOnline;
+
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
 
@@ -55,6 +58,14 @@ public class UserVO implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    public String getChatOnline() {
+        return chatOnline;
+    }
+
+    public void setChatOnline(String chatOnline) {
+        this.chatOnline = chatOnline;
+    }
 
     public String getHeads() {
         return heads;
@@ -174,10 +185,13 @@ public class UserVO implements Serializable {
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", nickname='" + nickname + '\'' +
+                ", heads='" + heads + '\'' +
+                ", phone='" + phone + '\'' +
                 ", dept='" + dept + '\'' +
                 ", password='" + password + '\'' +
                 ", description='" + description + '\'' +
                 ", reviewStatus=" + reviewStatus +
+                ", chatOnline='" + chatOnline + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", createdBy='" + createdBy + '\'' +
                 ", createTime=" + createTime +

@@ -47,4 +47,11 @@ public class MenuController {
         return Reply.success(menuService.getMenuTree(menuVO));
     }
 
+    @ApiOperation("更改菜单")
+    @PostMapping("modify")
+    public Reply<MenuVO> modify(@RequestBody MenuVO menuVO){
+        return Reply.success(menuService.saveone(menuVO));
+    }
+
+
 }

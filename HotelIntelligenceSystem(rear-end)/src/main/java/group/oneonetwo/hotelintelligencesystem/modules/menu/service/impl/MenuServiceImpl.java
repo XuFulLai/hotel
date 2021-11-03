@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.menu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
+import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.dao.MenuMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.po.MenuPO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
@@ -56,6 +57,25 @@ public class MenuServiceImpl implements IMenuService {
         }
         return vo;
     }
+
+    @Override
+    public  MenuPO save(MenuVO menuVO){
+        if(menuVO==null){
+            throw new CommonException(501,"menu实体为空");
+        }
+        MenuVO check=selectByIdReturnVO(menuVO.getId());
+        if (check==null){
+            throw new CommonException(4004,"找不到id为'" + menuVO.getId() + "'的数据");
+        }
+        MenuPO menuPO=new MenuPO();
+        BeanUtils.copyProperties(menuVO,menuPO);
+        int save=menuMapper.updateById(menuPO);
+        if(save>0){
+            return menuMapper.selectById(menuPO.getId());
+        }
+        throw new SavaException("更改菜单失败");
+    }
+
 
     @Override
     public Integer delete(String id) {
@@ -121,5 +141,10 @@ public class MenuServiceImpl implements IMenuService {
         return current;
     }
 
-
+    @Override
+    public MenuVO saveone(MenuVO menuVO){
+        MenuPO save=save(menuVO);
+        BeanUtils.copyProperties(save,menuVO);
+        return menuVO;
+    }
 }

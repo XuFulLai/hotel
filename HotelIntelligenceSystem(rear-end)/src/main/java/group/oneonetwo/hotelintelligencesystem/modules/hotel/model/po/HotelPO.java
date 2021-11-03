@@ -1,10 +1,12 @@
 package group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @TableName("hotel")
 public class HotelPO implements Serializable {
@@ -26,35 +28,31 @@ public class HotelPO implements Serializable {
     private String name;
 
     @TableField("address")
-    private  String address;
+    private String address;
 
     @TableField("parking_lot")
-    private  String parkingLot;
+    private String parkingLot;
 
-    @TableField("invoice")
-    private  String invoice;
+    @TableField("is_deleted")
+    private Integer isDeleted;
 
-    @TableField("reception")
+    @TableField("other_policy")
+    private String otherPolicy;
 
-    private String reception;
+    @TableField("cover")
+    private String cover;
 
-    @TableField("room")
-    private String room;
+    @TableField(value = "create_by", fill = FieldFill.INSERT)
+    private String createBy;
 
-    @TableField("recreation")
-    private String recreation;
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    private Date createTime;
 
-    @TableField("other")
-    private String other;
+    @TableField(value = "update_by", fill = FieldFill.UPDATE)
+    private String updateBy;
 
-    @TableField("policy_cancel")
-    private String policyCancel;
-
-    @TableField("policy_add_bed")
-    private String policyAddBed;
-
-    @TableField("policy_other")
-    private String policyOther;
+    @TableField(value = "update_time", fill = FieldFill.UPDATE)
+    private Date updateTime;
 
     public String getId() {
         return id;
@@ -88,67 +86,60 @@ public class HotelPO implements Serializable {
         this.parkingLot = parkingLot;
     }
 
-    public String getInvoice() {
-        return invoice;
+    public Integer getIsDeleted() {
+        return isDeleted;
     }
 
-    public void setInvoice(String invoice) {
-        this.invoice = invoice;
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
-    public String getReception() {
-        return reception;
+    public String getOtherPolicy() {
+        return otherPolicy;
     }
 
-    public void setReception(String reception) {
-        this.reception = reception;
+    public void setOtherPolicy(String otherPolicy) {
+        this.otherPolicy = otherPolicy;
     }
 
-    public String getRoom() {
-        return room;
+    public String getCover() {
+        return cover;
     }
 
-    public void setRoom(String room) {
-        this.room = room;
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
-    public String getRecreation() {
-        return recreation;
+    public String getCreateBy() {
+        return createBy;
     }
 
-    public void setRecreation(String recreation) {
-        this.recreation = recreation;
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
     }
 
-    public String getOther() {
-        return other;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setOther(String other) {
-        this.other = other;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public String getPolicyCancel() {
-        return policyCancel;
+    public String getUpdateBy() {
+        return updateBy;
     }
 
-    public void setPolicyCancel(String policyCancel) {
-        this.policyCancel = policyCancel;
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
     }
 
-    public String getPolicyAddBed() {
-        return policyAddBed;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setPolicyAddBed(String policyAddBed) {
-        this.policyAddBed = policyAddBed;
-    }
-
-    public String getPolicyOther() {
-        return policyOther;
-    }
-
-    public void setPolicyOther(String policyOther) {
-        this.policyOther = policyOther;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }
+

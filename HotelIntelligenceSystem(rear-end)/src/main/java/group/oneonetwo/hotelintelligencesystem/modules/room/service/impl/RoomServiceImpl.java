@@ -8,6 +8,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.room.dao.RoomMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.po.RoomPO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,4 +80,6 @@ public class RoomServiceImpl implements IRoomService {
         RoomPO roomPO=roomMapper.selectById(id);
         return roomPO;
     }
+
+
 }

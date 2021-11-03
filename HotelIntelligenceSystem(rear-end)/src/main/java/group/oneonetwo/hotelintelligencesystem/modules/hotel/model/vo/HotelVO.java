@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author 文
@@ -17,7 +18,6 @@ public class HotelVO implements Serializable {
     @ApiModelProperty("部门id")
     private  String deptId;
 
-
     @ApiModelProperty("酒店名")
     private String name;
 
@@ -27,29 +27,27 @@ public class HotelVO implements Serializable {
     @ApiModelProperty("酒店停车场")
     private String parkingLot;
 
-    @ApiModelProperty("酒店发票")
-    private String invoice;
+    @ApiModelProperty("其他政策")
+    private String otherPolicy;
 
-    @ApiModelProperty("酒店接待服务")
-    private String reception;
+    @ApiModelProperty("封面")
+    private String cover;
 
-    @ApiModelProperty("酒店客房服务")
-    private String room;
+    @ApiModelProperty("是否删除")
+    private Integer isDeleted;
 
-    @ApiModelProperty("餐饮服务")
-    private String recreation;
+    @ApiModelProperty("创建人")
+    private String createBy;
 
-    @ApiModelProperty("酒店其他服务")
-    private String other;
+    @ApiModelProperty("创建时间")
+    private Date createTime;
 
-    @ApiModelProperty("取消政策")
-    private  String policyCancel;
+    @ApiModelProperty("更新人")
+    private String updateBy;
 
-    @ApiModelProperty("政策床位增加")
-    private String policyAddBed;
+    @ApiModelProperty("更新时间")
+    private Date updateTime;
 
-    @ApiModelProperty("政策其他")
-    private String policyOther;
 
     private Page page;
 
@@ -101,88 +99,77 @@ public class HotelVO implements Serializable {
         this.parkingLot = parkingLot;
     }
 
-    public String getInvoice() {
-        return invoice;
+    public String getOtherPolicy() {
+        return otherPolicy;
     }
 
-    public void setInvoice(String invoice) {
-        this.invoice = invoice;
+    public void setOtherPolicy(String otherPolicy) {
+        this.otherPolicy = otherPolicy;
     }
 
-    public String getReception() {
-        return reception;
+    public String getCover() {
+        return cover;
     }
 
-    public void setReception(String reception) {
-        this.reception = reception;
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
-    public String getRoom() {
-        return room;
+    public Integer getIsDeleted() {
+        return isDeleted;
     }
 
-    public void setRoom(String room) {
-        this.room = room;
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
-    public String getRecreation() {
-        return recreation;
+    public String getCreateBy() {
+        return createBy;
     }
 
-    public void setRecreation(String recreation) {
-        this.recreation = recreation;
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
     }
 
-    public String getOther() {
-        return other;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setOther(String other) {
-        this.other = other;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public String getPolicyCancel() {
-        return policyCancel;
+    public String getUpdateBy() {
+        return updateBy;
     }
 
-    public void setPolicyCancel(String policyCancel) {
-        this.policyCancel = policyCancel;
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
     }
 
-    public String getPolicyAddBed() {
-        return policyAddBed;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setPolicyAddBed(String policyAddBed) {
-        this.policyAddBed = policyAddBed;
-    }
-
-    public String getPolicyOther() {
-        return policyOther;
-    }
-
-    public void setPolicyOther(String policyOther) {
-        this.policyOther = policyOther;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
-    public String toString(){
-        return "HotelVO{"+
-                "id='"+id+'\''+
-                ",dept_id='"+deptId+'\''+
-                ",name='"+name+'\''+
-                ",address='"+address+'\''+
-                ",parking_lot='"+parkingLot+'\''+
-                ",invoice='"+invoice+'\''+
-                ",reception='"+reception+'\''+
-                ",room='"+room+'\''+
-                ",recreation='"+recreation+'\''+
-                ",other='"+other+'\''+
-                ",policy_cancel='"+policyCancel+'\''+
-                ",policy_addbed='"+ policyAddBed +'\''+
-                ",policy_other='"+policyOther+
+    public String toString() {
+        return "HotelVO{" +
+                "id='" + id + '\'' +
+                ", deptId='" + deptId + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", parkingLot='" + parkingLot + '\'' +
+                ", otherPolicy='" + otherPolicy + '\'' +
+                ", cover='" + cover + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", createBy='" + createBy + '\'' +
+                ", createTime=" + createTime +
+                ", updateBy='" + updateBy + '\'' +
+                ", updateTime=" + updateTime +
                 '}';
-
-
     }
 }

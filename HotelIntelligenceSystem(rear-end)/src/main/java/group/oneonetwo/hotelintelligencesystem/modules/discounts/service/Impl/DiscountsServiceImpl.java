@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.discounts.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.po.DeptPO;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
 public class DiscountsServiceImpl implements IDiscountsService {
@@ -20,7 +23,7 @@ public class DiscountsServiceImpl implements IDiscountsService {
     DiscountsMapper discountsMapper;
 
     @Override
-    public DiscountsPO add(DiscountsVO discountsVO){
+    public DiscountsVO add(DiscountsVO discountsVO){
         if (discountsVO==null){
             throw  new SavaException(("插入用户失败,折扣实体为空"));
         }
@@ -28,7 +31,7 @@ public class DiscountsServiceImpl implements IDiscountsService {
         BeanUtils.copyProperties(discountsVO,discountsPO);
         int insert=discountsMapper.insert(discountsPO);
         if(insert>0){
-            return discountsPO;
+            return discountsVO;
         }
         throw new SavaException("插入用户失败");
     }
@@ -79,5 +82,12 @@ public class DiscountsServiceImpl implements IDiscountsService {
     public  DiscountsPO selectOneById(String id){
         DiscountsPO discountsPO=discountsMapper.selectById(id);
         return discountsPO;
+    }
+
+    @Override
+    public DiscountsVO saveone (DiscountsVO discountsVO){
+        DiscountsPO save=save(discountsVO);
+        BeanUtils.copyProperties(save,discountsVO);
+        return discountsVO;
     }
 }

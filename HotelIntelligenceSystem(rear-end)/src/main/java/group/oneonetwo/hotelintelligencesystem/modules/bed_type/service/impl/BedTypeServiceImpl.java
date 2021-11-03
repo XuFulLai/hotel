@@ -19,7 +19,7 @@ public class BedTypeServiceImpl implements IBedTypeService {
     BedTypeMapper bedTypeMapper;
 
     @Override
-    public BedTypePO add(BedTypeVO bedTypeVO){
+    public BedTypeVO add(BedTypeVO bedTypeVO){
         if(bedTypeVO ==null){
             throw new SavaException("插入用户失败,床的类型实体为空");
         }
@@ -27,7 +27,7 @@ public class BedTypeServiceImpl implements IBedTypeService {
         BeanUtils.copyProperties(bedTypeVO,bedTypePO);
         int insert=bedTypeMapper.insert(bedTypePO);
         if(insert>0){
-            return  bedTypePO;
+            return  bedTypeVO;
         }
         throw new SavaException("插入用户失败");
     }
@@ -77,4 +77,12 @@ public class BedTypeServiceImpl implements IBedTypeService {
         BedTypePO bedTypePO=bedTypeMapper.selectById(id);
         return  bedTypePO;
     }
+
+    @Override
+    public BedTypeVO saveone(BedTypeVO bedTypeVO){
+        BedTypePO save=save(bedTypeVO);
+        BeanUtils.copyProperties(save,bedTypeVO);
+        return bedTypeVO;
+    }
+
 }
