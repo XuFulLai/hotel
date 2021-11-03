@@ -119,6 +119,8 @@ public class UserServiceImpl implements IUserService {
         if (!"".equals(userVO.getPassword()) && userVO.getPassword() != null) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             userVO.setPassword(encoder.encode(userVO.getPassword()));
+        } else {
+            userVO.setPassword(null);
         }
         UserPO save = save(userVO);
         BeanUtils.copyProperties(save,userVO);

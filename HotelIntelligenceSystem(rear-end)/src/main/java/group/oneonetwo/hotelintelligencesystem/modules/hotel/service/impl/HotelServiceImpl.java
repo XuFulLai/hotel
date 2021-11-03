@@ -9,9 +9,12 @@ import group.oneonetwo.hotelintelligencesystem.modules.hotel.dao.HotelMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelPO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
+import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
+import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class HotelServiceImpl implements IHotelService {
     @Autowired
     HotelMapper hotelMapper;
+
+    @Autowired
+    IUserService userService;
 
     @Override
     public HotelVO add(HotelVO hotelVO){
@@ -86,6 +92,21 @@ public class HotelServiceImpl implements IHotelService {
         Page<HotelPO> page = new Page<>(hotelVO.getPage().getPage(), hotelVO.getPage().getSize());
         Page<HotelPO> poiPage = (Page<HotelPO>) hotelMapper.selectPage(page, wrapper);
         return ConvertUtil.transferPage(poiPage,HotelVO.class);
+    }
+
+    @Override
+    public HotelVO myHotel() {
+        String uid = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserVO userVO = userService.selectOneByIdReturnVO(uid);
+        if (userVO == null) {
+            throw new CommonException("暂无信息,请通知管理员绑定酒店");
+        }
+        QueryWrapper<HotelPO> wrapper = new QueryWrapper<>();
+        wrapper.eq("dept_id",userVO.getDept());
+        HotelPO hotelPO = hotelMapper.selectOne(wrapper);
+        HotelVO hotelVO = new HotelVO();
+        BeanUtils.copyProperties(hotelPO,hotelVO);
+        return hotelVO;
     }
 
     @Override

@@ -42,4 +42,10 @@ public class HotelCtroller {
     public Reply<HotelVO> modify(@RequestBody HotelVO hotelVO){
         return Reply.success(hotelService.save(hotelVO));
     }
+
+    @GetMapping("myHotel")
+    @ApiOperation("我的酒店")
+    public Reply<HotelVO> myHotel() {
+        return Reply.success(hotelService.myHotel());
+    }
 }
