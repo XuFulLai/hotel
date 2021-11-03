@@ -12,4 +12,6 @@ public interface IHotelService {
     Integer deleteById(String id);
 
     Page<HotelVO> getPage(HotelVO hotelVO);
+
+    HotelVO myHotel();
 }
