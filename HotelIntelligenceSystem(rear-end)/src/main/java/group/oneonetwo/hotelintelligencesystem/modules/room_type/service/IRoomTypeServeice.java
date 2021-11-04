@@ -6,7 +6,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTy
 public interface IRoomTypeServeice {
     RoomTypePO selectOneById(String id);
 
-    RoomTypePO add(RoomTypeVO roomTypeVO);
+    RoomTypeVO add(RoomTypeVO roomTypeVO);
 
     RoomTypePO save(RoomTypeVO roomTypeVO);
 

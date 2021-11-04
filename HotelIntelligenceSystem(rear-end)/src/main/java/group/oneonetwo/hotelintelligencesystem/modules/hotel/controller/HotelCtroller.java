@@ -22,6 +22,7 @@ public class HotelCtroller {
     @PostMapping("add")
     @ApiOperation("增加酒店")
     public Reply<HotelVO> add(@RequestBody HotelVO hotelVO){
+
         return Reply.success(hotelService.add(hotelVO));
     }
 

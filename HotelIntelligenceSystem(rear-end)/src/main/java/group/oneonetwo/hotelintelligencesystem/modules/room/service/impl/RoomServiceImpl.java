@@ -22,7 +22,7 @@ public class RoomServiceImpl implements IRoomService {
     RoomMapper roomMapper;
 
     @Override
-    public RoomPO add(RoomVO roomVO) {
+    public RoomVO add(RoomVO roomVO) {
         if (roomVO == null) {
             throw new SavaException("插入用户失败,房间实体为空");
 
@@ -31,7 +31,7 @@ public class RoomServiceImpl implements IRoomService {
         BeanUtils.copyProperties(roomVO, roomPO);
         int insert = roomMapper.insert(roomPO);
         if (insert > 0) {
-            return roomPO;
+            return roomVO;
         }
         throw new SavaException("插入用户失败");
     }
@@ -79,6 +79,13 @@ public class RoomServiceImpl implements IRoomService {
     public RoomPO selectOneById(String id){
         RoomPO roomPO=roomMapper.selectById(id);
         return roomPO;
+    }
+
+    @Override
+    public RoomVO saveone(RoomVO roomVO){
+        RoomPO save=save(roomVO);
+        BeanUtils.copyProperties(save,roomVO);
+        return roomVO;
     }
 
 

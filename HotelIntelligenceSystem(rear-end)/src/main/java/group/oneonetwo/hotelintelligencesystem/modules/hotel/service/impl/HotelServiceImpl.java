@@ -18,6 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
 public class HotelServiceImpl implements IHotelService {
@@ -32,6 +34,16 @@ public class HotelServiceImpl implements IHotelService {
         if(hotelVO==null){
             throw new SavaException("插入用户失败:酒店实体为空");
         }
+        if(!"".equals(hotelVO.getDeptId())&&hotelVO.getDeptId()!=null){
+            QueryWrapper<HotelPO> wrapper = new QueryWrapper<>();
+            wrapper.eq("dept_id",hotelVO.getDeptId());
+            List<HotelPO> hotelPOS = hotelMapper.selectList(wrapper);
+
+            if(!hotelPOS.isEmpty()){
+                throw new SavaException("该部门已被绑定,绑定的酒店为: "+hotelPOS.get(0).getName());
+            }
+        }
+
         HotelPO hotelP0=new HotelPO();
         BeanUtils.copyProperties(hotelVO,hotelP0);
         int insert=hotelMapper.insert(hotelP0);
@@ -58,6 +70,15 @@ public class HotelServiceImpl implements IHotelService {
     public HotelVO save(HotelVO hotelVO){
         if(hotelVO==null){
             throw new CommonException(501,"hotel实体为空");
+        }
+        if(!"".equals(hotelVO.getDeptId())&&hotelVO.getDeptId()!=null){
+            QueryWrapper<HotelPO> wrapper = new QueryWrapper<>();
+            wrapper.eq("dept_id",hotelVO.getDeptId());
+            List<HotelPO> hotelPOS = hotelMapper.selectList(wrapper);
+
+            if(!hotelPOS.isEmpty()){
+                throw new SavaException("该部门已被绑定,绑定的酒店为: "+hotelPOS.get(0).getName());
+            }
         }
         HotelVO check=selectOneByIdReturnVO(hotelVO.getId());
         if (check==null){
@@ -117,5 +138,6 @@ public class HotelServiceImpl implements IHotelService {
         HotelPO hotelPO =hotelMapper.selectById(id);
         return hotelPO;
     }
+
 
 }

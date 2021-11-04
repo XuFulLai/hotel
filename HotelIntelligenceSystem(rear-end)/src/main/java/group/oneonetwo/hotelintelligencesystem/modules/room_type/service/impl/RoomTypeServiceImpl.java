@@ -19,7 +19,7 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
     RoomTypeMapper roomTypeMapper;
 
     @Override
-    public RoomTypePO add(RoomTypeVO roomTypeVO){
+    public RoomTypeVO add(RoomTypeVO roomTypeVO){
         if(roomTypeVO==null){
             throw new SavaException("插入用户失败,房的类型实体为空");
         }
@@ -27,7 +27,7 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
         BeanUtils.copyProperties(roomTypeVO,roomTypePO);
         int insert=roomTypeMapper.insert(roomTypePO);
         if(insert>0){
-            return roomTypePO;
+            return roomTypeVO;
         }
         throw  new SavaException("插入用户失败");
     }
