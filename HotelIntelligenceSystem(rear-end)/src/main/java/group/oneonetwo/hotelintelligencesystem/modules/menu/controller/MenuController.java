@@ -26,7 +26,8 @@ public class MenuController {
     @PostMapping("add")
     @ApiOperation("增加菜单")
     public Reply<MenuVO> add(@RequestBody MenuVO menuVO) {
-        return Reply.success(menuService.add(menuVO));
+        return
+                Reply.success(menuService.add(menuVO));
     }
 
     @ApiOperation("删除菜单")

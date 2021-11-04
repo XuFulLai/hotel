@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(tags="床的类型相关接口")
 @RestController
-@RequestMapping("api/bed_type")
+@RequestMapping("api/bedType")
 public class BedTypeContoller {
     @Autowired
     IBedTypeService bedTypeService;
