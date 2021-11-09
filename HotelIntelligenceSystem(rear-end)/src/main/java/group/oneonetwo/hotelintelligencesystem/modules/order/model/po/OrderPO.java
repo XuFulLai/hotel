@@ -37,8 +37,19 @@ public class OrderPO implements Serializable {
     @TableField("status")
     private String status;
 
+    @TableField("province")
+    private String province;
+
     @TableField("is_deleted")
     private Integer isDeleted;
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
 
     @TableField(value = "create_by",fill = FieldFill.INSERT)
     private String createBy;

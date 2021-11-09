@@ -25,6 +25,9 @@ public class MenuVO implements Serializable {
     @ApiModelProperty("路由地址")
     private String path;
 
+    @ApiModelProperty("图标")
+    private  String icon;
+
     @ApiModelProperty("是否显示(0:没有,1:显示)")
     private String visible;
 
@@ -52,6 +55,14 @@ public class MenuVO implements Serializable {
     private String deptId;
 
     private List<MenuVO> children;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
     public List<MenuVO> getChildren() {
         return children;
@@ -190,6 +201,8 @@ public class MenuVO implements Serializable {
                 .append(visible).append('\"');
         sb.append(",\"remark\":\"")
                 .append(remark).append('\"');
+        sb.append(",\"icon\":")
+                .append(icon);
         sb.append(",\"level\":")
                 .append(level);
         sb.append(",\"isDeleted\":")

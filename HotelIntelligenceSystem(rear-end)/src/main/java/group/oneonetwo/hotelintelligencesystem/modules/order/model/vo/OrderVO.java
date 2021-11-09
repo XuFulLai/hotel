@@ -35,6 +35,9 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("状态:0为未支付,1为已支付,2为已关闭")
     private String status;
 
+    @ApiModelProperty("省份")
+    private String province;
+
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
 
@@ -49,6 +52,14 @@ public class OrderVO implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
 
     public String getId() {
         return id;
@@ -174,6 +185,7 @@ public class OrderVO implements Serializable {
                 ", pay='" + pay + '\'' +
                 ", lastPay='" + lastPay + '\'' +
                 ", status='" + status + '\'' +
+                ", province='" + province + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +

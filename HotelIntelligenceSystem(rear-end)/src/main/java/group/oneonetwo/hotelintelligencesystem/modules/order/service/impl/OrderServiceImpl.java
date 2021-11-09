@@ -47,7 +47,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public OrderVO save(OrderVO orderVO){
+    public OrderPO save(OrderVO orderVO){
         if (orderVO==null){
             throw new CommonException(501,"订单实体为空");
         }
@@ -59,7 +59,7 @@ public class OrderServiceImpl implements IOrderService {
         BeanUtils.copyProperties(orderVO,orderPO);
         int save=orderMapper.updateById(orderPO);
         if(save>0){
-            return orderVO;
+            return orderPO;
         }
         throw new SavaException("更改订单失败");
     }
@@ -77,5 +77,12 @@ public class OrderServiceImpl implements IOrderService {
     public OrderPO selectOneById(String id){
         OrderPO orderPO=orderMapper.selectById(id);
         return orderPO;
+    }
+
+    @Override
+    public OrderVO saveone(OrderVO orderVO){
+        OrderPO save=save(orderVO);
+        BeanUtils.copyProperties(save,orderVO);
+        return orderVO;
     }
 }

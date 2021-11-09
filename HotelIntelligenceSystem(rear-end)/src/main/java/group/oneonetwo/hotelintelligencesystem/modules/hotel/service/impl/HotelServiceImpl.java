@@ -77,7 +77,9 @@ public class HotelServiceImpl implements IHotelService {
             List<HotelPO> hotelPOS = hotelMapper.selectList(wrapper);
 
             if(!hotelPOS.isEmpty()){
-                throw new SavaException("该部门已被绑定,绑定的酒店为: "+hotelPOS.get(0).getName());
+                if(!hotelPOS.get(0).getId().equals(hotelVO.getId())) {
+                    throw new SavaException("该部门已被绑定,绑定的酒店为: " + hotelPOS.get(0).getName());
+                }
             }
         }
         HotelVO check=selectOneByIdReturnVO(hotelVO.getId());

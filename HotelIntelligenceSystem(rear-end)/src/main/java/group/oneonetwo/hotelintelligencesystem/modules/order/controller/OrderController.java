@@ -6,9 +6,7 @@ import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags="订单相关接口")
 @RestController
@@ -18,6 +16,32 @@ public class OrderController {
     IOrderService orderService;
 
 
+    @PostMapping("add")
+    @ApiOperation("添加订单")
+    public  Reply<OrderVO> add(@RequestBody OrderVO orderVO){
+        return Reply.success(orderService.add(orderVO));
+    }
+
+
+    @GetMapping("delete/{id}")
+    @ApiOperation("根据id删除订单")
+    public Reply deleteById(@PathVariable("id") String id){
+        return orderService.deleteById(id)>0?Reply.success() :Reply.failed();
+    }
+
+
+    @ApiOperation("根据id查找订单")
+    @GetMapping("get/{id}")
+    public  Reply<OrderVO> selectById(@PathVariable("id") String id){
+        return Reply.success(orderService.selectOneByIdReturnVO(id));
+    }
+
+
+    @ApiOperation("更改订单")
+    @PostMapping("modify")
+    public Reply<OrderVO> modify(@RequestBody OrderVO orderVO){
+        return Reply.success(orderService.saveone(orderVO));
+    }
 
 
 

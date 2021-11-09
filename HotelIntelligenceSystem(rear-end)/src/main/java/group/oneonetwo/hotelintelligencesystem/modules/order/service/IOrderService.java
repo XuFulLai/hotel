@@ -9,6 +9,7 @@ public interface IOrderService {
     OrderPO selectOneById(String id);
     OrderVO add(OrderVO orderVO);
     OrderVO selectOneByIdReturnVO(String id);
-    OrderVO save(OrderVO orderVO);
+    OrderPO save(OrderVO orderVO);
     Integer deleteById(String id);
+    OrderVO saveone(OrderVO orderVO);
 }

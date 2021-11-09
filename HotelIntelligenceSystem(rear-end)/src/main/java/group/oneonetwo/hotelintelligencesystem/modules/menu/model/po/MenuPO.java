@@ -13,6 +13,11 @@ public class MenuPO implements Serializable {
     @TableId("id")
     private String id;
 
+
+    @TableField("icon")
+    private String icon;
+
+
     @TableField("name")
     private String name;
 
@@ -36,6 +41,14 @@ public class MenuPO implements Serializable {
 
     @TableField("is_deleted")
     private Integer isDeleted;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
     @TableField(value = "create_by",fill = FieldFill.INSERT)
     private String createBy;

@@ -13,6 +13,7 @@
         <result property="path" column="path"/>
         <result property="visible" column="visible"/>
         <result property="remark" column="remark"/>
+        <result property="icon" column="icon"/>
         <result property="level" column="level"/>
         <result property="isDeleted" column="is_deleted"/>
         <result property="createBy" column="create_by"/>
