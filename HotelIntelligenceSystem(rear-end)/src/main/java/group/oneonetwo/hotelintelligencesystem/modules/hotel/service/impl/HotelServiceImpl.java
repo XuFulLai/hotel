@@ -110,6 +110,9 @@ public class HotelServiceImpl implements IHotelService {
         if (!"".equals(hotelVO.getName()) && hotelVO.getName() != null) {
             wrapper.like("name",hotelVO.getName());
         }
+        if (!"".equals(hotelVO.getAddress()) && hotelVO.getAddress() != null) {
+            wrapper.like("address",hotelVO.getAddress());
+        }
         Page<HotelPO> page = new Page<>(hotelVO.getPage().getPage(), hotelVO.getPage().getSize());
         Page<HotelPO> poiPage = (Page<HotelPO>) hotelMapper.selectPage(page, wrapper);
         return ConvertUtil.transferPage(poiPage,HotelVO.class);
