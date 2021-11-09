@@ -73,4 +73,11 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
         RoomTypePO roomTypePO=roomTypeMapper.selectById(id);
         return roomTypePO;
     }
+
+    @Override
+    public RoomTypeVO saveone(RoomTypeVO roomTypeVO){
+        RoomTypePO save=save(roomTypeVO);
+        BeanUtils.copyProperties(save,roomTypeVO);
+        return roomTypeVO;
+    }
 }

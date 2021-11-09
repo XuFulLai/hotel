@@ -40,5 +40,9 @@ public class UserController {
         return Reply.success(userService.addOneUser(userVO));
     }
 
-
+    @ApiOperation("根据id删除用户")
+    @GetMapping("delete/{id}")
+    public  Reply deleteById(@PathVariable("id") String id){
+        return userService.deleteById(id)>0 ? Reply.success():Reply.failed();
+    }
 }

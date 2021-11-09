@@ -10,10 +10,13 @@ import java.util.Date;
 
 @TableName("menu_dept")
 public class MenuDeptPO implements Serializable {
-    @TableId("dept_id")
+    @TableId("id")
+    private String id;
+
+    @TableField("dept_id")
     private String DeptId;
 
-    @TableId("menu_id")
+    @TableField("menu_id")
     private String menuId;
 
     @TableField("is_deleted")
@@ -30,6 +33,14 @@ public class MenuDeptPO implements Serializable {
 
     @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getDeptId() {
         return DeptId;

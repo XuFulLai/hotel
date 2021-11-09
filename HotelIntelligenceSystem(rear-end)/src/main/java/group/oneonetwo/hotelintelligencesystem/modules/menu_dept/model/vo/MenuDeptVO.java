@@ -8,7 +8,10 @@ import java.util.Date;
 
 @ApiModel("菜单部门权限实体")
 public class MenuDeptVO implements Serializable {
-    @ApiModelProperty("部门id主键")
+    @ApiModelProperty("id主键")
+    private String id;
+
+    @ApiModelProperty("部门id")
     private String deptId;
 
     @ApiModelProperty("菜单id")
@@ -28,6 +31,14 @@ public class MenuDeptVO implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getDeptId() {
         return deptId;
@@ -84,11 +95,13 @@ public class MenuDeptVO implements Serializable {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
     @Override
-    public String toString(){
-        return "MenuDeptVO{"+
-                "deptId='" + deptId + '\'' +
-                ", menuId'" + menuId + '\'' +
+    public String toString() {
+        return "MenuDeptVO{" +
+                "id='" + id + '\'' +
+                ", deptId='" + deptId + '\'' +
+                ", menuId='" + menuId + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +

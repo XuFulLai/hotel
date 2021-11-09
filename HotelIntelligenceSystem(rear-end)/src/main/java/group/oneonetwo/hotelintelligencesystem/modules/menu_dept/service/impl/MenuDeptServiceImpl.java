@@ -25,7 +25,7 @@ public class MenuDeptServiceImpl implements IMenuDeptService {
     }
 
     @Override
-    public MenuDeptPO add(MenuDeptVO menuDeptVO) {
+    public MenuDeptVO add(MenuDeptVO menuDeptVO) {
         return null;
     }
 

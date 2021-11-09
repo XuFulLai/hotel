@@ -13,4 +13,6 @@ public interface IRoomTypeServeice {
     Integer deleteById(String id);
 
     RoomTypeVO selectOneByIdReturnVO(String id);
+
+    RoomTypeVO saveone(RoomTypeVO roomTypeVO);
 }

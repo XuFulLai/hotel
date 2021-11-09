@@ -6,7 +6,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.vo.MenuDe
 public interface IMenuDeptService {
     MenuDeptPO selectOneById(String id);
 
-    MenuDeptPO add(MenuDeptVO menuDeptVO);
+    MenuDeptVO add(MenuDeptVO menuDeptVO);
 
     MenuDeptPO save(MenuDeptVO menuDeptVO);
 
