@@ -1,14 +1,15 @@
 package group.oneonetwo.hotelintelligencesystem.modules.discounts.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
-import group.oneonetwo.hotelintelligencesystem.modules.dept.model.po.DeptPO;
-import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
+
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.dao.DiscountsMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.po.DiscountsPO;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.vo.DiscountsVO;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscountsService;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,4 +91,13 @@ public class DiscountsServiceImpl implements IDiscountsService {
         BeanUtils.copyProperties(save,discountsVO);
         return discountsVO;
     }
+
+    @Override
+    public Page<DiscountsVO> getPage(DiscountsVO discountsVO){
+        QueryWrapper<DiscountsPO> wrapper=new QueryWrapper<>();
+        Page<DiscountsPO> page = new Page<>(discountsVO.getPage().getPage(),discountsVO.getPage().getSize());
+        Page<DiscountsPO> poiPage=(Page<DiscountsPO>) discountsMapper.selectPage(page,wrapper);
+        return ConvertUtil.transferPage(poiPage,DiscountsVO.class);
+    }
+
 }

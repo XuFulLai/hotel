@@ -1,9 +1,11 @@
 package group.oneonetwo.hotelintelligencesystem.modules.discounts.model.vo;
 
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @ApiModel("折扣实体")
 public class DiscountsVO implements Serializable {
@@ -27,6 +29,71 @@ public class DiscountsVO implements Serializable {
 
     @ApiModelProperty("生效条件(天数)")
     private Integer effectCondition;
+
+    @ApiModelProperty("是否删除")
+    private Integer isDeleted;
+
+    @ApiModelProperty("创建人")
+    private String createBy;
+
+    @ApiModelProperty("创建时间")
+    private Date createTime;
+
+    @ApiModelProperty("更新人")
+    private String updateBy;
+
+    @ApiModelProperty("更新时间")
+    private Date updateTime;
+
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public String getId() {
         return id;
@@ -85,15 +152,20 @@ public class DiscountsVO implements Serializable {
     }
 
     @Override
-    public String toString(){
-        return "DiscountsVO{"+
+    public String toString() {
+        return "DiscountsVO{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
                 ", discounts='" + discounts + '\'' +
                 ", effectType=" + effectType +
-                ", effectCondition=" + effectCondition  +
+                ", effectCondition=" + effectCondition +
+                ", isDeleted=" + isDeleted +
+                ", createBy='" + createBy + '\'' +
+                ", createTime=" + createTime +
+                ", updateBy='" + updateBy + '\'' +
+                ", updateTime=" + updateTime +
                 '}';
     }
 }

@@ -13,6 +13,10 @@
         <result property="discounts" column="discounts"/>
         <result property="effectType" column="effect_type"/>
         <result property="effectCondition" column="effect_condition"/>
-
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 </mapper>

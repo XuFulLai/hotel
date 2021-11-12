@@ -1,10 +1,12 @@
 package group.oneonetwo.hotelintelligencesystem.modules.discounts.model.po;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @TableName("discounts")
 public class DiscountsPO implements Serializable {
@@ -28,6 +30,61 @@ public class DiscountsPO implements Serializable {
 
     @TableField("effect_condition")
     private Integer effectCondition;
+
+    @TableField("is_deleted")
+    private Integer isDeleted;
+
+    @TableField(value = "create_by",fill = FieldFill.INSERT)
+    private String createBy;
+
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
+    private Date createTime;
+
+    @TableField(value = "update_by",fill = FieldFill.UPDATE)
+    private String updateBy;
+
+    @TableField(value = "update_time",fill = FieldFill.UPDATE)
+    private Date updateTime;
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public String getId() {
         return id;

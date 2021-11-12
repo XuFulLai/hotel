@@ -13,6 +13,7 @@ public class Page<A> {
      */
     private int page = 1;
 
+
     public int getSize() {
         return size;
     }

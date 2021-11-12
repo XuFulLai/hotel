@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.discounts.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.vo.DiscountsVO;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscountsService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -38,5 +39,11 @@ public class DiscountsController {
     @PostMapping("modify")
     public Reply<DiscountsVO> modify(@RequestBody DiscountsVO discountsVO){
         return Reply.success(discountsService.saveone(discountsVO));
+    }
+
+    @ApiOperation("查询折扣列表(分页)")
+    @PostMapping("page")
+    public Reply<Page<DiscountsVO>> getPage(@RequestBody DiscountsVO discountsVO){
+        return Reply.success(discountsService.getPage(discountsVO));
     }
 }
