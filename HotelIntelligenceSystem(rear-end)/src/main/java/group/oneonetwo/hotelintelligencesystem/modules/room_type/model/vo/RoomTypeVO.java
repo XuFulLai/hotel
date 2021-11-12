@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo;
 
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.models.auth.In;
@@ -69,6 +70,16 @@ public class RoomTypeVO implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public String getId() {
         return id;

@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.user.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -44,5 +45,11 @@ public class UserController {
     @GetMapping("delete/{id}")
     public  Reply deleteById(@PathVariable("id") String id){
         return userService.deleteById(id)>0 ? Reply.success():Reply.failed();
+    }
+
+    @PostMapping("page")
+    @ApiOperation("获取用户列表(分页)")
+    public Reply<Page<UserVO>> getPage(@RequestBody UserVO userVO){
+        return Reply.success(userService.getPage(userVO));
     }
 }

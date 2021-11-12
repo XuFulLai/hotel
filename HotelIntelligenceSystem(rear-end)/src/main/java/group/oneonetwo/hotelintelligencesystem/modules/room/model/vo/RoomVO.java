@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.room.model.vo;
 
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -44,6 +45,16 @@ public class RoomVO implements Serializable {
 
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
+
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public String getHotelId() {
         return hotelId;

@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.room_type.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.po.RoomTypePO;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO;
 
@@ -15,4 +16,6 @@ public interface IRoomTypeServeice {
     RoomTypeVO selectOneByIdReturnVO(String id);
 
     RoomTypeVO saveone(RoomTypeVO roomTypeVO);
+
+    Page<RoomTypeVO> getPage(RoomTypeVO roomTypeVO);
 }

@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.room_type.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTypeServeice;
@@ -44,5 +45,11 @@ public class RoomTypeController {
     public  Reply<RoomTypeVO> modify(@RequestBody RoomTypeVO roomTypeVO)
     {
         return Reply.success(roomTypeServeice.saveone(roomTypeVO));
+    }
+
+    @PostMapping("page")
+    @ApiOperation("获取房间类型列表(分页)")
+    public Reply<Page<RoomTypeVO>> getPage(@RequestBody RoomTypeVO roomTypeVO){
+        return Reply.success(roomTypeServeice.getPage(roomTypeVO));
     }
 }

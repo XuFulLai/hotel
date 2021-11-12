@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.order.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -43,7 +44,10 @@ public class OrderController {
         return Reply.success(orderService.saveone(orderVO));
     }
 
-
-
+    @ApiOperation("获取订单列表(分页)")
+    @PostMapping("page")
+    public Reply<Page<OrderVO>> getPage(@RequestBody OrderVO orderVO){
+        return Reply.success(orderService.getPage(orderVO));
+    }
 
 }

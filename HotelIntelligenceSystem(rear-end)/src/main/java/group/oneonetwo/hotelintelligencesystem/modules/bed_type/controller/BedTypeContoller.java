@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.bed_type.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.vo.BedTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.service.IBedTypeService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -39,4 +40,11 @@ public class BedTypeContoller {
     public Reply<BedTypeVO> modify(@RequestBody BedTypeVO bedTypeVO){
         return Reply.success(bedTypeService.saveone(bedTypeVO));
     }
+
+    @ApiOperation("获取床的类型(分页)")
+    @PostMapping("page")
+    public Reply<Page<BedTypeVO>> getPage(@RequestBody BedTypeVO bedTypeVO){
+        return (Reply<Page<BedTypeVO>>) Reply.success(bedTypeService.getPage(bedTypeVO));
+    }
+
 }

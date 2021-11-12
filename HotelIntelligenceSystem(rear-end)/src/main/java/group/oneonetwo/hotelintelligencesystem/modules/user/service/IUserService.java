@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.user.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.po.UserPO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
@@ -24,4 +25,6 @@ public interface IUserService {
     Reply<UserVO> update(UserVO userVO);
 
     UserVO addOneUser(UserVO userVO);
+
+    Page<UserVO> getPage(UserVO userVO);
 }

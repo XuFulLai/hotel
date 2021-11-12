@@ -1,5 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.order.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelPO;
@@ -8,6 +10,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.order.dao.OrderMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.po.OrderPO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderService;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,5 +87,13 @@ public class OrderServiceImpl implements IOrderService {
         OrderPO save=save(orderVO);
         BeanUtils.copyProperties(save,orderVO);
         return orderVO;
+    }
+
+    @Override
+    public Page<OrderVO> getPage(OrderVO orderVO){
+        QueryWrapper<OrderPO> wrapper=new QueryWrapper<>();
+        Page<OrderPO> page=new Page<>(orderVO.getPage().getPage(),orderVO.getPage().getSize());
+        Page<OrderPO> poiPage=(Page<OrderPO>) orderMapper.selectPage(page,wrapper);
+        return ConvertUtil.transferPage(poiPage,OrderVO.class);
     }
 }

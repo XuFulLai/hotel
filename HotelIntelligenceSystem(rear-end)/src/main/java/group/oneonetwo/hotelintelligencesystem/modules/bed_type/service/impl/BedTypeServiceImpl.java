@@ -1,11 +1,14 @@
 package group.oneonetwo.hotelintelligencesystem.modules.bed_type.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.dao.BedTypeMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.po.BedTypePO;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.vo.BedTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.service.IBedTypeService;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
 import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +86,15 @@ public class BedTypeServiceImpl implements IBedTypeService {
         BedTypePO save=save(bedTypeVO);
         BeanUtils.copyProperties(save,bedTypeVO);
         return bedTypeVO;
+    }
+
+    @Override
+    public Page<BedTypeVO> getPage(BedTypeVO bedTypeVO){
+        QueryWrapper<BedTypePO> wrapper=new QueryWrapper<>();
+        Page<BedTypePO> page=new Page<>(bedTypeVO.getPage().getPage(),bedTypeVO.getPage().getSize());
+        Page<BedTypePO> poiPage=(Page<BedTypePO>) bedTypeMapper.selectPage(page,wrapper);
+        return ConvertUtil.transferPage(poiPage,BedTypeVO.class);
+
     }
 
 }

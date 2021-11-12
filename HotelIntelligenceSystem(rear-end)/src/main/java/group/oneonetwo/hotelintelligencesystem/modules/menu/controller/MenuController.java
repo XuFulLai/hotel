@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.menu.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.IMenuService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -52,6 +53,12 @@ public class MenuController {
     @PostMapping("modify")
     public Reply<MenuVO> modify(@RequestBody MenuVO menuVO){
         return Reply.success(menuService.saveone(menuVO));
+    }
+
+    @ApiOperation("获取菜单列表(分页)")
+    @PostMapping("page")
+    public Reply<Page<MenuVO>> getPage(@RequestBody MenuVO menuVO){
+        return Reply.success(menuService.getPage(menuVO));
     }
 
 

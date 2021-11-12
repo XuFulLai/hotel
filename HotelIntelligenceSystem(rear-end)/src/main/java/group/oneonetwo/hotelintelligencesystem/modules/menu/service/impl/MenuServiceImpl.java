@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.menu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.dao.MenuMapper;
@@ -146,5 +147,15 @@ public class MenuServiceImpl implements IMenuService {
         MenuPO save=save(menuVO);
         BeanUtils.copyProperties(save,menuVO);
         return menuVO;
+    }
+
+
+    @Override
+    public Page<MenuVO> getPage(MenuVO menuVO){
+        QueryWrapper<MenuPO> wrapper=new QueryWrapper<>();
+        Page<MenuPO> page=new Page<>(menuVO.getPage().getPage(),menuVO.getPage().getSize());
+        Page<MenuPO> poiPage=(Page<MenuPO>) menuMapper.selectPage(page,wrapper);
+        return ConvertUtil.transferPage(poiPage,MenuVO.class);
+
     }
 }

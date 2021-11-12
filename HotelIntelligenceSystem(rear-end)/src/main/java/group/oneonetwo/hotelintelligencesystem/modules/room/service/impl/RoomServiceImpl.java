@@ -1,6 +1,8 @@
 package group.oneonetwo.hotelintelligencesystem.modules.room.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.R;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
@@ -8,7 +10,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.room.dao.RoomMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.po.RoomPO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
-import group.oneonetwo.hotelintelligencesystem.tools.Page;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
 import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,5 +90,12 @@ public class RoomServiceImpl implements IRoomService {
         return roomVO;
     }
 
+    @Override
+    public Page<RoomVO> getPage(RoomVO roomVO){
+        QueryWrapper<RoomPO> wrapper=new QueryWrapper<>();
+        Page<RoomPO> page=new Page<>(roomVO.getPage().getPage(),roomVO.getPage().getSize());
+        Page<RoomPO> poiPage=(Page<RoomPO>) roomMapper.selectPage(page,wrapper);
+        return ConvertUtil.transferPage(poiPage,RoomVO.class);
+    }
 
 }

@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo;
 
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.ibatis.annotations.Mapper;
@@ -55,6 +56,16 @@ public class MenuVO implements Serializable {
     private String deptId;
 
     private List<MenuVO> children;
+
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public String getIcon() {
         return icon;
