@@ -10,7 +10,7 @@ public class SavaException extends RuntimeException {
     }
 
     public SavaException(String message) {
-        super(message);
+            super(message);
     }
 
     public SavaException(String message, Throwable cause) {

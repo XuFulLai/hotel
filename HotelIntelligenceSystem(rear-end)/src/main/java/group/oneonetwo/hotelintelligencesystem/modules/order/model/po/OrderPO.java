@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 
-@TableName("order")
+@TableName("orders")
 public class OrderPO implements Serializable {
     @TableId("id")
     private String id;

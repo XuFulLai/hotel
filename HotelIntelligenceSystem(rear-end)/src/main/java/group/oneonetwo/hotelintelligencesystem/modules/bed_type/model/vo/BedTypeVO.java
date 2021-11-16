@@ -16,7 +16,7 @@ public class BedTypeVO implements Serializable {
     private String name;
 
     @ApiModelProperty("规格")
-    private String specifition;
+    private String specification;
 
     @ApiModelProperty("最大容量单位(人)")
     private Integer maxLoad;
@@ -66,13 +66,6 @@ public class BedTypeVO implements Serializable {
         this.name = name;
     }
 
-    public String getSpecifition() {
-        return specifition;
-    }
-
-    public void setSpecifition(String specifition) {
-        this.specifition = specifition;
-    }
 
     public Integer getMaxLoad() {
         return maxLoad;
@@ -130,19 +123,28 @@ public class BedTypeVO implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public String getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(String specification) {
+        this.specification = specification;
+    }
+
     @Override
-    public String toString(){
-        return "BedTypeVO{"+
+    public String toString() {
+        return "BedTypeVO{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", specification='" + specifition + '\'' +
-                ", maxLoad='" + maxLoad + '\'' +
+                ", specification='" + specification + '\'' +
+                ", maxLoad=" + maxLoad +
                 ", hardness='" + hardness + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +
+                ", page=" + page +
                 '}';
     }
 }

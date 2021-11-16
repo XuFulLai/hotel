@@ -94,6 +94,9 @@ public class OrderServiceImpl implements IOrderService {
         QueryWrapper<OrderPO> wrapper=new QueryWrapper<>();
         Page<OrderPO> page=new Page<>(orderVO.getPage().getPage(),orderVO.getPage().getSize());
         Page<OrderPO> poiPage=(Page<OrderPO>) orderMapper.selectPage(page,wrapper);
-        return ConvertUtil.transferPage(poiPage,OrderVO.class);
+        System.out.println(poiPage);
+        Page<OrderVO> orderVOPage = ConvertUtil.transferPage(poiPage, OrderVO.class);
+        System.out.println(orderVOPage);
+        return orderVOPage;
     }
 }
