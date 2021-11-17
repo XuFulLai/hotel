@@ -1,4 +1,6 @@
 spring:
+  redis:
+    host: 8.130.179.210:6379
   datasource:
     username: root
     password: mysql3307
@@ -42,3 +44,5 @@ server:
   port: 8081
   tomcat:
     basedir: /data/temp
+
+
