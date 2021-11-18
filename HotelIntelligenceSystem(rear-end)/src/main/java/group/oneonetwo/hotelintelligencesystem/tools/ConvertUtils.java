@@ -12,7 +12,7 @@ import java.util.List;
  * @author 文
  * @description 转换工具类
  */
-public class ConvertUtil {
+public class ConvertUtils {
 
     /**
      * list泛型转换
@@ -61,7 +61,7 @@ public class ConvertUtil {
         targetPage.setTotal(sourcePage.getTotal());
         targetPage.setOrders(sourcePage.getOrders());
         if (sourcePage.getRecords() != null) {
-            List<T2> targetList = ConvertUtil.transferList(sourcePage.getRecords(), targetClass);
+            List<T2> targetList = ConvertUtils.transferList(sourcePage.getRecords(), targetClass);
             targetPage.setRecords(targetList);
         }
         return targetPage;

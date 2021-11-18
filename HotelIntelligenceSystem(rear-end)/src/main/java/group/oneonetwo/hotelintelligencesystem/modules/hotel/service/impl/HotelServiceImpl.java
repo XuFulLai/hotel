@@ -1,7 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.hotel.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
@@ -11,7 +10,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
-import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -117,7 +116,7 @@ public class HotelServiceImpl implements IHotelService {
         }
         Page<HotelPO> page = new Page<>(hotelVO.getPage().getPage(), hotelVO.getPage().getSize());
         Page<HotelPO> poiPage = (Page<HotelPO>) hotelMapper.selectPage(page, wrapper);
-        return ConvertUtil.transferPage(poiPage,HotelVO.class);
+        return ConvertUtils.transferPage(poiPage,HotelVO.class);
     }
 
     @Override

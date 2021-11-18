@@ -8,18 +8,13 @@ import group.oneonetwo.hotelintelligencesystem.modules.user.dao.UserMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.po.UserPO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
-import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
-import group.oneonetwo.hotelintelligencesystem.tools.QiNiuUtils;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.security.auth.login.Configuration;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 /**
  * @author 文
@@ -142,7 +137,7 @@ public class UserServiceImpl implements IUserService {
         QueryWrapper<UserPO> wrapper=new QueryWrapper<>();
         Page<UserPO> page=new Page<>(userVO.getPage().getPage(),userVO.getPage().getSize());
         Page<UserPO> poiPage=(Page<UserPO>) userMapper.selectPage(page,wrapper);
-        return ConvertUtil.transferPage(poiPage,UserVO.class);
+        return ConvertUtils.transferPage(poiPage,UserVO.class);
     }
 
 }

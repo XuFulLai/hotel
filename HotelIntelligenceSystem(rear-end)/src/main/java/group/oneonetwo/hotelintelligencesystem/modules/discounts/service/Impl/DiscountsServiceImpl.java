@@ -9,13 +9,11 @@ import group.oneonetwo.hotelintelligencesystem.modules.discounts.dao.DiscountsMa
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.po.DiscountsPO;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.vo.DiscountsVO;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscountsService;
-import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
@@ -97,7 +95,7 @@ public class DiscountsServiceImpl implements IDiscountsService {
         QueryWrapper<DiscountsPO> wrapper=new QueryWrapper<>();
         Page<DiscountsPO> page = new Page<>(discountsVO.getPage().getPage(),discountsVO.getPage().getSize());
         Page<DiscountsPO> poiPage=(Page<DiscountsPO>) discountsMapper.selectPage(page,wrapper);
-        return ConvertUtil.transferPage(poiPage,DiscountsVO.class);
+        return ConvertUtils.transferPage(poiPage,DiscountsVO.class);
     }
 
 }

@@ -9,14 +9,13 @@ import group.oneonetwo.hotelintelligencesystem.modules.menu.model.po.MenuPO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.IMenuService;
 import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.service.IMenuDeptService;
-import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -115,7 +114,7 @@ public class MenuServiceImpl implements IMenuService {
         }
         wrapper.orderByAsc("p_id").orderByAsc("sort");
         List<MenuPO> menuPOS = menuMapper.selectList(wrapper);
-        return list2Tree(ConvertUtil.transferList(menuPOS,MenuVO.class));
+        return list2Tree(ConvertUtils.transferList(menuPOS,MenuVO.class));
     }
 
     private List<MenuVO> list2Tree(List<MenuVO> allMenu) {
@@ -155,7 +154,7 @@ public class MenuServiceImpl implements IMenuService {
         QueryWrapper<MenuPO> wrapper=new QueryWrapper<>();
         Page<MenuPO> page=new Page<>(menuVO.getPage().getPage(),menuVO.getPage().getSize());
         Page<MenuPO> poiPage=(Page<MenuPO>) menuMapper.selectPage(page,wrapper);
-        return ConvertUtil.transferPage(poiPage,MenuVO.class);
+        return ConvertUtils.transferPage(poiPage,MenuVO.class);
 
     }
 }

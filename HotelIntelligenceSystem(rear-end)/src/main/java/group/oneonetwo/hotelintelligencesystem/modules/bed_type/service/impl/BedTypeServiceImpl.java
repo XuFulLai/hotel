@@ -8,8 +8,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.bed_type.dao.BedTypeMappe
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.po.BedTypePO;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.vo.BedTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.service.IBedTypeService;
-import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
-import io.swagger.models.auth.In;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,7 +92,7 @@ public class BedTypeServiceImpl implements IBedTypeService {
         QueryWrapper<BedTypePO> wrapper=new QueryWrapper<>();
         Page<BedTypePO> page=new Page<>(bedTypeVO.getPage().getPage(),bedTypeVO.getPage().getSize());
         Page<BedTypePO> poiPage=(Page<BedTypePO>) bedTypeMapper.selectPage(page,wrapper);
-        return ConvertUtil.transferPage(poiPage,BedTypeVO.class);
+        return ConvertUtils.transferPage(poiPage,BedTypeVO.class);
 
     }
 

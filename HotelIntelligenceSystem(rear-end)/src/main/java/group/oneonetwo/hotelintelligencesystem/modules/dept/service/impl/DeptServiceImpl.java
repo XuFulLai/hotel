@@ -8,21 +8,18 @@ import group.oneonetwo.hotelintelligencesystem.modules.dept.dao.DeptMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.po.DeptPO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
-import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.impl.UserServiceImpl;
-import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtil;
+import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.Query;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -165,7 +162,7 @@ public class DeptServiceImpl implements IDeptService {
         }
         wrapper.orderByAsc("p_id").orderByAsc("sort");
         List<DeptPO> pos = deptMapper.selectList(wrapper);
-        List<DeptVO> allDept = ConvertUtil.transferList(pos, DeptVO.class);
+        List<DeptVO> allDept = ConvertUtils.transferList(pos, DeptVO.class);
         List<DeptVO> resDept = new ArrayList<>();
         for (DeptVO item : allDept) {
             if (!"0".equals(item.getpId())) {
