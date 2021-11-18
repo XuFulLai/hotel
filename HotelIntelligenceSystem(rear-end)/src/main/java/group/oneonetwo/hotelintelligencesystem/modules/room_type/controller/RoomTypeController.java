@@ -22,7 +22,7 @@ public class RoomTypeController {
 
     @PostMapping("add")
     @ApiOperation("增加房间的类型")
-    public Reply<RoomTypeVO> add(RoomTypeVO roomTypeVO){
+    public Reply<RoomTypeVO> add(@RequestBody RoomTypeVO roomTypeVO){
 
         return Reply.success(roomTypeServeice.add(roomTypeVO));
     }
