@@ -13,9 +13,9 @@ import java.io.IOException;
 public class TestController {
 
     @GetMapping
-    public void testWS(String s) {
+    public void testWS(String s,String uid) {
         try {
-            WebSocketServer.sendInfo(s,"2");
+            WebSocketServer.sendInfo(s,uid);
         } catch (IOException e) {
             e.printStackTrace();
         }

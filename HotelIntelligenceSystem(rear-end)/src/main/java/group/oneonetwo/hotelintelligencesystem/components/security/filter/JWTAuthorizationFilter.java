@@ -46,9 +46,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 //        ServletContext context = request.getServletContext();
 //        ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(context);
 //        redisUtil = ac.getBean(RedisUtil.class);
-
-
-        String tokenHeader = request.getHeader(JwtTokenUtils.TOKEN_HEADER);
+        String tokenHeader = null;
+        if ("/wsServer".equals(request.getRequestURI())) {
+            tokenHeader = "Bearer " + request.getParameter("Authentication");
+        } else {
+            tokenHeader = request.getHeader(JwtTokenUtils.TOKEN_HEADER);
+        }
         // 如果请求头中没有Authorization信息或token前缀不符合则直接放行了
         if (tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtils.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
