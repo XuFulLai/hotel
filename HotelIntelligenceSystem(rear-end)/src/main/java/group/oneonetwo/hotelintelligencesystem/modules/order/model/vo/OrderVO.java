@@ -1,5 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.order.model.vo;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,55 +11,143 @@ import java.util.Date;
 
 @ApiModel("订单实体")
 public class OrderVO implements Serializable {
+
+    @ExcelProperty(value = "订单ID",index = 0)
     @ApiModelProperty("主键")
     private String id;
 
+    @ExcelIgnore
     @ApiModelProperty("客户id")
     private String customerId;
 
+    @ExcelIgnore
     @ApiModelProperty("酒店id")
     private String hotelId;
 
+    @ExcelIgnore
     @ApiModelProperty("房间类型")
     private String roomType;
 
+    @ExcelProperty(value = "住店天数",index = 4)
     @ApiModelProperty("天数")
     private Integer days;
 
+    @ExcelIgnore
     @ApiModelProperty("折扣类型")
     private String discount;
 
+    @ExcelProperty(value = "应付价格",index = 6)
     @ApiModelProperty("原价")
     private  String pay;
 
+    @ExcelProperty(value = "实付价格",index = 7)
     @ApiModelProperty("实付价格")
     private String lastPay;
 
+    @ExcelIgnore
     @ApiModelProperty("状态:0为未支付,1为已支付,2为已关闭")
     private String status;
 
+    @ExcelProperty(value = "订单状态",index = 8)
+    private String currentStatus;
+
+    @ExcelProperty(value = "房间类型",index = 5)
+    @ApiModelProperty("房间类型")
+    private String roomTypeName;
+
+    @ExcelProperty(value = "来源地",index = 3)
     @ApiModelProperty("省份")
     private String province;
 
+    @ExcelIgnore
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
 
+    @ExcelIgnore
     @ApiModelProperty("创建人")
     private String createBy;
 
+    @ExcelProperty(value = "订单创建时间",index = 9)
     @ApiModelProperty("创建时间")
     private Date createTime;
 
+    @ExcelIgnore
     @ApiModelProperty("更新人")
     private String updateBy;
 
+    @ExcelIgnore
     @ApiModelProperty("更新时间")
     private Date updateTime;
 
+    @ExcelIgnore
     private Page page;
+
+    @ExcelProperty(value = "酒店名称",index = 1)
+    @ApiModelProperty("酒店名")
+    private String hotelName;
+
+    @ExcelProperty(value = "客户用户名",index = 2)
+    @ApiModelProperty("客户用户名")
+    private String customerName;
+
+    @ExcelIgnore
+    @ApiModelProperty("起始时间")
+    private Date beginTime;
+
+    @ExcelIgnore
+    @ApiModelProperty("结束时间")
+    private Date endTime;
+
+    public String getCurrentStatus() {
+        return currentStatus;
+    }
+
+    public void setCurrentStatus(String currentStatus) {
+        this.currentStatus = currentStatus;
+    }
+
+    public String getRoomTypeName() {
+        return roomTypeName;
+    }
+
+    public void setRoomTypeName(String roomTypeName) {
+        this.roomTypeName = roomTypeName;
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public Page getPage() {
         return page;
+    }
+
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public void setPage(Page page) {

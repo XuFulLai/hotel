@@ -4,21 +4,38 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
+import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
+import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
 import group.oneonetwo.hotelintelligencesystem.modules.order.dao.OrderMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.po.OrderPO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderService;
+import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
+import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
 public class OrderServiceImpl implements IOrderService {
     @Autowired
     OrderMapper orderMapper;
+
+    @Autowired
+    IUserService userService;
+
+    @Autowired
+    IHotelService hotelService;
 
     @Override
     public OrderVO add(OrderVO orderVO){
@@ -89,12 +106,40 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public Page<OrderVO> getPage(OrderVO orderVO){
-        QueryWrapper<OrderPO> wrapper=new QueryWrapper<>();
         Page<OrderPO> page=new Page<>(orderVO.getPage().getPage(),orderVO.getPage().getSize());
-        Page<OrderPO> poiPage=(Page<OrderPO>) orderMapper.selectPage(page,wrapper);
-        System.out.println(poiPage);
-        Page<OrderVO> orderVOPage = ConvertUtils.transferPage(poiPage, OrderVO.class);
-        System.out.println(orderVOPage);
-        return orderVOPage;
+        return orderMapper.getPage(page,orderVO);
+    }
+
+    @Override
+    public List<OrderVO> getAllList(OrderVO orderVO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+        String authority = null;
+        if (iterator.hasNext()) {
+            authority = iterator.next().getAuthority();
+        }
+        if (authority == null) {
+            throw new CommonException(401,"无权限");
+        }
+        switch (authority) {
+            case "admin":break;
+            case "hotel_admin":
+                UserVO userVO = userService.selectOneByIdReturnVO(authentication.getName());
+                if (userVO == null) {
+                    throw new CommonException(401,"无权限");
+                }
+                HotelVO hotelVO = new HotelVO();
+                hotelVO.setDeptId(userVO.getDept());
+                hotelVO = hotelService.selectOneByDeptId(userVO.getDept());
+                if (hotelVO == null) {
+                    throw new CommonException(500,"该用户未绑定酒店");
+                }
+                orderVO.setHotelId(hotelVO.getId());
+                break;
+            default:
+                throw new CommonException(401,"无权限");
+        }
+        return orderMapper.getAllList(orderVO);
     }
 }

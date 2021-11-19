@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.order.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderService;
@@ -8,6 +9,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Api(tags="订单相关接口")
 @RestController
@@ -48,6 +52,18 @@ public class OrderController {
     @PostMapping("page")
     public Reply<Page<OrderVO>> getPage(@RequestBody OrderVO orderVO){
         return Reply.success(orderService.getPage(orderVO));
+    }
+
+    @ApiOperation("下载订单记录")
+    @GetMapping("download")
+    public void downloadOrders(@RequestBody OrderVO orderVO, HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("utf-8");
+        // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+        long currentTimeMillis = System.currentTimeMillis();
+        String fileName = "酒店订单_" + String.valueOf(currentTimeMillis);
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+        EasyExcel.write(response.getOutputStream(), OrderVO.class).sheet("订单").doWrite(orderService.getAllList(orderVO));
     }
 
 }

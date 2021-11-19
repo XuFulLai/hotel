@@ -11,6 +11,8 @@ public interface IHotelService {
     HotelVO save(HotelVO hotelVO);
     Integer deleteById(String id);
 
+    HotelVO selectOneByDeptId(String deptId);
+
     Page<HotelVO> getPage(HotelVO hotelVO);
 
     HotelVO myHotel();

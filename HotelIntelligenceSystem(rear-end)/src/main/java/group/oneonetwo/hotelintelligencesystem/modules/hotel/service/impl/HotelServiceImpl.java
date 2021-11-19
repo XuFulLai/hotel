@@ -105,6 +105,16 @@ public class HotelServiceImpl implements IHotelService {
     }
 
     @Override
+    public HotelVO selectOneByDeptId(String deptId) {
+        QueryWrapper<HotelPO> wrapper = new QueryWrapper<>();
+        wrapper.eq("dept_id",deptId);
+        HotelPO hotelPO = hotelMapper.selectOne(wrapper);
+        HotelVO hotelVO = new HotelVO();
+        BeanUtils.copyProperties(hotelPO,hotelVO);
+        return hotelVO;
+    }
+
+    @Override
     public Page<HotelVO> getPage(HotelVO hotelVO) {
         // 构建查询条件
         QueryWrapper<HotelPO> wrapper = new QueryWrapper<>();

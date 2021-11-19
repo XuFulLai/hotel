@@ -5,6 +5,9 @@ import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.po.OrderPO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 
+import java.util.Collection;
+import java.util.List;
+
 
 public interface IOrderService {
     OrderPO selectOneById(String id);
@@ -15,4 +18,5 @@ public interface IOrderService {
     OrderVO saveone(OrderVO orderVO);
     Page<OrderVO> getPage(OrderVO orderVO);
 
+    List<OrderVO> getAllList(OrderVO orderVO);
 }

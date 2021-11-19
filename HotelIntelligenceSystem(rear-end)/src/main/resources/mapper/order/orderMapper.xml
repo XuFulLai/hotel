@@ -22,4 +22,57 @@
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
+
+    <sql id="baseListSql">
+        select o.*,
+               (case o.`status`
+                    when '0' then '未支付'
+                    when '1' then '已支付'
+                    when '2' then '已关闭'
+               end) currentStatus,
+               u.username customerName,h.`name` hotelName,rt.name roomTypeName
+        from orders o
+                 left join hotel h
+                           on o.hotel_id = h.id
+                 left join `user` u
+                           on o.customer_id = u.id
+                 left join room_type rt
+                           on o.room_type = rt.id
+    </sql>
+
+    <select id="getPage" resultType="group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO">
+        <include refid="baseListSql" />
+        <where>
+            <if test="vo.beginTime != null and vo.beginTime != '' and vo.endTime != null and vo.endTime != ''">
+                and o.create_time between #{vo.beginTime} and #{vo.endTime}
+            </if>
+            <if test="vo.status != null and vo.status != ''">
+                and o.status = #{vo.status}
+            </if>
+            <if test="vo.roomType != null and vo.roomType != ''">
+                and o.room_type = #{vo.roomType}
+            </if>
+            <if test="vo.id != null and vo.id != ''">
+                and o.id = #{vo.id}
+            </if>
+        </where>
+    </select>
+
+    <select id="getAllList" resultType="group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO">
+        <include refid="baseListSql" />
+        <where>
+            <if test="vo.beginTime != null and vo.beginTime != '' and vo.endTime != null and vo.endTime != ''">
+                and o.create_time between #{vo.beginTime} and #{vo.endTime}
+            </if>
+            <if test="vo.status != null and vo.status != ''">
+                and o.status = #{vo.status}
+            </if>
+            <if test="vo.roomType != null and vo.roomType != ''">
+                and o.room_type = #{vo.roomType}
+            </if>
+            <if test="vo.id != null and vo.id != ''">
+                and o.id = #{vo.id}
+            </if>
+        </where>
+    </select>
 </mapper>
