@@ -92,11 +92,11 @@ public class OrderVO implements Serializable {
 
     @ExcelIgnore
     @ApiModelProperty("起始时间")
-    private Date beginTime;
+    private String beginTime;
 
     @ExcelIgnore
     @ApiModelProperty("结束时间")
-    private Date endTime;
+    private String endTime;
 
     public String getCurrentStatus() {
         return currentStatus;
@@ -114,19 +114,19 @@ public class OrderVO implements Serializable {
         this.roomTypeName = roomTypeName;
     }
 
-    public Date getBeginTime() {
+    public String getBeginTime() {
         return beginTime;
     }
 
-    public void setBeginTime(Date beginTime) {
+    public void setBeginTime(String beginTime) {
         this.beginTime = beginTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

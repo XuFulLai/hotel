@@ -1,6 +1,6 @@
 spring:
   redis:
-    host: 8.130.179.210:6379
+    host: 8.130.179.210
   datasource:
     username: root
     password: mysql3307

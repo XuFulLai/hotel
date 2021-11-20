@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.order.controller;
 
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sun.deploy.net.URLEncoder;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -55,13 +56,15 @@ public class OrderController {
     }
 
     @ApiOperation("下载订单记录")
-    @GetMapping("download")
+    @PostMapping("download")
     public void downloadOrders(@RequestBody OrderVO orderVO, HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
         long currentTimeMillis = System.currentTimeMillis();
-        String fileName = "酒店订单_" + String.valueOf(currentTimeMillis);
+        String exportFileName = "酒店订单_" + String.valueOf(currentTimeMillis);
+        String fileName = URLEncoder.encode(exportFileName, "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
         EasyExcel.write(response.getOutputStream(), OrderVO.class).sheet("订单").doWrite(orderService.getAllList(orderVO));
     }
