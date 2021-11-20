@@ -10,6 +10,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.IMenuService;
 import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.service.IMenuDeptService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
+import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,9 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public MenuVO add(MenuVO vo) {
+        if (WStringUtils.isBlank(vo.getpId())) {
+            vo.setpId("0");
+        }
         // 处理节点层级
         if ( "0".equals(vo.getpId()) || vo.getpId() == null) {
             vo.setLevel(1);
@@ -48,12 +52,14 @@ public class MenuServiceImpl implements IMenuService {
         int insert = menuMapper.insert(menuPO);
         int addNum = 0;
 
-        // 插入权限表
-        if (insert != 0) {
-            addNum = menuDeptService.batchAdd(vo.getId(), vo.getDeptId());
-        }
-        if (addNum == 0 && (vo.getDeptId() != null || vo.getDeptId() != "")){
-            throw new CommonException("插入异常");
+        if (!WStringUtils.isBlank(vo.getDeptId())) {
+            // 插入权限表
+            if (insert != 0) {
+                addNum = menuDeptService.batchAdd(vo.getId(), vo.getDeptId());
+            }
+            if (addNum == 0){
+                throw new CommonException("插入异常");
+            }
         }
         return vo;
     }
@@ -70,6 +76,15 @@ public class MenuServiceImpl implements IMenuService {
         MenuPO menuPO=new MenuPO();
         BeanUtils.copyProperties(menuVO,menuPO);
         int save=menuMapper.updateById(menuPO);
+        if (!WStringUtils.isBlank(menuVO.getDeptId())) {
+            // 插入权限表
+
+            int addNum = menuDeptService.batchAdd(menuVO.getId(), menuVO.getDeptId());
+
+            if (addNum == 0){
+                throw new CommonException("插入异常");
+            }
+        }
         if(save>0){
             return menuMapper.selectById(menuPO.getId());
         }
@@ -106,10 +121,10 @@ public class MenuServiceImpl implements IMenuService {
     public List<MenuVO> getMenuTree(MenuVO menuVO) {
         // 构建查询条件
         QueryWrapper<MenuPO> wrapper = new QueryWrapper<>();
-        if (!"".equals(menuVO.getName()) || menuVO.getName() != null) {
+        if (!"".equals(menuVO.getName()) && menuVO.getName() != null) {
             wrapper.like("name",menuVO.getName());
         }
-        if (!"".equals(menuVO.getVisible()) || menuVO.getVisible() != null) {
+        if (!"".equals(menuVO.getVisible()) && menuVO.getVisible() != null) {
             wrapper.eq("visible",menuVO.getVisible());
         }
         wrapper.orderByAsc("p_id").orderByAsc("sort");
