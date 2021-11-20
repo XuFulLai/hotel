@@ -15,9 +15,15 @@
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. 数据库相关
+
+   dept表:
+
+   - role列的值用作鉴权，系统设计为admin（管理员）、hotel_admin（酒店管理员）和hotel_member（酒店员工）。若要自定义，需同步修改后端代码。
+
+2. xxxx
+
+3. xxxx
 
 #### 参与贡献
 
