@@ -12,10 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+/**
+ * @author 文
+ */
 @Api(tags="菜单部门相关接口")
 @RestController
-@RequestMapping("open/menuDept")
+@RequestMapping("api/menuDept")
 public class MenuDeptController {
 
+    @Autowired
+    IMenuDeptService menuDeptService;
+
+    @GetMapping("list/{id}")
+    public Reply<List<String>> getListByMenuId(@PathVariable("id") String id) {
+        return Reply.success(menuDeptService.getListByMenuId(id));
+    }
 
 }

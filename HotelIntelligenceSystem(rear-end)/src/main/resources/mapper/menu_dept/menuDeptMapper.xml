@@ -8,7 +8,7 @@
     </resultMap>
     <resultMap id="menuDeptMap" type="group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.po.MenuDeptPO">
         <result property="id" column="id"/>
-        <result property="DeptId" column="dept_id"/>
+        <result property="deptId" column="dept_id"/>
         <result property="menuId" column="menu_id"/>
         <result property="isDeleted" column="is_deleted"/>
         <result property="createBy" column="create_by"/>
