@@ -32,6 +32,17 @@ public class MenuDeptVO implements Serializable {
     @ApiModelProperty("更新时间")
     private Date updateTime;
 
+    @ApiModelProperty("角色")
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public String getId() {
         return id;
     }
@@ -107,6 +118,7 @@ public class MenuDeptVO implements Serializable {
                 ", createTime=" + createTime +
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

@@ -98,6 +98,18 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("结束时间")
     private String endTime;
 
+    @ExcelIgnore
+    @ApiModelProperty("方式")
+    private String way;
+
+    public String getWay() {
+        return way;
+    }
+
+    public void setWay(String way) {
+        this.way = way;
+    }
+
     public String getCurrentStatus() {
         return currentStatus;
     }
@@ -286,12 +298,20 @@ public class OrderVO implements Serializable {
                 ", pay='" + pay + '\'' +
                 ", lastPay='" + lastPay + '\'' +
                 ", status='" + status + '\'' +
+                ", currentStatus='" + currentStatus + '\'' +
+                ", roomTypeName='" + roomTypeName + '\'' +
                 ", province='" + province + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +
+                ", page=" + page +
+                ", hotelName='" + hotelName + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", beginTime='" + beginTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", way='" + way + '\'' +
                 '}';
     }
 }

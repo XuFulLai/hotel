@@ -28,6 +28,9 @@ public class BedTypePO implements Serializable {
     @TableField("is_deleted")
     private Integer isDeleted;
 
+    @TableField("hotel_id")
+    private String hotelId;
+
     @TableField(value = "create_by",fill = FieldFill.INSERT)
     private String createBy;
 
@@ -78,6 +81,14 @@ public class BedTypePO implements Serializable {
 
     public void setHardness(String hardness) {
         this.hardness = hardness;
+    }
+
+    public String getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(String hotelId) {
+        this.hotelId = hotelId;
     }
 
     public Integer getIsDeleted() {

@@ -43,6 +43,17 @@ public class OrderPO implements Serializable {
     @TableField("is_deleted")
     private Integer isDeleted;
 
+    @TableField("way")
+    private String way;
+
+    public String getWay() {
+        return way;
+    }
+
+    public void setWay(String way) {
+        this.way = way;
+    }
+
     public String getProvince() {
         return province;
     }

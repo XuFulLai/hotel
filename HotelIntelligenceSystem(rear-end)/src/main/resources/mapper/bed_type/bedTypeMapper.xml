@@ -16,5 +16,6 @@
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
+        <result property="hotelId" column="hotel_id"/>
     </resultMap>
 </mapper>

@@ -22,6 +22,17 @@ public class MenuDeptPO implements Serializable {
     @TableField("is_deleted")
     private Integer isDeleted;
 
+    @TableField("role")
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @TableField(value = "create_by",fill = FieldFill.INSERT)
     private String createBy;
 
