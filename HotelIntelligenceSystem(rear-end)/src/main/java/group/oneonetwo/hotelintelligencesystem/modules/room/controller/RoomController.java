@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Api(tags="房间相关接口")
 @RestController
 @RequestMapping("api/room")
@@ -47,5 +49,18 @@ public class RoomController {
     public Reply<Page<RoomVO>> getPage(@RequestBody RoomVO roomVO){
         return Reply.success(roomService.getPage(roomVO));
     }
+
+    @PostMapping("getAllList")
+    @ApiOperation("获取根据条件查询出来的列表")
+    public Reply<List<RoomVO>> getAllList(@RequestBody RoomVO roomVO){
+        return Reply.success(roomService.getAllList(roomVO));
+    }
+    
+    @PostMapping("getList")
+    @ApiOperation("获取三表查询出来的列表")
+    public Reply<List<RoomVO>> getList(@RequestBody RoomVO roomVO){
+        return Reply.success(roomService.getList(roomVO));
+    }
+
 }
 

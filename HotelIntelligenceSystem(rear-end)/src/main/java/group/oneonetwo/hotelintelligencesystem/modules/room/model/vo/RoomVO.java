@@ -46,6 +46,20 @@ public class RoomVO implements Serializable {
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
 
+    public String getRoomTypeName() {
+        return roomTypeName;
+    }
+
+    public void setRoomTypeName(String roomTypeName) {
+        this.roomTypeName = roomTypeName;
+    }
+
+    @ApiModelProperty("房间类型名字")
+    private  String roomTypeName;
+
+
+
+
     private Page page;
 
     public Page getPage() {
@@ -168,6 +182,8 @@ public class RoomVO implements Serializable {
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +
                 ", isDeleted=" + isDeleted +
+                ", roomTypeName='" + roomTypeName + '\'' +
+                ", page=" + page +
                 '}';
     }
 }

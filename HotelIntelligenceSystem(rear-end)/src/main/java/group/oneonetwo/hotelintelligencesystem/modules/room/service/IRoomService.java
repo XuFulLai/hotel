@@ -3,6 +3,9 @@ package group.oneonetwo.hotelintelligencesystem.modules.room.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.po.RoomPO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface IRoomService {
     RoomPO selectOneById(String id);
@@ -12,5 +15,6 @@ public interface IRoomService {
     Integer deleteById(String id);
     RoomVO saveone(RoomVO roomVO);
     Page<RoomVO> getPage(RoomVO roomVO);
-
+    List<RoomVO> getAllList (RoomVO roomVO);
+    List<RoomVO> getList (RoomVO roomVO);
 }

@@ -52,8 +52,8 @@
             <if test="vo.roomType != null and vo.roomType != ''">
                 and o.room_type = #{vo.roomType}
             </if>
-            <if test="vo.id != null and vo.id != ''">
-                and o.id = #{vo.id}
+            <if test="vo.hotelId != null and vo.hotelId != ''">
+                and o.hotel_id = #{vo.hotelId}
             </if>
             <if test="vo.province != null and vo.province != ''">
                 and o.province like concat('%', #{vo.province}, '%')

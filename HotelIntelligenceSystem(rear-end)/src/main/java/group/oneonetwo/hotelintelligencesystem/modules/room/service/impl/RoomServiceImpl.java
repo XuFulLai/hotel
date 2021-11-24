@@ -9,10 +9,15 @@ import group.oneonetwo.hotelintelligencesystem.modules.room.model.po.RoomPO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
@@ -95,4 +100,13 @@ public class RoomServiceImpl implements IRoomService {
         return ConvertUtils.transferPage(poiPage,RoomVO.class);
     }
 
+    @Override
+    public List<RoomVO> getAllList(RoomVO roomVO){
+        return roomMapper.getAllList(roomVO);
+    }
+
+    @Override
+    public List<RoomVO> getList(RoomVO roomVO){
+        return roomMapper.getList(roomVO);
+    }
 }

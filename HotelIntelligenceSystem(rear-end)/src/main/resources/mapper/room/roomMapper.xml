@@ -20,4 +20,36 @@
         <result property="isDeleted" column="is_deleted"/>
 
     </resultMap>
+    <sql id="baseListSql">
+        SELECT r.* , r_t.`name` as 'roomTypeName'
+        FROM room r LEFT JOIN room_type r_t on r.type=r_t.id
+    </sql>
+
+    <sql id="baselist">
+        SELECT * FROM room r
+                          LEFT JOIN room_type  r_t
+                                    on r.type=r_t.id
+                          left JOIN bed_type b
+                                    on r.type=b.id;
+
+    </sql>
+    <select id="getList" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO">
+        <include refid="baselist"></include>
+    </select>
+    
+    <select id="getAllList" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO">
+        <include refid="baseListSql"/>
+            <where>
+                <if test="vo.floor!=null and vo.floor!=''">
+                    AND r.floor=#{vo.floor}
+                </if>
+                <if test="vo.name!=null and vo.name!=''">
+                    and r.name=#{vo.name}
+                </if>
+                <if test="vo.roomTypeName!=null and vo.roomTypeName!=''">
+                    and r_t.`name` like concat('%',#{vo.roomTypeName},'%')
+                </if>
+            </where>
+    </select>
+
 </mapper>

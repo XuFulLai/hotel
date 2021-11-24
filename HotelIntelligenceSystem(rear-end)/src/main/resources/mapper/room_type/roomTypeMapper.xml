@@ -27,4 +27,7 @@
         <result property="updateTime" column="update_time"/>
 
     </resultMap>
+
+
+
 </mapper>
