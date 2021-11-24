@@ -53,5 +53,11 @@ public class DeptController {
         return Reply.success(deptService.saveOne(deptVO));
     }
 
+    @ApiOperation("获取非树列表")
+    @PostMapping("page")
+    public Reply<Page<DeptVO>> getPage(@RequestBody DeptVO vo) {
+        return Reply.success(deptService.getPage(vo));
+    }
+
 
 }

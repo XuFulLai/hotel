@@ -153,6 +153,28 @@ public class DeptServiceImpl implements IDeptService {
     @Override
     public List<DeptVO> getList(DeptVO deptVO) {
         QueryWrapper<DeptPO> wrapper = new QueryWrapper<>();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+        String authority = null;
+        if (iterator.hasNext()) {
+            authority = iterator.next().getAuthority();
+        }
+        if (authority == null) {
+            throw new CommonException(401,"无权限");
+        }
+        switch (authority) {
+            case "admin":break;
+            case "hotel_admin":
+                UserVO userVO = userService.selectOneByIdReturnVO(authentication.getName());
+                if (userVO == null) {
+                    throw new CommonException(401,"无权限");
+                }
+                wrapper.eq("p_id",userVO.getDept());
+                break;
+            default:
+                throw new CommonException(401,"无权限");
+        }
         // 构造条件
         if (!"".equals(deptVO.getName()) && deptVO.getName() != null) {
             wrapper.like("name",deptVO.getName());

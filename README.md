@@ -17,12 +17,10 @@
 
 1. 数据库相关
 
-   dept表:
-
-   - role列的值用作鉴权，系统设计为admin（管理员）、hotel_admin（酒店管理员）和hotel_member（酒店员工）。若要自定义，需同步修改后端代码。
-
-2. xxxx
-
+   - dept表:
+     - role列的值用作鉴权，系统设计为admin（管理员）、hotel_admin（酒店管理员）和hotel_member（酒店员工）。若要自定义，需同步修改后端代码。
+2. 二维码登录相关
+   - 使用轮询方式访问redis（可改为websocket推送），使用UUID的方式生成码作为redis的key，对应的value为0时为未扫描，1为已扫描，2为确认登录
 3. xxxx
 
 #### 参与贡献

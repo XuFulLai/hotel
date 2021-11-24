@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @ApiOperation("更新用户信息")
-    @PostMapping("save")
+    @PostMapping("modify")
     public Reply<UserVO> save(@RequestBody UserVO userVO) {
         return userService.update(userVO);
     }

@@ -76,6 +76,9 @@
             <if test="vo.id != null and vo.id != ''">
                 and o.id = #{vo.id}
             </if>
+            <if test="vo.province != null and vo.province != ''">
+                and o.province like concat('%', #{vo.province}, '%')
+            </if>
         </where>
     </select>
 </mapper>
