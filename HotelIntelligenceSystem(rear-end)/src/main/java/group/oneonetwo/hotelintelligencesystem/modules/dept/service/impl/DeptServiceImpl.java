@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.dept.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.dao.DeptMapper;
@@ -38,6 +39,9 @@ public class DeptServiceImpl implements IDeptService {
 
     @Autowired
     UserServiceImpl userService;
+
+    @Autowired
+    AuthUtils authUtils;
 
     @Override
     public DeptPO add(DeptVO deptVO) {
@@ -106,20 +110,11 @@ public class DeptServiceImpl implements IDeptService {
 
     @Override
     public Page<DeptVO> getPage(DeptVO deptVO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-        String authority = null;
-        if (iterator.hasNext()) {
-            authority = iterator.next().getAuthority();
-        }
-        if (authority == null) {
-            throw new CommonException(401,"无权限");
-        }
+        String authority = authUtils.getRole();
         switch (authority) {
             case "admin":break;
             case "hotel_admin":
-                UserVO userVO = userService.selectOneByIdReturnVO(authentication.getName());
+                UserVO userVO = userService.selectOneByIdReturnVO(authUtils.getUid());
                 if (userVO == null) {
                     throw new CommonException(401,"无权限");
                 }
@@ -153,20 +148,11 @@ public class DeptServiceImpl implements IDeptService {
     @Override
     public List<DeptVO> getList(DeptVO deptVO) {
         QueryWrapper<DeptPO> wrapper = new QueryWrapper<>();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-        String authority = null;
-        if (iterator.hasNext()) {
-            authority = iterator.next().getAuthority();
-        }
-        if (authority == null) {
-            throw new CommonException(401,"无权限");
-        }
+        String authority = authUtils.getRole();
         switch (authority) {
             case "admin":break;
             case "hotel_admin":
-                UserVO userVO = userService.selectOneByIdReturnVO(authentication.getName());
+                UserVO userVO = userService.selectOneByIdReturnVO(authUtils.getUid());
                 if (userVO == null) {
                     throw new CommonException(401,"无权限");
                 }

@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.order.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
@@ -36,6 +37,9 @@ public class OrderServiceImpl implements IOrderService {
 
     @Autowired
     IHotelService hotelService;
+
+    @Autowired
+    AuthUtils authUtils;
 
     @Override
     public OrderVO add(OrderVO orderVO){
@@ -112,20 +116,11 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public List<OrderVO> getAllList(OrderVO orderVO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-        String authority = null;
-        if (iterator.hasNext()) {
-            authority = iterator.next().getAuthority();
-        }
-        if (authority == null) {
-            throw new CommonException(401,"无权限");
-        }
+        String authority = authUtils.getRole();
         switch (authority) {
             case "admin":break;
             case "hotel_admin":
-                UserVO userVO = userService.selectOneByIdReturnVO(authentication.getName());
+                UserVO userVO = userService.selectOneByIdReturnVO(authUtils.getUid());
                 if (userVO == null) {
                     throw new CommonException(401,"无权限");
                 }
@@ -141,5 +136,17 @@ public class OrderServiceImpl implements IOrderService {
                 throw new CommonException(401,"无权限");
         }
         return orderMapper.getAllList(orderVO);
+    }
+
+
+    public void randomOrder() {
+        String[] provinces = {"河北省","山西省","辽宁省","吉林省","黑龙江省","江苏省",
+                "浙江省","安徽省","福建省","江西省","山东省","河南省","湖北省","湖南省",
+                "广东省","海南省","四川省","贵州省","云南省","陕西省","甘肃省","青海省","台湾省"};
+        String[] members = {"3","4","5"};
+        String[] hotels = {"1", "10", "1455849816021934081", "1455850012608962561",
+                "1455850132259872770", "1455857210831544322", "1455859004374654977",
+                "1456172202055303169", "1463063658178342913", "2", "3", "4"};
+
     }
 }

@@ -20,6 +20,9 @@ public class RoomTypePO implements Serializable {
     @TableField("hotel_id")
     private String hotelId;
 
+    @TableField("bed_type")
+    private String bedType;
+
     @TableField("bed")
     private Integer bed;
 
@@ -70,6 +73,14 @@ public class RoomTypePO implements Serializable {
 
     @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
+
+    public String getBedType() {
+        return bedType;
+    }
+
+    public void setBedType(String bedType) {
+        this.bedType = bedType;
+    }
 
     public String getId() {
         return id;

@@ -20,6 +20,9 @@ public class RoomTypeVO implements Serializable {
     @ApiModelProperty("酒店id")
     private String hotelId;
 
+    @ApiModelProperty("床类型")
+    private String bedType;
+
     @ApiModelProperty("床位")
     private Integer bed;
 
@@ -72,6 +75,14 @@ public class RoomTypeVO implements Serializable {
     private Date updateTime;
 
     private Page page;
+
+    public String getBedType() {
+        return bedType;
+    }
+
+    public void setBedType(String bedType) {
+        this.bedType = bedType;
+    }
 
     public Page getPage() {
         return page;

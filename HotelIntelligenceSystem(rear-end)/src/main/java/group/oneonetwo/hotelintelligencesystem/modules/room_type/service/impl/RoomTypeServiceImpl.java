@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.room_type.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.dao.RoomTypeMapper;
@@ -20,11 +21,15 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
     @Autowired
     RoomTypeMapper roomTypeMapper;
 
+    @Autowired
+    AuthUtils authUtils;
+
     @Override
     public RoomTypeVO add(RoomTypeVO roomTypeVO){
         if(roomTypeVO==null){
             throw new SavaException("插入用户失败,房的类型实体为空");
         }
+        roomTypeVO.setHotelId(authUtils.getUserHotelId());
         RoomTypePO roomTypePO=new RoomTypePO();
         BeanUtils.copyProperties(roomTypeVO,roomTypePO);
         int insert=roomTypeMapper.insert(roomTypePO);
@@ -33,6 +38,8 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
         }
         throw  new SavaException("插入用户失败");
     }
+
+    @Override
     public RoomTypeVO selectOneByIdReturnVO(String id){
         if(id==null){
             throw new CommonException(501,"参数不能为空");
@@ -86,6 +93,7 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
     @Override
     public Page<RoomTypeVO> getPage(RoomTypeVO roomTypeVO){
         QueryWrapper<RoomTypePO> wrapper=new QueryWrapper<>();
+        wrapper.eq("hotel_id",authUtils.getUserHotelId());
         Page<RoomTypePO> page=new Page<>(roomTypeVO.getPage().getPage(),roomTypeVO.getPage().getSize());
         Page<RoomTypePO> poiPage=(Page<RoomTypePO>) roomTypeMapper.selectPage(page,wrapper);
         return ConvertUtils.transferPage(poiPage,RoomTypeVO.class);

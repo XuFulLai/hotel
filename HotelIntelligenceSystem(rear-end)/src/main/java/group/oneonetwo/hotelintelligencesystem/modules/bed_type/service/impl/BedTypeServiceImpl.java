@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.bed_type.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.dao.BedTypeMapper;
@@ -20,11 +21,15 @@ public class BedTypeServiceImpl implements IBedTypeService {
     @Autowired
     BedTypeMapper bedTypeMapper;
 
+    @Autowired
+    AuthUtils authUtils;
+
     @Override
     public BedTypeVO add(BedTypeVO bedTypeVO){
         if(bedTypeVO ==null){
             throw new SavaException("插入用户失败,床的类型实体为空");
         }
+        bedTypeVO.setHotelId(authUtils.getUserHotelId());
         BedTypePO bedTypePO=new BedTypePO();
         BeanUtils.copyProperties(bedTypeVO,bedTypePO);
         int insert=bedTypeMapper.insert(bedTypePO);
@@ -90,6 +95,9 @@ public class BedTypeServiceImpl implements IBedTypeService {
     @Override
     public Page<BedTypeVO> getPage(BedTypeVO bedTypeVO){
         QueryWrapper<BedTypePO> wrapper=new QueryWrapper<>();
+        if (!"admin".equals(authUtils.getRole())) {
+            wrapper.eq("hotel_id",authUtils.getUserHotelId());
+        }
         Page<BedTypePO> page=new Page<>(bedTypeVO.getPage().getPage(),bedTypeVO.getPage().getSize());
         Page<BedTypePO> poiPage=(Page<BedTypePO>) bedTypeMapper.selectPage(page,wrapper);
         return ConvertUtils.transferPage(poiPage,BedTypeVO.class);
