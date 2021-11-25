@@ -11,6 +11,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.impl.DeptServiceImpl;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.impl.MenuServiceImpl;
+import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.vo.MenuDeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.service.impl.MenuDeptServiceImpl;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
@@ -139,9 +140,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = JwtTokenUtils.createToken(jwtUser.getId(), role);
 
         Map<String,Object> map = new HashMap<>();
-        List<MenuVO> menuTree = menuService.getMenuTreeByDeptId(jwtUser.getId());
         UserVO userVO = userService.selectOneByIdReturnVO(jwtUser.getId());
         DeptVO deptVO = deptService.selectOneByIdReturnVO(userVO.getDept());
+        MenuDeptVO vo = new MenuDeptVO();
+        vo.setDeptId(userVO.getDept());
+        vo.setRole(role);
+        List<MenuVO> menuTree = menuService.getMenuTreeByDeptIdAndRole(vo);
+
         BaseUser baseUser = new BaseUser();
         BeanUtils.copyProperties(userVO,baseUser);
         baseUser.setRole(role);

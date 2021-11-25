@@ -23,9 +23,14 @@ public class MenuDeptController {
     @Autowired
     IMenuDeptService menuDeptService;
 
-    @GetMapping("list/{id}")
-    public Reply<List<String>> getListByMenuId(@PathVariable("id") String id) {
-        return Reply.success(menuDeptService.getListByMenuId(id));
+    @GetMapping("list/deptId/{id}")
+    public Reply<List<String>> getDeptIdListByMenuId(@PathVariable("id") String id) {
+        return Reply.success(menuDeptService.getDeptIdListByMenuId(id));
+    }
+
+    @GetMapping("list/role/{id}")
+    public Reply<List<String>> getRoleListByMenuId(@PathVariable("id") String id) {
+        return Reply.success(menuDeptService.getRoleListByMenuId(id));
     }
 
 }

@@ -6,7 +6,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.IMenuService;
-import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.service.IMenuDeptService;
+import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.vo.MenuDeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.tools.RedisUtil;
@@ -80,8 +80,11 @@ public class AuthController {
                 if ("2".equals(status)) {
                     map.put("token",s1[1]);
                     String uid = JwtTokenUtils.getUsername(s1[1]);
-                    List<MenuVO> menuTree = menuService.getMenuTreeByDeptId(uid);
                     UserVO userVO = userService.selectOneByIdReturnVO(uid);
+                    MenuDeptVO vo = new MenuDeptVO();
+                    vo.setRole(JwtTokenUtils.getUserRole(s1[1]));
+                    vo.setDeptId(userVO.getDept());
+                    List<MenuVO> menuTree = menuService.getMenuTreeByDeptIdAndRole(vo);
                     DeptVO deptVO = deptService.selectOneByIdReturnVO(userVO.getDept());
                     BaseUser baseUser = new BaseUser();
                     BeanUtils.copyProperties(userVO,baseUser);

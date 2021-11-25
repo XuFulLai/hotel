@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.menu_dept.service;
 
+import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.po.MenuDeptPO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.vo.MenuDeptVO;
 
@@ -18,7 +19,9 @@ public interface IMenuDeptService {
 
 //    List<MenuDeptVO> getMenuDeptByDeptId()
 
-    Integer batchAdd(String menuId,String deptId);
+    Integer batchAdd(String menuId, MenuVO vo);
 
-    List<String> getListByMenuId(String id);
+    List<String> getDeptIdListByMenuId(String id);
+
+    List<String> getRoleListByMenuId(String id);
 }

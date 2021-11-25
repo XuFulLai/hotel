@@ -22,7 +22,7 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <select id="getMenuTreeByDeptId" resultType="group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO">
+    <select id="getMenuTreeByDeptIdAndRole" resultType="group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO">
         SELECT
             *
         FROM
@@ -34,7 +34,7 @@
             FROM
                 menu_dept
             WHERE
-                dept_id = #{id}
+                dept_id = #{vo.deptId} or role = #{vo.role}
             )
         order by p_id,sort
     </select>

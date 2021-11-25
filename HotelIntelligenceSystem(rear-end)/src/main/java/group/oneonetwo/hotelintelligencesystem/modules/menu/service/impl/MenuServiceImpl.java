@@ -8,6 +8,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.menu.dao.MenuMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.po.MenuPO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.IMenuService;
+import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.vo.MenuDeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.service.IMenuDeptService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
@@ -52,10 +53,10 @@ public class MenuServiceImpl implements IMenuService {
         int insert = menuMapper.insert(menuPO);
         int addNum = 0;
 
-        if (!WStringUtils.isBlank(vo.getDeptId())) {
+        if (!WStringUtils.isBlank(vo.getRole()) || !WStringUtils.isBlank(vo.getDeptId())) {
             // 插入权限表
             if (insert != 0) {
-                addNum = menuDeptService.batchAdd(vo.getId(), vo.getDeptId());
+                addNum = menuDeptService.batchAdd(vo.getId(), vo);
             }
             if (addNum == 0){
                 throw new CommonException("插入异常");
@@ -76,10 +77,10 @@ public class MenuServiceImpl implements IMenuService {
         MenuPO menuPO=new MenuPO();
         BeanUtils.copyProperties(menuVO,menuPO);
         int save=menuMapper.updateById(menuPO);
-        if (!WStringUtils.isBlank(menuVO.getDeptId())) {
+        if (!WStringUtils.isBlank(menuVO.getRole()) || !WStringUtils.isBlank(menuVO.getDeptId())) {
             // 插入权限表
 
-            int addNum = menuDeptService.batchAdd(menuVO.getId(), menuVO.getDeptId());
+            int addNum = menuDeptService.batchAdd(menuVO.getId(), menuVO);
 
             if (addNum == 0){
                 throw new CommonException("插入异常");
@@ -100,9 +101,9 @@ public class MenuServiceImpl implements IMenuService {
     }
 
     @Override
-    public List<MenuVO> getMenuTreeByDeptId(String id) {
+    public List<MenuVO> getMenuTreeByDeptIdAndRole(MenuDeptVO vo) {
         // 获取该id有权限访问的所有菜单
-        List<MenuVO> allMenu = menuMapper.getMenuTreeByDeptId(id);
+        List<MenuVO> allMenu = menuMapper.getMenuTreeByDeptIdAndRole(vo);
         return list2Tree(allMenu);
     }
 

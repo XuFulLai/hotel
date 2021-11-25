@@ -55,9 +55,19 @@ public class MenuVO implements Serializable {
 
     private String deptId;
 
+    private String role;
+
     private List<MenuVO> children;
 
     private Page page;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public Page getPage() {
         return page;
