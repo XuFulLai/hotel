@@ -11,6 +11,8 @@ import group.oneonetwo.hotelintelligencesystem.modules.order.dao.OrderMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.po.OrderPO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderService;
+import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO;
+import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTypeServeice;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
@@ -139,14 +142,34 @@ public class OrderServiceImpl implements IOrderService {
     }
 
 
+    @Autowired
+    IRoomTypeServeice roomTypeServeice;
+
+    @Override
     public void randomOrder() {
         String[] provinces = {"河北省","山西省","辽宁省","吉林省","黑龙江省","江苏省",
                 "浙江省","安徽省","福建省","江西省","山东省","河南省","湖北省","湖南省",
-                "广东省","海南省","四川省","贵州省","云南省","陕西省","甘肃省","青海省","台湾省"};
-        String[] members = {"3","4","5"};
-        String[] hotels = {"1", "10", "1455849816021934081", "1455850012608962561",
-                "1455850132259872770", "1455857210831544322", "1455859004374654977",
-                "1456172202055303169", "1463063658178342913", "2", "3", "4"};
-
+                "广东省","海南省","四川省","贵州省","云南省","陕西省","甘肃省","青海省",
+                "台湾省","内蒙古自治区","广西壮族自治区","西藏自治区","宁夏回族自治区",
+                "新疆维吾尔自治区","北京市","天津市","上海市","重庆市","香港特别行政区","澳门特别行政区"};
+        String[] members = {"3","4","5","6","7"};
+        String hotel = "1";
+        Integer[] ways = {1,2};
+        String[] roomTypes = {"1463764265293885441", "1463890996549947394", "1463891142348148737"};
+        for (int i = 0; i < 1000; i++) {
+            OrderVO orderVO = new OrderVO();
+            Random random = new Random();
+            orderVO.setHotelId(hotel);
+            orderVO.setProvince(provinces[random.nextInt(provinces.length)]);
+            orderVO.setCustomerId(members[random.nextInt(members.length)]);
+            orderVO.setRoomType(roomTypes[random.nextInt(roomTypes.length)]);
+            orderVO.setStatus("1");
+            orderVO.setDays(random.nextInt(5) + 1);
+            orderVO.setWay(ways[random.nextInt(2)]);
+            RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(orderVO.getRoomType());
+            orderVO.setPay(String.valueOf(roomTypeVO.getFee() * orderVO.getDays()));
+            orderVO.setLastPay(orderVO.getPay());
+            add(orderVO);
+        }
     }
 }

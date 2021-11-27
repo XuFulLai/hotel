@@ -44,13 +44,13 @@ public class OrderPO implements Serializable {
     private Integer isDeleted;
 
     @TableField("way")
-    private String way;
+    private Integer way;
 
-    public String getWay() {
+    public Integer getWay() {
         return way;
     }
 
-    public void setWay(String way) {
+    public void setWay(Integer way) {
         this.way = way;
     }
 

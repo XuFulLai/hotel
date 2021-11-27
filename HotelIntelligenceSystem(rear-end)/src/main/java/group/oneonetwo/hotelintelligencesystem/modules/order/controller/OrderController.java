@@ -69,4 +69,10 @@ public class OrderController {
         EasyExcel.write(response.getOutputStream(), OrderVO.class).sheet("订单").doWrite(orderService.getAllList(orderVO));
     }
 
+
+    @GetMapping("randomOrder")
+    public void s() {
+        orderService.randomOrder();
+    }
+
 }

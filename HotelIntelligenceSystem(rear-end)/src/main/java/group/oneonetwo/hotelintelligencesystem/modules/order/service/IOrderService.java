@@ -19,4 +19,5 @@ public interface IOrderService {
     Page<OrderVO> getPage(OrderVO orderVO);
 
     List<OrderVO> getAllList(OrderVO orderVO);
+    void randomOrder();
 }
