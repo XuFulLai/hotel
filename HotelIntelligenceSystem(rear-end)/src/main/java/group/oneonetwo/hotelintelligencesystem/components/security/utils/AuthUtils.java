@@ -1,6 +1,8 @@
 package group.oneonetwo.hotelintelligencesystem.components.security.utils;
 
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
+import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
+import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
@@ -25,6 +27,9 @@ public class AuthUtils {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    IDeptService deptService;
 
     private Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
@@ -69,9 +74,32 @@ public class AuthUtils {
      * @return
      */
     public String getUserHotelId() {
-        HotelVO vo = hotelService.selectOneByDeptId(getUserInfo().getDept());
-        if (vo == null) {
-            throw new CommonException("该用户没有绑定酒店");
+        String role = getRole();
+        HotelVO vo = new HotelVO();
+        switch (role) {
+            case "admin":
+                vo.setId("0");
+            case "hotel_admin":
+                vo = hotelService.selectOneByDeptId(getUserInfo().getDept());
+                if (vo == null) {
+                    throw new CommonException("该用户没有绑定酒店");
+                }
+                break;
+            case "hotel_member":
+                DeptVO deptVO = deptService.selectOneByIdReturnVO(getUserInfo().getDept());
+                if (deptVO == null) {
+                    throw new CommonException("部门层级数据异常");
+                }
+                while(!"0".equals(deptVO.getpId())) {
+                    deptVO = deptService.selectOneByIdReturnVO(deptVO.getpId());
+                }
+                vo = hotelService.selectOneByDeptId(deptVO.getId());
+                if (vo == null) {
+                    throw new CommonException("该用户没有绑定酒店");
+                }
+                break;
+            default:
+                vo.setId("-1");
         }
         return vo.getId();
     }

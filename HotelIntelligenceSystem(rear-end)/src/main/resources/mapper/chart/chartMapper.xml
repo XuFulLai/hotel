@@ -15,7 +15,7 @@
             left join room_type
             on orders.room_type = room_type.id
             <where>
-                <if test="hotelId != 0 and hotelId != null">
+                <if test="hotelId != '0' and hotelId != null and hotelId != ''">
                     and orders.hotel_id = #{hotelId}
                 </if>
             </where>
@@ -46,7 +46,7 @@
         select province name,COUNT(province) value
         from orders
         <where>
-            <if test="hotelId != 0 and hotelId != null">
+            <if test="hotelId != '0' and hotelId != null and hotelId != ''">
                 and hotel_id = #{hotelId}
             </if>
         </where>
@@ -63,7 +63,7 @@
                    ) name,count(way) value
         from orders
         <where>
-            <if test="hotelId != 0 and hotelId != null">
+            <if test="hotelId != '0' and hotelId != null and hotelId != ''">
                 and hotel_id = #{hotelId}
             </if>
         </where>
@@ -76,7 +76,7 @@
         select DATE_FORMAT(create_time,'%Y-%m-%d') name
         from orders
         <where>
-            <if test="hotelId != 0 and hotelId != null">
+            <if test="hotelId != '0' and hotelId != null and hotelId != ''">
                 and hotel_id = #{hotelId}
             </if>
         </where>
@@ -92,7 +92,7 @@
         select DATE_FORMAT(create_time,'%Y-%m') name
         from orders
         <where>
-            <if test="hotelId != 0 and hotelId != null">
+            <if test="hotelId != '0' and hotelId != null and hotelId != ''">
                 and hotel_id = #{hotelId}
             </if>
         </where>
@@ -108,7 +108,7 @@
         select DATE_FORMAT(create_time,'%Y-%m-%d') name,last_pay
         from orders
         <where>
-            <if test="hotelId != 0 and hotelId != null">
+            <if test="hotelId != '0' and hotelId != null and hotelId != ''">
                 and hotel_id = #{hotelId}
             </if>
         </where>
