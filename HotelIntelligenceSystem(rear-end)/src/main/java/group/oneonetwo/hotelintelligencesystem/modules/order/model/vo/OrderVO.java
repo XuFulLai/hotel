@@ -110,6 +110,18 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("预计退房时间")
     private Date checkOutTime;
 
+    @ExcelIgnore
+    @ApiModelProperty("房间名")
+    private String roomName;
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
     public Date getCheckInTime() {
         return checkInTime;
     }
@@ -335,7 +347,10 @@ public class OrderVO implements Serializable {
                 ", customerName='" + customerName + '\'' +
                 ", beginTime='" + beginTime + '\'' +
                 ", endTime='" + endTime + '\'' +
-                ", way='" + way + '\'' +
+                ", way=" + way +
+                ", checkInTime=" + checkInTime +
+                ", checkOutTime=" + checkOutTime +
+                ", roomName='" + roomName + '\'' +
                 '}';
     }
 }

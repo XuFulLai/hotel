@@ -24,6 +24,7 @@
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
         <result property="way" column="way"/>
+        <result property="roomName" column="room_name"/>
     </resultMap>
 
     <sql id="baseListSql">
