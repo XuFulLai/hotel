@@ -54,8 +54,35 @@ public class OrderPO implements Serializable {
     @TableField("check_out_time")
     private Date checkOutTime;
 
+    @TableField("room_name")
+    private  String roomName;
+
     public Integer getWay() {
         return way;
+    }
+
+    public Date getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(Date checkInTime) {
+        this.checkInTime = checkInTime;
+    }
+
+    public Date getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public void setCheckOutTime(Date checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public void setWay(Integer way) {
