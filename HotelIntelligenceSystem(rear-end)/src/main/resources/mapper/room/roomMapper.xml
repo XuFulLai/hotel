@@ -36,7 +36,7 @@
     <select id="getList" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO">
         <include refid="baselist"></include>
     </select>
-    
+
     <select id="getAllList" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO">
         <include refid="baseListSql"/>
             <where>
@@ -48,6 +48,12 @@
                 </if>
                 <if test="vo.roomTypeName!=null and vo.roomTypeName!=''">
                     and r_t.`name` like concat('%',#{vo.roomTypeName},'%')
+                </if>
+                <if test="vo.hotelId!=null and vo.hotelId!=''">
+                    and r.hotel_id=#{vo.hotelId}
+                </if>
+                <if test="vo.id!=null and vo.id!=''">
+                    and r.id=#{vo.id}
                 </if>
             </where>
     </select>

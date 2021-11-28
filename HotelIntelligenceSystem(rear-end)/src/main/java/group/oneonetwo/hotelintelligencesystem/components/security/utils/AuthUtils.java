@@ -1,6 +1,9 @@
 package group.oneonetwo.hotelintelligencesystem.components.security.utils;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
+import group.oneonetwo.hotelintelligencesystem.modules.dept.dao.DeptMapper;
+import group.oneonetwo.hotelintelligencesystem.modules.dept.model.po.DeptPO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
@@ -13,8 +16,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author 文
@@ -30,6 +35,9 @@ public class AuthUtils {
 
     @Autowired
     IDeptService deptService;
+
+    @Autowired
+    DeptMapper deptMapper;
 
     private Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
@@ -102,6 +110,30 @@ public class AuthUtils {
                 vo.setId("-1");
         }
         return vo.getId();
+    }
+
+    /**
+     * 获取酒店管理员及二级成员(若要获取所有,可通过修改代码实现)
+     * @return
+     */
+    public List<String> getHotelAllUser() {
+        List<String> ids = getHotelAllUser(getUserHotelId());
+        return ids;
+    }
+
+    public List<String> getHotelAllUser(String hotelId) {
+        HotelVO hotelVO = hotelService.selectOneByIdReturnVO(hotelId);
+        List<String> ids = new ArrayList<>();
+        ids.add(hotelVO.getDeptId());
+        DeptVO deptVO = deptService.selectOneByIdReturnVO(hotelVO.getDeptId());
+        QueryWrapper<DeptPO> wrapper = new QueryWrapper<>();
+        wrapper.eq("p_id",deptVO).select("id");
+        List<DeptPO> pos = deptMapper.selectList(wrapper);
+        Iterator<DeptPO> iterator = pos.iterator();
+        while(iterator.hasNext()){
+            ids.add(iterator.next().getId());
+        }
+        return ids;
     }
 
 }

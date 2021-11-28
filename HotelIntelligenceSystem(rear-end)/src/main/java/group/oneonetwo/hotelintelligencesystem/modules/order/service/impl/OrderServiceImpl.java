@@ -141,7 +141,6 @@ public class OrderServiceImpl implements IOrderService {
         return orderMapper.getAllList(orderVO);
     }
 
-
     @Autowired
     IRoomTypeServeice roomTypeServeice;
 
