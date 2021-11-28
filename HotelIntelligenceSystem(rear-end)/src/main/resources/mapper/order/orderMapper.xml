@@ -32,6 +32,8 @@
                     when '0' then '未支付'
                     when '1' then '已支付'
                     when '2' then '已关闭'
+                    when '3' then '已入住'
+                    when '4' then '已完成'
                end) currentStatus,
                u.username customerName,h.`name` hotelName,rt.name roomTypeName
         from orders o
