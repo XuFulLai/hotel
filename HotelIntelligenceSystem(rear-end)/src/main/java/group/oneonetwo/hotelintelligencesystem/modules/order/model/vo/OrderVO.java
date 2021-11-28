@@ -102,6 +102,30 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("方式")
     private Integer way;
 
+    @ExcelIgnore
+    @ApiModelProperty("预计入住时间")
+    private Date checkInTime;
+
+    @ExcelIgnore
+    @ApiModelProperty("预计退房时间")
+    private Date checkOutTime;
+
+    public Date getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(Date checkInTime) {
+        this.checkInTime = checkInTime;
+    }
+
+    public Date getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public void setCheckOutTime(Date checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
     public Integer getWay() {
         return way;
     }

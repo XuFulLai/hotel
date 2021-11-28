@@ -16,6 +16,8 @@
         <result property="lastPay" column="last_pay"/>
         <result property="status" column="status"/>
         <result property="province" column="province"/>
+        <result property="checkInTime" column="check_in_time"/>
+        <result property="checkOutTime" column="check_out_time"/>
         <result property="isDeleted" column="is_deleted"/>
         <result property="createBy" column="create_by"/>
         <result property="createTime" column="create_time"/>
