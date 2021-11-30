@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface IOrderService {
     OrderPO selectOneById(String id);
-    OrderVO add(OrderVO orderVO);
+    OrderPO add(OrderVO orderVO);
     OrderVO selectOneByIdReturnVO(String id);
     OrderPO save(OrderVO orderVO);
     Integer deleteById(String id);

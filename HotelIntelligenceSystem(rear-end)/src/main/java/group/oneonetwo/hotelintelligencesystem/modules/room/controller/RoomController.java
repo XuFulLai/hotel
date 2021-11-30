@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.room.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.CheckInVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -55,11 +56,17 @@ public class RoomController {
     public Reply<List<RoomVO>> getAllList(@RequestBody RoomVO roomVO){
         return Reply.success(roomService.getAllList(roomVO));
     }
-    
+
     @PostMapping("getList")
     @ApiOperation("获取三表查询出来的列表")
     public Reply<List<RoomVO>> getList(@RequestBody RoomVO roomVO){
         return Reply.success(roomService.getList(roomVO));
+    }
+
+    @PostMapping("checkIn")
+    @ApiOperation("入住")
+    public Reply checkIn(@RequestBody CheckInVO checkInVO) {
+        return Reply.success(roomService.checkIn(checkInVO));
     }
 
 }

@@ -107,12 +107,24 @@ public class OrderVO implements Serializable {
     private Date checkInTime;
 
     @ExcelIgnore
-    @ApiModelProperty("预计退房时间")
+    @ApiModelProperty("实际退房时间")
     private Date checkOutTime;
+
+    @ExcelIgnore
+    @ApiModelProperty("预计退房时间")
+    private Date estimatedCheckOut;
 
     @ExcelIgnore
     @ApiModelProperty("房间名")
     private String roomName;
+
+    public Date getEstimatedCheckOut() {
+        return estimatedCheckOut;
+    }
+
+    public void setEstimatedCheckOut(Date estimatedCheckOut) {
+        this.estimatedCheckOut = estimatedCheckOut;
+    }
 
     public String getRoomName() {
         return roomName;

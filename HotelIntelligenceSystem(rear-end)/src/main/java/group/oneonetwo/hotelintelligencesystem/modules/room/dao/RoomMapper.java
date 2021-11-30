@@ -16,4 +16,5 @@ public interface RoomMapper extends BaseMapper<RoomPO> {
     public List<RoomVO> getAllList(@Param("vo") RoomVO roomVO);
     public List<RoomVO> getList(@Param("vo") RoomVO roomVO);
 
+    Integer unlockRoom(String id);
 }

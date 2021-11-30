@@ -45,7 +45,7 @@ public class OrderServiceImpl implements IOrderService {
     AuthUtils authUtils;
 
     @Override
-    public OrderVO add(OrderVO orderVO){
+    public OrderPO add(OrderVO orderVO){
         if(orderVO==null){
             throw new SavaException("插入订单失败:订单实体为空");
         }
@@ -53,7 +53,7 @@ public class OrderServiceImpl implements IOrderService {
         BeanUtils.copyProperties(orderVO,orderPO);
         int insert=orderMapper.insert(orderPO);
         if(insert>0){
-            return orderVO;
+            return orderPO;
         }
         throw new SavaException("插入订单失败");
     }

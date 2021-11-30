@@ -54,6 +54,17 @@ public class RoomPO implements Serializable {
     @TableField("is_deleted")
     private Integer isDeleted;
 
+    @TableField("order_id")
+    private String orderId;
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     public String getId() {
         return id;
     }

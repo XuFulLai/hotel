@@ -7,11 +7,16 @@ import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUti
 import group.oneonetwo.hotelintelligencesystem.components.websocket.WebSocketServer;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
+import group.oneonetwo.hotelintelligencesystem.modules.order.model.po.OrderPO;
+import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
+import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderService;
 import group.oneonetwo.hotelintelligencesystem.modules.room.dao.RoomMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.po.RoomPO;
+import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.CheckInVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
+import group.oneonetwo.hotelintelligencesystem.tools.TimeUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -24,6 +29,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,6 +46,9 @@ public class RoomServiceImpl implements IRoomService {
 
     @Autowired
     AuthUtils authUtils;
+
+    @Autowired
+    IOrderService orderService;
 
     @Override
     public RoomVO add(RoomVO roomVO) {
@@ -128,6 +139,87 @@ public class RoomServiceImpl implements IRoomService {
         return roomMapper.getList(roomVO);
     }
 
+    /**
+     * 入住
+     * @param checkInVO id,customerId(可能没),orderId(可能没),province
+     * @return
+     */
+    @Override
+    public OrderVO checkIn(CheckInVO checkInVO) {
+
+        Date now = new Date();
+
+        // 订单id不为空时,则是网订单
+        if (!WStringUtils.isBlank(checkInVO.getOrderId())) {
+            //判断是否到入住时间
+            OrderVO thisOrder = orderService.selectOneByIdReturnVO(checkInVO.getOrderId());
+            if (!now.after(thisOrder.getCheckInTime())) {
+                throw new CommonException("订单未到预定入住时间");
+            }
+        }
+
+        RoomVO thisRoom = selectOneByIdReturnVO(checkInVO.getId());
+        OrderVO updateOrder = new OrderVO();
+        RoomVO updateRoom = new RoomVO();
+        //房间状态设置为入住
+        updateRoom.setStatus(1);
+        updateRoom.setId(checkInVO.getId());
+
+        //更新订单表
+        updateOrder.setCheckInTime(now);
+        updateOrder.setProvince(checkInVO.getProvince());
+        updateOrder.setEstimatedCheckOut(TimeUtils.setSplitTime(checkInVO.getEstimatedCheckOut()));
+
+        //把房间信息写入订单表
+        updateOrder.setRoomType(thisRoom.getType());
+        updateOrder.setRoomName(thisRoom.getName());
+        updateOrder.setHotelId(thisRoom.getHotelId());
+
+        //若客户id不为空,则写入订单表
+        if (!WStringUtils.isBlank(checkInVO.getCustomerId())) {
+            updateOrder.setCustomerId(checkInVO.getCustomerId());
+        }
+
+        OrderPO orderSave;
+        if (!WStringUtils.isBlank(checkInVO.getOrderId())) {
+            orderSave = orderService.save(updateOrder);
+        } else {
+            orderSave = orderService.add(updateOrder);
+        }
+
+        //绑定订单到房间
+        updateRoom.setOrderId(orderSave.getId());
+
+        RoomPO roomSave = save(updateRoom);
+
+        //转换并返回
+        OrderVO res = new OrderVO();
+        BeanUtils.copyProperties(orderSave,res);
+        return res;
+    }
+
+    /**
+     * 退房
+     * @param id
+     * @return
+     */
+    @Override
+    public String checkOut(String id) {
+//        Date now = new Date();
+//        RoomPO thisRoom = selectOneById(id);
+//        OrderVO thisOrder = orderService.selectOneByIdReturnVO(thisRoom.getOrderId());
+//
+//
+//        Integer integer = unlockRoom(thisRoom.getId());
+
+
+        return null;
+    }
+
+    public Integer unlockRoom(String id) {
+        return roomMapper.unlockRoom(id);
+    }
+
     public void sendUpdateInfo(RoomVO vo) {
         List<String> hotelAllUser = authUtils.getHotelAllUser(vo.getHotelId());
         Iterator<String> allUserIter = hotelAllUser.iterator();
@@ -145,4 +237,6 @@ public class RoomServiceImpl implements IRoomService {
         }
 
     }
+
+
 }

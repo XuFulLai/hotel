@@ -46,6 +46,20 @@ public class RoomVO implements Serializable {
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
 
+    @ApiModelProperty("绑定订单id")
+    private String orderId;
+
+    @ApiModelProperty("房间类型名字")
+    private String roomTypeName;
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     public String getRoomTypeName() {
         return roomTypeName;
     }
@@ -53,12 +67,6 @@ public class RoomVO implements Serializable {
     public void setRoomTypeName(String roomTypeName) {
         this.roomTypeName = roomTypeName;
     }
-
-    @ApiModelProperty("房间类型名字")
-    private  String roomTypeName;
-
-
-
 
     private Page page;
 

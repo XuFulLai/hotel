@@ -1,10 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.order.model.po;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -12,7 +9,8 @@ import java.util.Date;
 
 @TableName("orders")
 public class OrderPO implements Serializable {
-    @TableId("id")
+
+    @TableId(value = "id",type = IdType.AUTO)
     private String id;
 
     @TableField("customer_id")
@@ -54,8 +52,19 @@ public class OrderPO implements Serializable {
     @TableField("check_out_time")
     private Date checkOutTime;
 
+    @TableField("estimated_check_out")
+    private Date estimatedCheckOut;
+
     @TableField("room_name")
     private  String roomName;
+
+    public Date getEstimatedCheckOut() {
+        return estimatedCheckOut;
+    }
+
+    public void setEstimatedCheckOut(Date estimatedCheckOut) {
+        this.estimatedCheckOut = estimatedCheckOut;
+    }
 
     public Integer getWay() {
         return way;
