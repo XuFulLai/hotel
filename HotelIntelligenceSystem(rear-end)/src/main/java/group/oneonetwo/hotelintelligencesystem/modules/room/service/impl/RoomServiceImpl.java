@@ -89,8 +89,10 @@ public class RoomServiceImpl implements IRoomService {
         RoomPO roomPO=new RoomPO();
         BeanUtils.copyProperties(roomVO,roomPO);
         int save=roomMapper.updateById(roomPO);
+        RoomPO thisRoom = selectOneById(roomPO.getId());
+        BeanUtils.copyProperties(thisRoom,roomVO);
         if(save>0){
-            if (!WStringUtils.isBlank(roomVO.getId()) && !WStringUtils.isBlank(roomVO.getHotelId())) {
+            if (!WStringUtils.isBlank(thisRoom.getId()) && !WStringUtils.isBlank(thisRoom.getHotelId())) {
                 sendUpdateInfo(roomVO);
             }
             return roomMapper.selectById(roomPO.getId());
