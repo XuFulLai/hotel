@@ -25,7 +25,7 @@ public class OrderController {
     @PostMapping("add")
     @ApiOperation("添加订单")
     public  Reply<OrderVO> add(@RequestBody OrderVO orderVO){
-        return Reply.success(orderService.add(orderVO));
+        return Reply.success(orderService.addOne(orderVO));
     }
 
 

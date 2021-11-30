@@ -17,7 +17,7 @@ public interface IOrderService {
     Integer deleteById(String id);
     OrderVO saveone(OrderVO orderVO);
     Page<OrderVO> getPage(OrderVO orderVO);
-
+    OrderVO addOne(OrderVO orderVO);
     List<OrderVO> getAllList(OrderVO orderVO);
     void randomOrder();
 }

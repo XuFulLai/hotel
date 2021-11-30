@@ -112,6 +112,13 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
+    public OrderVO addOne(OrderVO orderVO){
+        OrderPO st=add(orderVO);
+        BeanUtils.copyProperties(st,orderVO);
+        return orderVO;
+    }
+
+    @Override
     public Page<OrderVO> getPage(OrderVO orderVO){
         Page<OrderPO> page=new Page<>(orderVO.getPage().getPage(),orderVO.getPage().getSize());
         return orderMapper.getPage(page,orderVO);
