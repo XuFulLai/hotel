@@ -57,10 +57,10 @@ public class RoomController {
         return Reply.success(roomService.getAllList(roomVO));
     }
 
-    @PostMapping("getList")
-    @ApiOperation("获取三表查询出来的列表")
+    @PostMapping("getSelectOne")
+    @ApiOperation("获取房间详情的列表")
     public Reply<List<RoomVO>> getList(@RequestBody RoomVO roomVO){
-        return Reply.success(roomService.getList(roomVO));
+        return Reply.success(roomService.getSelectOne(roomVO));
     }
 
     @PostMapping("checkIn")

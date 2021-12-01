@@ -134,8 +134,8 @@ public class RoomServiceImpl implements IRoomService {
     }
 
     @Override
-    public List<RoomVO> getList(RoomVO roomVO){
-        return roomMapper.getList(roomVO);
+    public List<RoomVO> getSelectOne(RoomVO roomVO){
+        return roomMapper.getSelectOne(roomVO);
     }
 
     /**

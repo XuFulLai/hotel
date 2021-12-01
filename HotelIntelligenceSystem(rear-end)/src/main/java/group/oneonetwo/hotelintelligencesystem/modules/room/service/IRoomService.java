@@ -18,7 +18,7 @@ public interface IRoomService {
     RoomVO saveone(RoomVO roomVO);
     Page<RoomVO> getPage(RoomVO roomVO);
     List<RoomVO> getAllList (RoomVO roomVO);
-    List<RoomVO> getList (RoomVO roomVO);
+    List<RoomVO> getSelectOne (RoomVO roomVO);
 
     OrderVO checkIn(CheckInVO checkInVO);
 
