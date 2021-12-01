@@ -127,7 +127,7 @@ public class AuthUtils {
         ids.add(hotelVO.getDeptId());
         DeptVO deptVO = deptService.selectOneByIdReturnVO(hotelVO.getDeptId());
         QueryWrapper<DeptPO> wrapper = new QueryWrapper<>();
-        wrapper.eq("p_id",deptVO).select("id");
+        wrapper.eq("p_id",deptVO.getId()).select("id");
         List<DeptPO> pos = deptMapper.selectList(wrapper);
         Iterator<DeptPO> iterator = pos.iterator();
         while(iterator.hasNext()){
