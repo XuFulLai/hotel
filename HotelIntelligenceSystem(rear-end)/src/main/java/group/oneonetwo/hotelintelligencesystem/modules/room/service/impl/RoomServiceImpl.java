@@ -166,6 +166,10 @@ public class RoomServiceImpl implements IRoomService {
 
         int[] pays = new int[2];
         RoomVO thisRoom = selectOneByIdReturnVO(checkInVO.getId());
+        //当该房间是被预定且订单id不同时,重新分配房间
+        if ((WStringUtils.isBlank(checkInVO.getOrderId()) || thisRoom.getOrderId().equals(checkInVO.getOrderId())) && thisRoom.getStatus() == 2) {
+            assignRoom(thisRoom);
+        }
         RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(thisRoom.getType());
         OrderVO updateOrder = new OrderVO();
         RoomVO updateRoom = new RoomVO();
@@ -290,6 +294,19 @@ public class RoomServiceImpl implements IRoomService {
 
         pays[1] = pays[0];
         return pays;
+    }
+
+    private void assignRoom(RoomVO roomVO) {
+        QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
+        wrapper.eq("type",roomVO.getType()).eq("status",0);
+        List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
+        if (roomPOS.size() > 1) {
+            RoomVO vo = new RoomVO();
+            vo.setId(roomPOS.get(0).getId());
+            vo.setStatus(2);
+            vo.setOrderId(roomVO.getOrderId());
+            save(vo);
+        }
     }
 
 
