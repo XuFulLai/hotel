@@ -18,6 +18,8 @@
         <result property="province" column="province"/>
         <result property="checkInTime" column="check_in_time"/>
         <result property="checkOutTime" column="check_out_time"/>
+        <result property="estimatedCheckIn" column="estimated_check_in"/>
+        <result property="estimatedCheckOut" column="estimated_check_out"/>
         <result property="isDeleted" column="is_deleted"/>
         <result property="createBy" column="create_by"/>
         <result property="createTime" column="create_time"/>

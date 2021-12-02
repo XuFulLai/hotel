@@ -15,6 +15,8 @@ import group.oneonetwo.hotelintelligencesystem.modules.room.model.po.RoomPO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.CheckInVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
+import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO;
+import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTypeServeice;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.TimeUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
@@ -49,6 +51,9 @@ public class RoomServiceImpl implements IRoomService {
 
     @Autowired
     IOrderService orderService;
+
+    @Autowired
+    IRoomTypeServeice roomTypeServeice;
 
     @Override
     public RoomVO add(RoomVO roomVO) {
@@ -159,7 +164,9 @@ public class RoomServiceImpl implements IRoomService {
             }
         }
 
+        int[] pays = new int[2];
         RoomVO thisRoom = selectOneByIdReturnVO(checkInVO.getId());
+        RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(thisRoom.getType());
         OrderVO updateOrder = new OrderVO();
         RoomVO updateRoom = new RoomVO();
         //房间状态设置为入住
@@ -169,7 +176,11 @@ public class RoomServiceImpl implements IRoomService {
         //更新订单表
         updateOrder.setCheckInTime(now);
         updateOrder.setProvince(checkInVO.getProvince());
+        updateOrder.setEstimatedCheckIn(TimeUtils.setSplitTime(checkInVO.getCheckInTime()));
         updateOrder.setEstimatedCheckOut(TimeUtils.setSplitTime(checkInVO.getEstimatedCheckOut()));
+        pays = countPay(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(),updateOrder.getEstimatedCheckOut(),"ceil"),roomTypeVO.getFee());
+        updateOrder.setPay(String.valueOf(pays[0]));
+        updateOrder.setLastPay(String.valueOf(pays[1]));
 
         //把房间信息写入订单表
         updateOrder.setRoomType(thisRoom.getType());
@@ -206,15 +217,43 @@ public class RoomServiceImpl implements IRoomService {
      */
     @Override
     public String checkOut(String id) {
-//        Date now = new Date();
-//        RoomPO thisRoom = selectOneById(id);
-//        OrderVO thisOrder = orderService.selectOneByIdReturnVO(thisRoom.getOrderId());
-//
-//
-//        Integer integer = unlockRoom(thisRoom.getId());
+        Date now = new Date();
+        RoomPO thisRoom = selectOneById(id);
+        OrderVO thisOrder = orderService.selectOneByIdReturnVO(thisRoom.getOrderId());
+        Integer btTime = 0;
+        int[] pays = new int[2];
+        int extraFee = 0;
+        RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(thisRoom.getType());
+        //计算基本房费
+        pays[0] = Integer.parseInt(thisOrder.getPay());
+        pays[1] = Integer.parseInt(thisOrder.getLastPay());
+        //超时的情况
+        if (now.after(thisOrder.getEstimatedCheckOut())) {
+            //超时
+            btTime = TimeUtils.daysBetween(TimeUtils.setSplitTime(thisOrder.getEstimatedCheckOut()), now, "ceil");
+            pays[0] += btTime * roomTypeVO.getFee();
+            pays[1] += btTime * roomTypeVO.getFee();
+            extraFee = btTime * roomTypeVO.getFee();
 
+        }
+        //更新订单信息
+        OrderVO updateOrder = new OrderVO();
+        updateOrder.setDays(btTime);
+        updateOrder.setCheckOutTime(now);
+        updateOrder.setId(thisOrder.getId());
+        //获取房间单价,计算价格
+        updateOrder.setPay(String.valueOf(pays[0]));
+        updateOrder.setLastPay(String.valueOf(pays[1]));
 
-        return null;
+        orderService.save(updateOrder);
+
+        Integer integer = unlockRoom(thisRoom.getId());
+
+        if (extraFee == 0) {
+            return "订单完成!";
+        } else {
+            return "须补缴" + extraFee + "元!";
+        }
     }
 
     public Integer unlockRoom(String id) {
@@ -237,6 +276,20 @@ public class RoomServiceImpl implements IRoomService {
             }
         }
 
+    }
+
+    /**
+     * 计算价格
+     * @return int[0]为原价,int[1]为折后价
+     */
+    private int[] countPay(Integer days, Integer price){
+        int[] pays = new int[2];
+        pays[0] = days * price;
+        //下面可写优惠政策
+
+
+        pays[1] = pays[0];
+        return pays;
     }
 
 

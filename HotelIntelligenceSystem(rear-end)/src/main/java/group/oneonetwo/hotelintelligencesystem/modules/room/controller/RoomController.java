@@ -69,5 +69,11 @@ public class RoomController {
         return Reply.success(roomService.checkIn(checkInVO));
     }
 
+    @GetMapping("checkOut/{id}")
+    @ApiOperation("退房")
+    public Reply checkOut(@PathVariable("id") String id) {
+        return Reply.success(roomService.checkOut(id));
+    }
+
 }
 
