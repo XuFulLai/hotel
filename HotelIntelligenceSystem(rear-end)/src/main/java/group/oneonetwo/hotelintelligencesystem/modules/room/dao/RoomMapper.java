@@ -15,6 +15,7 @@ import java.util.List;
 public interface RoomMapper extends BaseMapper<RoomPO> {
     public List<RoomVO> getAllList(@Param("vo") RoomVO roomVO);
     public List<RoomVO> getSelectOne(@Param("vo") RoomVO roomVO);
+    public  List<RoomVO> getRoomTypeList(@Param("vo") RoomVO roomVO);
 
     Integer unlockRoom(String id);
 }

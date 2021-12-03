@@ -140,6 +140,11 @@ public class RoomServiceImpl implements IRoomService {
         return roomMapper.getSelectOne(roomVO);
     }
 
+    @Override
+    public  List<RoomVO> getRoomTypeList( RoomVO roomVO){
+        return roomMapper.getRoomTypeList(roomVO);
+    }
+
     /**
      * 入住
      * @param checkInVO id,customerId(可能没),orderId(可能没),province

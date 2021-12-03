@@ -60,6 +60,8 @@ public class RoomVO implements Serializable {
         this.orderId = orderId;
     }
 
+
+
     public String getRoomTypeName() {
         return roomTypeName;
     }

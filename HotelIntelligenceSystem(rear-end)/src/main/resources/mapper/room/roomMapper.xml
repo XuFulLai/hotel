@@ -26,6 +26,13 @@
         FROM room r LEFT JOIN room_type r_t on r.type=r_t.id
     </sql>
 
+    <sql id="basetypelist">
+        SELECT r_t.`name` as 'roomTypeName'
+        FROM room r LEFT JOIN
+        room_type r_t on r.type=r_t.id
+
+    </sql>
+
     <sql id="baselist">
         SELECT * FROM room r
                           LEFT JOIN room_type  r_t
@@ -34,6 +41,19 @@
                                     on r.type=b.id;
 
     </sql>
+    <select id="getRoomTypeList" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO">
+        <include refid="basetypelist"/>
+            <where>
+                AND r.`status`='0'
+                <if test="vo.id!=null and vo.id!=''">
+                    AND  r.id=#{vo.id}
+                </if>
+                    group by r_t.`name`
+            </where>
+    </select>
+
+
+
     <select id="getSelectOne" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO">
         <include refid="baselist"/>
         <where>
