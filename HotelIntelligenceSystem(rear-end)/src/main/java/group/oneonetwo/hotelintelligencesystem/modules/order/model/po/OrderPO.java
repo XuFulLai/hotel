@@ -10,7 +10,7 @@ import java.util.Date;
 @TableName("orders")
 public class OrderPO implements Serializable {
 
-    @TableId(value = "id",type = IdType.AUTO)
+    @TableId(value = "id")
     private String id;
 
     @TableField("customer_id")
@@ -52,11 +52,22 @@ public class OrderPO implements Serializable {
     @TableField("check_out_time")
     private Date checkOutTime;
 
+    @TableField("estimated_check_in")
+    private Date estimatedCheckIn;
+
     @TableField("estimated_check_out")
     private Date estimatedCheckOut;
 
     @TableField("room_name")
     private  String roomName;
+
+    public Date getEstimatedCheckIn() {
+        return estimatedCheckIn;
+    }
+
+    public void setEstimatedCheckIn(Date estimatedCheckIn) {
+        this.estimatedCheckIn = estimatedCheckIn;
+    }
 
     public Date getEstimatedCheckOut() {
         return estimatedCheckOut;
