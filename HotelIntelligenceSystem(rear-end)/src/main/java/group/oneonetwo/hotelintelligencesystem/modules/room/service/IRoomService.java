@@ -19,7 +19,7 @@ public interface IRoomService {
     Page<RoomVO> getPage(RoomVO roomVO);
     List<RoomVO> getAllList (RoomVO roomVO);
     List<RoomVO> getSelectOne (RoomVO roomVO);
-
+    List<RoomVO> getRoomTypeList( RoomVO roomVO);
     OrderVO checkIn(CheckInVO checkInVO);
 
     String checkOut(String id);

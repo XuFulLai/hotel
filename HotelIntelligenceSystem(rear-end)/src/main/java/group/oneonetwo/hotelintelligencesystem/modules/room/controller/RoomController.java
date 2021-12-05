@@ -7,6 +7,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,6 +62,12 @@ public class RoomController {
     @ApiOperation("获取房间详情的列表")
     public Reply<List<RoomVO>> getList(@RequestBody RoomVO roomVO){
         return Reply.success(roomService.getSelectOne(roomVO));
+    }
+
+    @PostMapping("getRoomTypeList")
+    @ApiOperation("获取房间类型列表")
+    public  Reply<List<RoomVO>> getRoomTypeList(@RequestBody RoomVO roomVO){
+        return Reply.success(roomService.getRoomTypeList(roomVO));
     }
 
     @PostMapping("checkIn")
