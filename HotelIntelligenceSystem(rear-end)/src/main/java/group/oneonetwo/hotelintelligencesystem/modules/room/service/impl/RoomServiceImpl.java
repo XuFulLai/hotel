@@ -21,19 +21,14 @@ import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTy
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.TimeUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -145,8 +140,8 @@ public class RoomServiceImpl implements IRoomService {
     }
 
     @Override
-    public List<RoomVO> getSelectOne(RoomVO roomVO){
-        return roomMapper.getSelectOne(roomVO);
+    public RoomVO getDetail(String id){
+        return roomMapper.getDetail(id);
     }
 
     @Override

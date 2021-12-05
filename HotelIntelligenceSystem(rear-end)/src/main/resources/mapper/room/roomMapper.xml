@@ -54,11 +54,11 @@
 
 
 
-    <select id="getSelectOne" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO">
+    <select id="getDetail" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO">
         <include refid="baselist"/>
         <where>
-            <if test="vo.id!=null and vo.id!=''">
-                AND  r.id=#{vo.id}
+            <if test="id!=null and id!=''">
+                AND  r.id=#{id}
             </if>
         </where>
 
