@@ -24,4 +24,6 @@ public interface IRoomService {
 
     String checkOut(String id);
 
+    void assignRoom(RoomVO roomVO);
+
 }
