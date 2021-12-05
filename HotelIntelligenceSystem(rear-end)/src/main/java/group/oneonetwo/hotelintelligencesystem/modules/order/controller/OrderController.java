@@ -75,12 +75,13 @@ public class OrderController {
         return Reply.success(orderService.createNewOrder(orderVO));
     }
 
+    @ApiOperation("取消订单")
     @GetMapping("cancel/{id}")
     public Reply<String> cancelOrder(@PathVariable("id") String id) {
         return Reply.success(orderService.cancelOrder(id));
     }
 
-
+    @ApiOperation("随机订单")
     @GetMapping("randomOrder")
     public void s() {
         orderService.randomOrder();

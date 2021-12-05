@@ -16,7 +16,7 @@ import java.util.List;
  * @author 文
  * @description 可视化图表控制层
  */
-@Api("可视化图表相关接口")
+@Api(tags="可视化图表相关接口")
 @RestController
 @RequestMapping("api/chart")
 public class ChartController {
