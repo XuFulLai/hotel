@@ -159,12 +159,11 @@ public class RoomServiceImpl implements IRoomService {
     public OrderVO checkIn(CheckInVO checkInVO) {
 
         Date now = new Date();
-
         // 订单id不为空时,则是网订单
         if (!WStringUtils.isBlank(checkInVO.getOrderId())) {
             //判断是否到入住时间
             OrderVO thisOrder = orderService.selectOneByIdReturnVO(checkInVO.getOrderId());
-            if (!now.after(thisOrder.getCheckInTime())) {
+            if (!now.after(thisOrder.getEstimatedCheckIn())) {
                 throw new CommonException("订单未到预定入住时间");
             }
         }
@@ -172,11 +171,12 @@ public class RoomServiceImpl implements IRoomService {
         int[] pays = new int[2];
         RoomVO thisRoom = selectOneByIdReturnVO(checkInVO.getId());
         //当该房间是被预定且订单id不同时,重新分配房间
-        if ((WStringUtils.isBlank(checkInVO.getOrderId()) || thisRoom.getOrderId().equals(checkInVO.getOrderId())) && thisRoom.getStatus() == 2) {
+        if (thisRoom.getStatus() == 2 && (WStringUtils.isBlank(checkInVO.getOrderId()) || thisRoom.getOrderId().equals(checkInVO.getOrderId()))) {
             assignRoom(thisRoom);
         }
         RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(thisRoom.getType());
         OrderVO updateOrder = new OrderVO();
+        OrderVO orderVO;
         RoomVO updateRoom = new RoomVO();
         //房间状态设置为入住
         updateRoom.setStatus(1);
@@ -185,8 +185,14 @@ public class RoomServiceImpl implements IRoomService {
         //更新订单表
         updateOrder.setCheckInTime(now);
         updateOrder.setProvince(checkInVO.getProvince());
-        updateOrder.setEstimatedCheckIn(TimeUtils.setSplitTime(checkInVO.getCheckInTime()));
+        if (WStringUtils.isBlank(checkInVO.getOrderId())) {
+            updateOrder.setEstimatedCheckIn(TimeUtils.setSplitTime(now));
+        } else {
+            orderVO = orderService.selectOneByIdReturnVO(checkInVO.getOrderId());
+            updateOrder.setEstimatedCheckIn(orderVO.getEstimatedCheckIn());
+        }
         updateOrder.setEstimatedCheckOut(TimeUtils.setSplitTime(checkInVO.getEstimatedCheckOut()));
+        updateOrder.setDays(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(),updateOrder.getEstimatedCheckOut(),"ceil"));
         pays = countPay(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(),updateOrder.getEstimatedCheckOut(),"ceil"),roomTypeVO.getFee());
         updateOrder.setPay(String.valueOf(pays[0]));
         updateOrder.setLastPay(String.valueOf(pays[1]));
@@ -203,6 +209,7 @@ public class RoomServiceImpl implements IRoomService {
 
         OrderPO orderSave;
         if (!WStringUtils.isBlank(checkInVO.getOrderId())) {
+            updateOrder.setId(checkInVO.getOrderId());
             orderSave = orderService.save(updateOrder);
         } else {
             orderSave = orderService.add(updateOrder);
@@ -236,6 +243,8 @@ public class RoomServiceImpl implements IRoomService {
         //计算基本房费
         pays[0] = Integer.parseInt(thisOrder.getPay());
         pays[1] = Integer.parseInt(thisOrder.getLastPay());
+        OrderVO updateOrder = new OrderVO();
+
         //超时的情况
         if (now.after(thisOrder.getEstimatedCheckOut())) {
             //超时
@@ -243,11 +252,10 @@ public class RoomServiceImpl implements IRoomService {
             pays[0] += btTime * roomTypeVO.getFee();
             pays[1] += btTime * roomTypeVO.getFee();
             extraFee = btTime * roomTypeVO.getFee();
+            updateOrder.setDays(btTime);
 
         }
         //更新订单信息
-        OrderVO updateOrder = new OrderVO();
-        updateOrder.setDays(btTime);
         updateOrder.setCheckOutTime(now);
         updateOrder.setId(thisOrder.getId());
         //获取房间单价,计算价格
@@ -266,7 +274,11 @@ public class RoomServiceImpl implements IRoomService {
     }
 
     public Integer unlockRoom(String id) {
-        return roomMapper.unlockRoom(id);
+        Integer integer = roomMapper.unlockRoom(id);
+        if (integer > 0) {
+            sendUpdateInfo(selectOneByIdReturnVO(id));
+        }
+        return integer;
     }
 
     public void sendUpdateInfo(RoomVO vo) {
