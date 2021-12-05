@@ -161,6 +161,8 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public OrderVO createNewOrder(OrderVO orderVO) {
 
+        orderVO.setWay(2);
+
         //分配房间
         RoomVO roomVO = new RoomVO();
         roomVO.setType(orderVO.getRoomType());
