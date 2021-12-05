@@ -22,4 +22,6 @@ public interface IOrderService {
     void randomOrder();
 
     OrderVO createNewOrder(OrderVO orderVO);
+
+    String cancelOrder(String id);
 }

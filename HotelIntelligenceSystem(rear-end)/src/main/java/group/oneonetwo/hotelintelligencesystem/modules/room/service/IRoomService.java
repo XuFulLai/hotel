@@ -26,4 +26,6 @@ public interface IRoomService {
 
     void assignRoom(RoomVO roomVO);
 
+    void cancelRoom(RoomVO roomVO);
+
 }

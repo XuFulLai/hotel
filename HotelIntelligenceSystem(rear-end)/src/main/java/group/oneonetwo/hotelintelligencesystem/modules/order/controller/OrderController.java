@@ -75,6 +75,11 @@ public class OrderController {
         return Reply.success(orderService.createNewOrder(orderVO));
     }
 
+    @GetMapping("cancel/{id}")
+    public Reply<String> cancelOrder(@PathVariable("id") String id) {
+        return Reply.success(orderService.cancelOrder(id));
+    }
+
 
     @GetMapping("randomOrder")
     public void s() {

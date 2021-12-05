@@ -186,6 +186,17 @@ public class OrderServiceImpl implements IOrderService {
         return add;
     }
 
+    @Override
+    public String cancelOrder(String id) {
+        RoomVO roomVO = new RoomVO();
+        roomVO.setOrderId(id);
+        roomService.cancelRoom(roomVO);
+        OrderVO orderVO = new OrderVO();
+        orderVO.setStatus("2");
+        OrderPO save = save(orderVO);
+        return "取消订单成功,退款" + save.getLastPay() + "元将在0-3个工作日内原路退还。";
+    }
+
     @Autowired
     IRoomTypeServeice roomTypeServeice;
 

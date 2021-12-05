@@ -303,20 +303,25 @@ public class RoomServiceImpl implements IRoomService {
 
     }
 
+    @Override
+    public void cancelRoom(RoomVO roomVO) {
+        QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
+        wrapper.eq("order_id",roomVO.getOrderId()).eq("status",2);
+        List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
+        unlockRoom(roomPOS.get(0).getId());
+    }
+
 
 
     @Override
     public void assignRoom(RoomVO roomVO) {
-        QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
+
         //解锁原来锁定的房间
         if (!WStringUtils.isBlank(roomVO.getOrderId())) {
-            wrapper.eq("order_id",roomVO.getOrderId()).eq("status",2);
-            List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
-            unlockRoom(roomPOS.get(0).getId());
+            cancelRoom(roomVO);
         }
 
-
-        wrapper = new QueryWrapper<RoomPO>();
+        QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
         wrapper.eq("type",roomVO.getType()).eq("status",0);
         List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
         if (roomPOS.size() > 1) {
