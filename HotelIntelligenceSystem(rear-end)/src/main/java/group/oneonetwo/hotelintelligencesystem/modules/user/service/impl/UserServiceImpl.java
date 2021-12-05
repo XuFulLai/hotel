@@ -105,7 +105,10 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public Reply register(UserVO userVO) throws SavaException {
-        userVO.setReviewStatus(0);
+        userVO.setReviewStatus(1);
+
+        //此处根据数据库进行设置,这边普通成员的deptId为10
+        userVO.setDept("10");
         userVO.setPassword(bCryptPasswordEncoder.encode(userVO.getPassword()));
         UserPO add = this.add(userVO);
         BeanUtils.copyProperties(add,userVO);

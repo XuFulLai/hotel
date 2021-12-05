@@ -5,17 +5,21 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
+import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscountsService;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
 import group.oneonetwo.hotelintelligencesystem.modules.order.dao.OrderMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.po.OrderPO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderService;
+import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
+import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTypeServeice;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
+import group.oneonetwo.hotelintelligencesystem.tools.TimeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -43,6 +47,12 @@ public class OrderServiceImpl implements IOrderService {
 
     @Autowired
     AuthUtils authUtils;
+
+    @Autowired
+    IDiscountsService discountsService;
+
+    @Autowired
+    IRoomService roomService;
 
     @Override
     public OrderPO add(OrderVO orderVO){
@@ -146,6 +156,47 @@ public class OrderServiceImpl implements IOrderService {
                 throw new CommonException(401,"无权限");
         }
         return orderMapper.getAllList(orderVO);
+    }
+
+    @Override
+    public OrderVO createNewOrder(OrderVO orderVO) {
+
+        orderVO.setWay(2);
+
+        //分配房间
+        RoomVO roomVO = new RoomVO();
+        roomVO.setType(orderVO.getRoomType());
+        roomService.assignRoom(roomVO);
+
+        //格式化时间
+        orderVO.setEstimatedCheckIn(TimeUtils.setSplitTime(orderVO.getEstimatedCheckIn()));
+        orderVO.setEstimatedCheckOut(TimeUtils.setSplitTime(orderVO.getEstimatedCheckOut()));
+
+        //计算天数
+        orderVO.setDays(TimeUtils.daysBetween(orderVO.getEstimatedCheckIn(),orderVO.getEstimatedCheckOut(),"ceil"));
+
+        //获取订单房间类型
+        RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(orderVO.getRoomType());
+
+        //计算价钱
+        int[] pays = discountsService.countPay(orderVO.getDays(), roomTypeVO.getFee());
+        orderVO.setPay(String.valueOf(pays[0]));
+        orderVO.setLastPay(String.valueOf(pays[1]));
+
+        OrderVO add = addOne(orderVO);
+
+        return add;
+    }
+
+    @Override
+    public String cancelOrder(String id) {
+        RoomVO roomVO = new RoomVO();
+        roomVO.setOrderId(id);
+        roomService.cancelRoom(roomVO);
+        OrderVO orderVO = new OrderVO();
+        orderVO.setStatus("2");
+        OrderPO save = save(orderVO);
+        return "取消订单成功,退款" + save.getLastPay() + "元将在0-3个工作日内原路退还。";
     }
 
     @Autowired

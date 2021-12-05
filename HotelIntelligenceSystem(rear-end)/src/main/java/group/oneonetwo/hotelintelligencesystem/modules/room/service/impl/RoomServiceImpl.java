@@ -7,6 +7,7 @@ import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUti
 import group.oneonetwo.hotelintelligencesystem.components.websocket.WebSocketServer;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
+import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscountsService;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.po.OrderPO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderService;
@@ -20,19 +21,14 @@ import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTy
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.TimeUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -54,6 +50,9 @@ public class RoomServiceImpl implements IRoomService {
 
     @Autowired
     IRoomTypeServeice roomTypeServeice;
+
+    @Autowired
+    IDiscountsService discountsService;
 
     @Override
     public RoomVO add(RoomVO roomVO) {
@@ -141,8 +140,8 @@ public class RoomServiceImpl implements IRoomService {
     }
 
     @Override
-    public List<RoomVO> getSelectOne(RoomVO roomVO){
-        return roomMapper.getSelectOne(roomVO);
+    public RoomVO getDetail(String id){
+        return roomMapper.getDetail(id);
     }
 
     @Override
@@ -159,20 +158,24 @@ public class RoomServiceImpl implements IRoomService {
     public OrderVO checkIn(CheckInVO checkInVO) {
 
         Date now = new Date();
-
         // 订单id不为空时,则是网订单
         if (!WStringUtils.isBlank(checkInVO.getOrderId())) {
             //判断是否到入住时间
             OrderVO thisOrder = orderService.selectOneByIdReturnVO(checkInVO.getOrderId());
-            if (!now.after(thisOrder.getCheckInTime())) {
+            if (!now.after(thisOrder.getEstimatedCheckIn())) {
                 throw new CommonException("订单未到预定入住时间");
             }
         }
 
         int[] pays = new int[2];
         RoomVO thisRoom = selectOneByIdReturnVO(checkInVO.getId());
+        //当该房间是被预定且订单id不同时,重新分配房间
+        if (thisRoom.getStatus() == 2 && (WStringUtils.isBlank(checkInVO.getOrderId()) || thisRoom.getOrderId().equals(checkInVO.getOrderId()))) {
+            assignRoom(thisRoom);
+        }
         RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(thisRoom.getType());
         OrderVO updateOrder = new OrderVO();
+        OrderVO orderVO;
         RoomVO updateRoom = new RoomVO();
         //房间状态设置为入住
         updateRoom.setStatus(1);
@@ -181,9 +184,15 @@ public class RoomServiceImpl implements IRoomService {
         //更新订单表
         updateOrder.setCheckInTime(now);
         updateOrder.setProvince(checkInVO.getProvince());
-        updateOrder.setEstimatedCheckIn(TimeUtils.setSplitTime(checkInVO.getCheckInTime()));
+        if (WStringUtils.isBlank(checkInVO.getOrderId())) {
+            updateOrder.setEstimatedCheckIn(TimeUtils.setSplitTime(now));
+        } else {
+            orderVO = orderService.selectOneByIdReturnVO(checkInVO.getOrderId());
+            updateOrder.setEstimatedCheckIn(orderVO.getEstimatedCheckIn());
+        }
         updateOrder.setEstimatedCheckOut(TimeUtils.setSplitTime(checkInVO.getEstimatedCheckOut()));
-        pays = countPay(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(),updateOrder.getEstimatedCheckOut(),"ceil"),roomTypeVO.getFee());
+        updateOrder.setDays(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(),updateOrder.getEstimatedCheckOut(),"ceil"));
+        pays = discountsService.countPay(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(),updateOrder.getEstimatedCheckOut(),"ceil"),roomTypeVO.getFee());
         updateOrder.setPay(String.valueOf(pays[0]));
         updateOrder.setLastPay(String.valueOf(pays[1]));
 
@@ -199,6 +208,7 @@ public class RoomServiceImpl implements IRoomService {
 
         OrderPO orderSave;
         if (!WStringUtils.isBlank(checkInVO.getOrderId())) {
+            updateOrder.setId(checkInVO.getOrderId());
             orderSave = orderService.save(updateOrder);
         } else {
             orderSave = orderService.add(updateOrder);
@@ -232,6 +242,8 @@ public class RoomServiceImpl implements IRoomService {
         //计算基本房费
         pays[0] = Integer.parseInt(thisOrder.getPay());
         pays[1] = Integer.parseInt(thisOrder.getLastPay());
+        OrderVO updateOrder = new OrderVO();
+
         //超时的情况
         if (now.after(thisOrder.getEstimatedCheckOut())) {
             //超时
@@ -239,11 +251,10 @@ public class RoomServiceImpl implements IRoomService {
             pays[0] += btTime * roomTypeVO.getFee();
             pays[1] += btTime * roomTypeVO.getFee();
             extraFee = btTime * roomTypeVO.getFee();
+            updateOrder.setDays(btTime);
 
         }
         //更新订单信息
-        OrderVO updateOrder = new OrderVO();
-        updateOrder.setDays(btTime);
         updateOrder.setCheckOutTime(now);
         updateOrder.setId(thisOrder.getId());
         //获取房间单价,计算价格
@@ -262,10 +273,14 @@ public class RoomServiceImpl implements IRoomService {
     }
 
     public Integer unlockRoom(String id) {
-        return roomMapper.unlockRoom(id);
+        Integer integer = roomMapper.unlockRoom(id);
+        if (integer > 0) {
+            sendUpdateInfo(selectOneByIdReturnVO(id));
+        }
+        return integer;
     }
 
-    public void sendUpdateInfo(RoomVO vo) {
+    private void sendUpdateInfo(RoomVO vo) {
         List<String> hotelAllUser = authUtils.getHotelAllUser(vo.getHotelId());
         Iterator<String> allUserIter = hotelAllUser.iterator();
         RoomVO roomVO = new RoomVO();
@@ -283,18 +298,36 @@ public class RoomServiceImpl implements IRoomService {
 
     }
 
-    /**
-     * 计算价格
-     * @return int[0]为原价,int[1]为折后价
-     */
-    private int[] countPay(Integer days, Integer price){
-        int[] pays = new int[2];
-        pays[0] = days * price;
-        //下面可写优惠政策
+    @Override
+    public void cancelRoom(RoomVO roomVO) {
+        QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
+        wrapper.eq("order_id",roomVO.getOrderId()).eq("status",2);
+        List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
+        unlockRoom(roomPOS.get(0).getId());
+    }
 
 
-        pays[1] = pays[0];
-        return pays;
+
+    @Override
+    public void assignRoom(RoomVO roomVO) {
+
+        //解锁原来锁定的房间
+        if (!WStringUtils.isBlank(roomVO.getOrderId())) {
+            cancelRoom(roomVO);
+        }
+
+        QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
+        wrapper.eq("type",roomVO.getType()).eq("status",0);
+        List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
+        if (roomPOS.size() > 1) {
+            RoomVO vo = new RoomVO();
+            vo.setId(roomPOS.get(0).getId());
+            vo.setStatus(2);
+            vo.setOrderId(roomVO.getOrderId());
+            save(vo);
+        } else {
+            throw new CommonException("已没同类型房间,请选择其他类型房间进行入住");
+        }
     }
 
 

@@ -20,4 +20,8 @@ public interface IOrderService {
     OrderVO addOne(OrderVO orderVO);
     List<OrderVO> getAllList(OrderVO orderVO);
     void randomOrder();
+
+    OrderVO createNewOrder(OrderVO orderVO);
+
+    String cancelOrder(String id);
 }

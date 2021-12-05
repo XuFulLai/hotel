@@ -22,7 +22,7 @@ public class OrderController {
     IOrderService orderService;
 
 
-    @PostMapping("add")
+//    @PostMapping("add")
     @ApiOperation("添加订单")
     public  Reply<OrderVO> add(@RequestBody OrderVO orderVO){
         return Reply.success(orderService.addOne(orderVO));
@@ -69,7 +69,19 @@ public class OrderController {
         EasyExcel.write(response.getOutputStream(), OrderVO.class).sheet("订单").doWrite(orderService.getAllList(orderVO));
     }
 
+    @ApiOperation("创建订单")
+    @PostMapping("create")
+    public Reply<OrderVO> createOrder(@RequestBody OrderVO orderVO) {
+        return Reply.success(orderService.createNewOrder(orderVO));
+    }
 
+    @ApiOperation("取消订单")
+    @GetMapping("cancel/{id}")
+    public Reply<String> cancelOrder(@PathVariable("id") String id) {
+        return Reply.success(orderService.cancelOrder(id));
+    }
+
+    @ApiOperation("随机订单")
     @GetMapping("randomOrder")
     public void s() {
         orderService.randomOrder();
