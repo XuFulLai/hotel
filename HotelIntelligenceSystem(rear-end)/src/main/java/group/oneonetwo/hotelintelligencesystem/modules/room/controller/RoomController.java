@@ -81,5 +81,11 @@ public class RoomController {
         return Reply.success(roomService.checkOut(id));
     }
 
+    @ApiOperation("获取楼层列表")
+    @GetMapping("floor")
+    public Reply getFloor() {
+        return Reply.success(roomService.getFloor());
+    }
+
 }
 

@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -306,6 +307,18 @@ public class RoomServiceImpl implements IRoomService {
         unlockRoom(roomPOS.get(0).getId());
     }
 
+    @Override
+    public List<String> getFloor() {
+        QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
+        wrapper.eq("hotel_id",authUtils.getUserHotelId()).select("floor").groupBy("floor");
+        List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
+        Iterator<RoomPO> iterator = roomPOS.iterator();
+        List<String> floors = new ArrayList<>();
+        while (iterator.hasNext()) {
+            floors.add(iterator.next().getFloor());
+        }
+        return floors;
+    }
 
 
     @Override
