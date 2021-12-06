@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.room.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.CheckInVO;
+import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.DetailVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -59,7 +60,7 @@ public class RoomController {
 
     @GetMapping("getDetail/{id}")
     @ApiOperation("获取房间详情的列表")
-    public Reply<RoomVO> getDetail(@PathVariable("id") String id){
+    public Reply<DetailVO> getDetail(@PathVariable("id") String id){
         return Reply.success(roomService.getDetail(id));
     }
 

@@ -14,6 +14,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderServi
 import group.oneonetwo.hotelintelligencesystem.modules.room.dao.RoomMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.po.RoomPO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.CheckInVO;
+import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.DetailVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO;
@@ -140,7 +141,7 @@ public class RoomServiceImpl implements IRoomService {
     }
 
     @Override
-    public RoomVO getDetail(String id){
+    public DetailVO getDetail(String id){
         return roomMapper.getDetail(id);
     }
 

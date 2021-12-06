@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.po.RoomPO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.CheckInVO;
+import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.DetailVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,7 +19,7 @@ public interface IRoomService {
     RoomVO saveone(RoomVO roomVO);
     Page<RoomVO> getPage(RoomVO roomVO);
     List<RoomVO> getAllList (RoomVO roomVO);
-    RoomVO getDetail(String id);
+    DetailVO getDetail(String id);
     List<RoomVO> getRoomTypeList( RoomVO roomVO);
     OrderVO checkIn(CheckInVO checkInVO);
 

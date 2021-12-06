@@ -38,7 +38,7 @@
                           LEFT JOIN room_type  r_t
                                     on r.type=r_t.id
                           left JOIN bed_type b
-                                    on r.type=b.id;
+                                    on r.type=b.id
 
     </sql>
     <select id="getRoomTypeList" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO">
@@ -54,7 +54,7 @@
 
 
 
-    <select id="getDetail" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO">
+    <select id="getDetail" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.DetailVO">
         <include refid="baselist"/>
         <where>
             <if test="id!=null and id!=''">
