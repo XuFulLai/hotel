@@ -73,8 +73,8 @@
                 <if test="vo.name!=null and vo.name!=''">
                     and r.name=#{vo.name}
                 </if>
-                <if test="vo.roomTypeName!=null and vo.roomTypeName!=''">
-                    and r_t.`name` like concat('%',#{vo.roomTypeName},'%')
+                <if test="vo.type!=null and vo.type!=''">
+                    and r.type = #{vo.type}
                 </if>
                 <if test="vo.hotelId!=null and vo.hotelId!=''">
                     and r.hotel_id=#{vo.hotelId}

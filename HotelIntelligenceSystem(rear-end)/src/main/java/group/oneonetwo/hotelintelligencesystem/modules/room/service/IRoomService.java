@@ -29,4 +29,5 @@ public interface IRoomService {
 
     void cancelRoom(RoomVO roomVO);
 
+    List<String> getFloor();
 }
