@@ -27,7 +27,7 @@
     </sql>
 
     <sql id="basetypelist">
-        SELECT r_t.`name` as 'roomTypeName'
+        SELECT r_t.id,r_t.`name` as 'roomTypeName'
         FROM room r LEFT JOIN
         room_type r_t on r.type=r_t.id
 
@@ -48,7 +48,7 @@
                 <if test="vo.id!=null and vo.id!=''">
                     AND  r.id=#{vo.id}
                 </if>
-                    group by r_t.`name`
+                    group by r_t.id
             </where>
     </select>
 
@@ -82,6 +82,7 @@
                 <if test="vo.id!=null and vo.id!=''">
                     and r.id=#{vo.id}
                 </if>
+
             </where>
     </select>
 
