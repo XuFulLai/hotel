@@ -66,6 +66,9 @@
             <if test="vo.province != null and vo.province != ''">
                 and o.province like concat('%', #{vo.province}, '%')
             </if>
+            <if test="vo.createBy != null and vo.createBy != ''">
+                and o.createBy= #{vo.createBy}
+            </if>
         </where>
     </select>
 

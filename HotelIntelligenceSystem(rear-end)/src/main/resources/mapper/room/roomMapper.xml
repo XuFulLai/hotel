@@ -34,11 +34,12 @@
     </sql>
 
     <sql id="baselist">
-        SELECT * FROM room r
-                          LEFT JOIN room_type  r_t
-                                    on r.type=r_t.id
-                          left JOIN bed_type b
-                                    on r.type=b.id
+        SELECT *,r_t.id as 'RtId',r_t.`name` as 'RtName',b.id as 'BedId',b.`name` as 'BedName'
+        FROM room r
+                 LEFT JOIN room_type  r_t
+                           on r.type=r_t.id
+                 left JOIN bed_type b
+                           on r_t.bed_type=b.id
 
     </sql>
     <select id="getRoomTypeList" resultType="group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO">

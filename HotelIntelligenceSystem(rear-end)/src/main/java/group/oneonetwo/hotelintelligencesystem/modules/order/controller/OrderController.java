@@ -87,4 +87,10 @@ public class OrderController {
         orderService.randomOrder();
     }
 
+    @ApiOperation("获取我的订单")
+    @GetMapping("my")
+    public  Reply<Page<OrderVO>> my(OrderVO orderVO){
+        return Reply.success(orderService.my(orderVO));
+    }
+
 }

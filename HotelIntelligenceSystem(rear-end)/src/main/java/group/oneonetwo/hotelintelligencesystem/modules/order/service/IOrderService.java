@@ -24,4 +24,6 @@ public interface IOrderService {
     OrderVO createNewOrder(OrderVO orderVO);
 
     String cancelOrder(String id);
+
+    Page<OrderVO> my(OrderVO orderVO);
 }

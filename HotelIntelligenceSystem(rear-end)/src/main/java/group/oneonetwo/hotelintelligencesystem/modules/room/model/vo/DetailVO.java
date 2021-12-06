@@ -32,8 +32,7 @@ public class DetailVO implements Serializable{
     @ApiModelProperty("绑定订单id")
     private String orderId;
 
-    @ApiModelProperty("房间类型名字")
-    private String roomTypeName;
+
 
     @ApiModelProperty("主键")
     private String RtId;
@@ -174,13 +173,6 @@ public class DetailVO implements Serializable{
         this.orderId = orderId;
     }
 
-    public String getRoomTypeName() {
-        return roomTypeName;
-    }
-
-    public void setRoomTypeName(String roomTypeName) {
-        this.roomTypeName = roomTypeName;
-    }
 
     public String getRtId() {
         return RtId;
@@ -395,7 +387,6 @@ public class DetailVO implements Serializable{
                 ", direction='" + direction + '\'' +
                 ", hotelId='" + hotelId + '\'' +
                 ", orderId='" + orderId + '\'' +
-                ", roomTypeName='" + roomTypeName + '\'' +
                 ", RtId='" + RtId + '\'' +
                 ", RtName='" + RtName + '\'' +
                 ", bedType='" + bedType + '\'' +
