@@ -33,12 +33,13 @@ public class DetailVO implements Serializable{
     private String orderId;
 
 
+    //room_type
 
     @ApiModelProperty("主键")
-    private String RtId;
+    private String rtId;
 
     @ApiModelProperty("房间名称")
-    private String RtName;
+    private String rtName;
 
     @ApiModelProperty("床类型")
     private String bedType;
@@ -94,15 +95,19 @@ public class DetailVO implements Serializable{
     @ApiModelProperty("更新时间")
     private Date updateTime;
 
+    //bed
+
     @ApiModelProperty("主键")
     private String BedId;
 
     @ApiModelProperty("床的名字")
-    private String BedName;
+    private String bedName;
+
+    @ApiModelProperty("床的最大容量")
+    private String bedMaxLoad;
 
     @ApiModelProperty("规格")
     private String specification;
-
 
     @ApiModelProperty("硬度(0:超软,1:偏软,2:适中,3:偏硬,4:硬")
     private String hardness;
@@ -173,21 +178,20 @@ public class DetailVO implements Serializable{
         this.orderId = orderId;
     }
 
-
     public String getRtId() {
-        return RtId;
+        return rtId;
     }
 
     public void setRtId(String rtId) {
-        RtId = rtId;
+        this.rtId = rtId;
     }
 
     public String getRtName() {
-        return RtName;
+        return rtName;
     }
 
     public void setRtName(String rtName) {
-        RtName = rtName;
+        this.rtName = rtName;
     }
 
     public String getBedType() {
@@ -343,11 +347,19 @@ public class DetailVO implements Serializable{
     }
 
     public String getBedName() {
-        return BedName;
+        return bedName;
     }
 
     public void setBedName(String bedName) {
-        BedName = bedName;
+        this.bedName = bedName;
+    }
+
+    public String getBedMaxLoad() {
+        return bedMaxLoad;
+    }
+
+    public void setBedMaxLoad(String bedMaxLoad) {
+        this.bedMaxLoad = bedMaxLoad;
     }
 
     public String getSpecification() {
@@ -365,8 +377,6 @@ public class DetailVO implements Serializable{
     public void setHardness(String hardness) {
         this.hardness = hardness;
     }
-
-
 
     public Page getPage() {
         return page;
@@ -387,8 +397,8 @@ public class DetailVO implements Serializable{
                 ", direction='" + direction + '\'' +
                 ", hotelId='" + hotelId + '\'' +
                 ", orderId='" + orderId + '\'' +
-                ", RtId='" + RtId + '\'' +
-                ", RtName='" + RtName + '\'' +
+                ", rtId='" + rtId + '\'' +
+                ", rtName='" + rtName + '\'' +
                 ", bedType='" + bedType + '\'' +
                 ", bed=" + bed +
                 ", maxLoad=" + maxLoad +
@@ -408,7 +418,8 @@ public class DetailVO implements Serializable{
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +
                 ", BedId='" + BedId + '\'' +
-                ", BedName='" + BedName + '\'' +
+                ", bedName='" + bedName + '\'' +
+                ", bedMaxLoad='" + bedMaxLoad + '\'' +
                 ", specification='" + specification + '\'' +
                 ", hardness='" + hardness + '\'' +
                 ", page=" + page +

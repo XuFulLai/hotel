@@ -34,7 +34,7 @@
     </sql>
 
     <sql id="baselist">
-        SELECT *,r_t.id as 'RtId',r_t.`name` as 'RtName',b.id as 'BedId',b.`name` as 'BedName'
+        SELECT *,r_t.id as 'rtId',r_t.`name` as 'rtName',b.id as 'bedId',b.`name` as 'bedName',b.max_load as 'bedMaxLoad'
         FROM room r
                  LEFT JOIN room_type  r_t
                            on r.type=r_t.id

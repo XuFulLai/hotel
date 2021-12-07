@@ -192,6 +192,7 @@ public class RoomVO implements Serializable {
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +
                 ", isDeleted=" + isDeleted +
+                ", orderId='" + orderId + '\'' +
                 ", roomTypeName='" + roomTypeName + '\'' +
                 ", page=" + page +
                 '}';

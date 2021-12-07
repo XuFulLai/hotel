@@ -39,7 +39,7 @@ public class JwtTokenUtils {
     private static final String ROLE_CLAIMS = "rol";
 
     //过期时间
-    private static final long EXPIRATION = 3600000L;
+    private static final long EXPIRATION = 7200000L;
 
 //    // 选择了记住我之后的过期时间为7天
 //    private static final long EXPIRATION_REMEMBER = 604800L;
