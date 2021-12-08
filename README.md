@@ -4,7 +4,7 @@
 酒店智慧系统
 
 #### 软件架构
-软件架构说明
+![系统架构图](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/xtjg.png)
 
 
 #### 安装教程
