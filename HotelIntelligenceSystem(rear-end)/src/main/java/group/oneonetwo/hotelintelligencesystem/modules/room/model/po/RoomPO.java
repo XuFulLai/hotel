@@ -152,4 +152,6 @@ public class RoomPO implements Serializable {
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+
 }

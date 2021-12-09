@@ -88,8 +88,8 @@ public class OrderController {
     }
 
     @ApiOperation("获取我的订单")
-    @GetMapping("my")
-    public  Reply<Page<OrderVO>> my(OrderVO orderVO){
+    @PostMapping("my")
+    public  Reply<Page<OrderVO>> my(@RequestBody OrderVO orderVO){
         return Reply.success(orderService.my(orderVO));
     }
 
