@@ -16,7 +16,7 @@
             on orders.room_type = room_type.id
             <where>
                 <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
-                    and hotel_id = #{hotelId}
+                    and orders.hotel_id = #{hotelId}
                 </if>
             </where>
             group by room_type.name
