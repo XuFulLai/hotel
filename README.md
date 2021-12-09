@@ -23,12 +23,31 @@
    - 使用轮询方式访问redis（可改为websocket推送），使用UUID的方式生成码作为redis的key，对应的value为0时为未扫描，1为已扫描，2为确认登录
 3. xxxx
 
+
+
+#### 主要贡献者
+
+**后端（服务端）:**
+
+- tomato-simon (1499602163@qq.com)（main）
+- static_move (2562748196@qq.com)
+
+**前端（客户端）：**
+
+- fuxiao_lee (925194376@qq.com)（main）
+- tomato-simon (1499602163@qq.com)
+- lingyu1412 (9770826+lingyu1412@user.noreply.gitee.com)
+
+
+
 #### 参与贡献
 
 1.  Fork 本仓库
 2.  新建 Feat_xxx 分支
 3.  提交代码
 4.  新建 Pull Request
+
+
 
 
 #### 特技
