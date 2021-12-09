@@ -87,6 +87,7 @@ public class AuthUtils {
         switch (role) {
             case "admin":
                 vo.setId("0");
+                break;
             case "hotel_admin":
                 vo = hotelService.selectOneByDeptId(getUserInfo().getDept());
                 if (vo == null) {

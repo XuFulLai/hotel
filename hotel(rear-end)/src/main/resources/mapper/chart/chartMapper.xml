@@ -15,8 +15,8 @@
             left join room_type
             on orders.room_type = room_type.id
             <where>
-                <if test="hotelId != '0' and hotelId != null and hotelId != ''">
-                    and orders.hotel_id = #{hotelId}
+                <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+                    and hotel_id = #{hotelId}
                 </if>
             </where>
             group by room_type.name
@@ -46,7 +46,7 @@
         select province name,COUNT(province) value
         from orders
         <where>
-            <if test="hotelId != '0' and hotelId != null and hotelId != ''">
+            <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
                 and hotel_id = #{hotelId}
             </if>
         </where>
@@ -63,7 +63,7 @@
                    ) name,count(way) value
         from orders
         <where>
-            <if test="hotelId != '0' and hotelId != null and hotelId != ''">
+            <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
                 and hotel_id = #{hotelId}
             </if>
         </where>
@@ -75,12 +75,10 @@
         from (
         select DATE_FORMAT(create_time,'%Y-%m-%d') name
         from orders
-        <where>
-            <if test="hotelId != '0' and hotelId != null and hotelId != ''">
-                and hotel_id = #{hotelId}
-            </if>
-        </where>
-        and DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time)
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time)
+        <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+            and hotel_id = #{hotelId}
+        </if>
         )t
         group by name
         order by name
@@ -91,12 +89,10 @@
         from (
         select DATE_FORMAT(create_time,'%Y-%m') name
         from orders
-        <where>
-            <if test="hotelId != '0' and hotelId != null and hotelId != ''">
-                and hotel_id = #{hotelId}
-            </if>
-        </where>
-        and DATE_SUB(CURDATE(), INTERVAL 1 year) &lt;= date(create_time)
+        where DATE_SUB(CURDATE(), INTERVAL 1 year) &lt;= date(create_time)
+        <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+            and hotel_id = #{hotelId}
+        </if>
         )t
         group by name
         order by name
@@ -107,12 +103,10 @@
         from (
         select DATE_FORMAT(create_time,'%Y-%m-%d') name,last_pay
         from orders
-        <where>
-            <if test="hotelId != '0' and hotelId != null and hotelId != ''">
-                and hotel_id = #{hotelId}
-            </if>
-        </where>
-        and DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time)
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time)
+        <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+            and hotel_id = #{hotelId}
+        </if>
         )t
         group by name
         order by name
