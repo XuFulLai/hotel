@@ -209,6 +209,7 @@ public class RoomServiceImpl implements IRoomService {
         }
 
         OrderPO orderSave;
+        updateOrder.setStatus("3");
         if (!WStringUtils.isBlank(checkInVO.getOrderId())) {
             updateOrder.setId(checkInVO.getOrderId());
             orderSave = orderService.save(updateOrder);
@@ -262,6 +263,9 @@ public class RoomServiceImpl implements IRoomService {
         //获取房间单价,计算价格
         updateOrder.setPay(String.valueOf(pays[0]));
         updateOrder.setLastPay(String.valueOf(pays[1]));
+
+        //更改状态
+        updateOrder.setStatus("4");
 
         orderService.save(updateOrder);
 
