@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -46,6 +47,9 @@ public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(Object.class);
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     /**
      * 注册用户
      * @author 文
@@ -62,6 +66,19 @@ public class AuthController {
     @ApiOperation("登录接口【POST】:\"/auth/login\"，需要参数:username,password")
     public void login(){
 
+    }
+
+
+    @PostMapping("open/test1")
+    public Reply registerUser1(@RequestBody UserVO userVO){
+        String rawPwd = userVO.getPassword();
+        String encode = "$2a$10$p04YXfyFsVV9V7wp1LKhEugRi2cPsHtCF4Q/FbyXZhWuCnb5CSDT2";
+        logger.info("rawPwd:" + rawPwd);
+        logger.info("encodePwd:" + encode);
+        boolean a = bCryptPasswordEncoder.matches(userVO.getPassword(),
+                encode);
+        logger.info(bCryptPasswordEncoder.matches(rawPwd,encode)? "true" : "false");
+        return Reply.success(a);
     }
 
     /**
