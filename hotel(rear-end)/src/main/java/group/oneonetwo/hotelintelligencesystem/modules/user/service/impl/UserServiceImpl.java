@@ -14,8 +14,11 @@ import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,13 +37,16 @@ public class UserServiceImpl implements IUserService {
     UserMapper userMapper;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private AuthUtils authUtils;
 
     @Autowired
     private IDeptService deptService;
+
+    private static final Logger logger = LoggerFactory.getLogger(Object.class);
+
 
     @Override
     public UserPO add(UserVO userVO){
@@ -121,7 +127,6 @@ public class UserServiceImpl implements IUserService {
 
         //此处根据数据库进行设置,这边普通成员的deptId为10
         userVO.setDept("10");
-        userVO.setPassword(bCryptPasswordEncoder.encode(userVO.getPassword()));
         UserPO add = this.add(userVO);
         BeanUtils.copyProperties(add,userVO);
         return Reply.success(userVO);
@@ -130,8 +135,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Reply<UserVO> update(UserVO userVO) {
         if (!"".equals(userVO.getPassword()) && userVO.getPassword() != null) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            userVO.setPassword(encoder.encode(userVO.getPassword()));
+            userVO.setPassword(bCryptPasswordEncoder.encode(userVO.getPassword()));
         } else {
             userVO.setPassword(null);
         }
