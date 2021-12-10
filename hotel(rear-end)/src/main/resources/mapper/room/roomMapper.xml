@@ -77,14 +77,14 @@
                 <if test="vo.type!=null and vo.type!=''">
                     and r.type = #{vo.type}
                 </if>
-                <if test="vo.hotelId!=null and vo.hotelId!=''">
-                    and r.hotel_id=#{vo.hotelId}
+                <if test="vo.hotelId != null and vo.hotelId != ''">
+                    and r.hotel_id = #{vo.hotelId}
                 </if>
                 <if test="vo.id!=null and vo.id!=''">
                     and r.id=#{vo.id}
                 </if>
-
             </where>
+                order by r.`name` asc
     </select>
 
     <update id="unlockRoom">

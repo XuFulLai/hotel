@@ -67,9 +67,11 @@
                 and o.province like concat('%', #{vo.province}, '%')
             </if>
             <if test="vo.createBy != null and vo.createBy != ''">
-                and o.createBy= #{vo.createBy}
+                and o.create_by= #{vo.createBy}
             </if>
         </where>
+                order by o.create_time DESC
+
     </select>
 
     <select id="getAllList" resultType="group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO">
