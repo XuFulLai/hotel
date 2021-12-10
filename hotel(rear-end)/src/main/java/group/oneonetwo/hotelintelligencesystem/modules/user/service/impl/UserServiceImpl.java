@@ -2,8 +2,12 @@ package group.oneonetwo.hotelintelligencesystem.modules.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
+import group.oneonetwo.hotelintelligencesystem.modules.dept.model.po.DeptPO;
+import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
+import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
 import group.oneonetwo.hotelintelligencesystem.modules.user.dao.UserMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.po.UserPO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
@@ -15,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author 文
@@ -29,6 +35,12 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private AuthUtils authUtils;
+
+    @Autowired
+    private IDeptService deptService;
 
     @Override
     public UserPO add(UserVO userVO){
@@ -138,6 +150,14 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Page<UserVO> getPage(UserVO userVO){
         QueryWrapper<UserPO> wrapper=new QueryWrapper<>();
+//        //权限控制
+//        String role = authUtils.getRole();
+//        switch (role) {
+//            case "admin" :
+//                break;
+//            case "hotel_admin":
+//
+//        }
         Page<UserPO> page=new Page<>(userVO.getPage().getPage(),userVO.getPage().getSize());
         Page<UserPO> poiPage=(Page<UserPO>) userMapper.selectPage(page,wrapper);
         return ConvertUtils.transferPage(poiPage,UserVO.class);

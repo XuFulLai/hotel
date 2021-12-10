@@ -29,3 +29,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+node_modules/
+.project
+unpackage/
+.DS_Store

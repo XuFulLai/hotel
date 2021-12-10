@@ -182,6 +182,13 @@ public class DeptServiceImpl implements IDeptService {
         return resDept;
     }
 
+    @Override
+    public List<DeptVO> selectByWrapper(QueryWrapper wrapper) {
+        List<DeptPO> list = deptMapper.selectList(wrapper);
+        List<DeptVO> deptVOS = ConvertUtils.transferList(list, DeptVO.class);
+        return deptVOS;
+    }
+
     private DeptVO addChild(DeptVO current,List<DeptVO> allDept) {
         List<DeptVO> children = new ArrayList<>();
         for (DeptVO item : allDept) {
