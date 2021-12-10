@@ -289,9 +289,12 @@ public class RoomServiceImpl implements IRoomService {
     private void sendUpdateInfo(RoomVO vo) {
         List<String> hotelAllUser = authUtils.getHotelAllUser(vo.getHotelId());
         Iterator<String> allUserIter = hotelAllUser.iterator();
-        RoomVO roomVO = new RoomVO();
-        roomVO.setId(vo.getId());
-        List<RoomVO> allList = getAllList(roomVO);
+//        RoomVO roomVO = new RoomVO();
+//        roomVO.setId(vo.getId());
+//        List<RoomVO> allList = getAllList(roomVO);
+        QueryWrapper<RoomPO> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",vo.getId());
+        List<RoomPO> allList = roomMapper.selectList(wrapper);
         Gson gson = new Gson();
         String hotelInfo = gson.toJson(allList.get(0));
         while(allUserIter.hasNext()) {
@@ -309,7 +312,9 @@ public class RoomServiceImpl implements IRoomService {
         QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
         wrapper.eq("order_id",roomVO.getOrderId()).eq("status",2);
         List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
-        unlockRoom(roomPOS.get(0).getId());
+        if (roomPOS.size() > 0) {
+            unlockRoom(roomPOS.get(0).getId());
+        }
     }
 
     @Override
