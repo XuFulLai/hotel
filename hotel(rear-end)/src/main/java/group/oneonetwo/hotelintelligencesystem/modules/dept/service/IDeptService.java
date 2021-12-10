@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.dept.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.po.DeptPO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
@@ -32,4 +33,6 @@ public interface IDeptService {
     DeptVO saveOne(DeptVO deptVO);
 
     List<DeptVO> getList(DeptVO deptVO);
+
+    List<DeptVO> selectByWrapper(QueryWrapper wrapper);
 }
