@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.components.security.controller;
 
 import group.oneonetwo.hotelintelligencesystem.components.security.entity.BaseUser;
+import group.oneonetwo.hotelintelligencesystem.components.security.entity.ScanVO;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.JwtTokenUtils;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
@@ -13,8 +14,11 @@ import group.oneonetwo.hotelintelligencesystem.tools.RedisUtil;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -41,6 +45,11 @@ public class AuthController {
     @Autowired
     private IDeptService deptService;
 
+    private static final Logger logger = LoggerFactory.getLogger(Object.class);
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     /**
      * 注册用户
      * @author 文
@@ -59,13 +68,26 @@ public class AuthController {
 
     }
 
+
+    @PostMapping("open/test1")
+    public Reply registerUser1(@RequestBody UserVO userVO){
+        String rawPwd = userVO.getPassword();
+        String encode = "$2a$10$p04YXfyFsVV9V7wp1LKhEugRi2cPsHtCF4Q/FbyXZhWuCnb5CSDT2";
+        logger.info("rawPwd:" + rawPwd);
+        logger.info("encodePwd:" + encode);
+        boolean a = bCryptPasswordEncoder.matches(userVO.getPassword(),
+                encode);
+        logger.info(bCryptPasswordEncoder.matches(rawPwd,encode)? "true" : "false");
+        return Reply.success(a);
+    }
+
     /**
      * 二维码登录相关
      * @param type 1为获取二维码,2为检查二维码状态
      * @return
      */
     @GetMapping("open/auth/qrCode/{type}")
-    public Reply qrCode(@PathVariable("type") String type,String code) {
+    public Reply qrCode(@PathVariable("type") String type,@RequestParam String code) {
         switch (type) {
             case "1":
                 String s = UUID.randomUUID().toString();
@@ -78,11 +100,17 @@ public class AuthController {
                 String status = s1[0];
                 map.put("status",status);
                 if ("2".equals(status)) {
+                    String[] tokens = s1[1].split(" ");
+                    if (!JwtTokenUtils.TOKEN_PREFIX.equals(tokens[0])) {
+                        return Reply.failed("500","非法token");
+                    }
+                    String token = tokens[1];
                     map.put("token",s1[1]);
-                    String uid = JwtTokenUtils.getUsername(s1[1]);
+                    logger.info(token);
+                    String uid = JwtTokenUtils.getUsername(token);
                     UserVO userVO = userService.selectOneByIdReturnVO(uid);
                     MenuDeptVO vo = new MenuDeptVO();
-                    vo.setRole(JwtTokenUtils.getUserRole(s1[1]));
+                    vo.setRole(JwtTokenUtils.getUserRole(token));
                     vo.setDeptId(userVO.getDept());
                     List<MenuVO> menuTree = menuService.getMenuTreeByDeptIdAndRole(vo);
                     DeptVO deptVO = deptService.selectOneByIdReturnVO(userVO.getDept());
@@ -94,6 +122,35 @@ public class AuthController {
                     map.put("menuList",menuTree);
                 }
                 return Reply.success(map);
+            default:
+                return Reply.failed("错误的类型码");
+        }
+    }
+
+    /**
+     * 扫描
+     * @param scanVO type:1为扫描预发送,2为确认
+     * @return
+     */
+    @PostMapping("/auth/scan")
+    public Reply scan(@RequestBody ScanVO scanVO) {
+        logger.info("type:" + scanVO.getType());
+        logger.info("qrCode:" + scanVO.getQrCode());
+        logger.info("token:" + scanVO.getToken());
+        switch (scanVO.getType()) {
+            case "1":
+                if (redisUtil.hasKey(scanVO.getQrCode())) {
+                    redisUtil.set(scanVO.getQrCode(),"1");
+                    return Reply.success();
+                }
+                return Reply.failed("500","二维码已过期",null);
+            case "2":
+                if (redisUtil.hasKey(scanVO.getQrCode())) {
+                    String res = "2-" + scanVO.getToken();
+                    redisUtil.set(scanVO.getQrCode(),res);
+                    return Reply.success();
+                }
+                return Reply.failed("500","二维码已过期",null);
             default:
                 return Reply.failed("错误的类型码");
         }
