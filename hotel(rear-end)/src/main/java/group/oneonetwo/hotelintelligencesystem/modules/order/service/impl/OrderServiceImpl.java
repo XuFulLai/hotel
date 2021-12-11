@@ -161,11 +161,14 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public OrderVO createNewOrder(OrderVO orderVO) {
 
+        orderVO = addOne(orderVO);
+
         orderVO.setWay(2);
 
         //分配房间
         RoomVO roomVO = new RoomVO();
         roomVO.setType(orderVO.getRoomType());
+        roomVO.setOrderId(orderVO.getId());
         roomService.assignRoom(roomVO);
 
         //格式化时间
@@ -183,9 +186,11 @@ public class OrderServiceImpl implements IOrderService {
         orderVO.setPay(String.valueOf(pays[0]));
         orderVO.setLastPay(String.valueOf(pays[1]));
 
-        OrderVO add = addOne(orderVO);
+        OrderPO save = save(orderVO);
+        BeanUtils.copyProperties(save,orderVO);
 
-        return add;
+
+        return orderVO;
     }
 
     @Override
@@ -195,6 +200,7 @@ public class OrderServiceImpl implements IOrderService {
         roomService.cancelRoom(roomVO);
         OrderVO orderVO = new OrderVO();
         orderVO.setStatus("2");
+        orderVO.setId(id);
         OrderPO save = save(orderVO);
         return "取消订单成功,退款" + save.getLastPay() + "元将在0-3个工作日内原路退还。";
     }
