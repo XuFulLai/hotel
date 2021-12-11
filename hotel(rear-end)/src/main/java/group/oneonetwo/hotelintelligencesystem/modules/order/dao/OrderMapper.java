@@ -21,5 +21,6 @@ public interface OrderMapper extends BaseMapper<OrderPO> {
     public Page<OrderVO> getPage(@Param("page") Page page,@Param("vo") OrderVO vo);
 
     public List<OrderVO> getAllList(@Param("vo") OrderVO vo);
+    public List<OrderVO> getcount(OrderVO vo);
 
 }
