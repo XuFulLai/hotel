@@ -122,6 +122,17 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("房间名")
     private String roomName;
 
+    @ApiModelProperty("订单次数")
+    private  String counts;
+
+    public String getCounts() {
+        return counts;
+    }
+
+    public void setCounts(String counts) {
+        this.counts = counts;
+    }
+
     public Date getEstimatedCheckOut() {
         return estimatedCheckOut;
     }

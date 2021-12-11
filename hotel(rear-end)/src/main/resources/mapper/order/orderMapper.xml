@@ -27,6 +27,7 @@
         <result property="updateTime" column="update_time"/>
         <result property="way" column="way"/>
         <result property="roomName" column="room_name"/>
+
     </resultMap>
 
     <sql id="baseListSql">
@@ -93,5 +94,8 @@
                 and o.province like concat('%', #{vo.province}, '%')
             </if>
         </where>
+    </select>
+    <select id="getcount" resultType="group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO">
+        SELECT `status`,COUNT(*)as 'counts'  FROM orders GROUP BY `status`;
     </select>
 </mapper>
