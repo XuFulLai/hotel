@@ -212,6 +212,12 @@ public class OrderServiceImpl implements IOrderService {
         return page;
     }
 
+    @Override
+    public  List<OrderVO> count(OrderVO orderVO){
+        orderVO.setCreateBy(authUtils.getUid());
+        return orderMapper.getcount(orderVO);
+    }
+
     @Autowired
     IRoomTypeServeice roomTypeServeice;
 

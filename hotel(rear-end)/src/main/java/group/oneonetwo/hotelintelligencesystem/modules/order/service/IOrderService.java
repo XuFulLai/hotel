@@ -26,4 +26,6 @@ public interface IOrderService {
     String cancelOrder(String id);
 
     Page<OrderVO> my(OrderVO orderVO);
+
+    List<OrderVO> count(OrderVO orderVO);
 }
