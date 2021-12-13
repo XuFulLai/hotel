@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 
 @Api(tags="订单相关接口")
 @RestController
@@ -93,4 +94,9 @@ public class OrderController {
         return Reply.success(orderService.my(orderVO));
     }
 
+    @ApiOperation("获取订单状态次数")
+    @PostMapping("count")
+    public  Reply<List<OrderVO>> count(@RequestBody OrderVO orderVO){
+        return Reply.success(orderService.count(orderVO));
+    }
 }
