@@ -156,7 +156,7 @@ public class DeptServiceImpl implements IDeptService {
                 if (userVO == null) {
                     throw new CommonException(401,"无权限");
                 }
-                wrapper.eq("p_id",userVO.getDept());
+                wrapper.in("id",authUtils.getHotelAllDept(authUtils.getUserHotelId()));
                 break;
             default:
                 throw new CommonException(401,"无权限");
