@@ -128,6 +128,19 @@ public class AuthUtils {
     }
 
     public List<String> getHotelAllUser(String hotelId) {
+        List<String> ids = getHotelAllDept(hotelId);
+        QueryWrapper<UserPO> userPOQueryWrapper = new QueryWrapper<>();
+        userPOQueryWrapper.in("dept",ids).select("id");
+        List<UserPO> userPOS = userMapper.selectList(userPOQueryWrapper);
+        Iterator<UserPO> userPOIterator = userPOS.iterator();
+        ids = new ArrayList<>();
+        while (userPOIterator.hasNext()){
+            ids.add(userPOIterator.next().getId());
+        }
+        return ids;
+    }
+
+    public List<String> getHotelAllDept(String hotelId) {
         HotelVO hotelVO = hotelService.selectOneByIdReturnVO(hotelId);
         List<String> ids = new ArrayList<>();
         ids.add(hotelVO.getDeptId());
@@ -138,14 +151,6 @@ public class AuthUtils {
         Iterator<DeptPO> iterator = pos.iterator();
         while(iterator.hasNext()){
             ids.add(iterator.next().getId());
-        }
-        QueryWrapper<UserPO> userPOQueryWrapper = new QueryWrapper<>();
-        userPOQueryWrapper.in("dept",ids).select("id");
-        List<UserPO> userPOS = userMapper.selectList(userPOQueryWrapper);
-        Iterator<UserPO> userPOIterator = userPOS.iterator();
-        ids = new ArrayList<>();
-        while (userPOIterator.hasNext()){
-            ids.add(userPOIterator.next().getId());
         }
         return ids;
     }
