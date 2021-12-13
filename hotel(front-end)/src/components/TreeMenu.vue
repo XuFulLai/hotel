@@ -1,0 +1,33 @@
+<template>
+  <el-submenu v-if="menu.children && menu.children.length >= 1" :index="menu.id + ''">
+    <template slot="title">
+      <i :class="menu.icon"></i>
+      <span slot="title">{{menu.name}}</span>
+    </template>
+    <TreeMenu v-for="item in menu.children" :key="item.menuId" :menu="item"></TreeMenu>
+  </el-submenu>
+  <el-menu-item v-else :index="menu.id + ''" @click="handleRoute(menu)">
+    <i :class="menu.icon"></i>
+    <span slot="title">{{menu.name}}</span>
+  </el-menu-item>
+</template>
+
+<script>
+export default {
+  name: 'TreeMenu',
+  props: {
+    menu: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    handleRoute (menu) {
+      // 通过菜单URL跳转至指定路由
+      this.$router.push({
+          name: menu.path
+      })
+    }
+  }
+}
+</script>

@@ -9,14 +9,16 @@
 
 其中
 
-1. SpringSecurity使用token写入过期时间进行有效期管理（SpringSecurity结合Redis进行token有效期管理请移步我的另一个项目——[小区智能管理系统](https://gitee.com/tomato-simon/community-management-system)）
-2. 引用第三方对象存储库（七牛云）来进行音图存储产生外链
-3. 实现二维码登录功能（包括app端的扫码和登录页的二维码生成）
-4. 利用Easy Excel进行excel表格的读写操作，实现数据导入导出处理（使用Apache Poi的案例可以移步我的另一个项目——[小区智能管理系统](https://gitee.com/tomato-simon/community-management-system)）
-5. 拥有完整的用户网上下单到入住、用户前台直接入住的流程
-6. 拥有可改进的房间分配流程
-7. 拥有可改进的订单优惠计费功能
-8. ......
+1. **SpringSecurity**使用**token**写入过期时间进行有效期管理（SpringSecurity结合Redis进行token有效期管理请移步我的另一个项目——[小区智能管理系统](https://gitee.com/tomato-simon/community-management-system)）
+2. 可以通过角色权限或者指定人员授予菜单权限来实现**动态菜单**
+3. 引用第三方对象存储库（**七牛云**）来进行音图存储产生外链
+4. 实现**二维码登录**功能（包括app端的扫码和登录页的二维码生成）
+5. 利用Easy Excel进行**excel表格的读写操作**，实现数据导入导出处理（使用Apache Poi的案例可以移步我的另一个项目——[小区智能管理系统](https://gitee.com/tomato-simon/community-management-system)）
+6. 拥有完整的用户网上下单到入住、用户前台直接入住的流程
+7. 拥有可改进的房间分配流程
+8. 拥有可改进的订单优惠计费功能
+9. 后台管理端拥有基于**e-chart**的订单大屏可视化，其中有以地图形式的订单来源地统计、有条形图+折线图混合的订单量和营业额统计、有各房型订单统计的玫瑰图等
+10. ......
 
 
 
@@ -67,6 +69,20 @@
 2.  新建 Feat_xxx 分支
 3.  提交代码
 4.  新建 Pull Request
+
+
+
+### 项目预览
+
+![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/sy1.png)
+
+![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/menu.png)
+
+![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/room.png)
+
+![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/order.png)
+
+![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/dept.png)
 
 
 
