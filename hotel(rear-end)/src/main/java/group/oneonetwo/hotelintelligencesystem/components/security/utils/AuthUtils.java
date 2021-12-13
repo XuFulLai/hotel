@@ -8,6 +8,8 @@ import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
+import group.oneonetwo.hotelintelligencesystem.modules.user.dao.UserMapper;
+import group.oneonetwo.hotelintelligencesystem.modules.user.model.po.UserPO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class AuthUtils {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    UserMapper userMapper;
 
     @Autowired
     IDeptService deptService;
@@ -133,6 +138,14 @@ public class AuthUtils {
         Iterator<DeptPO> iterator = pos.iterator();
         while(iterator.hasNext()){
             ids.add(iterator.next().getId());
+        }
+        QueryWrapper<UserPO> userPOQueryWrapper = new QueryWrapper<>();
+        userPOQueryWrapper.in("dept",ids).select("id");
+        List<UserPO> userPOS = userMapper.selectList(userPOQueryWrapper);
+        Iterator<UserPO> userPOIterator = userPOS.iterator();
+        ids = new ArrayList<>();
+        while (userPOIterator.hasNext()){
+            ids.add(userPOIterator.next().getId());
         }
         return ids;
     }
