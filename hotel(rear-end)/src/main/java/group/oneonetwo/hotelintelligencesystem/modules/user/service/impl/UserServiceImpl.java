@@ -154,14 +154,21 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Page<UserVO> getPage(UserVO userVO){
         QueryWrapper<UserPO> wrapper=new QueryWrapper<>();
-//        //权限控制
-//        String role = authUtils.getRole();
-//        switch (role) {
-//            case "admin" :
-//                break;
-//            case "hotel_admin":
-//
-//        }
+        //权限控制
+        String role = authUtils.getRole();
+        switch (role) {
+            case "admin" :
+                break;
+            case "hotel_admin":
+                List<String> hotelAllUser = authUtils.getHotelAllUser(authUtils.getUserHotelId());
+                for (int i = 0; i < hotelAllUser.size(); i++) {
+                    if (hotelAllUser.get(i).equals(authUtils.getUid())) {
+                        hotelAllUser.remove(i);
+                    }
+                }
+                wrapper.in("id",hotelAllUser);
+
+        }
         Page<UserPO> page=new Page<>(userVO.getPage().getPage(),userVO.getPage().getSize());
         Page<UserPO> poiPage=(Page<UserPO>) userMapper.selectPage(page,wrapper);
         return ConvertUtils.transferPage(poiPage,UserVO.class);
