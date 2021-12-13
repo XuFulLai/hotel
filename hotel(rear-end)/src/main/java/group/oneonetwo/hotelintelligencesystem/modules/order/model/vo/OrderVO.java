@@ -36,11 +36,11 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("折扣类型")
     private String discount;
 
-    @ExcelProperty(value = "应付价格",index = 6)
+    @ExcelProperty(value = "应付价格",index = 8)
     @ApiModelProperty("原价")
     private  String pay;
 
-    @ExcelProperty(value = "实付价格",index = 7)
+    @ExcelProperty(value = "实付价格",index = 9)
     @ApiModelProperty("实付价格")
     private String lastPay;
 
@@ -48,7 +48,7 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("状态:0为未支付,1为已支付,2为已关闭")
     private String status;
 
-    @ExcelProperty(value = "订单状态",index = 8)
+    @ExcelProperty(value = "订单状态",index = 10)
     private String currentStatus;
 
     @ExcelProperty(value = "房间类型",index = 5)
@@ -67,7 +67,7 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("创建人")
     private String createBy;
 
-    @ExcelProperty(value = "订单创建时间",index = 9)
+    @ExcelProperty(value = "订单创建时间",index = 11)
     @ApiModelProperty("创建时间")
     private Date createTime;
 
@@ -102,11 +102,11 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("方式")
     private Integer way;
 
-    @ExcelIgnore
+    @ExcelProperty(value = "入住时间",index = 6)
     @ApiModelProperty("实际入住时间")
     private Date checkInTime;
 
-    @ExcelIgnore
+    @ExcelProperty(value = "退房时间",index = 7)
     @ApiModelProperty("实际退房时间")
     private Date checkOutTime;
 
@@ -122,6 +122,7 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("房间名")
     private String roomName;
 
+    @ExcelIgnore
     @ApiModelProperty("订单次数")
     private  String counts;
 
