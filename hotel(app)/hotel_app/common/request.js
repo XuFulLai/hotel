@@ -1,4 +1,4 @@
-const baseUrl = 'http://8.130.179.210:8081'   
+const baseUrl = 'http://8.130.10.100:8081'   
 // const baseUrl = 'http://127.0.0.1:8081'   
 const request = (url = '', date = {}, type = 'GET', header = {
 }) => {
