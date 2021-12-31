@@ -24,8 +24,8 @@
 		data() {
 			return {
 				title: 'Hotel',
-				username: undefined,
-				password: undefined
+				username: "admin",
+				password: "123456"
 			}
 		},
 		onLoad() {
