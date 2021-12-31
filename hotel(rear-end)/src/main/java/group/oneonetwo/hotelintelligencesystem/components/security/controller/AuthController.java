@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -97,16 +98,24 @@ public class AuthController {
             case "2":
                 HashMap<String, Object> map = new HashMap<>();
                 String[] s1 = redisUtil.get(code).toString().split("-");
+                String fullToken = "";
+                for (int i = 1; i < s1.length; i++) {
+                    if (i != 1) {
+                        fullToken += "-";
+                    }
+                    fullToken += s1[i];
+                }
                 String status = s1[0];
                 map.put("status",status);
                 if ("2".equals(status)) {
-                    String[] tokens = s1[1].split(" ");
+                    String[] tokens = fullToken.split(" ");
                     if (!JwtTokenUtils.TOKEN_PREFIX.equals(tokens[0])) {
                         return Reply.failed("500","非法token");
                     }
                     String token = tokens[1];
-                    map.put("token",s1[1]);
+                    map.put("token",fullToken);
                     logger.info(token);
+                    logger.info("Full Token:" + fullToken);
                     String uid = JwtTokenUtils.getUsername(token);
                     UserVO userVO = userService.selectOneByIdReturnVO(uid);
                     MenuDeptVO vo = new MenuDeptVO();

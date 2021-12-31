@@ -1,11 +1,15 @@
 <template>
 	<view v-if="!confirmFlag" class="content">
 		<button style="width: 30vw;margin-top: 100rpx;" @click="scan">扫码登录</button>
+		<button @click="showInfo">test</button>
 		<p style="color:red;margin-top: 12rpx;">{{msg}}</p>
+		<p>{{token}}</p>
 	</view>
 	<view v-else>
 		<button style="background-color: #007AFF;color: #FFFFFF;width: 30vw;margin-top: 100rpx;" @click="confirm">确认登录</button>
 		<p style="color:red;margin-top: 12rpx;">{{msg}}</p>
+		<button @click="showInfo">test</button>
+		<p>{{token}}</p>
 	</view>
 </template>
 
@@ -18,14 +22,18 @@
 				title: 'Hotel',
 				msg: '',
 				confirmFlag: false,
-				code: undefined
+				code: undefined,
+				token: undefined
 			}
 		},
 		onLoad() {
 			console.log(c.token)
+			
 		},
 		methods: {
-			
+			showInfo() {
+				console.log("c.token======",c.token)
+			},
 			login() {
 				let data = {
 					username: this.username,
@@ -35,8 +43,11 @@
 					console.log(res)
 					if(res.code === "200") {
 						c.setToken(res.data.token)
+						this.token = c.token
 					}
 				})
+				console.log("login after===")
+				
 			},
 			scan() {
 				let that = this
