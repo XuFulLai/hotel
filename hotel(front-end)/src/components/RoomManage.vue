@@ -532,7 +532,7 @@ export default {
     initWebSocket() { //初始化weosocket
       let token = localStorage.getItem('Token')
       let tokenModify = token.split(' ')[1]
-      this.ws = new WebSocket('ws://8.130.179.210:8081/wsServer?Authentication=' + tokenModify)
+      this.ws = new WebSocket('ws://8.130.10.100:8081/wsServer?Authentication=' + tokenModify)
       // this.ws = new WebSocket('ws://127.0.0.1:8081/wsServer?Authentication=' + tokenModify)
       this.ws.onmessage = this.websocketonmessage;
       this.ws.onopen = this.websocketonopen;
