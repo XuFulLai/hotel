@@ -386,7 +386,12 @@ export default {
         page: {
           page: num,
           size: 10
-        }
+        },
+        roomType: this.searchParams.roomType,
+        status: this.searchParams.status,
+        beginTime: this.searchParams.beginTime,
+        endTime: this.searchParams.endTime,
+        province: this.searchParams.province
       }
       this.orderListRequest(data)
     },
@@ -397,7 +402,12 @@ export default {
         page: {
           page: num,
           size: 10
-        }
+        },
+        roomType: this.searchParams.roomType,
+        status: this.searchParams.status,
+        beginTime: this.searchParams.beginTime,
+        endTime: this.searchParams.endTime,
+        province: this.searchParams.province
       }
       this.orderListRequest(data)
 
@@ -409,7 +419,12 @@ export default {
         page: {
           page: num,
           size: 10
-        }
+        },
+        roomType: this.searchParams.roomType,
+        status: this.searchParams.status,
+        beginTime: this.searchParams.beginTime,
+        endTime: this.searchParams.endTime,
+        province: this.searchParams.province
       }
       this.orderListRequest(data)
     },
