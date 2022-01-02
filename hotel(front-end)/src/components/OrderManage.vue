@@ -201,6 +201,12 @@ export default {
       }, {
         value: '2',
         label: '已关闭'
+      }, {
+        value: '3',
+        label: '已入住'
+      }, {
+        value: '4',
+        label: '已完成'
       }],
       roomTypeOptions: [],
       searchParams: {
