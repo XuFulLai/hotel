@@ -2,17 +2,24 @@
     <div class="hotel-main">
         <div>
             <div class="d-flex justify-content" style="padding: 10px;">
-              <el-input
-                  placeholder="请输入酒店名"
-                  prefix-icon="el-icon-search"
-                  v-model="name">
-              </el-input>
-              <el-input
-                  placeholder="请输入地址"
-                  prefix-icon="el-icon-search"
-                  v-model="address">
-              </el-input>
-              <el-button @click="getHotelList" size="small">查询</el-button>
+              <div class="ml-10 mr-10 d-flex align-items-center">
+                <p class="mr-5" style="width: 70px;font-size: 14px">酒店名:</p>
+                <el-input
+                    placeholder="请输入酒店名"
+                    prefix-icon="el-icon-search"
+                    v-model="name">
+                </el-input>
+              </div>
+              <div class="ml-10 mr-10 d-flex align-items-center">
+                <p class="mr-5" style="width: 70px;font-size: 14px">地址:</p>
+                <el-input
+                    placeholder="请输入地址"
+                    prefix-icon="el-icon-search"
+                    v-model="address">
+                </el-input>
+              </div>
+
+              <el-button style="margin-left: 10px" @click="getHotelList" size="small">查询</el-button>
             </div>
             <div class="d-flex justify-content-end" style="padding: 10px;">
                 <el-button type="primary" style="width: 100px;" @click="addHotel">添加</el-button>
