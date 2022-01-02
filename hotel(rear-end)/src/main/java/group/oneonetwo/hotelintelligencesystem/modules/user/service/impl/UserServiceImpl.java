@@ -14,6 +14,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
+import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -168,6 +169,12 @@ public class UserServiceImpl implements IUserService {
                 }
                 wrapper.in("id",hotelAllUser);
 
+        }
+        if (!WStringUtils.isBlank(userVO.getUsername())) {
+            wrapper.like("username",userVO.getUsername());
+        }
+        if (!WStringUtils.isBlank(userVO.getNickname())) {
+            wrapper.like("nickname",userVO.getNickname());
         }
         Page<UserPO> page=new Page<>(userVO.getPage().getPage(),userVO.getPage().getSize());
         Page<UserPO> poiPage=(Page<UserPO>) userMapper.selectPage(page,wrapper);
