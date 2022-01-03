@@ -1,5 +1,5 @@
 <template>
-    <div class="box">
+    <div class="box" style="width: 82vw">
         <el-form ref="form" :model="form" label-width="120px">
             <el-form-item v-show="false">
                 <el-input v-model="form.id"></el-input>

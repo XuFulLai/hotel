@@ -251,7 +251,7 @@
             },
 
           openEdit() {
-
+            this.getUserInfo()
             this.dialogVisible = true
 
           },
