@@ -38,7 +38,7 @@
                     </el-upload>
                 </div>
             </el-form-item>
-            <el-form-item label="其他政策">
+            <el-form-item label="描述">
                 <div class="Tinymce_box">
                     <tinymce v-model="form.otherPolicy" :height="500"/>
                     <div v-if="form.otherPolicy" class="editor-content">
