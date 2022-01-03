@@ -431,8 +431,11 @@ export default {
 
 
   },
-  mounted() {
+  created() {
     this.getDeptList()
+  },
+  mounted() {
+
     this.getUserList()
   },
 
