@@ -249,7 +249,7 @@ export default {
 
     //删除用户方法
     handleDelete(index, row) {
-      post('/api/user/delete/' + row.id)
+      get('/api/user/delete/' + row.id)
           .then(res => {
             console.log(res);
             this.$message({
