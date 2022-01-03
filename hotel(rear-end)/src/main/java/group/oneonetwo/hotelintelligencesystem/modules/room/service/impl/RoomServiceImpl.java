@@ -340,7 +340,7 @@ public class RoomServiceImpl implements IRoomService {
         }
 
         QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
-        wrapper.eq("type",roomVO.getType()).eq("status",0);
+        wrapper.eq("type",roomVO.getType()).eq("status",0).notIn("id",roomVO.getId());
         List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
         if (roomPOS.size() > 1) {
             RoomVO vo = new RoomVO();
