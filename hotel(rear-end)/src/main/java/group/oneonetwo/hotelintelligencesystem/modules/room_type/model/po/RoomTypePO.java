@@ -1,9 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.room_type.model.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.models.auth.In;
 
 import java.io.Serializable;
@@ -59,6 +56,7 @@ public class RoomTypePO implements Serializable {
     @TableField("sort")
     private Integer sort;
 
+    @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
 

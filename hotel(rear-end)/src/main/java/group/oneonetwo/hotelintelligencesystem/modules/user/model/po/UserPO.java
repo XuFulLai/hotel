@@ -1,9 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.user.model.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -45,6 +42,7 @@ public class UserPO implements Serializable {
     @TableField("chat_online")
     private String chatOnline;
 
+    @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
 

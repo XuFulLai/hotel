@@ -70,6 +70,7 @@
             <if test="vo.createBy != null and vo.createBy != ''">
                 and o.create_by= #{vo.createBy}
             </if>
+                and o.is_deleted = 0
         </where>
                 order by o.create_time DESC
 
@@ -93,9 +94,10 @@
             <if test="vo.province != null and vo.province != ''">
                 and o.province like concat('%', #{vo.province}, '%')
             </if>
+                and o.is_deleted = 0
         </where>
     </select>
     <select id="getcount" resultType="group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO">
-        SELECT `status`,COUNT(*)as 'counts'  FROM orders GROUP BY `status`;
+        SELECT `status`,COUNT(*)as 'counts'  FROM orders where is_deleted =0 GROUP BY `status`;
     </select>
 </mapper>
