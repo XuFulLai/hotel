@@ -148,6 +148,10 @@
                     })
                     .catch(err => {
                         console.log(err)
+                      this.$notify.error({
+                        title: '错误',
+                        message: "登录异常,请重试"
+                      });
                     })
             }
 
