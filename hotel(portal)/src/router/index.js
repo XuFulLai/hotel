@@ -5,8 +5,6 @@ import index from '../views/index'
 import HotelList from '../views/HotelList'
 import HotelDetails from '../views/HotelDetails'
 import OrderList from '../views/OrderList'
-import ly from '../views/ly'
-import sm from '../views/sm'
 import SignIn from '../components/SignIn'
 import Register from '../components/Register'
 
@@ -37,16 +35,6 @@ const routes = [
         path: '/index',
         name: 'index',
         component: index
-    },
-    {
-        path: '/ly',
-        name: 'ly',
-        component: ly
-    },
-    {
-        path: '/sm',
-        name: 'sm',
-        component: sm
     },
     {
         path: '/hotelList',

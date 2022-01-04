@@ -12,9 +12,10 @@
 
             <div class="d-flex align-items-center justify-content-between">
                 <div v-for="(item,index) in statusList" class="order-status">
-                    <img :src="require(`../assets/images/status_${index}.png`)" alt="">
+                    <img :src="require(`../assets/images/status_${item.status}.png`)" alt="">
                     <div>
-                        <h3 class="font-22">{{ statusTextList[item.status] }}</h3>
+                        <!-- <h3 class="font-22">{{ statusTextList[item.status] }}</h3> -->
+                        <h3 class="font-22">{{ item.status | statusFilter }}</h3>
                         <p class="font-16">{{ item.counts }}</p>
                     </div>
                 </div>
@@ -73,13 +74,36 @@
                 statusTextList: ['未支付','已支付','已关闭']
             }
         },
+        filters: {
+            statusFilter(value) {
+                console.log(value);
+                switch (value) {
+                    case '0':
+                        value = '未支付'
+                        break;
+                    case '1':
+                        value = '已支付'
+                        break;
+                    case '2':
+                        value = '已关闭'
+                        break;  
+                    case '3':
+                        value = '已入住'
+                        break;  
+                    default:
+                        value = '已完成'
+                        break;
+                }
+                return value
+            }
+        },
         mounted() {
             this.getOrderList()
             this.getStatus()
         },
         methods: {
             getStatus(){
-                let data = {
+                const data = {
                     page :{
                         page: 1,
                         size: 10
@@ -88,23 +112,18 @@
                 post('/api/order/count',data)
                     .then(res => {
                         console.log(res);
-                        let i = 0
-                        let j = 0
-                        while (i<3) {
-                            let obj = {}
-                            if (res.data.data[j].status == i){
-                                obj.counts = res.data.data[j].counts
-                                obj.status = res.data.data[j].status
-                                this.statusList.push(obj)
-                                j++
-                                i++
-                            } else {
-                                obj.counts = 0
-                                obj.status = i
-                                this.statusList.push(obj)
-                                i++;
+                        let resStatusList = res.data.data
+                        resStatusList.map(element => {
+                            let statusObj = {
+
                             }
-                        }
+                            statusObj.counts = element.counts
+                            statusObj.status = element.status
+                            this.statusList.push(statusObj)
+                            return resStatusList
+                        });
+                        console.log(resStatusList);
+                        console.log(this.statusList);
                     })
                     .catch(err => {
                         console.log(err);
@@ -342,7 +361,7 @@
         flex: 1;
         height: 120px;
         margin: 0px 10px;
-        padding: 0px 40px;
+        padding: 0px 20px;
     }
 
     .order-status > img {
