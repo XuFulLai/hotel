@@ -1,9 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -33,6 +30,7 @@ public class HotelPO implements Serializable {
     @TableField("parking_lot")
     private String parkingLot;
 
+    @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
 

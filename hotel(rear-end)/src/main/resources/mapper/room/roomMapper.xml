@@ -46,9 +46,11 @@
         <include refid="basetypelist"/>
             <where>
                 AND r.`status`='0'
+                and r.is_deleted = 0
                 <if test="vo.id!=null and vo.id!=''">
                     AND  r.id=#{vo.id}
                 </if>
+
                     group by r_t.id
             </where>
     </select>
@@ -61,6 +63,7 @@
             <if test="id!=null and id!=''">
                 AND  r.id=#{id}
             </if>
+                and r.is_deleted = 0
         </where>
 
     </select>
@@ -83,6 +86,7 @@
                 <if test="vo.id!=null and vo.id!=''">
                     and r.id=#{vo.id}
                 </if>
+                    and r.is_deleted = 0
             </where>
                 order by r.`name` asc
     </select>

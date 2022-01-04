@@ -17,6 +17,7 @@
             <where>
                 <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
                     and orders.hotel_id = #{hotelId}
+                    and orders.is_deleted = 0
                 </if>
             </where>
             group by room_type.name
@@ -47,7 +48,7 @@
         from orders
         <where>
             <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
-                and hotel_id = #{hotelId}
+                and hotel_id = #{hotelId} and is_deleted = 0
             </if>
         </where>
         group by province
@@ -66,6 +67,7 @@
             <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
                 and hotel_id = #{hotelId}
             </if>
+            and is_deleted = 0
         </where>
         group by way
     </select>
@@ -79,6 +81,7 @@
         <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
             and hotel_id = #{hotelId}
         </if>
+        and is_deleted = 0
         )t
         group by name
         order by name
@@ -89,7 +92,7 @@
         from (
         select DATE_FORMAT(create_time,'%Y-%m') name
         from orders
-        where DATE_SUB(CURDATE(), INTERVAL 1 year) &lt;= date(create_time)
+        where DATE_SUB(CURDATE(), INTERVAL 1 year) &lt;= date(create_time) and is_deleted = 0
         <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
             and hotel_id = #{hotelId}
         </if>
@@ -103,7 +106,7 @@
         from (
         select DATE_FORMAT(create_time,'%Y-%m-%d') name,last_pay
         from orders
-        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time)
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time) and is_deleted = 0
         <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
             and hotel_id = #{hotelId}
         </if>
