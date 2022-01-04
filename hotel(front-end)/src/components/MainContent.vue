@@ -267,106 +267,128 @@
 
             },
 
-            //
-            contrastInit() {
-                let incomeList = []
-                let contrast = document.getElementById('contrast-box')
-                let contrastChart = echarts.init(contrast)
+          //订单统计-盈利统计
+          contrastInit() {
+            let incomeList = []
+            let dateList = []
+            let orderNumList = []
 
-                get('/api/chart/order/income/day/7')
-                    .then(res => {
-                        console.log(res);
-                        for (let i = 0; i < res.data.data.length; i++) {
-                            incomeList.push(res.data.data[i].value)
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
+            // 实例化
+            let contrast = document.getElementById('contrast-box')
+            let contrastChart = echarts.init(contrast)
 
-                const timer = setTimeout(dataRequst, 1000)
+            function f1(){
+              get('/api/chart/order/income/day/7')
+                  .then(res => {
+                    console.log(res);
+                    for (let i = 0; i < res.data.data.length; i++) {
+                      incomeList.push(res.data.data[i].value) //整理出符合的value值到新数组
+                      genFunction.next() //next
+                    }
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  })
 
-                let dataRequst = get('/api/chart/order/orderNum/day/7')
-                    .then(res => {
-                        let dateList = []
-                        let orderNumList = []
-                        console.log(res);
-                        console.log(incomeList);
-                        for (let i = 0; i < res.data.data.length; i++) {
-                            dateList.push(res.data.data[i].name)
-                            orderNumList.push(res.data.data[i].value)
-                        }
-
-                        contrastChart.setOption({
-                            tooltip: {
-                                trigger: 'axis',
-                                axisPointer: {
-                                    type: 'cross',
-                                    crossStyle: {
-                                        color: '#999'
-                                    }
-                                }
-                            },
-                            legend: {
-                                data: ['订单统计', '盈利统计']
-                            },
-                            xAxis: [
-                                {
-                                    type: 'category',
-                                    data: dateList,
-                                    axisPointer: {
-                                        type: 'shadow'
-                                    }
-                                }
-                            ],
-                            yAxis: [
-                                {
-                                    type: 'value',
-                                    name: '订单统计',
-                                    nameTextStyle: {
-                                        color: 'skyblue',
-                                        fontSize: 16,
-                                        align: 'center'
-                                    },
-                                    nameGap: 30,
-                                    axisLabel: {
-                                        formatter: '{value} 单'
-                                    }
-                                },
-                                {
-                                    type: 'value',
-                                    name: '盈利统计',
-                                    nameTextStyle: {
-                                        color: 'skyblue',
-                                        fontSize: 16,
-                                        align: 'center'
-                                    },
-                                    nameGap: 30,
-                                    axisLabel: {
-                                        formatter: '{value} 元'
-                                    }
-                                }
-                            ],
-                            series: [
-                                {
-                                    name: '订单统计',
-                                    type: 'bar',
-                                    barWidth: 30,//柱图宽度
-                                    data: orderNumList
-                                },
-                                {
-                                    name: '盈利统计',
-                                    type: 'line',
-                                    yAxisIndex: 1,
-                                    data: incomeList
-                                }
-                            ]
-                        })
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
             }
+
+            function f2(){
+              get('/api/chart/order/orderNum/day/7')
+                  .then( res => {
+                    console.log(res);
+                    console.log(incomeList);
+                    for (let i = 0; i < res.data.data.length; i++) {
+                      dateList.push(res.data.data[i].name)//整理后台数据到新数组
+                      orderNumList.push(res.data.data[i].value)//整理后台数据到新数组
+                    }
+
+                    // 渲染数据，创建可视化视图
+                    contrastChart.setOption({
+                      tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                          type: 'cross',
+                          crossStyle: {
+                            color: '#999'
+                          }
+                        }
+                      },
+                      legend: {
+                        data: ['订单统计', '盈利统计']
+                      },
+                      xAxis: [
+                        {
+                          type: 'category',
+                          data: dateList,
+                          axisPointer: {
+                            type: 'shadow'
+                          }
+                        }
+                      ],
+                      yAxis: [
+                        {
+                          type: 'value',
+                          name: '订单统计',
+                          nameTextStyle: {
+                            color: 'skyblue',
+                            fontSize: 16,
+                            align: 'center'
+                          },
+                          nameGap: 30,
+                          axisLabel: {
+                            formatter: '{value} 单'
+                          }
+                        },
+                        {
+                          type: 'value',
+                          name: '盈利统计',
+                          nameTextStyle: {
+                            color: 'skyblue',
+                            fontSize: 16,
+                            align: 'center'
+                          },
+                          nameGap: 30,
+                          axisLabel: {
+                            formatter: '{value} 元'
+                          }
+                        }
+                      ],
+                      series: [
+                        {
+                          name: '订单统计',
+                          type: 'bar',
+                          barWidth: 30,//柱图宽度
+                          data: orderNumList
+                        },
+                        {
+                          name: '盈利统计',
+                          type: 'line',
+                          yAxisIndex: 1,
+                          data: incomeList
+                        }
+                      ]
+                    })
+                    genFunction.next() //next
+                  })
+                  .catch( err => {
+                    console.log(err);
+                  })
+
+
+            }
+
+            // 生成器函数
+            function * gen(){
+              yield f1()
+              yield f2()
+
+            }
+
+            let genFunction  = gen()
+            genFunction.next()
+
+
+          }
 
         }
     }
