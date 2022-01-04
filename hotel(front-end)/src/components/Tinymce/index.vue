@@ -210,19 +210,21 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .tinymce-container {
   position: relative;
   line-height: normal;
 }
-
-.tinymce-container {
+.tinymce-container ::v-deep .mce-fullscreen {
+  z-index: 10000;
+}
+/* .tinymce-container {
   ::v-deep {
     .mce-fullscreen {
       z-index: 10000;
     }
   }
-}
+} */
 
 .tinymce-textarea {
   visibility: hidden;

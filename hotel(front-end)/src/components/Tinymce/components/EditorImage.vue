@@ -101,11 +101,19 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.editor-slide-upload {
+<style scoped>
+/* .editor-slide-upload {
   margin-bottom: 20px;
   ::v-deep .el-upload--picture-card {
     width: 100%;
   }
+} */
+.editor-slide-upload {
+  margin-bottom: 20px;
 }
+
+.editor-slide-upload ::v-deep .el-upload--picture-card {
+  width: 100%;
+}
+
 </style>
