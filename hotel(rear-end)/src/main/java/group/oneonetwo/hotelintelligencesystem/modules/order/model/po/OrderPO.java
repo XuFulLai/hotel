@@ -39,7 +39,8 @@ public class OrderPO implements Serializable {
 
     @TableField("province")
     private String province;
-    
+   
+    @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
 

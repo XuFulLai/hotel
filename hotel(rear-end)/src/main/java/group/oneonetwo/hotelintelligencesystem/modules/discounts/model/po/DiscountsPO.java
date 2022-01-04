@@ -1,9 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.discounts.model.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -31,6 +28,7 @@ public class DiscountsPO implements Serializable {
     @TableField("effect_condition")
     private Integer effectCondition;
 
+    @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
 

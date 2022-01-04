@@ -1,9 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -25,6 +22,7 @@ public class BedTypePO implements Serializable {
     @TableField("hardness")
     private String hardness;
 
+    @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
 

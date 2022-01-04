@@ -1,9 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,6 +16,7 @@ public class MenuDeptPO implements Serializable {
     @TableField("menu_id")
     private String menuId;
 
+    @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
 
