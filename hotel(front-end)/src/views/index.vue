@@ -15,7 +15,7 @@
                         text-color="#4A5A7F"
                         active-text-color="#ffffff">
 
-                    <TreeMenu v-for="item in menuList" :menu="item"/>
+                    <!-- <TreeMenu v-for="item in menuList" :menu="item"/> -->
 
                 </el-menu>
 
