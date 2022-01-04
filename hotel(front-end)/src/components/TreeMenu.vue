@@ -31,3 +31,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.el-submenu .el-menu>.is-active {
+  background: linear-gradient(90deg, #428DFF, #397DFF) !important;
+  border-radius: 6px;
+}
+</style>

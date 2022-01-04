@@ -357,16 +357,16 @@
 
     .el-menu .el-menu-item {
         /*background-color: #F0F2F3!important;*/
-        background-color: #e1e3e5 !important;
+        /*background-color: #e1e3e5 !important;*/
         height: 45px;
         line-height: 45px;
         margin: 18px 0px;
     }
 
-    .el-menu-item:hover {
-        background: none !important;
-        outline: none !important;
-    }
+    /*.el-menu-item:hover {*/
+    /*    background: none !important;*/
+    /*    outline: none !important;*/
+    /*}*/
 
     .el-menu .is-active {
         background: linear-gradient(90deg, #428DFF, #397DFF) !important;
