@@ -36,6 +36,7 @@
             WHERE
                 dept_id = #{vo.deptId} or role = #{vo.role}
             )
+          and is_deleted = 0
         order by p_id,sort
     </select>
 </mapper>

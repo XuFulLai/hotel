@@ -29,6 +29,7 @@
                <if test="vo.pId != null and vo.pId != ''">
                     and p_id = #{vo.pId}
                </if>
+               and is_deleted = 0
           </where>
      </select>
 </mapper>
