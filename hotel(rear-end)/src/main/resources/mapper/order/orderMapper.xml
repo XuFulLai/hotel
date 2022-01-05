@@ -98,6 +98,6 @@
         </where>
     </select>
     <select id="getcount" resultType="group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO">
-        SELECT `status`,COUNT(*)as 'counts'  FROM orders where is_deleted =0 GROUP BY `status`;
+        SELECT `status`,COUNT(*)as 'counts'  FROM orders where is_deleted =0 and customer_id = #{vo.customerId} GROUP BY `status`;
     </select>
 </mapper>

@@ -207,14 +207,14 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public  Page<OrderVO> my(OrderVO orderVO){
-        orderVO.setCreateBy(authUtils.getUid());
+        orderVO.setCustomerId(authUtils.getUid());
         Page<OrderVO> page = getPage(orderVO);
         return page;
     }
 
     @Override
     public  List<OrderVO> count(OrderVO orderVO){
-        orderVO.setCreateBy(authUtils.getUid());
+        orderVO.setCustomerId(authUtils.getUid());
         return orderMapper.getcount(orderVO);
     }
 
