@@ -54,6 +54,15 @@ public class UserServiceImpl implements IUserService {
         if (userVO == null) {
             throw new SavaException("插入用户失败：user实体为空");
         }
+        if(userVO.getUsername()==null){
+            throw new SavaException("用户名不能为空");
+        }
+        UserPO userPO1=new UserPO();
+        userPO1=this.findByUsername(userPO1.getUsername());
+        if(userPO1!=null){
+            throw  new SavaException("该用户已存在");
+        }
+
         userVO.setPassword(bCryptPasswordEncoder.encode(userVO.getPassword()));
         UserPO userPO = new UserPO();
         BeanUtils.copyProperties(userVO,userPO);
