@@ -275,6 +275,7 @@ export default {
         name: this.form.name,
         address: this.form.address,
         parkingLot: this.form.parkingLot,
+        cover: this.form.cover
       }
       if (value == 'add') {
         this.hotelRequest(value, data)
@@ -383,6 +384,11 @@ export default {
           .then(res => {
             console.log(res);
             this.form.cover = 'http://' + res.data.data
+            this.$message({
+              message: '上传成功',
+              type: 'success',
+              duration: 1000
+            });
           })
           .catch(err => {
             console.log(err);
