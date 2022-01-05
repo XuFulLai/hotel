@@ -215,7 +215,7 @@ export default {
     mapFormat(val, map) {
       console.log(val)
       console.log(map)
-      return map[val].name
+      return map[val]
     }
   },
   methods: {
@@ -272,18 +272,19 @@ export default {
           page: 1,
           size: 9999999
         },
-        username: this.username,
-        nickname: this.nickname
       }
       post("/api/dept/list", data).then(res => {
         this.deptList = this.getTreeData(res.data.data)
-        console.log(this.deptList)
+        // console.log(this.deptList)
       })
       post("/api/dept/page", data).then(res => {
         let list = res.data.data.records
+        // console.log("list===",list)
         list.forEach(row => {
-          this.deptMap[row.id] = {name: row.name}
+          // console.log("listitem===",row)
+          this.deptMap[row.id] = row.name
         })
+        // console.log("deptmap===",this.deptMap)
       })
 
     },
