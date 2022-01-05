@@ -207,7 +207,14 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public  Page<OrderVO> my(OrderVO orderVO){
-        orderVO.setCustomerId(authUtils.getUid());
+        String role = authUtils.getRole();
+        switch (role) {
+            case "admin":break;
+            case "hotel_admin":orderVO.setHotelId(authUtils.getUserHotelId());break;
+            default:
+                orderVO.setCustomerId(authUtils.getUid());
+                break;
+        }
         Page<OrderVO> page = getPage(orderVO);
         return page;
     }
@@ -232,7 +239,7 @@ public class OrderServiceImpl implements IOrderService {
         String hotel = "1";
         Integer[] ways = {1,2};
         String[] roomTypes = {"1463764265293885441", "1463890996549947394", "1463891142348148737"};
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 150; i++) {
             OrderVO orderVO = new OrderVO();
             Random random = new Random();
             orderVO.setHotelId(hotel);
