@@ -70,6 +70,7 @@
             <if test="vo.createBy != null and vo.createBy != ''">
                 and o.create_by= #{vo.createBy}
             </if>
+                and customer_id = #{vo.customerId}
                 and o.is_deleted = 0
         </where>
                 order by o.create_time DESC
