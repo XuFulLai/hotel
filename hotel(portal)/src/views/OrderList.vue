@@ -25,7 +25,7 @@
                 <li v-for="(item,index) in orderList">
                     <div class="d-flex align-items-center justify-content-between mb-15 font-20">
                         <p>{{ item.currentStatus }}</p>
-                        <a v-if="item.status != 4" class="color-red cursor" @click="cancelOrder(item.id)">取消订单</a>
+                        <a v-if="item.status == 1" class="color-red cursor" @click="cancelOrder(item.id)">取消订单</a>
                     </div>
                     <div class="d-flex align-items-center justify-content-between font-16 color-6">
                         <div>

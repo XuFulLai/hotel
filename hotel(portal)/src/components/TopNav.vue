@@ -7,6 +7,7 @@
                     <li><router-link to="/index">首页</router-link></li>
                     <li><router-link to="/hotelList">酒店列表</router-link></li>
                     <li><router-link to="/orderList">我的订单</router-link></li>
+                    <li><router-link to="/login">注销</router-link></li>
                     <!--<li><button class="nav-bt">注册/登录</button></li>-->
                 </ul>
             </div>
