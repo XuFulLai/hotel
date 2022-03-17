@@ -126,7 +126,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button @click="checkInVisible = false">取 消</el-button>
             <el-button type="primary" @click="checkIn">确 定</el-button>
       </span>
 
@@ -532,8 +532,8 @@ export default {
     initWebSocket() { //初始化weosocket
       let token = localStorage.getItem('Token')
       let tokenModify = token.split(' ')[1]
-      this.ws = new WebSocket('ws://8.130.10.100:8081/wsServer?Authentication=' + tokenModify)
-      // this.ws = new WebSocket('ws://127.0.0.1:8081/wsServer?Authentication=' + tokenModify)
+      // this.ws = new WebSocket('ws://8.130.10.100:8081/wsServer?Authentication=' + tokenModify)
+      this.ws = new WebSocket('ws://106.52.219.171:8102/wsServer?Authentication=' + tokenModify)
       this.ws.onmessage = this.websocketonmessage;
       this.ws.onopen = this.websocketonopen;
       this.ws.onerror = this.websocketonerror;
@@ -617,12 +617,21 @@ export default {
       let data = this.checkInForm
       let that = this
       post("/api/room/checkIn",data).then(res => {
-        let fee = res.data.data.pay
-        let lastFee = res.data.data.lastPay
-        let orderId = res.data.data.id
-        that.roomHandleVisible = false
-        that.checkInVisible = false
-        alert("订单号:" + orderId + "\n总价:" + fee + "元\n折后价:" + lastFee + "元")
+        if (res.data.code === "200") {
+          let fee = res.data.data.pay
+          let lastFee = res.data.data.lastPay
+          let orderId = res.data.data.id
+          that.roomHandleVisible = false
+          that.checkInVisible = false
+          alert("订单号:" + orderId + "\n总价:" + fee + "元\n折后价:" + lastFee + "元")
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: 'error',
+            duration: 2000
+          });
+        }
+
       })
     },
 
