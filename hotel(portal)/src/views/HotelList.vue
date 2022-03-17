@@ -385,7 +385,9 @@
                                 type: 'success'
                             });
                             this.dialogVisible = false
+                          console.log("订单id：",res.data.data.id)
                         }
+
                     })
                     .catch(err => {
                         console.log(err);

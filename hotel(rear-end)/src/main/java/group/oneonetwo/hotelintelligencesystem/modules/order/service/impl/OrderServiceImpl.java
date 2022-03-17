@@ -238,8 +238,8 @@ public class OrderServiceImpl implements IOrderService {
         String[] members = {"3","4","5","6","7"};
         String hotel = "1";
         Integer[] ways = {1,2};
-        String[] roomTypes = {"1463764265293885441", "1463890996549947394", "1463891142348148737"};
-        for (int i = 0; i < 150; i++) {
+        String[] roomTypes = {"1463764265293885441", "1463890996549947394", "1463891142348148737","1470613302300102658","1470613446756126722"};
+        for (int i = 0; i < 1500; i++) {
             OrderVO orderVO = new OrderVO();
             Random random = new Random();
             orderVO.setHotelId(hotel);

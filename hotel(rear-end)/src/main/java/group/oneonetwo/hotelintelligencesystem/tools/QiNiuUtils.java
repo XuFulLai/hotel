@@ -19,17 +19,17 @@ public class QiNiuUtils {
     private static final Logger logger = LoggerFactory.getLogger(Object.class);
 
     // 设置需要操作的账号的AK和SK
-    private static final String ACCESS_KEY = "5H5HVOD0aou5nb9g_OXy0Bzw7gzZarrTkQo6ITgY";
-    private static final String SECRET_KEY = "UF7XEaJ36ZpVA41vKolH3AFIybRQ-gY7w9O6KG1A";
+    private static final String ACCESS_KEY = "mRdcukwnSilb9YAyngC6-LNW6AW8rzHIfi-o7PKP";
+    private static final String SECRET_KEY = "eJd55kd1wzVPkiGS54hSPe-D9REypOlnfSJEEaMH";
 
     // 要上传的空间名称
-    private static final String BUCKETNAME = "oneone-hotels";
+    private static final String BUCKETNAME = "hotel-1";
 
     // 密钥
     private static final Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
 
     // 外链默认域名
-    private static final String DOMAIN = "r57rleme0.hn-bkt.clouddn.com";
+    private static final String DOMAIN = "r8w2attho.hn-bkt.clouddn.com";
 
     /**
      * 将图片上传到七牛云
