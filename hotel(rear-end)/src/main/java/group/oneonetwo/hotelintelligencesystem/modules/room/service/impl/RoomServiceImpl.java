@@ -172,7 +172,7 @@ public class RoomServiceImpl implements IRoomService {
         int[] pays = new int[2];
         RoomVO thisRoom = selectOneByIdReturnVO(checkInVO.getId());
         //当该房间是被预定且订单id不同时,重新分配房间
-        if (thisRoom.getStatus() == 2 && (WStringUtils.isBlank(checkInVO.getOrderId()) || thisRoom.getOrderId().equals(checkInVO.getOrderId()))) {
+        if (thisRoom.getStatus() == 2 && (WStringUtils.isBlank(checkInVO.getOrderId()) || !thisRoom.getOrderId().equals(checkInVO.getOrderId()))) {
             assignRoom(thisRoom);
         }
         RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(thisRoom.getType());
@@ -333,14 +333,17 @@ public class RoomServiceImpl implements IRoomService {
 
     @Override
     public void assignRoom(RoomVO roomVO) {
-
+        QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
         //解锁原来锁定的房间
         if (!WStringUtils.isBlank(roomVO.getOrderId())) {
             cancelRoom(roomVO);
+            if (roomVO.getId() != null) {
+                wrapper.ne("id",roomVO.getId());
+            }
         }
 
-        QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
-        wrapper.eq("type",roomVO.getType()).eq("status",0).notIn("id",roomVO.getId());
+
+        wrapper.eq("type",roomVO.getType()).eq("status",0);
         List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
         if (roomPOS.size() > 1) {
             RoomVO vo = new RoomVO();
