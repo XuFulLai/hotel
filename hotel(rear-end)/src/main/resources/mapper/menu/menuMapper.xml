@@ -34,7 +34,9 @@
             FROM
                 menu_dept
             WHERE
-                dept_id = #{vo.deptId} or role = #{vo.role}
+                (dept_id = #{vo.deptId} or role = #{vo.role})
+            and is_deleted = 0
+
             )
           and is_deleted = 0
         order by p_id,sort
