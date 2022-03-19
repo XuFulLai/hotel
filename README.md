@@ -30,7 +30,7 @@
 
 ### 安装教程
 
-1.  xxxx
+1.  hotel(front-end)项目安装依赖可能会报错，目前有一种解决方法：删除掉该目录下的package.json文件第15行代码,"vue-qr": "^3.2.4",然后终端键入命令：npm install,成功安装之后，在终端输入命令：npm install vue-qr，安装完成，完成该项目依赖的安装。
 2.  xxxx
 3.  xxxx
 
