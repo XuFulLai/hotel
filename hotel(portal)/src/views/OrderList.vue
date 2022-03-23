@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: #ecf5ff;min-height: 100vh;">
+    <div style="min-height: 100vh;">
 
         <!-- 导航栏 -->
         <top-nav></top-nav>
@@ -8,51 +8,61 @@
             <img src="../assets/images/hotel-list-bg.png" alt="">
         </div>
 
-        <div class="order-list-content">
+        <div class="order-list-main">
 
-            <div class="d-flex align-items-center justify-content-between">
-                <div v-for="(item,index) in statusList" class="order-status">
-                    <img :src="require(`../assets/images/status_${item.status}.png`)" alt="">
-                    <div>
-                        <!-- <h3 class="font-22">{{ statusTextList[item.status] }}</h3> -->
-                        <h3 class="font-22">{{ item.status | statusFilter }}</h3>
-                        <p class="font-16">{{ item.counts }}</p>
+            <div class="order-list-content">
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <div v-for="(item,index) in statusList" class="order-status">
+                        <img :src="require(`../assets/images/status_${item.status}.png`)" alt="">
+                        <div>
+                            <!-- <h3 class="font-22">{{ statusTextList[item.status] }}</h3> -->
+                            <h3 class="font-22">{{ item.status | statusFilter }}</h3>
+                            <p class="font-16">{{ item.counts }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <ul class="order-list">
-                <li v-for="(item,index) in orderList">
-                    <div class="d-flex align-items-center justify-content-between mb-15 font-20">
-                        <p>{{ item.currentStatus }}</p>
-                        <a v-if="item.status == 1" class="color-red cursor" @click="cancelOrder(item.id)">取消订单</a>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between font-16 color-6">
-                        <div>
-                            <p class="mb-10">酒店名称：{{ item.hotelName }}</p>
-                            <div class="d-flex align-items-center">
-                                <p>房间类型：{{ item.roomTypeName }}</p>
-                                <p class="ml-10 mr-10" style="color: #e0e0e0"> | </p>
-                                <p>入住天数：{{ item.days }}天</p>
-                            </div>
+                <ul class="order-list">
+                    <li v-for="(item,index) in orderList">
+                        <div class="d-flex align-items-center justify-content-between mb-15 font-20">
+                            <p>{{ item.currentStatus }}</p>
+                            <a v-if="item.status == 1" class="color-red cursor" @click="cancelOrder(item.id)">取消订单</a>
                         </div>
-                        <p>实付金额：{{ item.lastPay }} 元</p>
-                    </div>
-                </li>
-            </ul>
+                        <div class="d-flex align-items-center justify-content-between font-16 color-6">
+                            <div>
+                                <p class="mb-10">酒店名称：{{ item.hotelName }}</p>
+                                <div class="d-flex align-items-center">
+                                    <p>房间类型：{{ item.roomTypeName }}</p>
+                                    <p class="ml-10 mr-10" style="color: #e0e0e0"> | </p>
+                                    <p>入住天数：{{ item.days }}天</p>
+                                </div>
+                            </div>
+                            <p>实付金额：{{ item.lastPay }} 元</p>
+                        </div>
+                    </li>
+                </ul>
 
-            <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center">
-                <el-pagination
-                        background
-                        @current-change="handleCurrentChange"
-                        @prev-click="prevPage"
-                        @next-click="nextPage"
-                        layout="prev, pager, next"
-                        :total="pageNum">
-                </el-pagination>
+                <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center">
+                    <el-pagination
+                            background
+                            @current-change="handleCurrentChange"
+                            @prev-click="prevPage"
+                            @next-click="nextPage"
+                            layout="prev, pager, next"
+                            :total="pageNum">
+                    </el-pagination>
+                </div>
+
             </div>
+
+            <div v-show="orderList.length == 0" class="order-null text-center font-30">暂无订单!</div>
+
+            <Footer></Footer>
 
         </div>
+
+
 
     </div>
 </template>
@@ -60,11 +70,13 @@
 <script>
     import {get, post} from "../utils/request";
     import TopNav from '../components/TopNav'
+    import Footer from '../components/Footer.vue';
 
     export default {
         name: "OrderList",
         components: {
-            TopNav
+            TopNav,
+            Footer
         },
         data() {
             return {
@@ -209,6 +221,14 @@
 </script>
 
 <style scoped>
+    .order-list-main {
+        height: calc(100vh - 220px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: #ecf5ff;
+    }
+
     .t-nav {
         width: 100%;
         height: 68px;
@@ -347,9 +367,11 @@
     }
 
     .order-list-content {
-        margin: 20px auto 0px auto;
-        width: 80vw;
-        padding: 20px;
+        /* margin: 20px auto 0px auto;
+        width: 80vw; */
+
+        padding: 30px 15%;
+        background-color: #ecf5ff;
     }
 
     .order-status {

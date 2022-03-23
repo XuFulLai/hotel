@@ -18,16 +18,6 @@
                 </ul>
 
                 <router-view></router-view>
-
-                <!--<div class="inp font-14">-->
-                    <!--<p class="m-0">账号：</p>-->
-                    <!--<input v-model="username" type="text" placeholder="请输入用户名">-->
-                <!--</div>-->
-                <!--<div class="inp font-14">-->
-                    <!--<p class="m-0">密码：</p>-->
-                    <!--<input v-model="password" type="password" placeholder="请输入密码">-->
-                <!--</div>-->
-                <!--<button @click="login">登录</button>-->
             </div>
 
         </div>

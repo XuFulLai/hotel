@@ -8,7 +8,6 @@
                     <li><router-link to="/hotelList">酒店列表</router-link></li>
                     <li><router-link to="/orderList">我的订单</router-link></li>
                     <li><router-link to="/login">注销</router-link></li>
-                    <!--<li><button class="nav-bt">注册/登录</button></li>-->
                 </ul>
             </div>
         </div>
@@ -24,13 +23,14 @@
 <style scoped>
     .t-nav {
         width: 100%;
-        height: 68px;
+        height: 55px;
         background: #fff;
-        opacity: 0.8;
+        opacity: 0.9;
         z-index: 999;
         position: fixed;
         top: 0;
         left: 0;
+        box-shadow: 0 0 3px;
     }
 
     .nav-content {
@@ -49,6 +49,9 @@
     .nav-content li {
         font-size: 18px;
         margin: 0 30px;
+        height: 100%;
+        display: flex;
+        align-items: center;
     }
 
     .nav-bt {

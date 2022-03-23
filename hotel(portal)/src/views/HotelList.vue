@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: #ecf5ff;padding-bottom: 20px;min-height: 100vh">
+    <div style="background-color: #ecf5ff;min-height: 100vh">
 
         <!-- 导航栏 -->
         <top-nav></top-nav>
@@ -9,32 +9,41 @@
             <h3>酒店列表</h3>
         </div>
 
-        <!--  酒店列表-->
-        <div class="hotel-list-content">
-            <ul class="hotel-list">
-                <li v-for="(item,index) in hotelList">
-                    <div class="li-l">
-                        <img :src=item.cover alt="">
-                    </div>
-                    <div class="li-r">
-                        <h4>{{ item.name }}</h4>
-                        <h6>{{ item.address }}</h6>
-                        <div v-html="item.otherPolicy"></div>
-                        <button @click="hotelDetails(index,item.id)">选择此酒店</button>
-                    </div>
-                </li>
-            </ul>
-        </div>
+        <div class="hotel-list-main">
 
-        <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center">
-            <el-pagination
-                    background
-                    @current-change="handleCurrentChange"
-                    @prev-click="prevPage"
-                    @next-click="nextPage"
-                    layout="prev, pager, next"
-                    :total="pageNum">
-            </el-pagination>
+            <div>
+                <!--  酒店列表-->
+                <div class="hotel-list-content">
+                    <ul class="hotel-list">
+                        <li v-for="(item,index) in hotelList">
+                            <div class="li-l">
+                                <img :src=item.cover alt="">
+                            </div>
+                            <div class="li-r">
+                                <h4>{{ item.name }}</h4>
+                                <h6>{{ item.address }}</h6>
+                                <div v-html="item.otherPolicy"></div>
+                                <button @click="hotelDetails(index,item.id)">选择此酒店</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center mb-30">
+                    <el-pagination
+                            background
+                            @current-change="handleCurrentChange"
+                            @prev-click="prevPage"
+                            @next-click="nextPage"
+                            layout="prev, pager, next"
+                            :total="pageNum">
+                    </el-pagination>
+                </div>
+            </div>
+
+            <!-- 页脚 -->
+            <Footer></Footer>
+
         </div>
 
 
@@ -89,11 +98,13 @@
 <script>
     import {get, post} from "../utils/request";
     import TopNav from '../components/TopNav'
+    import Footer from '../components/Footer.vue';
 
     export default {
         name: "HotelList",
         components: {
-            TopNav
+            TopNav,
+            Footer
         },
         watch: {
             dialogVisible(newVal,oldVal){
@@ -399,6 +410,16 @@
 </script>
 
 <style scoped>
+    .hotel-list-main {
+        height: calc(100vh - 220px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .hotel-list-main>div:first-child {
+        background-color: #ecf5ff;
+    }
+
     .t-nav {
         width: 100%;
         height: 68px;
@@ -534,6 +555,9 @@
 
     .hotel-list li:nth-child(even) .li-l {
         order: 2;
+    }
+    .mb-30 {
+        margin-bottom: 30px;
     }
 
 
