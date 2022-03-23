@@ -5,7 +5,7 @@
         <top-nav></top-nav>
 
         <div class="carousel-box">
-            <el-carousel trigger="click" height="500px">
+            <el-carousel trigger="click" height="450px">
                 <el-carousel-item>
                     <img style="width: 100%;height: 100%;" src="../assets/images/index-bg-1.png" >
                 </el-carousel-item>
@@ -15,38 +15,38 @@
                 <el-carousel-item>
                     <img style="width: 100%;height: 100%;" src="../assets/images/index-bg-2.png" >
                 </el-carousel-item>
-                <!--<el-carousel-item>-->
-                    <!--<img style="width: 100%;height: 100%;" src="../assets/images/room.png" >-->
-                <!--</el-carousel-item>-->
-                <!--<el-carousel-item>-->
-                    <!--<img style="width: 100%;height: 100%;" src="../assets/images/bg.jpg" alt="">-->
-                <!--</el-carousel-item>-->
-                <!--<el-carousel-item>-->
-                    <!--<img style="width: 100%;height: 100%;" src="../assets/images/city2.png" alt="">-->
-                <!--</el-carousel-item>-->
             </el-carousel>
         </div>
 
-        <div class="reserve-box d-flex justify-content-center">
+        <div class="index-main">
 
-            <!-- 房源搜索模块 -->
-            <div class="room-center">
-                <div class="room-left">
-                     <img src="../assets/images/room.png" alt="">
-                </div>
-                <div class="room-right">
-                    <div class="room-rh-content d-flex flex-column justify-content-between">
-                        <div>
-                            <h1>房源预定</h1>
-                            <p>预定独一无二的房源与体验。</p>
-                            <el-input v-model="hotelName" placeholder="请输入酒店名称"></el-input>
+            <div class="reserve-box d-flex justify-content-center">
+
+                <!-- 房源搜索模块 -->
+                <div class="room-center">
+                    <div class="room-left">
+                        <img src="../assets/images/room.png" alt="">
+                    </div>
+                    <div class="room-right">
+                        <div class="room-rh-content d-flex flex-column justify-content-between">
+                            <div>
+                                <h1>房源预定</h1>
+                                <p>预定独一无二的房源与体验。</p>
+                                <el-input v-model="hotelName" placeholder="请输入酒店名称"></el-input>
+                            </div>
+                            <button @click="search">搜索</button>
                         </div>
-                        <button @click="search">搜索</button>
                     </div>
                 </div>
+
             </div>
 
+            <!-- 页脚 -->
+            <Footer></Footer>
+
         </div>
+
+
 
 
 
@@ -57,11 +57,13 @@
 <script>
     import {get,post} from "../utils/request";
     import TopNav from '../components/TopNav'
+    import Footer from '../components/Footer'
 
     export default {
         name: "index",
         components: {
-            TopNav
+            TopNav,
+            Footer
         },
         data() {
             return {
@@ -102,30 +104,20 @@
 
 <style scoped>
 
-    /*.el-carousel__item h3 {*/
-        /*color: #475669;*/
-        /*font-size: 14px;*/
-        /*opacity: 0.75;*/
-        /*line-height: 150px;*/
-        /*margin: 0;*/
-    /*}*/
-
-    /*.el-carousel__item:nth-child(2n) {*/
-        /*background-color: #99a9bf;*/
-    /*}*/
-
-    /*.el-carousel__item:nth-child(2n+1) {*/
-        /*background-color: #d3dce6;*/
-    /*}*/
-
+    .index-main {
+        height: calc(100vh - 450px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
     .reserve-box {
-        margin-top: -80px;
+        margin-top: -135px;
         margin-bottom: 80px;
     }
     .room-center{
         width: 800px;
-        height: 460px;
+        height: 430px;
         background-color: #fff;
         box-shadow: 0px 5px 38px 0px rgba(67, 170, 253, 0.18);
         border-radius: 15px;
@@ -173,7 +165,5 @@
         color: #FFFFFF;
         border: 0;
     }
-
-
 
 </style>
