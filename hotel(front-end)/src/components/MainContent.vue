@@ -38,7 +38,6 @@
                 let orderChart = echarts.init(order)
                 get('/api/chart/order/way')
                     .then(res => {
-                        console.log(res);
                         orderChart.setOption({
                             title: {
                                 text: '订单来源统计',
@@ -89,15 +88,12 @@
 
                 get('/api/chart/order/orderNum/year/1')
                     .then(res => {
-                        console.log(res);
                         let monthList = []
                         let valList = []
                         for (let i = 0; i < res.data.data.length; i++) {
                             monthList.push(res.data.data[i].name)
                             valList.push(res.data.data[i].value)
                         }
-                        console.log(monthList);
-                        console.log(valList);
                         orderStatisticsChart.setOption({
                             title: {
                                 text: '近一年订单统计',
@@ -134,7 +130,6 @@
 
                 get('/api/chart/order/map')
                     .then(res => {
-                        console.log(res);
                         if (res.data.code == 200) {
                             let valArr = []
                             for (let i = 0; i < res.data.data.length; i++) {
@@ -194,21 +189,6 @@
                                         min: 1,
                                         max: 3.5,
                                     },
-                                    // itemStyle: {
-                                    //     normal: {
-                                    //         borderColor: "#293171",
-                                    //         borderWidth: "2",
-                                    //         areaColor: "pink",
-                                    //     },
-                                    //     emphasis: {
-                                    //         areaColor: null,
-                                    //         shadowOffsetX: 0,
-                                    //         shadowOffsetY: 0,
-                                    //         shadowBlur: 20,
-                                    //         borderWidth: 0,
-                                    //         shadowColor: "rgba(0, 0, 0, 0.5)",
-                                    //     },
-                                    // },
                                 },
                                 series: [
                                     {
@@ -237,7 +217,6 @@
 
                 get('/api/chart/order/roomType')
                     .then(res => {
-                        console.log(res);
                         roomTypeChart.setOption({
                             title: {
                                 text: '订单房间类型',
@@ -280,7 +259,6 @@
             function f1(){
               get('/api/chart/order/income/day/7')
                   .then(res => {
-                    console.log(res);
                     for (let i = 0; i < res.data.data.length; i++) {
                       incomeList.push(res.data.data[i].value) //整理出符合的value值到新数组
                       genFunction.next() //next
@@ -295,8 +273,6 @@
             function f2(){
               get('/api/chart/order/orderNum/day/7')
                   .then( res => {
-                    console.log(res);
-                    console.log(incomeList);
                     for (let i = 0; i < res.data.data.length; i++) {
                       dateList.push(res.data.data[i].name)//整理后台数据到新数组
                       orderNumList.push(res.data.data[i].value)//整理后台数据到新数组
@@ -399,9 +375,6 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-        /*width: calc(100% - 40px);*/
-        /*height: calc(100vh - 40px);*/
-        /*padding: 20px;*/
     }
 
     .main-content > div {

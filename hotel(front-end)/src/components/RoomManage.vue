@@ -51,7 +51,7 @@
     <el-dialog
         :title="current.name"
         :visible.sync="roomHandleVisible"
-        width="20%"
+        width="300px"
     >
       <p class="text-left ml-10">房间信息：</p>
       <el-button
@@ -85,6 +85,7 @@
         :title="current.name + '入住'"
         :visible.sync="checkInVisible"
         width="30%"
+        custom-class="min-w-450"
     >
       <el-form ref="form" label-width="80px">
         <div style="display: flex;flex-direction: row;align-items: center">
@@ -102,8 +103,9 @@
         <el-form-item label="会员ID" style="margin-top: 20px">
           <el-input v-model="checkInForm.customerId"></el-input>
         </el-form-item>
-        <el-form-item label="来访地">
-          <el-select v-model="checkInForm.province" placeholder="请选择来访地" style="margin-left: -96px">
+        <el-form-item style="text-align:left" label="来访地">
+          <!-- <el-select v-model="checkInForm.province" placeholder="请选择来访地" style="margin-left: -96px"> -->
+          <el-select v-model="checkInForm.province" placeholder="请选择来访地">
             <el-option
                 v-for="item in provinceList"
                 :key="item.value"
@@ -113,14 +115,14 @@
           </el-select>
         </el-form-item>
         <el-form-item label="退房时间">
-          <div class="block">
+          <div style="text-align:left" class="block">
             <!--            <span class="demonstration">默认</span>-->
             <el-date-picker
-                style="margin-left: -92px"
                 v-model="checkInForm.estimatedCheckOut"
                 value-format="yyyy-MM-dd"
                 type="date"
-                placeholder="选择日期">
+                placeholder="选择日期"
+                :picker-options="pickerOptions">
             </el-date-picker>
           </div>
         </el-form-item>
@@ -138,6 +140,7 @@
         :title="current.name + current.infoTitle"
         :visible.sync="infoVisible"
         width="40%"
+        custom-class="min-w-650"
     >
       <div class="d-flex flex-row mt-10">
         <div class="blue-label"></div>
@@ -356,7 +359,11 @@ export default {
         infoMode: "check",
         infoTitle: "房间详情"
       },
-
+      pickerOptions: {
+          disabledDate(v){
+              return v.getTime() < new Date().getTime() - 86400000;
+          }
+      },      
       form: {
         id: undefined,
         name: undefined,
@@ -513,7 +520,7 @@ export default {
       this.initWebSocket();
     },
     websocketonmessage(e) { //数据接收
-      const redata = JSON.parse(e.data);
+      const redata = JSON.parse(e.data); // 个别数据不是JSON格式数据
       // const redata = e.data
       console.log(redata);
       for (let i = 0; i < this.roomList.length; i++) {
@@ -532,8 +539,8 @@ export default {
     initWebSocket() { //初始化weosocket
       let token = localStorage.getItem('Token')
       let tokenModify = token.split(' ')[1]
-      // this.ws = new WebSocket('ws://8.130.10.100:8081/wsServer?Authentication=' + tokenModify)
       this.ws = new WebSocket('ws://106.52.219.171:8102/wsServer?Authentication=' + tokenModify)
+      // this.ws = new WebSocket(`ws://106.52.219.171:8102/wsServer?Authentication=${tokenModify}`)
       this.ws.onmessage = this.websocketonmessage;
       this.ws.onopen = this.websocketonopen;
       this.ws.onerror = this.websocketonerror;
@@ -609,7 +616,19 @@ export default {
       let that = this
       get("/api/room/checkOut/" + this.current.id).then(res => {
         that.roomHandleVisible = false
-        alert(res.data.data)
+        console.log(res);      
+        if (res.data.code == 200) {                                                                        
+          this.$message({
+              message: '订单完成！',
+              type: 'success'
+          });
+        } else {                                      
+          this.$message({
+              message: res.data.msg,
+              type: 'error'
+          });
+        }
+        // alert(res.data.data)
       })
     },
 
@@ -623,7 +642,16 @@ export default {
           let orderId = res.data.data.id
           that.roomHandleVisible = false
           that.checkInVisible = false
-          alert("订单号:" + orderId + "\n总价:" + fee + "元\n折后价:" + lastFee + "元")
+          console.log(res);
+          this.$message({
+              message: `<p>订单号:${orderId}</p><p>总价:${fee}元</p><p>折后价:${lastFee}元</p>`,
+              type: 'success',
+              customClass: 'order-cost',
+              dangerouslyUseHTMLString: true,
+              offset: 180,
+              duration: 5000
+          });          
+          // alert("订单号:" + orderId + "\n总价:" + fee + "元\n折后价:" + lastFee + "元")
         } else {
           this.$message({
             message: res.data.msg,

@@ -253,6 +253,8 @@ textarea {
 }
 /* 宽度样式 End */
 
+
+/* Other Start */
 .blue-label {
     width: 3px;
     border-radius:5px;
@@ -260,3 +262,22 @@ textarea {
     background: #409EFF;
     margin-right: 6px
 }
+.min-w-650 {
+    min-width: 650px!important;
+}
+.min-w-300 {
+    min-width: 300px!important;
+}
+.min-w-450 {
+    min-width: 450px!important;
+}
+.order-cost {
+    box-shadow: 0 0 3px;
+}
+.order-cost p {
+    font-size: 18px;
+}
+.order-cost .el-message__content>p{
+    margin-bottom: 10px!important;
+}
+/* Other End */

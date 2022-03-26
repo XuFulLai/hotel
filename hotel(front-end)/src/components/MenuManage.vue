@@ -418,6 +418,7 @@ export default {
 <style scoped>
 .depart-main {
   width: 100%;
+  min-width: 950px;
   background: #FFFFFF;
   box-shadow: 0px 5px 30px 0px rgba(22, 115, 255, 0.1);
 }

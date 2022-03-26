@@ -107,7 +107,7 @@ router.beforeEach((to, from, next) => {
             next('/login')
             console.log('没有token，跳转到登录页面');
         } else {
-            console.log('路由守卫触发');
+            // console.log('路由守卫触发');
             next();
         }
     }
