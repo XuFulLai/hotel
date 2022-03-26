@@ -257,3 +257,14 @@ textarea {
     width: 100%;
 }
 /* 宽度样式 End */
+
+
+/* Other Start */
+.room-type-radio {
+    margin: 5px 0px;
+}
+.room-type-radio .el-radio__label {
+    display: inline-block;
+    width: 90px;
+}
+/* Other End */

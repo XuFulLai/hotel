@@ -63,14 +63,15 @@
                                 value-format="yyyy-MM-dd"
                                 range-separator="至"
                                 start-placeholder="开始日期"
-                                end-placeholder="结束日期">
+                                end-placeholder="结束日期"
+                                :picker-options="pickerOptions">
                         </el-date-picker>
                     </div>
                 </div>
                 <div class="d-flex align-items-center mb-15">
                     <p class="w-100 text-left">选择房型:</p>
                     <div>
-                        <el-radio v-for="(item,index) in roomTypeList" v-model="roomType" :label="item.id">
+                        <el-radio class="room-type-radio" v-for="(item,index) in roomTypeList" v-model="roomType" :label="item.id">
                             {{ item.roomTypeName }}
                         </el-radio>
                     </div>
@@ -245,6 +246,11 @@
                     sort: undefined,
                     fee: undefined,
                     bedType: undefined,
+                },
+                pickerOptions: {
+                    disabledDate(v){
+                        return v.getTime() < new Date().getTime() - 86400000;
+                    }
                 }
             }
         },
@@ -397,6 +403,12 @@
                             });
                             this.dialogVisible = false
                           console.log("订单id：",res.data.data.id)
+                        } else {
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'warning',
+                                duration: 4000
+                            });
                         }
 
                     })
@@ -410,6 +422,10 @@
 </script>
 
 <style scoped>
+    .room-type-radio .el-radio__label {
+        display: inline-block;
+        width: 85px;
+    }
     .hotel-list-main {
         height: calc(100vh - 220px);
         display: flex;
