@@ -8,7 +8,7 @@
                     <p style="font-size: 30px;color: gray">酒店管理系统</p>
                 </div>
                 <el-menu
-                        default-active="1"
+                        :default-active=active
                         @open="handleOpen"
                         @close="handleClose"
                         background-color="#e1e3e5"
@@ -152,10 +152,10 @@
                 userId: '',
                 deptId: '',
                 requestImg: '',
-                avatarUrl: 'http://',
+                avatarUrl: '',
                 userInfo: {},
-
-                menuList: []
+                menuList: [],
+                active: ''
 
             }
         },
@@ -176,7 +176,9 @@
                         this.userName = res.data.data.username
                         this.name = res.data.data.nickname
                         this.deptId = res.data.data.dept
-                        this.avatarUrl += res.data.data.heads
+                        // this.avatarUrl = 'http://' + res.data.data.heads
+                        this.avatarUrl = `http://${res.data.data.heads}`
+                        this.requestImg = res.data.data.heads
                         this.userInfo = res.data.data
                         this.userInfo.password = ''
                     })
@@ -238,12 +240,24 @@
             },
             //改变用户信息
             changeUserInfo() {
-              this.userInfo.heads = this.requestImg
+                this.userInfo.heads = this.requestImg
                 let userData = this.userInfo
                 post('/api/user/modify', userData)
-                    .then(res => {
+                    .then(res => {                    
                         console.log("修改信息：", res);
-                        this.dialogVisible = false
+                        if (res.data.code == 200) {                                                    
+                            this.$message({
+                                message: '修改成功！',
+                                type: 'success'
+                            });
+                            this.dialogVisible = false
+                            this.getUserInfo()
+                        } else {                            
+                            this.$message({
+                                message: '修改失败！',
+                                type: 'error'
+                            });
+                        }
                     })
                     .catch(err => {
                         console.log(err);
@@ -268,6 +282,7 @@
         mounted() {
             this.getUserInfo()
             this.getMenuList()
+            this.active = localStorage.getItem('menuId')?localStorage.getItem('menuId'):"1"
         }
     }
 </script>

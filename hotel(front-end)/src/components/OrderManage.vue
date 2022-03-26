@@ -449,7 +449,7 @@ export default {
           })
     },
       dateFormatter(val){
-          console.log(val.createTime);
+          // console.log(val.createTime);
           var d = new Date(val.createTime);
 
           var year = d.getFullYear();       //年
@@ -498,6 +498,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
+  min-width: 1000px;
   height: 100%;
   background: #FFFFFF;
   box-shadow: 0px 5px 30px 0px rgba(22, 115, 255, 0.1);
@@ -509,5 +510,6 @@ export default {
   align-items: center;
   margin: 0 10px;
   font-size: 14px;
+  white-space: nowrap;
 }
 </style>

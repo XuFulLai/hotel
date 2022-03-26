@@ -5,15 +5,15 @@ const instance = axios.create({
     //baseURL:"http://106.52.219.171/tomato/hotel/api",
     baseURL:"http://106.52.219.171:8102",
     timeout:15000,
-    //headers:{}
 })
 
 //请求拦截
 instance.interceptors.request.use(
     function (config) {
-        // console.log('请求拦截：',config)
         if (localStorage.getItem('Token')) {
             config.headers.Authorization = localStorage.getItem('Token');
+        } else if(/auth/.test(config.url)) {
+            return config
         } else {
             console.log('token无法获取');
         }

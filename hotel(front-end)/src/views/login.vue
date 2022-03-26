@@ -160,6 +160,7 @@
             //页面挂载完毕清除token和用户id
             localStorage.removeItem('Token')
             localStorage.removeItem('userId')
+            localStorage.removeItem('menuId')
         }
     }
 </script>

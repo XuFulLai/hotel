@@ -23,10 +23,26 @@ export default {
   },
   methods: {
     handleRoute (menu) {
+      // if (this.$route.path == '/index/' && menu.path == ' ') {
+      //   return
+      // }
+      // // const currentPath = /\w*(?:\/+)/.exec('/index/')
+      // const currentPath = this.$route.path.replace(/^\/\S+[\/]/, '')
+      // if (currentPath == menu.path) {
+      //   return
+      // } else {
+      //   // 通过菜单URL跳转至指定路由
+      //   this.$router.push({
+      //     name: menu.path
+      //   })
+      // }
+
+      localStorage.setItem('menuId',menu.id)
       // 通过菜单URL跳转至指定路由
       this.$router.push({
           name: menu.path
-      })
+      }).catch(err => {})
+
     }
   }
 }

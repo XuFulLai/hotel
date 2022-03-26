@@ -1,5 +1,5 @@
 <template>
-    <div class="box" style="width: 82vw">
+    <div class="box" style="min-width:1280px">
         <el-form ref="form" :model="form" label-width="120px">
             <el-form-item v-show="false">
                 <el-input v-model="form.id"></el-input>
@@ -149,8 +149,9 @@
 <style scoped>
 
     .box {
-        width: calc(100vw + 235px);
-        /*width: 100vw;*/
+        width: calc(100vw - 345px);
+        /* width: 100vw; */
+        min-height: calc(100vh - 170px);
         display: flex;
         flex-direction: column;
         padding: 25px;
@@ -163,10 +164,12 @@
     }
 
     .editor-content {
+        width: 50%;
         margin-left: 30px;
-        flex-grow: 1;
+        /* flex-grow: 1; */
         border: 2px dashed #f1f1f1;
         padding: 0 20px;
+        box-sizing: border-box;
     }
 
     h3 {
