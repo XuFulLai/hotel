@@ -88,7 +88,7 @@
         },
         filters: {
             statusFilter(value) {
-                console.log(value);
+                // console.log(value);
                 switch (value) {
                     case '0':
                         value = '未支付'
