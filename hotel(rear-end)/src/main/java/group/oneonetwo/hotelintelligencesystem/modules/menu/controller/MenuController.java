@@ -1,8 +1,10 @@
 package group.oneonetwo.hotelintelligencesystem.modules.menu.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.IMenuService;
+import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.vo.MenuDeptVO;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -23,6 +26,9 @@ public class MenuController {
 
     @Autowired
     IMenuService menuService;
+
+    @Autowired
+    AuthUtils authUtils;
 
     @PostMapping("add")
     @ApiOperation("增加菜单")
@@ -62,4 +68,13 @@ public class MenuController {
     }
 
 
+    @ApiOperation("获取动态菜单")
+    @PostMapping("moveMenu")
+
+    public Reply<List<MenuVO>> moveMenu(){
+        MenuDeptVO vo = new MenuDeptVO();
+        vo.setDeptId(authUtils.getUserInfo().getDept());
+        vo.setRole(authUtils.getRole());
+        return Reply.success(menuService.getMenuTreeByDeptIdAndRole(vo));
+    }
 }
