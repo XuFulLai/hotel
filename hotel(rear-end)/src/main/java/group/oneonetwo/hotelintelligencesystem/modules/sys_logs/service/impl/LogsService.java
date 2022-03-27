@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
@@ -11,6 +12,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author liustart
@@ -25,6 +29,7 @@ public class LogsService implements ILogsService {
 
     @Autowired
     AuthUtils authUtils;
+
 
     @Override
     public LogsPO selectOneById(String id) {
@@ -95,4 +100,36 @@ public class LogsService implements ILogsService {
         BeanUtils.copyProperties(save,logsVO);
         return logsVO;
     }
+
+    @Override
+    public void createLog(String sketch,String detail,int type,int roleLevel) {
+        LogsPO log = new LogsPO();
+        log.setSketch(sketch);
+        log.setDetail(detail);
+        log.setType(type);
+        log.setRoleLevel(roleLevel);
+        log.setHotelId(authUtils.getUserHotelId());
+        int insert = logsMapper.insert(log);
+    }
+
+    @Override
+    public Page<LogsVO> getPage(LogsVO logsVO) {
+        String role = authUtils.getRole();
+        logsVO.setRole(role);
+        switch (role) {
+            case "hotel_admin":
+            case "hotel_member":
+                logsVO.setHotelId(authUtils.getUserHotelId());
+                break;
+        }
+        Page<LogsVO> page = new Page<>(logsVO.getPage().getPage(), logsVO.getPage().getSize());
+        return logsMapper.getPage(page,logsVO);
+    }
+
+    @Override
+    public LogsVO findById(String id) {
+        return logsMapper.findById(id);
+    }
+
+
 }

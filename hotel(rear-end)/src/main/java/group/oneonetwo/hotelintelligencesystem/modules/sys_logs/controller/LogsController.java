@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.sys_logs.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.vo.BedTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.model.vo.LogsVO;
 import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
@@ -22,28 +23,35 @@ public class LogsController {
     LogsService logsService;
 
 
-    @PostMapping("add")
-    @ApiOperation("添加日志")
-    public Reply<LogsVO> add(@RequestBody LogsVO logsVO ){
-        return Reply.success(logsService.add(logsVO));
-    }
-
-    @GetMapping("delete/{id}")
-    @ApiOperation("根据id删除日志")
-    public Reply deleteById(@PathVariable("id") String id){
-        return logsService.deleteById(id)>0? Reply.success() :Reply.failed();
-    }
-
+//    @PostMapping("add")
+//    @ApiOperation("添加日志")
+//    public Reply<LogsVO> add(@RequestBody LogsVO logsVO ){
+//        return Reply.success(logsService.add(logsVO));
+//    }
+//
+//    @GetMapping("delete/{id}")
+//    @ApiOperation("根据id删除日志")
+//    public Reply deleteById(@PathVariable("id") String id){
+//        return logsService.deleteById(id)>0? Reply.success() :Reply.failed();
+//    }
+//
     @ApiOperation("根据id查找日志")
     @GetMapping("get/{id}")
     public Reply<LogsVO> selectById(@PathVariable("id")String id){
-        return Reply.success(logsService.selectOneByIdReturnVO(id));
+        return Reply.success(logsService.findById(id));
+    }
+//
+//    @ApiOperation("更改日志")
+//    @PostMapping("modify")
+//    public Reply<LogsVO> modify(@RequestBody LogsVO logsVO){
+//        return Reply.success(logsService.saveone(logsVO));
+//    }
+
+    @ApiOperation("获取日志列表(分页)")
+    @PostMapping("page")
+    public Reply<Page<LogsVO>> getPage(@RequestBody LogsVO vo) {
+        return Reply.success(logsService.getPage(vo));
     }
 
-    @ApiOperation("更改日志")
-    @PostMapping("modify")
-    public Reply<LogsVO> modify(@RequestBody LogsVO logsVO){
-        return Reply.success(logsService.saveone(logsVO));
-    }
 
 }

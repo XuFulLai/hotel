@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.discounts.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 
@@ -9,6 +10,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.discounts.dao.DiscountsMa
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.po.DiscountsPO;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.vo.DiscountsVO;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscountsService;
+import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class DiscountsServiceImpl implements IDiscountsService {
     @Autowired
     DiscountsMapper discountsMapper;
 
+    @Autowired
+    LogsService logsService;
+
     @Override
     public DiscountsVO add(DiscountsVO discountsVO){
         if (discountsVO==null){
@@ -29,6 +34,8 @@ public class DiscountsServiceImpl implements IDiscountsService {
         DiscountsPO discountsPO=new DiscountsPO();
         BeanUtils.copyProperties(discountsVO,discountsPO);
         int insert=discountsMapper.insert(discountsPO);
+        Gson gson = new Gson();
+        logsService.createLog("【添加】折扣信息",gson.toJson(discountsVO),1,1);
         if(insert>0){
             return discountsVO;
         }
@@ -73,6 +80,8 @@ public class DiscountsServiceImpl implements IDiscountsService {
         if(check==null){
             throw new CommonException(4004,"找不到id为'"+id+"'的数据");
         }
+        Gson gson = new Gson();
+        logsService.createLog("【删除】折扣信息",gson.toJson(check),1,1);
         int i=discountsMapper.deleteById(id);
         return i;
     }
@@ -85,8 +94,11 @@ public class DiscountsServiceImpl implements IDiscountsService {
 
     @Override
     public DiscountsVO saveone (DiscountsVO discountsVO){
+        DiscountsVO before = selectOneByIdReturnVO(discountsVO.getId());
         DiscountsPO save=save(discountsVO);
         BeanUtils.copyProperties(save,discountsVO);
+        Gson gson = new Gson();
+        logsService.createLog("【修改】折扣信息",gson.toJson(before) + "@*@" + gson.toJson(save),1,1);
         return discountsVO;
     }
 

@@ -2,12 +2,14 @@ package group.oneonetwo.hotelintelligencesystem.modules.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.po.DeptPO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
+import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
 import group.oneonetwo.hotelintelligencesystem.modules.user.dao.UserMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.po.UserPO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
@@ -45,6 +47,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IDeptService deptService;
+
+    @Autowired
+    LogsService logsService;
 
     private static final Logger logger = LoggerFactory.getLogger(Object.class);
 
@@ -110,6 +115,8 @@ public class UserServiceImpl implements IUserService {
         if (check == null) {
             throw new CommonException(4004,"找不到id为'" + id + "'的数据");
         }
+        Gson gson = new Gson();
+        logsService.createLog("【删除】用户信息",gson.toJson(check),1,0);
         int i = userMapper.deleteById(id);
         return i;
     }
@@ -139,11 +146,14 @@ public class UserServiceImpl implements IUserService {
         userVO.setDept("10");
         UserPO add = this.add(userVO);
         BeanUtils.copyProperties(add,userVO);
+        Gson gson = new Gson();
+        logsService.createLog("【注册】新用户注册",gson.toJson(userVO),1,0);
         return Reply.success(userVO);
     }
 
     @Override
     public Reply<UserVO> update(UserVO userVO) {
+        UserVO before = selectOneByIdReturnVO(userVO.getId());
         if (!"".equals(userVO.getPassword()) && userVO.getPassword() != null) {
             userVO.setPassword(bCryptPasswordEncoder.encode(userVO.getPassword()));
         } else {
@@ -151,6 +161,9 @@ public class UserServiceImpl implements IUserService {
         }
         UserPO save = save(userVO);
         BeanUtils.copyProperties(save,userVO);
+        Gson gson = new Gson();
+        logsService.createLog("【修改】用户信息",gson.toJson(before) + "@*@" + gson.toJson(userVO),1,0);
+
         return Reply.success(userVO);
     }
 
@@ -158,6 +171,8 @@ public class UserServiceImpl implements IUserService {
     public UserVO addOneUser(UserVO userVO) {
         UserPO add = add(userVO);
         BeanUtils.copyProperties(add,userVO);
+        Gson gson = new Gson();
+        logsService.createLog("【添加】用户信息",gson.toJson(userVO),1,0);
         return userVO;
     }
 

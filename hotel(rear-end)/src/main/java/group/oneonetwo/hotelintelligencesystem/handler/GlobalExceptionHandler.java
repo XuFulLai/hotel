@@ -2,12 +2,14 @@ package group.oneonetwo.hotelintelligencesystem.handler;
 
 import group.oneonetwo.hotelintelligencesystem.components.security.exception.TokenIsExpiredException;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
+import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -30,6 +32,9 @@ public class GlobalExceptionHandler {
 
     private static final String LOG_EXCEPTION_FORMAT = "Capture Exception By GlobalExceptionHandler: Code: %s Detail: %s";
     private static Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @Autowired
+    LogsService logsService;
 
     /**
      * 运行时异常
@@ -246,6 +251,7 @@ public class GlobalExceptionHandler {
     private <T extends Throwable> Reply resultFormat(Integer code, T ex) {
         ex.printStackTrace();
         log.error(String.format(LOG_EXCEPTION_FORMAT, code, ex.getMessage()));
+        logsService.createLog(ex.getLocalizedMessage(),ex.getMessage(),3,0);
         return Reply.failed(String.valueOf(code), ex.getMessage(), null);
     }
 

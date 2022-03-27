@@ -2,12 +2,14 @@ package group.oneonetwo.hotelintelligencesystem.modules.hotel.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.dao.HotelMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelPO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
+import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
@@ -28,6 +30,9 @@ public class HotelServiceImpl implements IHotelService {
     @Autowired
     IUserService userService;
 
+    @Autowired
+    LogsService logsService;
+
     @Override
     public HotelVO add(HotelVO hotelVO){
         if(hotelVO==null){
@@ -45,6 +50,8 @@ public class HotelServiceImpl implements IHotelService {
 
         HotelPO hotelP0=new HotelPO();
         BeanUtils.copyProperties(hotelVO,hotelP0);
+        Gson gson = new Gson();
+        logsService.createLog("【添加】酒店信息",gson.toJson(hotelVO),1,1);
         int insert=hotelMapper.insert(hotelP0);
         if(insert>0){
             return hotelVO;
@@ -67,6 +74,7 @@ public class HotelServiceImpl implements IHotelService {
 
     @Override
     public HotelVO save(HotelVO hotelVO){
+        HotelVO before = selectOneByIdReturnVO(hotelVO.getId());
         if(hotelVO==null){
             throw new CommonException(501,"hotel实体为空");
         }
@@ -88,6 +96,10 @@ public class HotelServiceImpl implements IHotelService {
         HotelPO hotelPO =new HotelPO();
         BeanUtils.copyProperties(hotelVO, hotelPO);
         int save=hotelMapper.updateById(hotelPO);
+
+        Gson gson = new Gson();
+        logsService.createLog("【修改】酒店信息",gson.toJson(before) + "@*@" + gson.toJson(hotelVO),1,1);
+
         if(save>0){
             return hotelVO;
         }
@@ -100,6 +112,8 @@ public class HotelServiceImpl implements IHotelService {
             throw new CommonException(4004,"找不到id为'"+id+"'的数据");
 
         }
+        Gson gson = new Gson();
+        logsService.createLog("【删除】酒店信息",gson.toJson(check),1,1);
         int i= hotelMapper.deleteById(id);
         return i;
     }

@@ -1,5 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.sys_logs.model.vo;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -41,6 +43,47 @@ public class LogsVO implements Serializable {
     @ApiModelProperty("创建时间")
     private Date createTime;
 
+    private Page page;
+
+    private String role;
+
+    @ApiModelProperty("起始时间")
+    private String beginTime;
+
+    @ApiModelProperty("结束时间")
+    private String endTime;
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public String getId() {
         return id;

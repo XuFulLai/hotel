@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.bed_type.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
@@ -9,6 +10,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.bed_type.dao.BedTypeMappe
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.po.BedTypePO;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.vo.BedTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.service.IBedTypeService;
+import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class BedTypeServiceImpl implements IBedTypeService {
     @Autowired
     AuthUtils authUtils;
 
+    @Autowired
+    LogsService logsService;
+
     @Override
     public BedTypeVO add(BedTypeVO bedTypeVO){
         if(bedTypeVO ==null){
@@ -32,9 +37,11 @@ public class BedTypeServiceImpl implements IBedTypeService {
         bedTypeVO.setHotelId(authUtils.getUserHotelId());
         BedTypePO bedTypePO=new BedTypePO();
         BeanUtils.copyProperties(bedTypeVO,bedTypePO);
+        Gson gson = new Gson();
+        logsService.createLog("【添加】床位类型信息",gson.toJson(bedTypeVO),1,1);
         int insert=bedTypeMapper.insert(bedTypePO);
         if(insert>0){
-            return  bedTypeVO;
+            return bedTypeVO;
         }
         throw new SavaException("插入用户失败");
     }
@@ -75,6 +82,8 @@ public class BedTypeServiceImpl implements IBedTypeService {
         if(check==null){
             throw new CommonException(4004,"找不到id为:"+id+"的数据");
         }
+        Gson gson = new Gson();
+        logsService.createLog("【删除】床位类型信息",gson.toJson(check),1,1);
         int i=bedTypeMapper.deleteById(id);
         return i;
     }
@@ -87,7 +96,10 @@ public class BedTypeServiceImpl implements IBedTypeService {
 
     @Override
     public BedTypeVO saveone(BedTypeVO bedTypeVO){
+        BedTypeVO before = selectOneByIdReturnVO(bedTypeVO.getId());
         BedTypePO save=save(bedTypeVO);
+        Gson gson = new Gson();
+        logsService.createLog("【修改】床位类型信息",gson.toJson(before) + "@*@" + gson.toJson(save),1,1);
         BeanUtils.copyProperties(save,bedTypeVO);
         return bedTypeVO;
     }

@@ -19,6 +19,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTypeServeice;
+import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.TimeUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
@@ -55,6 +56,9 @@ public class RoomServiceImpl implements IRoomService {
 
     @Autowired
     IDiscountsService discountsService;
+
+    @Autowired
+    LogsService logsService;
 
     @Override
     public RoomVO add(RoomVO roomVO) {
@@ -111,6 +115,8 @@ public class RoomServiceImpl implements IRoomService {
         if(check==null){
             throw new CommonException(4004,"找不到id为'"+id+"'的数据");
         }
+        Gson gson = new Gson();
+        logsService.createLog("【删除】房间信息",gson.toJson(check),1,1);
         int i= roomMapper.deleteById(id);
         return i;
     }
@@ -122,8 +128,11 @@ public class RoomServiceImpl implements IRoomService {
 
     @Override
     public RoomVO saveone(RoomVO roomVO){
+        RoomVO before = selectOneByIdReturnVO(roomVO.getId());
         RoomPO save=save(roomVO);
         BeanUtils.copyProperties(save,roomVO);
+        Gson gson = new Gson();
+        logsService.createLog("【修改】房间信息",gson.toJson(before) + "@*@" + gson.toJson(save),1,1);
         return roomVO;
     }
 
