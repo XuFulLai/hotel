@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.dept.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
@@ -9,6 +10,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.dept.dao.DeptMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.po.DeptPO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
+import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.impl.UserServiceImpl;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
@@ -42,6 +44,9 @@ public class DeptServiceImpl implements IDeptService {
 
     @Autowired
     AuthUtils authUtils;
+
+    @Autowired
+    LogsService logsService;
 
     @Override
     public DeptPO add(DeptVO deptVO) {
@@ -94,6 +99,8 @@ public class DeptServiceImpl implements IDeptService {
         if (check == null) {
             throw new CommonException(4004,"找不到id为'" + id + "'的数据");
         }
+        Gson gson = new Gson();
+        logsService.createLog("【删除】部门信息",gson.toJson(check),1,1);
         int i = deptMapper.deleteById(id);
         return i;
     }
@@ -135,13 +142,18 @@ public class DeptServiceImpl implements IDeptService {
         }
         DeptPO add = add(deptVO);
         BeanUtils.copyProperties(add,deptVO);
+        Gson gson = new Gson();
+        logsService.createLog("【添加】部门信息",gson.toJson(deptVO),1,1);
         return deptVO;
     }
 
     @Override
     public DeptVO saveOne(DeptVO deptVO) {
+        DeptVO before = selectOneByIdReturnVO(deptVO.getId());
         DeptPO save = save(deptVO);
         BeanUtils.copyProperties(save,deptVO);
+        Gson gson = new Gson();
+        logsService.createLog("【修改】部门信息",gson.toJson(before) + "@*@" + gson.toJson(save),1,1);
         return deptVO;
     }
 

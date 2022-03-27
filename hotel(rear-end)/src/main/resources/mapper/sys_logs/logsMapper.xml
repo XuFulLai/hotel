@@ -16,4 +16,52 @@
         <result property="createTime" column="create_time"/>
 
     </resultMap>
+
+    <sql id="baseSql">
+        select *,
+        from sys_logs sl
+        left join (select id,username from user)u
+        on sl.create_by = u.id
+    </sql>
+
+    <select id="getPage" resultType="group.oneonetwo.hotelintelligencesystem.modules.sys_logs.model.vo.LogsVO">
+        <include refid="baseSql"/>
+        <where>
+            <if test="vo.role == 'admin'">
+                and sl.role_level >= 0
+            </if>
+            <if test="vo.role == 'hotel_admin'">
+                and sl.role_level >= 1
+            </if>
+            <if test="vo.role == 'hotel_member'">
+                and sl.role_level >= 2
+            </if>
+            <if test="vo.role == null or vo.role == 'member'">
+                and sl.role_level >= 999
+            </if>
+            <if test="vo.hotelId != null and vo.hotelId != ''">
+                and sl.hotel_id = #{vo.hotelId}
+            </if>
+            <if test="vo.type != null and vo.type != ''">
+                and sl.type = #{vo.type}
+            </if>
+            <if test="vo.sketch != null and vo.sketch != ''">
+                and sl.sketch like concat('%', #{vo.sketch}, '%')
+            </if>
+            <if test="vo.createBy != null and vo.createBy != ''">
+                and u.username like concat('%', #{vo.createBy}, '%')
+            </if>
+            <if test="vo.beginTime != null and vo.beginTime != '' and vo.endTime != null and vo.endTime != ''">
+                and sl.create_time between #{vo.beginTime} and #{vo.endTime}
+            </if>
+            and sl.is_deleted = 0
+        </where>
+        order by sl.create_time,sl.id
+
+    </select>
+
+    <select id="findById" resultType="group.oneonetwo.hotelintelligencesystem.modules.sys_logs.model.vo.LogsVO">
+        <include refid="baseSql"/>
+        where sl.id = #{id} and sl.is_deleted = 0
+    </select>
 </mapper>

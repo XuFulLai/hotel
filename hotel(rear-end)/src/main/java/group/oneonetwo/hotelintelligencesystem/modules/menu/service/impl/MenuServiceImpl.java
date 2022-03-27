@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.menu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.dao.MenuMapper;
@@ -10,6 +11,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.service.IMenuService;
 import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.model.vo.MenuDeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.menu_dept.service.IMenuDeptService;
+import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +34,9 @@ public class MenuServiceImpl implements IMenuService {
 
     @Autowired
     MenuMapper menuMapper;
+
+    @Autowired
+    LogsService logsService;
 
     @Override
     public MenuVO add(MenuVO vo) {
@@ -62,6 +67,8 @@ public class MenuServiceImpl implements IMenuService {
                 throw new CommonException("插入异常");
             }
         }
+        Gson gson = new Gson();
+        logsService.createLog("【添加】菜单信息",gson.toJson(vo),1,0);
         return vo;
     }
 
@@ -95,8 +102,13 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public Integer delete(String id) {
-        selectByIdReturnVO(id);
+        MenuVO check = selectByIdReturnVO(id);
         int i = menuMapper.deleteById(id);
+        if (check == null) {
+            throw new CommonException(4004,"找不到id为'" + id + "'的数据");
+        }
+        Gson gson = new Gson();
+        logsService.createLog("【删除】菜单信息",gson.toJson(check),1,0);
         return i;
     }
 
@@ -159,8 +171,11 @@ public class MenuServiceImpl implements IMenuService {
 
     @Override
     public MenuVO saveone(MenuVO menuVO){
+        MenuVO before = selectByIdReturnVO(menuVO.getId());
         MenuPO save=save(menuVO);
         BeanUtils.copyProperties(save,menuVO);
+        Gson gson = new Gson();
+        logsService.createLog("【修改】菜单信息",gson.toJson(before) + "@*@" + gson.toJson(save),1,0);
         return menuVO;
     }
 

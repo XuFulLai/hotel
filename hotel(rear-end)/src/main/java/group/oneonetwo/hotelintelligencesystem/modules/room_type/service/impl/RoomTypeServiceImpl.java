@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.room_type.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
@@ -9,6 +10,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.room_type.dao.RoomTypeMap
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.po.RoomTypePO;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTypeServeice;
+import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
     @Autowired
     AuthUtils authUtils;
 
+    @Autowired
+    LogsService logsService;
+
     @Override
     public RoomTypeVO add(RoomTypeVO roomTypeVO){
         if(roomTypeVO==null){
@@ -33,6 +38,8 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
         RoomTypePO roomTypePO=new RoomTypePO();
         BeanUtils.copyProperties(roomTypeVO,roomTypePO);
         int insert=roomTypeMapper.insert(roomTypePO);
+        Gson gson = new Gson();
+        logsService.createLog("【添加】部门信息",gson.toJson(roomTypeVO),1,1);
         if(insert>0){
             return roomTypeVO;
         }
@@ -57,6 +64,8 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
         if(check==null){
             throw new CommonException(4004,"找不到id为"+id+"的数据");
         }
+        Gson gson = new Gson();
+        logsService.createLog("【删除】房间类型信息",gson.toJson(check),1,1);
         int i=roomTypeMapper.deleteById(id);
         return i;
     }
@@ -85,8 +94,11 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
 
     @Override
     public RoomTypeVO saveone(RoomTypeVO roomTypeVO){
+        RoomTypeVO before = selectOneByIdReturnVO(roomTypeVO.getId());
         RoomTypePO save=save(roomTypeVO);
         BeanUtils.copyProperties(save,roomTypeVO);
+        Gson gson = new Gson();
+        logsService.createLog("【修改】房间类型信息",gson.toJson(before) + "@*@" + gson.toJson(save),1,1);
         return roomTypeVO;
     }
 
