@@ -269,12 +269,12 @@ export default {
       let value = this.discountValue
       //
       let data = {
-        name: this.discountName,
-        description: this.textarea,
-        type: this.discountType,
-        discounts: this.discountNum,
-        effectType: this.discountCond,
-        effectCondition: this.dayNum,
+        name: this.form.name,
+        description: this.form.description,
+        type: this.form.type,
+        discounts: this.form.discounts,
+        effectType: this.form.effectType,
+        effectCondition: this.form.effectCondition,
       }
 
       if (value == 'add') {
