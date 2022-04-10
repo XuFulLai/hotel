@@ -18,7 +18,7 @@
     </resultMap>
 
     <sql id="baseSql">
-        select *,
+       select sl.id,sl.sketch,sl.detail,sl.type,sl.role_level,sl.is_deleted,sl.create_time,u.username as 'create_by'
         from sys_logs sl
         left join (select id,username from user)u
         on sl.create_by = u.id

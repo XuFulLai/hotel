@@ -319,6 +319,7 @@
 
 <script>
 import {get, post} from "../utils/request";
+import { isJSON } from "../utils/isJSON";
 
 export default {
   name: "RoomManage",
@@ -519,8 +520,14 @@ export default {
     websocketonerror() {//连接建立失败重连
       this.initWebSocket();
     },
-    websocketonmessage(e) { //数据接收
-      const redata = JSON.parse(e.data); // 个别数据不是JSON格式数据
+    websocketonmessage(e) { //数据接收,e.data数据有时不是JSON格式
+    let redata
+      if (isJSON(e.data)) {
+        redata = JSON.parse(e.data); // 个别数据不是JSON格式数据
+      } else {
+        redata = e.data
+      }
+      // const redata = JSON.parse(e.data); // 个别数据不是JSON格式数据
       // const redata = e.data
       console.log(redata);
       for (let i = 0; i < this.roomList.length; i++) {
