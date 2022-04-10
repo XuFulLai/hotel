@@ -13,6 +13,7 @@ import OrderManage from "../components/OrderManage";
 import MenuManage from "../components/MenuManage";
 import RoomManage from "../components/RoomManage";
 import UserManage from "../components/UserManage";
+import LogManage from "../components/LogManage";
 
 
 Vue.use(VueRouter)
@@ -86,6 +87,11 @@ const routes = [
                 path: 'userManage',
                 name: 'userManage',
                 component: UserManage
+            },
+            {
+                path: 'logManage',
+                name: 'logManage',
+                component: LogManage
             }
 
         ]
