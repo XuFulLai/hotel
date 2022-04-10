@@ -13,6 +13,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.Log
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
+import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,9 +51,12 @@ public class HotelServiceImpl implements IHotelService {
 
         HotelPO hotelP0=new HotelPO();
         BeanUtils.copyProperties(hotelVO,hotelP0);
-        Gson gson = new Gson();
-        logsService.createLog("【添加】酒店信息",gson.toJson(hotelVO),1,1);
         int insert=hotelMapper.insert(hotelP0);
+
+        Gson gson = new Gson();
+        hotelVO.setOtherPolicy(WStringUtils.removeHtml(hotelVO.getOtherPolicy()));
+        logsService.createLog("【添加】酒店信息",gson.toJson(hotelVO),1,1);
+
         if(insert>0){
             return hotelVO;
         }
@@ -74,7 +78,7 @@ public class HotelServiceImpl implements IHotelService {
 
     @Override
     public HotelVO save(HotelVO hotelVO){
-        HotelVO before = selectOneByIdReturnVO(hotelVO.getId());
+        HotelPO before = selectOneById(hotelVO.getId());
         if(hotelVO==null){
             throw new CommonException(501,"hotel实体为空");
         }
@@ -98,7 +102,8 @@ public class HotelServiceImpl implements IHotelService {
         int save=hotelMapper.updateById(hotelPO);
 
         Gson gson = new Gson();
-        logsService.createLog("【修改】酒店信息",gson.toJson(before) + "@*@" + gson.toJson(hotelVO),1,1);
+        hotelPO.setOtherPolicy(WStringUtils.removeHtml(hotelPO.getOtherPolicy()));
+        logsService.createLog("【修改】酒店信息",gson.toJson(before) + "@*@" + gson.toJson(hotelPO),1,1);
 
         if(save>0){
             return hotelVO;
@@ -113,6 +118,7 @@ public class HotelServiceImpl implements IHotelService {
 
         }
         Gson gson = new Gson();
+        check.setOtherPolicy(WStringUtils.removeHtml(check.getOtherPolicy()));
         logsService.createLog("【删除】酒店信息",gson.toJson(check),1,1);
         int i= hotelMapper.deleteById(id);
         return i;
