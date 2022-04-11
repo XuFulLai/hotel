@@ -30,11 +30,11 @@
                     <div class="room-right">
                         <div class="room-rh-content d-flex flex-column justify-content-between">
                             <div>
-                                <h1>房源预定</h1>
-                                <p>预定独一无二的房源与体验。</p>
-                                <el-input v-model="hotelName" placeholder="请输入酒店名称"></el-input>
+                                <h1>{{ $t('index.title') }}</h1>
+                                <p>{{ $t('index.content') }}</p>
+                                <el-input v-model="hotelName" :placeholder="$t('index.tips')"></el-input>
                             </div>
-                            <button @click="search">搜索</button>
+                            <button @click="search">{{ $t('index.search') }}</button>
                         </div>
                     </div>
                 </div>
