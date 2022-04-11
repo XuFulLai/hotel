@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.model.po.LogsPO;
 import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.model.vo.LogsVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 /**
@@ -18,4 +21,7 @@ public interface LogsMapper extends BaseMapper<LogsPO> {
     Page<LogsVO> getPage(Page<LogsVO> page, LogsVO vo);
 
     LogsVO findById(String id);
+
+    List<LogsVO> getAllList(@Param("vo") LogsVO vo);
+
 }
