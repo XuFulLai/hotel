@@ -9,15 +9,27 @@
             </div>
 
             <div class="login-r">
-                <h3>酒店管理系统</h3>
-                <p class="mt-5">Welcome欢迎登录</p>
+                <h3>{{  $t('login.title') }}</h3>
+                <p class="mt-5">{{  $t('login.text') }}</p>
 
                 <ul class="login-list d-flex align-items-center">
-                    <li @click="skip('signIn')" :class="status==0?'active':''">登录</li>
-                    <li @click="skip('register')" :class="status==1?'active':''">注册</li>
+                    <li @click="skip('signIn')" :class="status==0?'active':''">{{  $t('login.login') }}</li>
+                    <li @click="skip('register')" :class="status==1?'active':''">{{  $t('login.register') }}</li>
                 </ul>
 
                 <router-view></router-view>
+            </div>
+
+            <div class="lang-switch">
+                <!-- <el-link type="primary" @click="$i18n.locale = 'zh'">中</el-link>
+                <span>/</span>
+                <el-link type="primary" @click="$i18n.locale = 'en'">English</el-link> -->
+                <el-link type="primary" @click="langSwitch('zh')">中</el-link>
+                <span>/</span>
+                <el-link type="primary" @click="langSwitch('en')">English</el-link>
+                <!-- <a href="#" @click="$i18n.locale = 'zh'">中</a>
+                <span>/</span>
+                <a href="#" @click="$i18n.locale = 'en'">English</a> -->
             </div>
 
         </div>
@@ -59,35 +71,14 @@
                 this.$router.push({
                     name: val,
                 })
+            },
+            langSwitch(value){
+                localStorage.setItem('lang',value)
+                this.$i18n.locale = value
+                this.$router.go(0)
+
             }
 
-            //登录
-            // login() {
-            //     let userData = {
-            //         username: this.username,
-            //         password: this.password,
-            //     }
-            //     post('/auth/login', userData)
-            //         .then(res => {
-            //             console.log('登录信息:',res);
-            //             //判断返回的数据是否存在token和用户id
-            //             if (res.data.data.token && res.data.data.userInfo.id ) {
-            //                 // 将token及用户id存放到Vuex中
-            //                 this.$store.commit('SAVE_TOKEN',res.data.data.token)
-            //                 this.$store.commit('SAVE_USER_ID',res.data.data.userInfo.id)
-            //                 //路由跳转
-            //                 this.$router.push({
-            //                     name: 'index',
-            //                 })
-            //
-            //             } else {
-            //                 console.log('token或用户id不存在，登录失败');
-            //             }
-            //         })
-            //         .catch(err => {
-            //             console.log(err)
-            //         })
-            // }
         }
     }
 </script>
@@ -116,6 +107,7 @@
     .login-center {
         width: 700px;
         height: 300px;
+        position: relative;
         background-color: #fff;
         box-shadow: 0px 0px 40px -10px #000;
         border-radius: 20px;
@@ -133,6 +125,9 @@
 
     .login-l, .login-r {
         width: 100%;
+    }
+    .login-r {
+        min-width: 370px;
     }
 
     .login-r h3 {
@@ -184,5 +179,16 @@
     }
     .login-list li a {
         color: #333333;
+    }
+
+    .lang-switch {
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        display: flex;
+        align-items: center;
+    }
+    .lang-switch span {
+        margin: 0 2px;
     }
 </style>
