@@ -4,10 +4,15 @@
         <div class="t-nav">
             <div class="nav-content">
                 <ul>
-                    <li><router-link to="/index">首页</router-link></li>
-                    <li><router-link to="/hotelList">酒店列表</router-link></li>
-                    <li><router-link to="/orderList">我的订单</router-link></li>
-                    <li><router-link to="/login">注销</router-link></li>
+                    <li><router-link to="/index">{{ $t('nav.index') }}</router-link></li>
+                    <li><router-link to="/hotelList">{{ $t('nav.list') }}</router-link></li>
+                    <li><router-link to="/orderList">{{ $t('nav.order') }}</router-link></li>
+                    <li><router-link to="/login">{{ $t('nav.logOut') }}</router-link></li>
+                    <li>
+                        <el-link type="primary" @click="langSwitch('zh')">中</el-link>
+                        <span>/</span>
+                        <el-link type="primary" @click="langSwitch('en')">En</el-link>
+                    </li>                    
                 </ul>
             </div>
         </div>
@@ -16,7 +21,15 @@
 
 <script>
     export default {
-        name: "TopNav"
+        name: "TopNav",
+        methods: {
+            langSwitch(value){
+                localStorage.setItem('lang',value)
+                this.$i18n.locale = value
+                this.$router.go(0)
+
+            }            
+        }
     }
 </script>
 
@@ -69,7 +82,11 @@
     }
 
     .nav-content a:hover {
-        color: #323230
+        color: #323230;
+    }
+    .nav-content span{
+        margin: 2px;
+        color: #A1A09E;
     }
 
 </style>
