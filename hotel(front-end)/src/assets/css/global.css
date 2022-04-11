@@ -124,6 +124,10 @@ textarea {
 .position-relative {
     position: relative;
 }
+
+.position-absolute {
+    position: absolute
+}
 /* 通用样式 Start */
 
 /* 字体样式 Start */
