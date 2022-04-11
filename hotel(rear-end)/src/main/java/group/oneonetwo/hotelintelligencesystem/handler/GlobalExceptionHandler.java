@@ -251,7 +251,7 @@ public class GlobalExceptionHandler {
     private <T extends Throwable> Reply resultFormat(Integer code, T ex) {
         ex.printStackTrace();
         log.error(String.format(LOG_EXCEPTION_FORMAT, code, ex.getMessage()));
-        logsService.createLog(ex.getLocalizedMessage(),ex.getMessage(),3,0);
+        logsService.createLog(ex.getLocalizedMessage(),ex.toString(),3,0);
         return Reply.failed(String.valueOf(code), ex.getMessage(), null);
     }
 

@@ -1,19 +1,19 @@
 <template>
     <div class="mt-10">
         <div class="inp font-14">
-            <p class="m-0">账号：</p>
-            <input v-model="username" type="text" placeholder="请输入用户名">
+            <p class="m-0">{{  $t('login.account') }}:</p>
+            <input v-model="username" type="text" :placeholder="$t('login.accountTips')">
         </div>
         <div class="inp font-14">
-            <p class="m-0">密码：</p>
-            <input v-model="password" type="password" placeholder="请输入密码">
+            <p class="m-0">{{  $t('login.password') }}:</p>
+            <input v-model="password" type="password" :placeholder="$t('login.passwordTips')">
         </div>
         <div class="inp font-14">
-            <p class="m-0">确认密码：</p>
-            <input v-model="againPassword" type="password" placeholder="请再次输入密码">
+            <p class="m-0">{{  $t('login.passwordAgain') }}:</p>
+            <input v-model="againPassword" type="password" :placeholder="$t('login.passwordAgainTips')">
         </div>
         <div class="d-flex align-items-center justify-content-center">
-            <button @click="register">注册</button>
+            <button @click="register">{{  $t('login.register') }}</button>
         </div>
 
     </div>
@@ -39,14 +39,14 @@
                     password: this.password
                 }
                 if (this.password != this.againPassword){
-                    this.$message.error('两次密码输入不一致');
+                    this.$message.error(this.$t('login.passwordError'));
                 } else {
                     post('/open/auth/register',data)
                         .then(res => {
                             console.log(res);
                             if (res.data.code == 200) {
                                 this.$message({
-                                    message: '注册成功！',
+                                    message: this.$t('login.success'),
                                     type: 'success'
                                 });
                             }
@@ -64,17 +64,18 @@
     .inp {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        /* justify-content: space-between; */
         height: 50px;
         border-bottom: 1px solid #ccc;
     }
     .inp p{
         min-width: 70px;
         white-space: nowrap;
+        margin-right: 10px;
     }
 
     .inp input {
-        width: 300px;
+        width: 260px;
         height: 30px;
         outline: none;
         border: none;
