@@ -13,14 +13,6 @@ public class HotelPO implements Serializable {
     @TableField("dept_id")
     private String deptId;
 
-    public String getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(String deptId) {
-        this.deptId = deptId;
-    }
-
     @TableField("name")
     private String name;
 
@@ -29,6 +21,18 @@ public class HotelPO implements Serializable {
 
     @TableField("parking_lot")
     private String parkingLot;
+
+    @TableField("longitude")
+    private String longitude;
+
+    @TableField("latitude")
+    private String latitude;
+
+    @TableField("introduce")
+    private String introduce;
+
+    @TableField("facilities")
+    private String facilities;
 
     @TableLogic
     @TableField("is_deleted")
@@ -51,6 +55,46 @@ public class HotelPO implements Serializable {
 
     @TableField(value = "update_time", fill = FieldFill.UPDATE)
     private Date updateTime;
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
+    public String getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(String facilities) {
+        this.facilities = facilities;
+    }
 
     public String getId() {
         return id;
