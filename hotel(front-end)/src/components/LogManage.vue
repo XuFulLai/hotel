@@ -19,7 +19,7 @@
         <p>日志类型：</p>
         <el-select v-model="searchParams.type" placeholder="请选择">
           <el-option
-            v-for="item in typeOptions"
+            v-for="item in Optioner"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -31,7 +31,7 @@
         <p>操作人：</p>
         <el-input v-model="searchParams.Optioner" placeholder=""></el-input>
       </div>
-            <div class="block search">
+      <div class="block search">
         <p>日志内容：</p>
         <el-input v-model="searchParams.logContent" placeholder=""></el-input>
       </div>
@@ -52,50 +52,25 @@
         style="width: 100%">
       <el-table-column
         align="center" 
-        prop="hotelName" 
-        label="酒店名">
+        prop="sketch" 
+        label="日志内容">
       </el-table-column>
-      <el-table-column
-        align="center" 
-        prop="customerName" 
-        label="客户名称">
-      </el-table-column>
-      <el-table-column
-        align="center" 
-        prop="province" 
-        label="来访地">
-      </el-table-column>
-      <el-table-column
+            <el-table-column
         align="center"
-        prop="roomTypeName"
-        label="房间类型">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="days"
-        label="天数">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="pay"
-        label="应付价格">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="lastPay" 
-        label="实付价格">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="status" 
-        label="状态">
+        prop="type" 
+        label="日志类型">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status == 0" type="danger">未支付</el-tag>
-          <el-tag v-if="scope.row.status == 1">已支付</el-tag>
-          <el-tag v-if="scope.row.status == 2" type="info">已关闭</el-tag>
-          <el-tag v-if="scope.row.status == 3" type="warning">已入住</el-tag>
-          <el-tag v-if="scope.row.status == 4" type="success">已完成</el-tag>
+          <el-tag v-if="scope.row.type == 0" type="info">普通日志</el-tag>
+          <el-tag v-if="scope.row.type == 1">数据修改</el-tag>
+          <el-tag v-if="scope.row.type == 2" type="success">系统修改</el-tag>
+          <el-tag v-if="scope.row.type == 3" type="warning">异常日志</el-tag>
+          <el-tag v-if="scope.row.type == 4" type="danger">警告日志</el-tag>
         </template>
+      </el-table-column>
+      <el-table-column
+        align="center" 
+        prop="createBy" 
+        label="操作人">
       </el-table-column>
       <el-table-column
         align="center"
@@ -111,8 +86,7 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
+            @click="handleCheck(scope.$index, scope.row)"
             >查看
           </el-button>
         </template>
@@ -121,7 +95,7 @@
 
 
     <!-- 分页器 -->
-    <!-- <el-pagination
+    <el-pagination
       class="mt-10 mb-10"
       background
       @current-change="handleCurrentChange"
@@ -130,7 +104,32 @@
       layout="prev, pager, next"
       :total="pageNum"
     >
-    </el-pagination> -->
+    </el-pagination>
+
+    <!-- 弹出框 -->
+    <el-dialog
+        :title="title"
+        :visible.sync="dialogVisible"
+        width="570px">
+
+      <div class="contont">
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">用户名:</p>
+          <el-input
+              style="width: 350px;"
+              placeholder="请输入用户名"
+              v-model="lee"
+              :disabled="true"
+              clearable>
+          </el-input>
+        </div>
+      </div>
+
+      <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+
+    </el-dialog>
 
   </div>
 
@@ -144,20 +143,20 @@ export default {
   name: "LogManage",
   data() {
     return {
-        typeOptions: [{
-            value: '0',
+        Optioner: [{
+            value: 0,
             label: '普通日志'
         }, {
-            value: '1',
+            value: 1,
             label: '数据修改'
         }, {
-            value: '2',
+            value: 2,
             label: '系统修改'
         }, {
-            value: '3',
+            value: 3,
             label: '异常日志'
         }, {
-            value: '4',
+            value: 4,
             label: '警告日志'
         }],        
         searchParams: {
@@ -169,15 +168,27 @@ export default {
             logContent: undefined,
         },
         pageNum: 0,
-        logData: []
+        logData: [],
+        title: '',
+        dialogVisible: false,
+        lee: 'lee'
+        
     };
   },
   mounted() {
       this.getLogList()
   },
+    watch: {
+    "searchParams.dateRange"(val, oldVal){//普通的watch监听
+
+      if (val) {
+        this.searchParams.beginTime = val[0]
+        this.searchParams.endTime = val[1]
+      }
+
+    },
+  },
   methods: {
-    // 
-    handleDelete(){},
     
     // 重置
     reset() {
@@ -199,10 +210,10 @@ export default {
                 size: 10
             },
             type: this.searchParams.type,
-            Optioner: this.searchParams.Optioner,
+            createBy: this.searchParams.Optioner,
             beginTime: this.searchParams.beginTime,
             endTime: this.searchParams.endTime,
-            logContent: this.searchParams.logContent
+            sketch: this.searchParams.logContent
         }
         this.logListRequest(data)
     },
@@ -212,7 +223,8 @@ export default {
         post('/api/logs/page', data)
             .then(res => {
                 console.log(res);
-                this.logrData = res.data.data.records
+                console.log(res.data.data.records);
+                this.logData = res.data.data.records
                 this.pageNum = res.data.data.total
             })
             .catch(err => {
@@ -223,53 +235,67 @@ export default {
     // 下载Excel表格
     download(){},
 
-    // // 选择页码
-    // handleCurrentChange(num) {
-    //     let data = {
-    //         page: {
-    //             page: num,
-    //             size: 10
-    //         },
-    //         type: this.searchParams.type,
-    //         Optioner: this.searchParams.Optioner,
-    //         beginTime: this.searchParams.beginTime,
-    //         endTime: this.searchParams.endTime,
-    //         logContent: this.searchParams.logContent
-    //     }
-    //     this.logListRequest(data)
-    // },
+    // 选择页码
+    handleCurrentChange(num) {
+        let data = {
+            page: {
+                page: num,
+                size: 10
+            },
+            type: this.searchParams.type,
+            createBy: this.searchParams.Optioner,
+            beginTime: this.searchParams.beginTime,
+            endTime: this.searchParams.endTime,
+            sketch: this.searchParams.logContent
+        }
+        this.logListRequest(data)
+    },
 
-    // // 上一页
-    // prevPage(num) {
-    //     let data = {
-    //         page: {
-    //             page: num,
-    //             size: 10
-    //         },
-    //         type: this.searchParams.type,
-    //         Optioner: this.searchParams.Optioner,
-    //         beginTime: this.searchParams.beginTime,
-    //         endTime: this.searchParams.endTime,
-    //         logContent: this.searchParams.logContent
-    //     }
-    //     this.logListRequest(data)
-    // },
+    // 上一页
+    prevPage(num) {
+        let data = {
+            page: {
+                page: num,
+                size: 10
+            },
+            type: this.searchParams.type,
+            createBy: this.searchParams.Optioner,
+            beginTime: this.searchParams.beginTime,
+            endTime: this.searchParams.endTime,
+            sketch: this.searchParams.logContent
+        }
+        this.logListRequest(data)
+    },
 
-    // // 下一页
-    // nextPage(num) {
-    //     let data = {
-    //         page: {
-    //             page: num,
-    //             size: 10
-    //         },
-    //         type: this.searchParams.type,
-    //         Optioner: this.searchParams.Optioner,
-    //         beginTime: this.searchParams.beginTime,
-    //         endTime: this.searchParams.endTime,
-    //         logContent: this.searchParams.logContent
-    //     }
-    //     this.logListRequest(data)
-    // },
+    // 下一页
+    nextPage(num) {
+        let data = {
+            page: {
+                page: num,
+                size: 10
+            },
+            type: this.searchParams.type,
+            createBy: this.searchParams.Optioner,
+            beginTime: this.searchParams.beginTime,
+            endTime: this.searchParams.endTime,
+            sketch: this.searchParams.logContent
+        }
+        this.logListRequest(data)
+    },
+
+    handleCheck(index, row) {
+      console.log('log:',row);
+      console.log('id:',row.id);
+      this.dialogVisible = true
+      this.title = '查看详情'
+      get(`/api/logs/get/${row.id}`)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.error(err);
+        })
+    },    
 
     // 日期格式化函数
     dateFormatter(val){
