@@ -63,7 +63,7 @@ public class UserServiceImpl implements IUserService {
             throw new SavaException("用户名不能为空");
         }
         UserPO userPO1=new UserPO();
-        userPO1=this.findByUsername(userPO1.getUsername());
+        userPO1=this.findByUsername(userVO.getUsername());
         if(userPO1!=null){
             throw  new SavaException("该用户已存在");
         }
