@@ -6,7 +6,7 @@
 
         <div class="hotel-list-bg d-flex align-items-center justify-content-center position-relative">
             <img src="../assets/images/hotel-list-bg.png" alt="">
-            <h3>酒店列表</h3>
+            <h3>{{ $t('hotelList.title') }}</h3>
         </div>
 
         <div class="hotel-list-main">
@@ -23,7 +23,7 @@
                                 <h4>{{ item.name }}</h4>
                                 <h6>{{ item.address }}</h6>
                                 <div v-html="item.otherPolicy"></div>
-                                <button @click="hotelDetails(index,item.id)">选择此酒店</button>
+                                <button @click="hotelDetails(index,item.id)">{{ $t('hotelList.confirm') }}</button>
                             </div>
                         </li>
                     </ul>
@@ -49,36 +49,36 @@
 
         <!-- 弹出框 -->
         <el-dialog
-                title="预定房间"
+                :title="$t('hotelList.dialogTitle')"
                 center
                 :visible.sync="dialogVisible"
                 width="570px">
             <div class="contont">
                 <div class="d-flex align-items-center mb-15">
-                    <p class="w-100 text-left">选择日期:</p>
+                    <p class="w-100 text-left">{{ $t('hotelList.selectDate') }}</p>
                     <div class="block">
                         <el-date-picker
                                 v-model="dateValue"
                                 type="daterange"
                                 value-format="yyyy-MM-dd"
-                                range-separator="至"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期"
+                                range-separator="-"
+                                :start-placeholder="$t('hotelList.startDate')"
+                                :end-placeholder="$t('hotelList.endDate')"
                                 :picker-options="pickerOptions">
                         </el-date-picker>
                     </div>
                 </div>
                 <div class="d-flex align-items-center mb-15">
-                    <p class="w-100 text-left">选择房型:</p>
+                    <p style="white-space: nowrap;min-width: 100px!important;" class="w-100 text-left">{{ $t('hotelList.selectRoom') }}</p>
                     <div>
                         <el-radio class="room-type-radio" v-for="(item,index) in roomTypeList" v-model="roomType" :label="item.id">
-                            {{ item.roomTypeName }}
+                            {{ item.roomTypeName | roomNameFormat }}
                         </el-radio>
                     </div>
                 </div>
                 <div class="d-flex align-items-center mb-15">
-                    <p class="w-100 text-left">来自省份:</p>
-                    <el-select v-model="provinceVal" placeholder="请选择">
+                    <p class="w-100 text-left">{{ $t('hotelList.province') }}</p>
+                    <el-select v-model="provinceVal" :placeholder="$t('hotelList.select')">
                         <el-option
                                 v-for="item in options"
                                 :label="item.label"
@@ -88,8 +88,8 @@
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="confirm">确 定</el-button>
+            <el-button @click="dialogVisible = false">{{ $t('hotelList.dialogCancel') }}</el-button>
+            <el-button type="primary" @click="confirm">{{ $t('hotelList.dialogConfirm') }}</el-button>
         </span>
         </el-dialog>
 
@@ -118,112 +118,134 @@
                 }
             }
         },
+        filters: {
+            roomNameFormat(val){
+                const lang = localStorage.getItem('lang')
+                if (lang == 'zh') {
+                    return val
+                } else if(lang == 'en') {
+                    if (val == '单人房') {
+                        return val = 'Single-bed room'
+                    } else if(val == '豪华大床房') {
+                        return val = 'Deluxe single Room'
+                    } else if(val == '双人房') {
+                        return val = 'Double room'
+                    } else if(val == '总统套房') {
+                        return val = 'Presidential suite'
+                    } else if(val == '经济房') {
+                        return val = 'Economy Room'
+                    } else {
+                        return val
+                    }
+                }
+            }
+        },
         data() {
             return {
                 provinceVal: '',
                 options: [
                     {
-                    value: '北京市',
-                    label: '北京市'
+                    value: this.$t('hotelList.beijing'),
+                    label: this.$t('hotelList.beijing')
                 }, {
-                    value: '上海市',
-                    label: '上海市'
+                    value: this.$t('hotelList.shanghai'),
+                    label: this.$t('hotelList.shanghai')
                 }, {
-                    value: '天津市',
-                    label: '天津市'
+                    value: this.$t('hotelList.tianjin'),
+                    label: this.$t('hotelList.tianjin')
                 }, {
-                    value: '重庆市',
-                    label: '重庆市'
+                    value: this.$t('hotelList.chongqing'),
+                    label: this.$t('hotelList.chongqing')
                 }, {
-                    value: '河北省',
-                    label: '河北省'
+                    value: this.$t('hotelList.hebei'),
+                    label: this.$t('hotelList.hebei')
                 }, {
-                    value: '山西省',
-                    label: '山西省'
+                    value: this.$t('hotelList.shanxi'),
+                    label: this.$t('hotelList.shanxi')
                 }, {
-                    value: '内蒙古自治区',
-                    label: '内蒙古自治区'
+                    value: this.$t('hotelList.neimenggu'),
+                    label: this.$t('hotelList.neimenggu')
                 }, {
-                    value: '辽宁省',
-                    label: '辽宁省'
+                    value: this.$t('hotelList.liaoning'),
+                    label: this.$t('hotelList.liaoning')
                 }, {
-                    value: '吉林省',
-                    label: '吉林省'
+                    value: this.$t('hotelList.jilin'),
+                    label: this.$t('hotelList.jilin')
                 }, {
-                    value: '黑龙江省',
-                    label: '黑龙江省'
+                    value: this.$t('hotelList.heilongjiang'),
+                    label: this.$t('hotelList.heilongjiang')
                 }, {
-                    value: '江苏省',
-                    label: '江苏省'
+                    value: this.$t('hotelList.jiangsu'),
+                    label: this.$t('hotelList.jiangsu')
                 }, {
-                    value: '浙江省',
-                    label: '浙江省'
+                    value: this.$t('hotelList.zhejiang'),
+                    label: this.$t('hotelList.zhejiang')
                 }, {
-                    value: '安徽省',
-                    label: '安徽省'
+                    value: this.$t('hotelList.anhui'),
+                    label: this.$t('hotelList.anhui')
                 }, {
-                    value: '福建省',
-                    label: '福建省'
+                    value: this.$t('hotelList.fujian'),
+                    label: this.$t('hotelList.fujian')
                 }, {
-                    value: '江西省',
-                    label: '江西省'
+                    value: this.$t('hotelList.jiangxi'),
+                    label: this.$t('hotelList.jiangxi')
                 }, {
-                    value: '山东省',
-                    label: '山东省'
+                    value: this.$t('hotelList.shandong'),
+                    label: this.$t('hotelList.shandong')
                 }, {
-                    value: '河南省',
-                    label: '河南省'
+                    value: this.$t('hotelList.henan'),
+                    label: this.$t('hotelList.henan')
                 }, {
-                    value: '湖北省',
-                    label: '湖北省'
+                    value: this.$t('hotelList.hubei'),
+                    label: this.$t('hotelList.hubei')
                 }, {
-                    value: '湖南省',
-                    label: '湖南省'
+                    value: this.$t('hotelList.hunan'),
+                    label: this.$t('hotelList.hunan')
                 }, {
-                    value: '广东省',
-                    label: '广东省'
+                    value: this.$t('hotelList.guangdong'),
+                    label: this.$t('hotelList.guangdong')
                 }, {
-                    value: '广西壮族自治区',
-                    label: '广西壮族自治区'
+                    value: this.$t('hotelList.guangxi'),
+                    label: this.$t('hotelList.guangxi')
                 }, {
-                    value: '海南省',
-                    label: '海南省'
+                    value: this.$t('hotelList.hainan'),
+                    label: this.$t('hotelList.hainan')
                 }, {
-                    value: '四川省',
-                    label: '四川省'
+                    value: this.$t('hotelList.sichuan'),
+                    label: this.$t('hotelList.sichuan')
                 }, {
-                    value: '贵州省',
-                    label: '贵州省'
+                    value: this.$t('hotelList.guizhou'),
+                    label: this.$t('hotelList.guizhou')
                 }, {
-                    value: '云南省',
-                    label: '云南省'
+                    value: this.$t('hotelList.yunnan'),
+                    label: this.$t('hotelList.yunnan')
                 }, {
-                    value: '西藏自治区',
-                    label: '西藏自治区'
+                    value: this.$t('hotelList.xizang'),
+                    label: this.$t('hotelList.xizang')
                 }, {
-                    value: '陕西省',
-                    label: '陕西省'
+                    value: this.$t('hotelList.shanxi'),
+                    label: this.$t('hotelList.shanxi')
                 }, {
-                    value: '甘肃省',
-                    label: '甘肃省'
+                    value: this.$t('hotelList.gansu'),
+                    label: this.$t('hotelList.gansu')
                 }, {
-                    value: '宁夏回族自治区',
-                    label: '宁夏回族自治区'
+                    value: this.$t('hotelList.ningxia'),
+                    label: this.$t('hotelList.ningxia')
                 }, {
-                    value: '青海省',
-                    label: '青海省'
+                    value: this.$t('hotelList.qinghai'),
+                    label: this.$t('hotelList.qinghai')
                 }, {
-                    value: '新疆维吾尔族自治区',
-                    label: '新疆维吾尔族自治区'
+                    value: this.$t('hotelList.xinjiang'),
+                    label: this.$t('hotelList.xinjiang')
                 }, {
-                    value: '台湾省',
-                    label: '台湾省'
+                    value: this.$t('hotelList.taiwan'),
+                    label: this.$t('hotelList.taiwan')
                 }, {
-                    value: '香港',
-                    label: '香港'
+                    value: this.$t('hotelList.xianggang'),
+                    label: this.$t('hotelList.xianggang')
                 }, {
-                    value: '澳门',
-                    label: '澳门'
+                    value: this.$t('hotelList.aomen'),
+                    label: this.$t('hotelList.aomen')
                 }],
                 hotelList: [],
                 startTime: '',
@@ -398,7 +420,7 @@
                         console.log(res);
                         if (res.data.code == 200) {
                             this.$message({
-                                message: '预定成功！',
+                                message: this.$t('hotelList.success'),
                                 type: 'success'
                             });
                             this.dialogVisible = false
