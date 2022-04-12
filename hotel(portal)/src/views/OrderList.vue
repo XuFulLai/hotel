@@ -17,7 +17,7 @@
                         <img :src="require(`../assets/images/status_${item.status}.png`)" alt="">
                         <div>
                             <!-- <h3 class="font-22">{{ statusTextList[item.status] }}</h3> -->
-                            <h3 class="font-22">{{ item.status | statusFilter }}</h3>
+                            <h3 class="font-22">{{ item.status | statusFilter }}</h3>                
                             <p class="font-16">{{ item.counts }}</p>
                         </div>
                     </div>
@@ -26,19 +26,19 @@
                 <ul class="order-list">
                     <li v-for="(item,index) in orderList">
                         <div class="d-flex align-items-center justify-content-between mb-15 font-20">
-                            <p>{{ item.currentStatus }}</p>
-                            <a v-if="item.status == 1" class="color-red cursor" @click="cancelOrder(item.id)">取消订单</a>
+                            <p>{{ item.status | statusFilter }}</p>
+                            <a v-if="item.status == 1" class="color-red cursor" @click="cancelOrder(item.id)">{{ $t('orderList.cancelOrder') }}</a>
                         </div>
                         <div class="d-flex align-items-center justify-content-between font-16 color-6">
                             <div>
-                                <p class="mb-10">酒店名称：{{ item.hotelName }}</p>
+                                <p class="mb-10">{{ $t('orderList.hotelName') }}{{ item.hotelName }}</p>
                                 <div class="d-flex align-items-center">
-                                    <p>房间类型：{{ item.roomTypeName }}</p>
+                                    <p>{{ $t('orderList.roomType') }}{{ item.roomTypeName | roomNameFormat }}</p>
                                     <p class="ml-10 mr-10" style="color: #e0e0e0"> | </p>
-                                    <p>入住天数：{{ item.days }}天</p>
+                                    <p>{{ $t('orderList.day') }} {{ item.days }} {{ $t('orderList.dayNum') }}</p>
                                 </div>
                             </div>
-                            <p>实付金额：{{ item.lastPay }} 元</p>
+                            <p>{{ $t('orderList.spend') }}{{ item.lastPay }} ￥</p>
                         </div>
                     </li>
                 </ul>
@@ -56,7 +56,7 @@
 
             </div>
 
-            <div v-show="orderList.length == 0" class="order-null text-center font-30">暂无订单!</div>
+            <div v-show="orderList.length == 0" class="order-null text-center font-30">{{ $t('orderList.noOrder') }}</div>
 
             <Footer></Footer>
 
@@ -83,31 +83,73 @@
                 orderList: [],
                 pageNum: 0,
                 statusList: [],
+                // statusTextList: [this.$t('orderList.status0'),this.$t('orderList.status1'),this.$t('orderList.status2')],
                 statusTextList: ['未支付','已支付','已关闭']
             }
         },
         filters: {
             statusFilter(value) {
-                // console.log(value);
-                switch (value) {
-                    case '0':
-                        value = '未支付'
-                        break;
-                    case '1':
-                        value = '已支付'
-                        break;
-                    case '2':
-                        value = '已关闭'
-                        break;  
-                    case '3':
-                        value = '已入住'
-                        break;  
-                    default:
-                        value = '已完成'
-                        break;
+                const lang = localStorage.getItem('lang')
+                if (lang == 'zh') {
+                    switch (value) {
+                        case '0':
+                            value = '未支付'
+                            break;
+                        case '1':
+                            value = '已支付'
+                            break;
+                        case '2':
+                            value = '已关闭'
+                            break;  
+                        case '3':
+                            value = '已入住'
+                            break;  
+                        default:
+                            value = '已完成'
+                            break;
+                    }
+                    return value                                    
+                } else if(lang == 'en') {
+                    switch (value) {
+                        case '0':
+                            value = 'Unpaid'
+                            break;
+                        case '1':
+                            value = 'Paid'
+                            break;
+                        case '2':
+                            value = 'Closed'
+                            break;  
+                        case '3':
+                            value = 'Checked in'
+                            break;  
+                        default:
+                            value = 'Completed'
+                            break;
+                    }
+                    return value                       
                 }
-                return value
-            }
+            },
+            roomNameFormat(val){
+                const lang = localStorage.getItem('lang')
+                if (lang == 'zh') {
+                    return val
+                } else if(lang == 'en') {
+                    if (val == '单人房') {
+                        return val = 'Single-bed room'
+                    } else if(val == '豪华大床房') {
+                        return val = 'Deluxe single Room'
+                    } else if(val == '双人房') {
+                        return val = 'Double room'
+                    } else if(val == '总统套房') {
+                        return val = 'Presidential suite'
+                    } else if(val == '经济房') {
+                        return val = 'Economy Room'
+                    } else {
+                        return val
+                    }
+                }
+            }            
         },
         mounted() {
             this.getOrderList()
@@ -206,7 +248,7 @@
                         console.log(res);
                         if (res.data.code == 200) {
                             this.$message({
-                                message: '取消成功！',
+                                message: this.$t('orderList.success'),
                                 type: 'success'
                             });
                             this.$router.go(0)
