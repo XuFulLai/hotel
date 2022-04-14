@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.sys_logs.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.bed_type.model.vo.BedTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.model.vo.LogsVO;
@@ -9,6 +10,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * @author liustart
@@ -52,6 +58,21 @@ public class LogsController {
     public Reply<Page<LogsVO>> getPage(@RequestBody LogsVO vo) {
         return Reply.success(logsService.getPage(vo));
     }
+
+
+    @ApiOperation("下载日志记录")
+    @PostMapping("download")
+    public  void downLoadLogs(@RequestBody LogsVO logsVO, HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.ms-excel");
+        response.setContentType("utf-8");
+        long currentTimeMillis = System.currentTimeMillis();
+        String exportFileName = "日志_" + String.valueOf(currentTimeMillis);
+        String fileName = URLEncoder.encode(exportFileName, "utf-8").replaceAll("\\+", "%20");
+        response.setHeader("Access-Control-Expose-Headers","Content-Disposition");
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+        EasyExcel.write(response.getOutputStream(),LogsVO.class).sheet("日志").doWrite(logsService.getAllList(logsVO));
+    }
+
 
 
 }

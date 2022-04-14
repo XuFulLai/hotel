@@ -399,4 +399,5 @@
     .avatar-uploader {
         margin-left: 35px;
     }
+
 </style>
