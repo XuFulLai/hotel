@@ -16,6 +16,12 @@ public class HotelPO implements Serializable {
     @TableField("name")
     private String name;
 
+    @TableField("province")
+    private String province;
+
+    @TableField("city")
+    private String city;
+
     @TableField("address")
     private String address;
 
@@ -182,6 +188,22 @@ public class HotelPO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }
 

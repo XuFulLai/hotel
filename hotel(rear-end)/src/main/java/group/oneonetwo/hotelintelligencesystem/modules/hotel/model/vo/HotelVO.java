@@ -22,6 +22,12 @@ public class HotelVO implements Serializable {
     @ApiModelProperty("酒店名")
     private String name;
 
+    @ApiModelProperty("省")
+    private String province;
+
+    @ApiModelProperty("市")
+    private String city;
+
     @ApiModelProperty("酒店地址")
     private String address;
 
@@ -74,6 +80,22 @@ public class HotelVO implements Serializable {
 
 
     private Page page;
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public Page getPage() {
         return page;

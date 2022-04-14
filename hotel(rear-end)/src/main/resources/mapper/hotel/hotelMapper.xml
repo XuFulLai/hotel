@@ -8,6 +8,8 @@
     <resultMap id="hotelMap" type="group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelPO">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
         <result property="address" column="address"/>
         <result property="parkingLot" column="parking_lot"/>
         <result property="otherPolicy" column="other_policy"/>
