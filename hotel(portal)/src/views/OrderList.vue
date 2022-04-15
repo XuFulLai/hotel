@@ -32,6 +32,7 @@
                         <div class="d-flex align-items-center justify-content-between font-16 color-6">
                             <div>
                                 <p class="mb-10">{{ $t('orderList.hotelName') }}{{ item.hotelName }}</p>
+                                <p class="mb-10">id:{{ item.id }}</p>
                                 <div class="d-flex align-items-center">
                                     <p>{{ $t('orderList.roomType') }}{{ item.roomTypeName | roomNameFormat }}</p>
                                     <p class="ml-10 mr-10" style="color: #e0e0e0"> | </p>
