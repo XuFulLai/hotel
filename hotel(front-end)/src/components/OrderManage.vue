@@ -367,9 +367,9 @@ export default {
       }
       this.orderListRequest(data)
     },
-    //获取酒店列表请求
+    //
     orderListRequest(data) {
-      post('/api/order/page', data)
+      post('/api/order/my', data)
           .then(res => {
             console.log(res);
             this.orderData = res.data.data.records
