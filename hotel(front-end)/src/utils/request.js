@@ -55,3 +55,12 @@ export function reqFuc(data) {
         data:data
     })
 }
+
+export function logDownload(data) {
+    return instance.request({
+        url: '/api/logs/download', // 接口
+        method: 'post',  //
+        responseType: 'blob', // 注意:这里必须指定返回类型,否则打不开文件
+        data:data
+    })
+}

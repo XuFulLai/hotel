@@ -7,6 +7,20 @@
       <el-form-item label="酒店名称">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
+      <el-form-item class="flex flex-row" label="酒店所在省市">
+        <div class="flex flex-row">
+          <el-cascader
+              style="margin-left: -120px"
+              size="large"
+              :options="addressData"
+              :v-model="area"
+              @change="getAddress"
+          ></el-cascader>
+          <p class="ml-10">当前选择：{{ area[0] + " " + area[1] }}</p>
+        </div>
+
+
+      </el-form-item>
       <el-form-item label="酒店详细地址">
         <el-input v-model="form.address"></el-input>
       </el-form-item>
@@ -46,7 +60,25 @@
           </el-upload>
         </div>
       </el-form-item>
-      <el-form-item label="描述">
+      <el-form-item label="介绍">
+        <div class="Tinymce_box">
+          <tinymce v-model="form.introduce" :height="500"/>
+          <div v-if="form.introduce" class="editor-content">
+            <h3>预览效果：</h3>
+            <div v-html="form.introduce"/>
+          </div>
+        </div>
+      </el-form-item>
+      <el-form-item label="设施服务">
+        <div class="Tinymce_box">
+          <tinymce v-model="form.facilities" :height="500"/>
+          <div v-if="form.facilities" class="editor-content">
+            <h3>预览效果：</h3>
+            <div v-html="form.facilities"/>
+          </div>
+        </div>
+      </el-form-item>
+      <el-form-item label="其他政策">
         <div class="Tinymce_box">
           <tinymce v-model="form.otherPolicy" :height="500"/>
           <div v-if="form.otherPolicy" class="editor-content">
@@ -68,6 +100,7 @@
 <script>
 import {get, post} from "../utils/request";
 import Tinymce from "./Tinymce"
+import {CodeToText, provinceAndCityData} from 'element-china-area-data'
 
 export default {
   name: "MyHotel",
@@ -81,9 +114,15 @@ export default {
         otherPolicy: '',
         id: '',
         name: '',
+        province: '',
+        city: '',
         address: '',
         parkingLot: '',
+        introduce: '',
+        facilities: ''
       },
+      addressData: provinceAndCityData,
+      area: [],
       a: ''
     }
   },
@@ -93,6 +132,17 @@ export default {
   mounted() {
   },
   methods: {
+    getAddress(value) { //value是长度为2的装有被选择省、市代码的数组;CodeToText是个对象，键名为代码，键值为省和城市
+      this.area = [];
+      for (let i = 0; i < value.length; i++) {
+        let code = value[i];
+        this.area.push(CodeToText[code]);
+      }
+      this.form.province = this.area[0]
+      this.form.city = this.area[1]
+      console.log(this.area); //["河北省","唐山市"]
+    },
+
     toWeb() {
       window.open('https://lbs.amap.com/tools/picker')
     },
@@ -100,6 +150,9 @@ export default {
       get("/api/hotel/myHotel").then(res => {
         console.log(res);
         this.form = res.data.data
+        this.area[0] = this.form.province
+        this.area[1] = this.form.city
+        console.log(this.area)
         // this.form.cover = 'http://' + res.data.cover
         // this.form.cover = res.data.cover
       }).catch(err => {
@@ -110,6 +163,7 @@ export default {
       })
     },
     saveInfo() {
+      console.log(this.form)
       post("/api/hotel/modify", this.form).then(res => {
         this.$notify({
           title: '信息',
@@ -153,6 +207,7 @@ export default {
             console.log(err);
           })
     },
+
   }
 }
 </script>
