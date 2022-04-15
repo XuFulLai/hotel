@@ -51,7 +51,7 @@ public class HotelPO implements Serializable {
     private String cover;
 
     @TableField("sort")
-    private String sort;
+    private Integer sort;
 
     @TableField(value = "create_by", fill = FieldFill.INSERT)
     private String createBy;
@@ -85,11 +85,11 @@ public class HotelPO implements Serializable {
         return latitude;
     }
 
-    public String getSort() {
+    public Integer getSort() {
         return sort;
     }
 
-    public void setSort(String sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
     }
 
