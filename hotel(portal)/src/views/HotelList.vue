@@ -32,6 +32,7 @@
                 <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center mb-30">
                     <el-pagination
                             background
+                            :page-size="5"
                             @current-change="handleCurrentChange"
                             @prev-click="prevPage"
                             @next-click="nextPage"
