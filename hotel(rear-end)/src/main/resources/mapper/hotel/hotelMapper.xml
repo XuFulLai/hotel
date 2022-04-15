@@ -42,7 +42,7 @@
                 and h.address like concat('%',${vo.address},'%')
             </if>
         </where>
-        order by distance asc,id
+        order by distance asc,sort asc,id
     </select>
 
 </mapper>

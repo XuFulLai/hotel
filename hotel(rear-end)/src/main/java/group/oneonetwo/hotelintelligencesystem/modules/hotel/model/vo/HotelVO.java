@@ -63,6 +63,9 @@ public class HotelVO implements Serializable {
     @ApiModelProperty("封面")
     private String cover;
 
+    @ApiModelProperty("排序")
+    private String sort;
+
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
 
