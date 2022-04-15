@@ -91,7 +91,7 @@
         filters: {
             statusFilter(value) {
                 const lang = localStorage.getItem('lang')
-                if (lang == 'zh') {
+                if (lang == 'zh' || lang == null) {
                     switch (value) {
                         case '0':
                             value = '未支付'
