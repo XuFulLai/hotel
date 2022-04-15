@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static java.lang.Math.PI;
+
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
 public class HotelServiceImpl implements IHotelService {
@@ -54,7 +56,7 @@ public class HotelServiceImpl implements IHotelService {
         int insert=hotelMapper.insert(hotelP0);
 
         Gson gson = new Gson();
-        hotelVO.setOtherPolicy(WStringUtils.removeHtml(hotelVO.getOtherPolicy()));
+//        hotelVO.setOtherPolicy(WStringUtils.removeHtml(hotelVO.getOtherPolicy()));
         logsService.createLog("【添加】酒店信息",gson.toJson(hotelVO),1,1);
 
         if(insert>0){
@@ -136,17 +138,28 @@ public class HotelServiceImpl implements IHotelService {
 
     @Override
     public Page<HotelVO> getPage(HotelVO hotelVO) {
-        // 构建查询条件
-        QueryWrapper<HotelPO> wrapper = new QueryWrapper<>();
-        if (!"".equals(hotelVO.getName()) && hotelVO.getName() != null) {
-            wrapper.like("name",hotelVO.getName());
+        Page<HotelVO> res = null;
+        if (WStringUtils.isBlank(hotelVO.getLatitude()) && WStringUtils.isBlank(hotelVO.getLongitude())) {
+            // 构建查询条件
+            QueryWrapper<HotelPO> wrapper = new QueryWrapper<>();
+            if (!"".equals(hotelVO.getName()) && hotelVO.getName() != null) {
+                wrapper.like("name",hotelVO.getName());
+            }
+            if (!"".equals(hotelVO.getAddress()) && hotelVO.getAddress() != null) {
+                wrapper.like("address",hotelVO.getAddress());
+            }
+            wrapper.orderByAsc("sort").orderByAsc("id");
+            Page<HotelPO> page = new Page<>(hotelVO.getPage().getPage(), hotelVO.getPage().getSize());
+            Page<HotelPO> poiPage = (Page<HotelPO>) hotelMapper.selectPage(page, wrapper);
+            res = ConvertUtils.transferPage(poiPage,HotelVO.class);
+        }else {
+            hotelVO = countCoordinateRange(hotelVO);
+            Page<HotelVO> page = new Page<>(hotelVO.getPage().getPage(), hotelVO.getPage().getSize());
+            res = hotelMapper.getPageWithDistance(page, hotelVO);
         }
-        if (!"".equals(hotelVO.getAddress()) && hotelVO.getAddress() != null) {
-            wrapper.like("address",hotelVO.getAddress());
-        }
-        Page<HotelPO> page = new Page<>(hotelVO.getPage().getPage(), hotelVO.getPage().getSize());
-        Page<HotelPO> poiPage = (Page<HotelPO>) hotelMapper.selectPage(page, wrapper);
-        return ConvertUtils.transferPage(poiPage,HotelVO.class);
+
+
+        return res;
     }
 
     @Override
@@ -168,6 +181,29 @@ public class HotelServiceImpl implements IHotelService {
     public HotelPO selectOneById(String id){
         HotelPO hotelPO =hotelMapper.selectById(id);
         return hotelPO;
+    }
+
+    private HotelVO countCoordinateRange(HotelVO hotelVO) {
+        Double longitude = Double.valueOf(hotelVO.getLongitude());
+        Double latitude = Double.valueOf(hotelVO.getLatitude());
+        Double raidus = Double.valueOf(hotelVO.getDistance());
+        if (longitude >= 180
+                || longitude <= -180
+                || latitude >= 90
+                || latitude <= -90) {
+            throw new CommonException("【HotelServiceImpl.countCoordinateRange】非法坐标值--longitude:" + longitude + ",latitude:" + latitude);
+        }
+        Double degree = (24901 * 1609) / 360.0;
+
+        Double radiusLng = (1 / (degree * Math.cos(latitude * (PI / 180)))) * raidus;
+        hotelVO.setMinLongitude(String.valueOf(longitude-radiusLng));
+        hotelVO.setMaxLongitude(String.valueOf(longitude+radiusLng));
+
+        Double radiusLat = (1/degree)*raidus;
+        hotelVO.setMinLatitude(String.valueOf(latitude-radiusLat));
+        hotelVO.setMaxLatitude(String.valueOf(latitude+radiusLat));
+
+        return hotelVO;
     }
 
 

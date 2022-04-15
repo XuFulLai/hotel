@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,6 +22,12 @@ public class HotelVO implements Serializable {
     @ApiModelProperty("酒店名")
     private String name;
 
+    @ApiModelProperty("省")
+    private String province;
+
+    @ApiModelProperty("市")
+    private String city;
+
     @ApiModelProperty("酒店地址")
     private String address;
 
@@ -30,8 +37,34 @@ public class HotelVO implements Serializable {
     @ApiModelProperty("其他政策")
     private String otherPolicy;
 
+    @ApiModelProperty("经度")
+    private String longitude;
+
+    private String minLongitude;
+
+    private String maxLongitude;
+
+    @ApiModelProperty("纬度")
+    private String latitude;
+
+    private String minLatitude;
+
+    private String maxLatitude;
+
+    @ApiModelProperty("距离(输入时为半径条件,输出时为实际距离)")
+    private String distance;
+
+    @ApiModelProperty("酒店介绍")
+    private String introduce;
+
+    @ApiModelProperty("设施服务")
+    private String facilities;
+
     @ApiModelProperty("封面")
     private String cover;
+
+    @ApiModelProperty("排序")
+    private Integer sort;
 
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
@@ -50,6 +83,30 @@ public class HotelVO implements Serializable {
 
 
     private Page page;
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public Page getPage() {
         return page;
@@ -74,6 +131,77 @@ public class HotelVO implements Serializable {
         this.deptId = deptId;
     }
 
+    public String getMinLongitude() {
+        return minLongitude;
+    }
+
+    public void setMinLongitude(String minLongitude) {
+        this.minLongitude = minLongitude;
+    }
+
+    public String getMaxLongitude() {
+        return maxLongitude;
+    }
+
+    public void setMaxLongitude(String maxLongitude) {
+        this.maxLongitude = maxLongitude;
+    }
+
+    public String getMinLatitude() {
+        return minLatitude;
+    }
+
+    public void setMinLatitude(String minLatitude) {
+        this.minLatitude = minLatitude;
+    }
+
+    public String getMaxLatitude() {
+        return maxLatitude;
+    }
+
+    public void setMaxLatitude(String maxLatitude) {
+        this.maxLatitude = maxLatitude;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
+    public String getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(String facilities) {
+        this.facilities = facilities;
+    }
 
     public String getName() {
         return name;

@@ -29,6 +29,19 @@
 
     </resultMap>
 
+    <select id="currentRoomTypeList" resultType="group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO">
+        select *
+        from room_type
+        where id in (
+                        select type
+                        from room
+                        where hotel_id = ${id} and `status` = 0 and is_deleted = 0
+                        group by type
+                     )
+        and is_deleted = 0
+
+    </select>
+
 
 
 </mapper>

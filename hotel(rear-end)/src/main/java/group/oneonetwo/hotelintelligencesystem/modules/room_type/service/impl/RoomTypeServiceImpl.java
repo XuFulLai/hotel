@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
 public class RoomTypeServiceImpl implements IRoomTypeServeice {
@@ -109,5 +111,10 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
         Page<RoomTypePO> page=new Page<>(roomTypeVO.getPage().getPage(),roomTypeVO.getPage().getSize());
         Page<RoomTypePO> poiPage=(Page<RoomTypePO>) roomTypeMapper.selectPage(page,wrapper);
         return ConvertUtils.transferPage(poiPage,RoomTypeVO.class);
+    }
+
+    @Override
+    public List<RoomTypeVO> currentRoomTypeList(String id) {
+        return roomTypeMapper.currentRoomTypeList(id);
     }
 }
