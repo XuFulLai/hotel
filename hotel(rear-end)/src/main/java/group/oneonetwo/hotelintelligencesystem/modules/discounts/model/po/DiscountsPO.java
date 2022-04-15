@@ -28,6 +28,17 @@ public class DiscountsPO implements Serializable {
     @TableField("effect_condition")
     private Integer effectCondition;
 
+    @TableField("hotel_id")
+    private String hotel_Id;
+
+    public String getHotel_Id() {
+        return hotel_Id;
+    }
+
+    public void setHotel_Id(String hotel_Id) {
+        this.hotel_Id = hotel_Id;
+    }
+
     @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;

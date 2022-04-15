@@ -30,6 +30,17 @@ public class DiscountsVO implements Serializable {
     @ApiModelProperty("生效条件(天数)")
     private Integer effectCondition;
 
+    @ApiModelProperty("酒店id")
+    private String hotelId;
+
+    public String getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(String hotelId) {
+        this.hotelId = hotelId;
+    }
+
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
 
@@ -161,11 +172,13 @@ public class DiscountsVO implements Serializable {
                 ", discounts='" + discounts + '\'' +
                 ", effectType=" + effectType +
                 ", effectCondition=" + effectCondition +
+                ", hotelId='" + hotelId + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +
+                ", page=" + page +
                 '}';
     }
 }
