@@ -64,7 +64,7 @@ public class HotelVO implements Serializable {
     private String cover;
 
     @ApiModelProperty("排序")
-    private String sort;
+    private Integer sort;
 
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
@@ -83,6 +83,14 @@ public class HotelVO implements Serializable {
 
 
     private Page page;
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
 
     public String getProvince() {
         return province;
