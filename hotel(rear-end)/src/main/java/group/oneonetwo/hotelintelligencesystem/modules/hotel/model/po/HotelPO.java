@@ -13,22 +13,32 @@ public class HotelPO implements Serializable {
     @TableField("dept_id")
     private String deptId;
 
-    public String getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(String deptId) {
-        this.deptId = deptId;
-    }
-
     @TableField("name")
     private String name;
+
+    @TableField("province")
+    private String province;
+
+    @TableField("city")
+    private String city;
 
     @TableField("address")
     private String address;
 
     @TableField("parking_lot")
     private String parkingLot;
+
+    @TableField("longitude")
+    private String longitude;
+
+    @TableField("latitude")
+    private String latitude;
+
+    @TableField("introduce")
+    private String introduce;
+
+    @TableField("facilities")
+    private String facilities;
 
     @TableLogic
     @TableField("is_deleted")
@@ -39,6 +49,9 @@ public class HotelPO implements Serializable {
 
     @TableField("cover")
     private String cover;
+
+    @TableField("sort")
+    private Integer sort;
 
     @TableField(value = "create_by", fill = FieldFill.INSERT)
     private String createBy;
@@ -51,6 +64,54 @@ public class HotelPO implements Serializable {
 
     @TableField(value = "update_time", fill = FieldFill.UPDATE)
     private Date updateTime;
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
+    public String getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(String facilities) {
+        this.facilities = facilities;
+    }
 
     public String getId() {
         return id;
@@ -138,6 +199,22 @@ public class HotelPO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }
 

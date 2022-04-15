@@ -26,6 +26,11 @@ public class HotelCtroller {
         return Reply.success(hotelService.add(hotelVO));
     }
 
+    @GetMapping("get/{id}")
+    public Reply<HotelVO> getById(@PathVariable("id") String id) {
+        return Reply.success(hotelService.selectOneByIdReturnVO(id));
+    }
+
     @ApiOperation("查询酒店列表(分页)")
     @PostMapping("page")
     public Reply<Page<HotelVO>> getPage(@RequestBody HotelVO hotelVO) {

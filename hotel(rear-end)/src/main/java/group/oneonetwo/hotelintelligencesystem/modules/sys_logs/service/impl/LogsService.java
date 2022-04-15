@@ -131,5 +131,19 @@ public class LogsService implements ILogsService {
         return logsMapper.findById(id);
     }
 
+    @Override
+    public List<LogsVO> getAllList(LogsVO logsVO) {
+        String role = authUtils.getRole();
+        logsVO.setRole(role);
+        switch (role){
+            case "hotel_admin":
+            case "hotel_member":
+                logsVO.setHotelId(authUtils.getUserHotelId());
+                break;
+        }
+        List<LogsVO> allList = logsMapper.getAllList(logsVO);
+        return allList;
+    }
+
 
 }
