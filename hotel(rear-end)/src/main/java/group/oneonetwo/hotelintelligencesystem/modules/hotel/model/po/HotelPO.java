@@ -16,6 +16,12 @@ public class HotelPO implements Serializable {
     @TableField("name")
     private String name;
 
+    @TableField("province")
+    private String province;
+
+    @TableField("city")
+    private String city;
+
     @TableField("address")
     private String address;
 
@@ -43,6 +49,9 @@ public class HotelPO implements Serializable {
 
     @TableField("cover")
     private String cover;
+
+    @TableField("sort")
+    private Integer sort;
 
     @TableField(value = "create_by", fill = FieldFill.INSERT)
     private String createBy;
@@ -74,6 +83,14 @@ public class HotelPO implements Serializable {
 
     public String getLatitude() {
         return latitude;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 
     public void setLatitude(String latitude) {
@@ -182,6 +199,22 @@ public class HotelPO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }
 

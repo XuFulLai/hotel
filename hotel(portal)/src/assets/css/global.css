@@ -105,6 +105,15 @@ textarea {
 .justify-content-around {
     justify-content: space-around;
 }
+
+.flex {
+    display: flex;
+}
+
+.flex1 {
+    flex: 1
+}
+
 .flex-row {
     flex-direction: row;
 }
@@ -119,6 +128,10 @@ textarea {
 }
 .flex-wrap {
     flex-wrap: wrap;
+}
+
+.flex-n-wrap {
+    flex-wrap: nowrap;
 }
 .position-relative {
     position: relative;

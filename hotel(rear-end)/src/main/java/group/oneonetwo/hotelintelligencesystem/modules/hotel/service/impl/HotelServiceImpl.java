@@ -56,7 +56,7 @@ public class HotelServiceImpl implements IHotelService {
         int insert=hotelMapper.insert(hotelP0);
 
         Gson gson = new Gson();
-        hotelVO.setOtherPolicy(WStringUtils.removeHtml(hotelVO.getOtherPolicy()));
+//        hotelVO.setOtherPolicy(WStringUtils.removeHtml(hotelVO.getOtherPolicy()));
         logsService.createLog("【添加】酒店信息",gson.toJson(hotelVO),1,1);
 
         if(insert>0){
@@ -148,6 +148,7 @@ public class HotelServiceImpl implements IHotelService {
             if (!"".equals(hotelVO.getAddress()) && hotelVO.getAddress() != null) {
                 wrapper.like("address",hotelVO.getAddress());
             }
+            wrapper.orderByAsc("sort").orderByAsc("id");
             Page<HotelPO> page = new Page<>(hotelVO.getPage().getPage(), hotelVO.getPage().getSize());
             Page<HotelPO> poiPage = (Page<HotelPO>) hotelMapper.selectPage(page, wrapper);
             res = ConvertUtils.transferPage(poiPage,HotelVO.class);

@@ -106,6 +106,9 @@ textarea {
 .justify-content-around {
     justify-content: space-around;
 }
+.flex {
+    display: flex;
+}
 .flex-row {
     flex-direction: row;
 }

@@ -24,6 +24,9 @@ public class WStringUtils {
      * @return
      */
     public static String removeHtml(String content) {
+        if (isBlank(content)) {
+            return "";
+        }
         return content.replaceAll("\\&[a-zA-Z]{1,10};", "").replaceAll("<[^>]*>", "").replaceAll("[(/>)<]", "");
     }
 

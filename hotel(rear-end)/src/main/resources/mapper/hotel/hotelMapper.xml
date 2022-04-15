@@ -8,6 +8,8 @@
     <resultMap id="hotelMap" type="group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelPO">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
         <result property="address" column="address"/>
         <result property="parkingLot" column="parking_lot"/>
         <result property="otherPolicy" column="other_policy"/>
@@ -16,6 +18,7 @@
         <result property="introduce" column="introduce"/>
         <result property="facilities" column="facilities"/>
         <result property="cover" column="cover"/>
+        <result property="sort" column="sort"/>
         <result property="isDeleted" column="is_deleted"/>
         <result property="createBy" column="create_by"/>
         <result property="createTime" column="create_time"/>
@@ -40,7 +43,7 @@
                 and h.address like concat('%',${vo.address},'%')
             </if>
         </where>
-        order by distance asc,id
+        order by distance asc,sort asc,id
     </select>
 
 </mapper>

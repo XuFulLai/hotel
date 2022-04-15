@@ -22,7 +22,7 @@
                             <div class="li-r">
                                 <h4>{{ item.name }}</h4>
                                 <h6>{{ item.address }}</h6>
-                                <div v-html="item.otherPolicy"></div>
+                                <div v-html="item.introduce"></div>
                                 <button @click="hotelDetails(index,item.id)">{{ $t('hotelList.confirm') }}</button>
                             </div>
                         </li>
@@ -32,6 +32,7 @@
                 <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center mb-30">
                     <el-pagination
                             background
+                            :page-size="5"
                             @current-change="handleCurrentChange"
                             @prev-click="prevPage"
                             @next-click="nextPage"
@@ -386,23 +387,23 @@
                 let data = {
                     hotelId: id
                 }
-                post('/api/room/getRoomTypeList', data)
-                    .then(res => {
-                        console.log(res);
-                        this.dialogVisible = true
-                        this.roomTypeList = res.data.data
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
+                // post('/api/room/getRoomTypeList', data)
+                //     .then(res => {
+                //         console.log(res);
+                //         this.dialogVisible = true
+                //         this.roomTypeList = res.data.data
+                //     })
+                //     .catch(err => {
+                //         console.log(err);
+                //     })
 
-                // this.$router.push({
-                //     name: 'hotelDetails',
-                //     params: {
-                //         index: index,
-                //         hotleId: id
-                //     }
-                // })
+                this.$router.push({
+                    name: 'hotelDetails',
+                    params: {
+                        index: index,
+                        hotelId: id
+                    }
+                })
             },
 
             confirm() {
