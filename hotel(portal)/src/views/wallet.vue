@@ -71,6 +71,8 @@ export default {
         }else {
           this.$message.error(res.data.msg);
         }
+      }).catch(reason => {
+        this.$message.error(reason);
       })
     }
   }
