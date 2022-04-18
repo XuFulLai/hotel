@@ -7,6 +7,7 @@ import HotelDetails from '../views/HotelDetails'
 import OrderList from '../views/OrderList'
 import SignIn from '../components/SignIn'
 import Register from '../components/Register'
+import Wallet from '../views/wallet'
 
 Vue.use(VueRouter)
 
@@ -50,6 +51,11 @@ const routes = [
         path: '/orderList',
         name: 'orderList',
         component: OrderList
+    },
+    {
+        path: '/wallet',
+        name: 'wallet',
+        component: Wallet
     }
 ]
 

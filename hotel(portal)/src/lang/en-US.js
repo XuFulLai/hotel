@@ -31,6 +31,7 @@ export default {
         index: 'Index',
         list: 'Hotel list',
         order: 'My order',
+        wallet: 'My wallet',
         logOut: 'Log out',
     },
     hotelList: {

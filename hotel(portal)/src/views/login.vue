@@ -51,8 +51,8 @@
         data() {
             return {
                 status: 0,
-                username: '',
-                password: '',
+                username: 'lee',
+                password: '123',
             }
         },
         mounted(){
