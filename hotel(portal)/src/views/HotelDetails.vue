@@ -18,6 +18,14 @@
         <div class="hotel-detail">
           <div class="detail-left">
             <div class="detail-detail">
+              <div class="flex flex-row" v-if="hotelDetails.badge || hotelDetails.allowIsolation">
+                <div style="background: #F56C6C" class="badge" v-if="hotelDetails.allowIsolation">
+                  隔离酒店
+                </div>
+                <div class="badge" v-for="i in hotelDetails.badge.split(',')">
+                  {{ i }}
+                </div>
+              </div>
               <div class="flex flex-row flex-n-wrap">
                 <div class="flex-column address-detail">
                   <p>{{ hotelDetails.province + " " + hotelDetails.city }}</p>
@@ -597,6 +605,14 @@ h3.sub-title .en {
   font-size: 16px;
   line-height: 30px;
   padding: 6px;
+}
+
+.badge {
+  margin: 2px 6px;
+  border-radius: 6px;
+  background: #4f93fe;
+  padding: 6px 8px;
+  color: #fff !important;
 }
 
 

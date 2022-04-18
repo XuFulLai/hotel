@@ -50,6 +50,9 @@ public class HotelPO implements Serializable {
     @TableField("cover")
     private String cover;
 
+    @TableField("badge")
+    private String badge;
+
     @TableField("sort")
     private Integer sort;
 
@@ -215,6 +218,14 @@ public class HotelPO implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getBadge() {
+        return badge;
+    }
+
+    public void setBadge(String badge) {
+        this.badge = badge;
     }
 }
 
