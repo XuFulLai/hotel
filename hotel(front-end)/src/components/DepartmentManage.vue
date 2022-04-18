@@ -137,6 +137,10 @@ export default {
         {
           label: '酒店员工',
           value: 'hotel_member'
+        },
+        {
+          label: '防疫人员',
+          value: 'anti-epidemic'
         }
       ],
       form: {
