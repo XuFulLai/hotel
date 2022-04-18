@@ -3,6 +3,8 @@ package group.oneonetwo.hotelintelligencesystem.modules.hotel.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.gson.Gson;
+import com.qiniu.util.Auth;
+import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.dao.HotelMapper;
@@ -35,6 +37,9 @@ public class HotelServiceImpl implements IHotelService {
 
     @Autowired
     LogsService logsService;
+
+    @Autowired
+    AuthUtils authUtils;
 
     @Override
     public HotelVO add(HotelVO hotelVO){
@@ -98,6 +103,9 @@ public class HotelServiceImpl implements IHotelService {
         HotelVO check=selectOneByIdReturnVO(hotelVO.getId());
         if (check==null){
             throw new CommonException(4004,"找不到id为'"+hotelVO.getId()+"'的数据");
+        }
+        if (!"admin".equals(authUtils.getRole())) {
+            hotelVO.setBadge(null);
         }
         HotelPO hotelPO =new HotelPO();
         BeanUtils.copyProperties(hotelVO, hotelPO);

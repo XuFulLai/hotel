@@ -114,12 +114,22 @@
               clearable>
           </el-input>
         </div>
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">停车场:</p>
           <el-input
               style="width: 350px;"
               placeholder="是否有停车场"
               v-model="form.parkingLot"
+              :disabled="hotelValue == 'check'"
+              clearable>
+          </el-input>
+        </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">徽章(多个用逗号隔开):</p>
+          <el-input
+              style="width: 350px;"
+              placeholder="请输入徽章内容"
+              v-model="form.badge"
               :disabled="hotelValue == 'check'"
               clearable>
           </el-input>
@@ -190,6 +200,7 @@ export default {
         parkingLot: '',
         name: undefined,
         address: undefined,
+        badge: ''
       }
     }
   },
@@ -275,7 +286,8 @@ export default {
         name: this.form.name,
         address: this.form.address,
         parkingLot: this.form.parkingLot,
-        cover: this.form.cover
+        cover: this.form.cover,
+        badge: this.form.badge
       }
       if (value == 'add') {
         this.hotelRequest(value, data)

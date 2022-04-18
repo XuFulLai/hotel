@@ -37,6 +37,9 @@ public class HotelVO implements Serializable {
     @ApiModelProperty("其他政策")
     private String otherPolicy;
 
+    @ApiModelProperty("徽章")
+    private String badge;
+
     @ApiModelProperty("经度")
     private String longitude;
 
@@ -281,6 +284,14 @@ public class HotelVO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getBadge() {
+        return badge;
+    }
+
+    public void setBadge(String badge) {
+        this.badge = badge;
     }
 
     @Override
