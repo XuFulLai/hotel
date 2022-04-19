@@ -1,21 +1,16 @@
 package group.oneonetwo.hotelintelligencesystem.modules.review.model;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
+ *
  * @TableName review
  */
-@TableName(value ="review")
 public class Review implements Serializable {
     /**
      * 申报id
      */
-    @TableId
     private String id;
 
     /**
@@ -108,7 +103,6 @@ public class Review implements Serializable {
      */
     private String update_by;
 
-    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
     /**

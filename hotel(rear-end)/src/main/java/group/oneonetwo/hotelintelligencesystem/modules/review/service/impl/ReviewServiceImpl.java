@@ -1,9 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.review.service.impl;
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import group.oneonetwo.hotelintelligencesystem.modules.review.model.Review;
 import group.oneonetwo.hotelintelligencesystem.modules.review.service.ReviewService;
-import group.oneonetwo.hotelintelligencesystem.modules.review.dao.ReviewMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +9,6 @@ import org.springframework.stereotype.Service;
 * @createDate 2022-04-19 10:40:37
 */
 @Service
-public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review>
-implements ReviewService{
+public class ReviewServiceImpl implements ReviewService{
 
 }

@@ -1,7 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.review.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.Review;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
 * @author 文

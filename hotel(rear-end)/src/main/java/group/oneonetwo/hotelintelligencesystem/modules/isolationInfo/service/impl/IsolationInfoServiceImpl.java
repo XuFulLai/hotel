@@ -1,9 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.IsolationInfo;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.IsolationInfoService;
-import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.dao.IsolationInfoMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +9,6 @@ import org.springframework.stereotype.Service;
 * @createDate 2022-04-19 10:26:02
 */
 @Service
-public class IsolationInfoServiceImpl extends ServiceImpl<IsolationInfoMapper, IsolationInfo>
-implements IsolationInfoService{
+public class IsolationInfoServiceImpl implements IsolationInfoService{
 
 }
