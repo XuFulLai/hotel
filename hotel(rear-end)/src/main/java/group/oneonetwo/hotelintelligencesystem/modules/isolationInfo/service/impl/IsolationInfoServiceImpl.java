@@ -1,15 +1,13 @@
 package group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.IsolationInfoPO;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.IsolationInfoService;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.dao.IsolationInfoMapper;
-import group.oneonetwo.hotelintelligencesystem.modules.order.model.po.OrderPO;
-import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,6 +93,5 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
     public Page<IsolationInfoVO> getPage(IsolationInfoVO isolationInfoVO) {
         Page<IsolationInfoPO> page=new Page<>(isolationInfoVO.getPage().getPage(),isolationInfoVO.getPage().getSize());
         return isolationInfoMapper.getPage(page,isolationInfoVO);
-
     }
 }
