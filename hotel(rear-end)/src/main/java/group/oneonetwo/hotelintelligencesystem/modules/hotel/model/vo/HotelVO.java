@@ -16,6 +16,9 @@ public class HotelVO implements Serializable {
     @ApiModelProperty("主键")
     private String id;
 
+    @ApiModelProperty("是否允许设置隔离酒店")
+    private Integer allowIsolation;
+
     @ApiModelProperty("部门id")
     private  String deptId;
 
@@ -84,6 +87,13 @@ public class HotelVO implements Serializable {
     @ApiModelProperty("更新时间")
     private Date updateTime;
 
+    public Integer getAllowIsolation() {
+        return allowIsolation;
+    }
+
+    public void setAllowIsolation(Integer allowIsolation) {
+        this.allowIsolation = allowIsolation;
+    }
 
     private Page page;
 
@@ -298,17 +308,32 @@ public class HotelVO implements Serializable {
     public String toString() {
         return "HotelVO{" +
                 "id='" + id + '\'' +
+                ", allowIsolation=" + allowIsolation +
                 ", deptId='" + deptId + '\'' +
                 ", name='" + name + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
                 ", address='" + address + '\'' +
                 ", parkingLot='" + parkingLot + '\'' +
                 ", otherPolicy='" + otherPolicy + '\'' +
+                ", badge='" + badge + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", minLongitude='" + minLongitude + '\'' +
+                ", maxLongitude='" + maxLongitude + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", minLatitude='" + minLatitude + '\'' +
+                ", maxLatitude='" + maxLatitude + '\'' +
+                ", distance='" + distance + '\'' +
+                ", introduce='" + introduce + '\'' +
+                ", facilities='" + facilities + '\'' +
                 ", cover='" + cover + '\'' +
+                ", sort=" + sort +
                 ", isDeleted=" + isDeleted +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +
+                ", page=" + page +
                 '}';
     }
 }

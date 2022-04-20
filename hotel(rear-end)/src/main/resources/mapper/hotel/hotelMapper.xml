@@ -25,6 +25,7 @@
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
+        <result property="allowIsolation" column="allow_isolation"/>
     </resultMap>
 
     <select id="getPageWithDistance" resultType="group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO">

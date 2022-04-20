@@ -28,6 +28,17 @@ public class RoomPO implements Serializable {
     @TableField("hotel_id")
     private String hotelId;
 
+    @TableField("is_isolation")
+    private Integer isIsolation;
+
+    public Integer getIsIsolation() {
+        return isIsolation;
+    }
+
+    public void setIsIsolation(Integer isIsolation) {
+        this.isIsolation = isIsolation;
+    }
+
     public String getHotelId() {
         return hotelId;
     }

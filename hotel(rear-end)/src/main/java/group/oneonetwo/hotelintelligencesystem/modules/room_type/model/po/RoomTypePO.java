@@ -20,6 +20,9 @@ public class RoomTypePO implements Serializable {
     @TableField("bed_type")
     private String bedType;
 
+    @TableField("isolation_fee")
+    private Integer isolationFee;
+
     @TableField("bed")
     private Integer bed;
 
@@ -71,6 +74,15 @@ public class RoomTypePO implements Serializable {
 
     @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
+
+
+    public Integer getIsolationFee() {
+        return isolationFee;
+    }
+
+    public void setIsolationFee(Integer isolationFee) {
+        this.isolationFee = isolationFee;
+    }
 
     public String getBedType() {
         return bedType;

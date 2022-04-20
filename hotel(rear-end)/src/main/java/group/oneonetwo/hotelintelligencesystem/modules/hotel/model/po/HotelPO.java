@@ -40,6 +40,9 @@ public class HotelPO implements Serializable {
     @TableField("facilities")
     private String facilities;
 
+    @TableField("allow_isolation")
+    private Integer allowIsolation;
+
     @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
@@ -56,6 +59,8 @@ public class HotelPO implements Serializable {
     @TableField("sort")
     private Integer sort;
 
+
+
     @TableField(value = "create_by", fill = FieldFill.INSERT)
     private String createBy;
 
@@ -67,6 +72,14 @@ public class HotelPO implements Serializable {
 
     @TableField(value = "update_time", fill = FieldFill.UPDATE)
     private Date updateTime;
+
+    public Integer getAllowIsolation() {
+        return allowIsolation;
+    }
+
+    public void setAllowIsolation(Integer allowIsolation) {
+        this.allowIsolation = allowIsolation;
+    }
 
     public String getDeptId() {
         return deptId;

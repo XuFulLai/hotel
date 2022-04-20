@@ -42,9 +42,14 @@ public class UserPO implements Serializable {
     @TableField("chat_online")
     private String chatOnline;
 
+    @TableField("email")
+    private String email;
+
     @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
+
+
 
     @TableField(value = "create_by",fill = FieldFill.INSERT)
     private String createdBy;
@@ -57,6 +62,15 @@ public class UserPO implements Serializable {
 
     @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getChatOnline() {
         return chatOnline;

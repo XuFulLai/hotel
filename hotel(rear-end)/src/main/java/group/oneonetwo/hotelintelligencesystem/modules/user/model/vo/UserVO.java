@@ -27,6 +27,10 @@ public class UserVO implements Serializable {
     @ApiModelProperty("头像")
     private String heads;
 
+    @ApiModelProperty("email")
+    private String email;
+
+
     @ApiModelProperty("电话")
     private String phone;
 
@@ -61,6 +65,15 @@ public class UserVO implements Serializable {
     private Date updateTime;
 
     private Page page;
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Page getPage() {
         return page;
@@ -197,6 +210,7 @@ public class UserVO implements Serializable {
                 ", username='" + username + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", heads='" + heads + '\'' +
+                ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", dept='" + dept + '\'' +
                 ", password='" + password + '\'' +
@@ -208,6 +222,7 @@ public class UserVO implements Serializable {
                 ", createTime=" + createTime +
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +
+                ", page=" + page +
                 '}';
     }
 }

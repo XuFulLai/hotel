@@ -52,6 +52,9 @@ public class RoomVO implements Serializable {
     @ApiModelProperty("房间类型名字")
     private String roomTypeName;
 
+    @ApiModelProperty("是否为隔离")
+    private Integer isIsolation;
+
     public String getOrderId() {
         return orderId;
     }
@@ -60,7 +63,13 @@ public class RoomVO implements Serializable {
         this.orderId = orderId;
     }
 
+    public Integer getIsIsolation() {
+        return isIsolation;
+    }
 
+    public void setIsIsolation(Integer isIsolation) {
+        this.isIsolation = isIsolation;
+    }
 
     public String getRoomTypeName() {
         return roomTypeName;
@@ -194,7 +203,9 @@ public class RoomVO implements Serializable {
                 ", isDeleted=" + isDeleted +
                 ", orderId='" + orderId + '\'' +
                 ", roomTypeName='" + roomTypeName + '\'' +
+                ", isIsolation=" + isIsolation +
                 ", page=" + page +
                 '}';
     }
+
 }

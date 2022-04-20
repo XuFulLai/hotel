@@ -16,4 +16,6 @@ public interface IHotelService {
     Page<HotelVO> getPage(HotelVO hotelVO);
 
     HotelVO myHotel();
+
+    HotelVO allow(int id);
 }
