@@ -60,4 +60,30 @@
         </where>
         order by ii.create_time DESC
     </select>
+
+    <select id="getAllList" resultType="group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO">
+        select ii.*,h.name hotelName ,ro.name roomTypeName from isolation_info ii
+        left join hotel h
+        on ii.hotel_id=h.id
+        left join room_type ro
+        on ii.room_type = ro.id
+        <where>
+            <if test="vo.beginTime != null and vo.beginTime != '' and vo.endTime != null and vo.endTime != ''">
+                and ii.check_in_time between #{vo.beginTime} and #{vo.endTime} or ii.check_out_time between #{vo.beginTime} and #{vo.endTime}
+            </if>
+            <if test="vo.type != null and vo.type != ''">
+                and ii.type = #{vo.type}
+            </if>
+            <if test="vo.province != null and vo.province != ''">
+                and  ii.province like concat('%', #{vo.province}, '%')
+            </if>
+            <if test="vo.city != null and vo.city != ''">
+                and  ii.city like concat('%', #{vo.city}, '%')
+            </if>
+        </where>
+        order by ii.create_time DESC
+
+    </select>
+
+
 </mapper>

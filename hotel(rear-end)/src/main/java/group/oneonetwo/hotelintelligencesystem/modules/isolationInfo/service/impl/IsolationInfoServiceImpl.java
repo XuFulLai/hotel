@@ -1,17 +1,24 @@
 package group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
+import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
+import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.IsolationInfoPO;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.IsolationInfoService;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.dao.IsolationInfoMapper;
 
+import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
+import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
 * @author 文
@@ -24,6 +31,15 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
 
     @Autowired
     IsolationInfoMapper isolationInfoMapper;
+
+    @Autowired
+    AuthUtils authUtils;
+
+    @Autowired
+    IUserService userService;
+
+    @Autowired
+    IHotelService hotelService;
 
     @Override
     public IsolationInfoVO add(IsolationInfoVO isolationInfoVO) {
@@ -93,5 +109,29 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
     public Page<IsolationInfoVO> getPage(IsolationInfoVO isolationInfoVO) {
         Page<IsolationInfoPO> page=new Page<>(isolationInfoVO.getPage().getPage(),isolationInfoVO.getPage().getSize());
         return isolationInfoMapper.getPage(page,isolationInfoVO);
+    }
+
+    @Override
+    public List<IsolationInfoVO> getAllList(IsolationInfoVO isolationInfoVO) {
+        String authority = authUtils.getRole();
+        switch (authority) {
+            case "admin":break;
+            case "hotel_admin":
+                UserVO userVO = userService.selectOneByIdReturnVO(authUtils.getUid());
+                if (userVO == null) {
+                    throw new CommonException(401,"无权限");
+                }
+                HotelVO hotelVO = new HotelVO();
+                hotelVO.setDeptId(userVO.getDept());
+                hotelVO = hotelService.selectOneByDeptId(userVO.getDept());
+                if (hotelVO == null) {
+                    throw new CommonException(500,"该用户未绑定酒店");
+                }
+                isolationInfoVO.setHotelId(hotelVO.getId());
+                break;
+            default:
+                throw new CommonException(401,"无权限");
+        }
+        return isolationInfoMapper.getAllList(isolationInfoVO);
     }
 }
