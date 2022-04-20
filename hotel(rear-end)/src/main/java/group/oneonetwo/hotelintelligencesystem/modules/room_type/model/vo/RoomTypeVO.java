@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,6 +23,10 @@ public class RoomTypeVO implements Serializable {
 
     @ApiModelProperty("床类型")
     private String bedType;
+
+
+    @ApiModelProperty("隔离费用")
+    private Integer isolationFee;
 
     @ApiModelProperty("床位")
     private Integer bed;
@@ -75,6 +80,15 @@ public class RoomTypeVO implements Serializable {
     private Date updateTime;
 
     private Page page;
+
+
+    public Integer getIsolationFee() {
+        return isolationFee;
+    }
+
+    public void setIsolationFee(Integer isolationFee) {
+        this.isolationFee = isolationFee;
+    }
 
     public String getBedType() {
         return bedType;
@@ -251,30 +265,34 @@ public class RoomTypeVO implements Serializable {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+
     @Override
-    public String toString(){
-        return "RoomTypeVO{"+
+    public String toString() {
+        return "RoomTypeVO{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", hotelId='" +hotelId + '\'' +
-                ", bed='" + bed + '\'' +
-                ", maxLoad='" + maxLoad + '\'' +
-                ", haveWindow='" + haveWindow + '\'' +
-                ", network='" + network + '\'' +
-                ", haveBreakfast='" + haveBreakfast + '\'' +
+                ", hotelId='" + hotelId + '\'' +
+                ", bedType='" + bedType + '\'' +
+                ", isolationFee=" + isolationFee +
+                ", bed=" + bed +
+                ", maxLoad=" + maxLoad +
+                ", haveWindow=" + haveWindow +
+                ", network=" + network +
+                ", haveBreakfast=" + haveBreakfast +
                 ", media='" + media + '\'' +
                 ", rushroomSupporting='" + rushroomSupporting + '\'' +
-                ", foodRelated=" + foodRelated + '\'' +
-                ", otherFee=" + otherFee + '\'' +
-                ", cover=" + cover + '\'' +
-                ", fee=" + fee + '\'' +
-                ", sort=" + sort + '\'' +
+                ", foodRelated='" + foodRelated + '\'' +
+                ", otherFee=" + otherFee +
+                ", cover='" + cover + '\'' +
+                ", fee=" + fee +
+                ", sort=" + sort +
                 ", isDeleted=" + isDeleted +
                 ", createBy='" + createBy + '\'' +
                 ", createTime=" + createTime +
                 ", updateBy='" + updateBy + '\'' +
                 ", updateTime=" + updateTime +
+                ", page=" + page +
                 '}';
-
     }
 }

@@ -11,6 +11,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.hotel.dao.HotelMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelPO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
+import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
@@ -180,6 +181,30 @@ public class HotelServiceImpl implements IHotelService {
         QueryWrapper<HotelPO> wrapper = new QueryWrapper<>();
         wrapper.eq("dept_id",userVO.getDept());
         HotelPO hotelPO = hotelMapper.selectOne(wrapper);
+        HotelVO hotelVO = new HotelVO();
+        BeanUtils.copyProperties(hotelPO,hotelVO);
+        return hotelVO;
+    }
+
+    @Override
+    public HotelVO allow(int id) {
+        String userHotelId = authUtils.getUserHotelId();
+        HotelPO hotelPO = selectOneById(userHotelId);
+        String role = authUtils.getRole();
+        switch (role) {
+            case "admin":break;
+            case "hotel_admin":
+               if(id==0){
+                   hotelPO.setAllowIsolation(0);
+                   hotelMapper.updateById(hotelPO);
+               }else {
+                   hotelPO.setAllowIsolation(1);
+                   hotelMapper.updateById(hotelPO);
+               }
+            break;
+            default:
+                break;
+        }
         HotelVO hotelVO = new HotelVO();
         BeanUtils.copyProperties(hotelPO,hotelVO);
         return hotelVO;

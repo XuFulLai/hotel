@@ -17,9 +17,10 @@
          <result property="reviewStatus" column="review_status"/>
          <result property="chatOnline" column="chat_online"/>
          <result property="isDeleted" column="is_deleted"/>
-         <result property="createBy" column="create_by"/>
+         <result property="createdBy" column="create_by"/>
          <result property="createTime" column="create_time"/>
          <result property="updateBy" column="update_by"/>
          <result property="updateTime" column="update_time"/>
+         <result property="email" column="email"/>
     </resultMap>
 </mapper>

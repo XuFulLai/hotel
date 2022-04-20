@@ -6,6 +6,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -54,4 +55,12 @@ public class HotelCtroller {
     public Reply<HotelVO> myHotel() {
         return Reply.success(hotelService.myHotel());
     }
+
+    @GetMapping("allow/{id}")
+    @ApiOperation("是否允许为酒店设置隔离权限")
+    public Reply<HotelVO> allow(@PathVariable("id") int id){
+        return Reply.success(hotelService.allow(id));
+    }
+
+
 }
