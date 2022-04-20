@@ -2,8 +2,8 @@ import axios from "axios";
 
 //创建axios实例
 const instance = axios.create({
-    // baseURL:"http://106.52.219.171:8105",
-    baseURL:"http://127.0.0.1:8105",
+    baseURL:"http://106.52.219.171:8105",
+    // baseURL:"http://127.0.0.1:8105",
     // timeout:15000, 请求超时设置
 })
 
@@ -41,8 +41,19 @@ export function get(url,params) {
     })
 }
 
+
 //封装post请求
 export function post(url,data,config) {
+    return instance.post(url,data,config)
+}
+
+//post请求,Content-Type为application/x-www-form-urlencoded
+export function formDataPost(url,data) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+    }
     return instance.post(url,data,config)
 }
 

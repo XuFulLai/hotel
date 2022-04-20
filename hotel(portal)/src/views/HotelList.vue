@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import {get, post} from "../utils/request";
+import {get, post, formDataPost} from "../utils/request";
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer.vue';
 
@@ -287,35 +287,6 @@ export default {
       }
     }
   },
-  // watch: {
-  //     date(val) {
-  //         if (val) {
-  //             if (val.length > 0) {
-  //                 let startDate = new Date(val[0]);
-  //                 let endDate = new Date(val[1]);
-  //                 // 1、两个日期不允许跨年
-  //                 let sameYear = startDate.getFullYear() == endDate.getFullYear() ? true : false;
-  //                 if (sameYear) {
-  //                     this.form.fStopStartDate = val[0];
-  //                     this.form.fStopEndDate = val[1];
-  //                     // 2、计算选择日期范围的天数
-  //                     let stopDays = parseInt(Math.abs(endDate - startDate) / (24 * 3600 * 1000));
-  //                     this.form.fStopDays = stopDays + 1;
-  //                 } else {
-  //                     this.date = [];//清空日期
-  //                     this.$notify({
-  //                         title: "日期不允许跨年",
-  //                         type: "warning",
-  //                         duration: 2500
-  //                     });
-  //                 }
-  //             }
-  //         } else {
-  //             this.form.fStopStartDate = null;
-  //             this.form.fStopEndDate = null;
-  //         }
-  //     }
-  // },
   mounted() {
     this.getHotelList()
   },
@@ -397,15 +368,6 @@ export default {
       let data = {
         hotelId: id
       }
-      // post('/api/room/getRoomTypeList', data)
-      //     .then(res => {
-      //         console.log(res);
-      //         this.dialogVisible = true
-      //         this.roomTypeList = res.data.data
-      //     })
-      //     .catch(err => {
-      //         console.log(err);
-      //     })
 
       this.$router.push({
         name: 'hotelDetails',
