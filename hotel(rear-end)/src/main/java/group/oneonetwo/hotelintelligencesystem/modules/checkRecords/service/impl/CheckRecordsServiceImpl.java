@@ -9,6 +9,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.Che
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsVO;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.service.ICheckRecordsService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
+import group.oneonetwo.hotelintelligencesystem.tools.EmailUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -36,6 +37,9 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
 
     @Autowired
     AuthUtils authUtils;
+
+    @Autowired
+    EmailUtils emailUtils;
 
     private static final Logger logger = LoggerFactory.getLogger(Object.class);
 
@@ -91,8 +95,13 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
         for (CheckRecordsVO item: list) {
             if (item.getCheckType() == 0 && item.getCheckRes() > 37.3) {
                 logger.info("id为{}的体温检测异常,检测结果为{}℃",item.getuId(),item.getCheckRes());
+                //获取该人邮箱和房间信息进行业务处理
+                //emailUtils.sendMail("15218066874@qq.com","1243626786@qq.com",null,"这是体温检测标题","id为"+item.getuId()+"的体温检测异常,检测结果为"+item.getCheckRes()+"℃");
             }else if (item.getCheckType() == 1 && item.getCheckRes() == 1.00) {
                 logger.info("id为{}的核酸检测异常,检测结果为阳性",item.getuId());
+                //获取该人邮箱和房间信息进行业务处理
+                //emailUtils.sendMail(null,"1499602163@qq.com",null,"这是核酸检测标题","id为"+item.getuId()+"的核酸检测异常,检测结果为+");
+
             }
         }
     }
