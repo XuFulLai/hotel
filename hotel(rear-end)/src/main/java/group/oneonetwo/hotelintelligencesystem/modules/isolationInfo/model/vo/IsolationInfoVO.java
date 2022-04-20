@@ -3,6 +3,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo;
 
 
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
@@ -114,6 +115,14 @@ public class IsolationInfoVO  implements Serializable {
      * 是否删除
      */
 
+
+
+    @ApiModelProperty("起始时间")
+    private String beginTime;
+
+    @ApiModelProperty("结束时间")
+    private String endTime;
+
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
 
@@ -150,10 +159,30 @@ public class IsolationInfoVO  implements Serializable {
         this.status = status;
     }
 
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
     /**
      * 隔离人员id
      *
+     *
+     *
      */
+
     private Page page;
 
     public Page getPage() {
