@@ -109,11 +109,11 @@ public class ReviewPO implements Serializable {
     @TableField("total_fee")
     private Integer totalFee;
 
-    public Integer getIsolationFee() {
+    public Integer getTotalFee() {
         return totalFee;
     }
 
-    public void setIsolationFee(Integer totalFee) {
+    public void setTotalFee(Integer totalFee) {
         this.totalFee = totalFee;
     }
 
