@@ -36,10 +36,14 @@
         where id in (
                         select type
                         from room
-                        where hotel_id = ${id} and `status` = 0 and is_deleted = 0
+                        where hotel_id = #{id} and `status` = 0 and is_deleted = 0
+                        <if test="isIsolation != null and (isIsolation == 0 or isIsolation == 1)">
+                            and is_isolation = #{isIsolation}
+                        </if>
                         group by type
                      )
         and is_deleted = 0
+
 
     </select>
 
