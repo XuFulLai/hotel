@@ -62,16 +62,16 @@ public class IsolationInfoController {
 
     @ApiOperation("下载订单记录")
     @PostMapping("download")
-    public void downloadOrders(@RequestBody OrderVO orderVO, HttpServletResponse response) throws IOException {
+    public void downloadOrders(@RequestBody IsolationInfoVO isolationInfoVO, HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
         long currentTimeMillis = System.currentTimeMillis();
-        String exportFileName = "酒店订单_" + String.valueOf(currentTimeMillis);
+        String exportFileName = "酒店隔离人员信息_" + String.valueOf(currentTimeMillis);
         String fileName = URLEncoder.encode(exportFileName, "UTF-8").replaceAll("\\+", "%20");
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
-//        EasyExcel.write(response.getOutputStream(), OrderVO.class).sheet("订单").doWrite(isolationInfoService.getAllList(orderVO));
+       EasyExcel.write(response.getOutputStream(), OrderVO.class).sheet("隔离人员信息").doWrite(isolationInfoService.getAllList(isolationInfoVO));
     }
 
 }

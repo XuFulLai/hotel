@@ -43,6 +43,27 @@
         province,city,room_type,
         review_status,remark,is_deleted,
         create_by,create_time,update_time,
-        update_by from review;
+        update_by from review r
+        <where>
+        <if test="vo.beginTime != null and vo.beginTime != '' and vo.endTime != null and vo.endTime != ''">
+            and review.check_in_time between #{vo.beginTime} and #{vo.endTime} or review.check_out_time between #{vo.beginTime} and #{vo.endTime}
+        </if>
+        <if test="vo.province != null and vo.province != ''">
+            and  and review.province like concat('%', #{vo.province}, '%')
+        </if>
+        <if test="vo.type != null and vo.type != ''">
+            and review.review_status = #{vo.type}
+        </if>
+        <if test="vo.city != null and vo.city != ''">
+            and  review.city like concat('%', #{vo.city}, '%')
+        </if>
+        <if test="vo.remark != null and vo.remark != ''">
+            and  review.remark = #{vo.remark}
+        </if>
+        <if test="vo.reviewStatus != null and vo.reviewStatus != ''">
+            and  review.review_status = #{vo.reviewStatus}
+        </if>
+        </where>
+        order by review.create_time DESC
     </select>
 </mapper>
