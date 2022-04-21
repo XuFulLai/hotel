@@ -73,10 +73,10 @@ public class RoomServiceImpl implements IRoomService {
         if (roomVO == null) {
             throw new SavaException("插入用户失败,房间实体为空");
         }
-        if(roomVO.getIsIsolation()==1){
+        if (roomVO.getIsIsolation() == 1) {
             String userHotelId = authUtils.getUserHotelId();
             HotelVO hotelVO = hotelService.selectOneByIdReturnVO(userHotelId);
-            if(hotelVO.getAllowIsolation()==1){
+            if (hotelVO.getAllowIsolation() == 1) {
                 RoomPO roomPO = new RoomPO();
                 BeanUtils.copyProperties(roomVO, roomPO);
                 int insert = roomMapper.insert(roomPO);
@@ -86,8 +86,8 @@ public class RoomServiceImpl implements IRoomService {
                 }
                 throw new SavaException("插入用户失败");
             }
-            throw  new SavaException("酒店无设置隔离酒店权限");
-        }else{
+            throw new SavaException("酒店无设置隔离酒店权限");
+        } else {
             RoomPO roomPO = new RoomPO();
             BeanUtils.copyProperties(roomVO, roomPO);
             int insert = roomMapper.insert(roomPO);
@@ -117,24 +117,27 @@ public class RoomServiceImpl implements IRoomService {
     }
 
     @Override
-    public RoomPO save(RoomVO roomVO){
-        if(roomVO==null){
-            throw new CommonException(501,"房间实体为空");
+    public RoomPO save(RoomVO roomVO) {
+        if (roomVO == null) {
+            throw new CommonException(501, "房间实体为空");
         }
-        RoomVO check=selectOneByIdReturnVO(roomVO.getId());
-        if(check==null){
-            throw new CommonException(4004,"找不到id为'"+roomVO.getId()+"'的数据");
+        RoomVO check = selectOneByIdReturnVO(roomVO.getId());
+        if (check == null) {
+            throw new CommonException(4004, "找不到id为'" + roomVO.getId() + "'的数据");
         }
-        if(roomVO.getIsIsolation()==1){
+        if (!RoomStatus.UNUSED.getCode().equals(check.getStatus())) {
+            throw new CommonException("当前状态下无法修改房间信息!");
+        }
+        if (roomVO.getIsIsolation() == 1) {
             String userHotelId = authUtils.getUserHotelId();
             HotelVO hotelVO = hotelService.selectOneByIdReturnVO(userHotelId);
-            if(hotelVO.getAllowIsolation()==1){
-                RoomPO roomPO=new RoomPO();
-                BeanUtils.copyProperties(roomVO,roomPO);
-                int save=roomMapper.updateById(roomPO);
+            if (hotelVO.getAllowIsolation() == 1) {
+                RoomPO roomPO = new RoomPO();
+                BeanUtils.copyProperties(roomVO, roomPO);
+                int save = roomMapper.updateById(roomPO);
                 RoomPO thisRoom = selectOneById(roomPO.getId());
-                BeanUtils.copyProperties(thisRoom,roomVO);
-                if(save>0){
+                BeanUtils.copyProperties(thisRoom, roomVO);
+                if (save > 0) {
                     if (!WStringUtils.isBlank(thisRoom.getId()) && !WStringUtils.isBlank(thisRoom.getHotelId())) {
                         sendUpdateInfo(roomVO);
                     }
@@ -142,59 +145,61 @@ public class RoomServiceImpl implements IRoomService {
                 }
 
             }
-            throw  new SavaException("酒店无设置隔离酒店权限");
-        }else{
-        RoomPO roomPO=new RoomPO();
-        BeanUtils.copyProperties(roomVO,roomPO);
-        int save=roomMapper.updateById(roomPO);
-        RoomPO thisRoom = selectOneById(roomPO.getId());
-        BeanUtils.copyProperties(thisRoom,roomVO);
-        if(save>0){
-            if (!WStringUtils.isBlank(thisRoom.getId()) && !WStringUtils.isBlank(thisRoom.getHotelId())) {
-                sendUpdateInfo(roomVO);
+            throw new SavaException("酒店无设置隔离酒店权限");
+        } else {
+            RoomPO roomPO = new RoomPO();
+            BeanUtils.copyProperties(roomVO, roomPO);
+            int save = roomMapper.updateById(roomPO);
+            RoomPO thisRoom = selectOneById(roomPO.getId());
+            BeanUtils.copyProperties(thisRoom, roomVO);
+            if (save > 0) {
+                if (!WStringUtils.isBlank(thisRoom.getId()) && !WStringUtils.isBlank(thisRoom.getHotelId())) {
+                    sendUpdateInfo(roomVO);
+                }
+                return roomMapper.selectById(roomPO.getId());
             }
-            return roomMapper.selectById(roomPO.getId());
+            throw new SavaException("更改房间失败");
         }
-        throw new SavaException("更改房间失败");
     }
-    }
+
     @Override
-    public Integer deleteById(String id){
-        RoomVO check=selectOneByIdReturnVO(id);
-        if(check==null){
-            throw new CommonException(4004,"找不到id为'"+id+"'的数据");
+    public Integer deleteById(String id) {
+        RoomVO check = selectOneByIdReturnVO(id);
+        if (check == null) {
+            throw new CommonException(4004, "找不到id为'" + id + "'的数据");
         }
         Gson gson = new Gson();
-        logsService.createLog("【删除】房间信息",gson.toJson(check),1,1);
-        int i= roomMapper.deleteById(id);
+        logsService.createLog("【删除】房间信息", gson.toJson(check), 1, 1);
+        int i = roomMapper.deleteById(id);
         return i;
     }
+
     @Override
-    public RoomPO selectOneById(String id){
-        RoomPO roomPO=roomMapper.selectById(id);
+    public RoomPO selectOneById(String id) {
+        RoomPO roomPO = roomMapper.selectById(id);
         return roomPO;
     }
 
     @Override
-    public RoomVO saveone(RoomVO roomVO){
+    public RoomVO saveone(RoomVO roomVO) {
         RoomVO before = selectOneByIdReturnVO(roomVO.getId());
-        RoomPO save=save(roomVO);
-        BeanUtils.copyProperties(save,roomVO);
+        RoomPO save = save(roomVO);
+        BeanUtils.copyProperties(save, roomVO);
         Gson gson = new Gson();
-        logsService.createLog("【修改】房间信息",gson.toJson(before) + "@*@" + gson.toJson(save),1,1);
+        logsService.createLog("【修改】房间信息", gson.toJson(before) + "@*@" + gson.toJson(save), 1, 1);
         return roomVO;
     }
 
     @Override
-    public Page<RoomVO> getPage(RoomVO roomVO){
-        QueryWrapper<RoomPO> wrapper=new QueryWrapper<>();
-        Page<RoomPO> page=new Page<>(roomVO.getPage().getPage(),roomVO.getPage().getSize());
-        Page<RoomPO> poiPage=(Page<RoomPO>) roomMapper.selectPage(page,wrapper);
-        return ConvertUtils.transferPage(poiPage,RoomVO.class);
+    public Page<RoomVO> getPage(RoomVO roomVO) {
+        QueryWrapper<RoomPO> wrapper = new QueryWrapper<>();
+        Page<RoomPO> page = new Page<>(roomVO.getPage().getPage(), roomVO.getPage().getSize());
+        Page<RoomPO> poiPage = (Page<RoomPO>) roomMapper.selectPage(page, wrapper);
+        return ConvertUtils.transferPage(poiPage, RoomVO.class);
     }
 
     @Override
-    public List<RoomVO> getAllList(RoomVO roomVO){
+    public List<RoomVO> getAllList(RoomVO roomVO) {
         String role = authUtils.getRole();
         switch (role) {
             case "hotel_admin":
@@ -207,17 +212,18 @@ public class RoomServiceImpl implements IRoomService {
     }
 
     @Override
-    public DetailVO getDetail(String id){
+    public DetailVO getDetail(String id) {
         return roomMapper.getDetail(id);
     }
 
     @Override
-    public  List<RoomVO> getRoomTypeList( RoomVO roomVO){
+    public List<RoomVO> getRoomTypeList(RoomVO roomVO) {
         return roomMapper.getRoomTypeList(roomVO);
     }
 
     /**
      * 入住
+     *
      * @param checkInVO id,customerId(可能没),orderId(可能没),province
      * @return
      */
@@ -258,8 +264,8 @@ public class RoomServiceImpl implements IRoomService {
             updateOrder.setEstimatedCheckIn(orderVO.getEstimatedCheckIn());
         }
         updateOrder.setEstimatedCheckOut(TimeUtils.setSplitTime(checkInVO.getEstimatedCheckOut()));
-        updateOrder.setDays(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(),updateOrder.getEstimatedCheckOut(),"ceil"));
-        pays = discountsService.countPay(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(),updateOrder.getEstimatedCheckOut(),"ceil"),roomTypeVO.getFee());
+        updateOrder.setDays(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(), updateOrder.getEstimatedCheckOut(), "ceil"));
+        pays = discountsService.countPay(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(), updateOrder.getEstimatedCheckOut(), "ceil"), roomTypeVO.getFee());
         updateOrder.setPay(String.valueOf(pays[0]));
         updateOrder.setLastPay(String.valueOf(pays[1]));
 
@@ -289,12 +295,13 @@ public class RoomServiceImpl implements IRoomService {
 
         //转换并返回
         OrderVO res = new OrderVO();
-        BeanUtils.copyProperties(orderSave,res);
+        BeanUtils.copyProperties(orderSave, res);
         return res;
     }
 
     /**
      * 退房
+     *
      * @param id
      * @return
      */
@@ -358,11 +365,11 @@ public class RoomServiceImpl implements IRoomService {
 //        roomVO.setId(vo.getId());
 //        List<RoomVO> allList = getAllList(roomVO);
         QueryWrapper<RoomPO> wrapper = new QueryWrapper<>();
-        wrapper.eq("id",vo.getId());
+        wrapper.eq("id", vo.getId());
         List<RoomPO> allList = roomMapper.selectList(wrapper);
         Gson gson = new Gson();
         String hotelInfo = gson.toJson(allList.get(0));
-        while(allUserIter.hasNext()) {
+        while (allUserIter.hasNext()) {
             try {
                 WebSocketServer.sendInfo(hotelInfo, allUserIter.next());
             } catch (IOException e) {
@@ -375,7 +382,7 @@ public class RoomServiceImpl implements IRoomService {
     @Override
     public void cancelRoom(RoomVO roomVO) {
         QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
-        wrapper.eq("order_id",roomVO.getOrderId()).eq("status",RoomStatus.BOOKED.getCode());
+        wrapper.eq("order_id", roomVO.getOrderId()).eq("status", RoomStatus.BOOKED.getCode());
         List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
         if (roomPOS.size() > 0) {
             unlockRoom(roomPOS.get(0).getId());
@@ -385,7 +392,7 @@ public class RoomServiceImpl implements IRoomService {
     @Override
     public List<String> getFloor() {
         QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
-        wrapper.eq("hotel_id",authUtils.getUserHotelId()).select("floor").groupBy("floor");
+        wrapper.eq("hotel_id", authUtils.getUserHotelId()).select("floor").groupBy("floor");
         List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
         Iterator<RoomPO> iterator = roomPOS.iterator();
         List<String> floors = new ArrayList<>();
@@ -403,10 +410,10 @@ public class RoomServiceImpl implements IRoomService {
         if (!WStringUtils.isBlank(roomVO.getOrderId())) {
             cancelRoom(roomVO);
             if (roomVO.getId() != null) {
-                wrapper.ne("id",roomVO.getId());
+                wrapper.ne("id", roomVO.getId());
             }
         }
-        wrapper.eq("type",roomVO.getType()).eq("status",RoomStatus.UNUSED.getCode());
+        wrapper.eq("type", roomVO.getType()).eq("status", RoomStatus.UNUSED.getCode());
         List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
         if (roomPOS.size() > 0) {
             RoomVO vo = new RoomVO();
@@ -421,9 +428,10 @@ public class RoomServiceImpl implements IRoomService {
 
     /**
      * 入住隔离房间
+     *
      * @param hotelId
      * @param roomType
-     * @param roomId 不为空时直接安排这个房间
+     * @param roomId   不为空时直接安排这个房间
      * @return
      */
     @Override
@@ -462,12 +470,13 @@ public class RoomServiceImpl implements IRoomService {
         roomPO.setStatus(RoomStatus.USED.getCode());
         roomMapper.updateById(roomPO);
         RoomVO roomVO = new RoomVO();
-        BeanUtils.copyProperties(roomPO,roomVO);
+        BeanUtils.copyProperties(roomPO, roomVO);
         return roomVO;
     }
 
     /**
      * 离开隔离房间
+     *
      * @param roomId
      */
     @Override
@@ -485,6 +494,7 @@ public class RoomServiceImpl implements IRoomService {
 
     /**
      * 清理房间
+     *
      * @param roomId
      */
     @Override
@@ -504,6 +514,7 @@ public class RoomServiceImpl implements IRoomService {
      * 换隔离房间操作
      * 1. 如果是管理员的话,可以进行更换酒店和房间
      * 2. 如果是酒店员工,可以进行更换房间
+     *
      * @param hotelId
      * @param roomType
      * @param roomId
@@ -523,19 +534,17 @@ public class RoomServiceImpl implements IRoomService {
             }
         }
         if (WStringUtils.isBlank(roomId)) {
-            wrapper.eq("type",roomType).eq("is_isolation",1);
-        }else {
-            wrapper.eq("id",roomId).eq("is_isolation",1);
+            wrapper.eq("type", roomType).eq("is_isolation", 1);
+        } else {
+            wrapper.eq("id", roomId).eq("is_isolation", 1);
         }
         List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
         if (roomPOS.isEmpty()) {
             throw new CommonException("该隔离酒店符合条件的房间不足,请重新选择!");
         }
         leaveIsolationRoom(oldRoom.getId());
-        return isolationCheckIn(null,null,roomPOS.get(0).getId());
+        return isolationCheckIn(null, null, roomPOS.get(0).getId());
     }
-
-
 
 
 }

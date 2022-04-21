@@ -41,7 +41,7 @@
     <ul class="mt-10 room-list d-flex flex-wrap">
       <li class="cursor" v-for="(item,index) in roomList" @click="roomHandle(item)">
         <span :class="classList[item.status]" class="iconfont icon-menleianzhuang"></span>
-        <h3>{{ item.name }}</h3>
+        <h3 :style="item.isIsolation != 0 ? 'color:red':''">{{ item.isIsolation != 0 ? '* ' + item.name : item.name }}</h3>
         <h5>{{ item.roomTypeName }}</h5>
         <p>{{ statusList[item.status] }}</p>
       </li>
@@ -190,6 +190,15 @@
               v-model="form.direction"
               clearable>
           </el-input>
+        </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">房间类型:</p>
+          <el-switch
+              :disabled="current.infoMode == 'check'"
+              v-model="form.isIsolation"
+              active-text="隔离房间"
+              inactive-text="普通房间">
+          </el-switch>
         </div>
       </div>
 
@@ -597,13 +606,26 @@ export default {
 
     confirmEdit() {
       this.form.id = this.current.id
+      if(this.form.isIsolation) {
+        this.form.isIsolation = 1
+      }else {
+        this.form.isIsolation = 0
+      }
       let data = this.form
       post("/api/room/modify",data).then(res => {
-        this.$notify.success({
-          title: '成功',
-          message: "修改成功"
-        });
-        this.infoVisible = false
+        if (res.data.code === "200") {
+          this.$notify.success({
+            title: '成功',
+            message: "修改成功"
+          });
+          this.infoVisible = false
+          this.getRoomList()
+        }else {
+          this.$notify.error({
+            title: '错误',
+            message: res.data.msg
+          });
+        }
       })
     },
 
@@ -725,6 +747,11 @@ export default {
       get("/api/room/getDetail/" + this.current.id).then(res => {
         console.log("getDetail",res)
         this.form = res.data.data
+        if(this.form.isIsolation == 1) {
+          this.form.isIsolation = true
+        }else {
+          this.form.isIsolation = false
+        }
       })
       this.infoVisible = true
     },
