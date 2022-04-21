@@ -53,14 +53,14 @@ public class ReviewController {
         return Reply.success(reviewService.getPage(reviewVO));
     }
 
-    @ApiOperation("判断提交审核接口")
+    @ApiOperation("判断提交审核接口1")
     @PostMapping("check")
     public void getCheck(@RequestBody ReviewVO reviewVO){
         reviewService.getCheck(reviewVO);
         return ;
     }
 
-    @ApiOperation("判断审核接口")
+    @ApiOperation("判断提交审核接口2")
     @PostMapping("checkssss")
     public void getReviews(@RequestBody ReviewVO reviewVO){
         reviewService.getReviews(reviewVO);

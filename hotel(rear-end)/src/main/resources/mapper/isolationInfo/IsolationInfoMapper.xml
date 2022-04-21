@@ -52,10 +52,10 @@
             and ii.type = #{vo.type}
         </if>
         <if test="vo.province != null and vo.province != ''">
-            and  ii.province like concat('%', #{vo.province}, '%')
+            and  ii.province like concat('%', #{vo.province}, '%') or  ii.city like concat('%', #{vo.province}, '%')
         </if>
-        <if test="vo.city != null and vo.city != ''">
-            and  ii.city like concat('%', #{vo.city}, '%')
+        <if test="vo.status != null and vo.status != ''">
+            and  ii.status = #{vo.status}
         </if>
         </where>
         order by ii.create_time DESC
@@ -75,10 +75,10 @@
                 and ii.type = #{vo.type}
             </if>
             <if test="vo.province != null and vo.province != ''">
-                and  ii.province like concat('%', #{vo.province}, '%')
+                and  ii.province like concat('%', #{vo.province}, '%') or  ii.city like concat('%', #{vo.province}, '%')
             </if>
-            <if test="vo.city != null and vo.city != ''">
-                and  ii.city like concat('%', #{vo.city}, '%')
+            <if test="vo.status != null and vo.status != ''">
+                and  ii.status = #{vo.status}
             </if>
         </where>
         order by ii.create_time DESC

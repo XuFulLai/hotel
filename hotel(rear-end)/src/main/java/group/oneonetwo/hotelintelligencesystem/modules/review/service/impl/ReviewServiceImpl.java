@@ -5,10 +5,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.IsolationInfoPO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.po.ReviewPO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.vo.ReviewVO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.service.ReviewService;
 import group.oneonetwo.hotelintelligencesystem.modules.review.dao.ReviewMapper;
+import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
+import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.po.WalletPO;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.service.WalletService;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +25,9 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class ReviewServiceImpl implements ReviewService{
+
+    @Autowired
+    IRoomService roomService;
 
     @Autowired
     ReviewService reviewService;
@@ -106,7 +112,6 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public void getCheck(ReviewVO reviewVO) {
-        ReviewVO reviewVO1=null;
         if(reviewVO.getType()==0 || reviewVO.getType()==1){
         }else {
             String uid = authUtils.getUid();
@@ -116,7 +121,6 @@ public class ReviewServiceImpl implements ReviewService{
             if(balances<=0.0){
                 throw new CommonException(502,"账户余额不足");
             }
-
         }
 
     }
@@ -125,12 +129,18 @@ public class ReviewServiceImpl implements ReviewService{
     public void getReviews(ReviewVO reviewVO) {
         if(reviewVO.getReviewStatus()==2){
             if(reviewVO.getRemark()==null || reviewVO.getRemark()==""){
-                throw  new CommonException(501,"拒绝的理由不能为空");
+                throw new CommonException(501,"拒绝的理由不能为空");
             }
+
+            //这里有个如果拒绝后有个打回钱的流程
+            return;
         }
-
-
-
+        String userHotelId = authUtils.getUserHotelId();
+        String roomType = reviewVO.getRoomType();
+        ReviewVO reviewVO1 = reviewService.add(reviewVO);
+        RoomVO roomVO = roomService.isolationCheckIn(userHotelId, roomType, null);
+        roomVO.getId();
+        new IsolationInfoPO()
     }
 
 
