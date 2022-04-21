@@ -275,7 +275,7 @@
         </div>
         <div class="d-flex align-items-center mb-15"  v-if="userValue != 'check'">
           <p class="w-100 text-left"></p>
-          <el-button @click="changeDialogVisible = true;initChangeForm()" type="danger">
+          <el-button @click="handleChangeRoom(form.id)" type="danger">
             更改房间
           </el-button>
         </div>
@@ -476,6 +476,7 @@ export default {
       roomOptions: [],
       userValue: '',
       changeForm: {
+        isolationInfoId: '',
         hotelId: '',
         roomType: '',
         roomId: ''
@@ -514,6 +515,16 @@ export default {
     },
   },
   methods: {
+    handleChangeRoom(isolationInfoId){
+      this.changeForm = {
+        isolationInfoId: isolationInfoId,
+        hotelId: '',
+        roomType: '',
+        roomId: ''
+      }
+      this.changeDialogVisible = true
+
+    },
     changeRoom() {
       let data = this.changeForm
       formDataPost("api/xxxxxx",data).then(res => {
@@ -555,13 +566,6 @@ export default {
       post("api/isolationInfo/page",data).then(res => {
         this.isolationData = res.data.data.records
       })
-    },
-    initChangeForm() {
-      this.changeForm = {
-        hotelId: '',
-        roomType: '',
-        roomId: ''
-      }
     },
     getIsolationRoom() {
       let data = {
