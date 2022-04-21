@@ -8,7 +8,7 @@
             <id property="id" column="id" jdbcType="VARCHAR"/>
             <result property="uId" column="u_id" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
-            <result property="balance" column="balnace" jdbcType="DOUBLE"/>
+            <result property="balance" column="balance" jdbcType="DOUBLE"/>
             <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
     </resultMap>
 

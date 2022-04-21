@@ -3,6 +3,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.wallet.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
+import group.oneonetwo.hotelintelligencesystem.modules.review.model.vo.ReviewVO;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.dao.WalletMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.po.WalletPO;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.vo.WalletVO;
@@ -83,5 +84,12 @@ public class WalletServiceImpl implements WalletService{
         walletPO.setBalance(0.00);
         return walletPO;
 
+    }
+
+    public WalletPO getWalletPO(String uid){
+        QueryWrapper<WalletPO> wrapper = new QueryWrapper<>();
+        wrapper.eq("u_id",uid);
+        List<WalletPO> walletPOS = walletMapper.selectList(wrapper);
+        return walletPOS.get(0);
     }
 }

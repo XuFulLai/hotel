@@ -3,6 +3,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.wallet.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.po.WalletPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
 * @author 文
@@ -11,6 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
 * @Entity group.oneonetwo.hotelintelligencesystem.modules.wallet.model.po.WalletPO
 */
 @Mapper
+@Repository
 public interface WalletMapper extends BaseMapper<WalletPO> {
 
 
