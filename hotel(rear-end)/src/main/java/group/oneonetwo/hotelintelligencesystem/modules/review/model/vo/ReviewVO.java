@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.review.model.vo;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import group.oneonetwo.hotelintelligencesystem.tools.Page;
@@ -25,6 +26,17 @@ public class ReviewVO implements Serializable {
      */
     @ApiModelProperty("申报名称")
     private String name;
+
+    @ApiModelProperty("总费用)")
+    private Integer totalFee;
+
+    public Integer getTotalFee() {
+        return totalFee;
+    }
+
+    public void setTotalFee(Integer totalFee) {
+        this.totalFee = totalFee;
+    }
 
     /**
      * 身份证
@@ -318,6 +330,7 @@ public class ReviewVO implements Serializable {
         return "ReviewVO{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", totalFee=" + totalFee +
                 ", idCard='" + idCard + '\'' +
                 ", type=" + type +
                 ", phone='" + phone + '\'' +
@@ -335,6 +348,9 @@ public class ReviewVO implements Serializable {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", updateBy='" + updateBy + '\'' +
+                ", beginTime='" + beginTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", page=" + page +
                 '}';
     }
 }

@@ -1,7 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.review.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.vo.ReviewVO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.service.ReviewService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -47,6 +46,29 @@ public class ReviewController {
     public Reply<ReviewVO> modify(@RequestBody ReviewVO reviewVO){
         return Reply.success(reviewService.save(reviewVO));
     }
+
+    @ApiOperation("查询审批信息列表(分页)")
+    @PostMapping("page")
+    public Reply<Page<ReviewVO>> getPage(@RequestBody ReviewVO reviewVO){
+        return Reply.success(reviewService.getPage(reviewVO));
+    }
+
+    @ApiOperation("判断提交审核接口")
+    @PostMapping("check")
+    public void getCheck(@RequestBody ReviewVO reviewVO){
+        reviewService.getCheck(reviewVO);
+        return ;
+    }
+
+    @ApiOperation("判断审核接口")
+    @PostMapping("checkssss")
+    public void getReviews(@RequestBody ReviewVO reviewVO){
+        reviewService.getReviews(reviewVO);
+        return ;
+    }
+
+
+
 
 
 }
