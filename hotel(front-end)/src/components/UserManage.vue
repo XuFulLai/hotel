@@ -97,7 +97,7 @@
         :title="title"
         :visible.sync="dialogVisible"
         width="570px">
-      <div class="contont">
+      <div class="content">
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">部门:</p>
           <el-cascader ref="cascader"
