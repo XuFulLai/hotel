@@ -21,5 +21,5 @@ public interface IRoomTypeServeice {
 
     Page<RoomTypeVO> getPage(RoomTypeVO roomTypeVO);
 
-    List<RoomTypeVO> currentRoomTypeList(String id);
+    List<RoomTypeVO> currentRoomTypeList(String id, Integer isIsolation);
 }

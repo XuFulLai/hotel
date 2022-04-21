@@ -114,7 +114,7 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
     }
 
     @Override
-    public List<RoomTypeVO> currentRoomTypeList(String id) {
-        return roomTypeMapper.currentRoomTypeList(id);
+    public List<RoomTypeVO> currentRoomTypeList(String id, Integer isIsolation) {
+        return roomTypeMapper.currentRoomTypeList(id,isIsolation);
     }
 }

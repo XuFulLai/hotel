@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +59,7 @@ public class RoomTypeController {
 
     @GetMapping("currentRoomTypeList/{id}")
     @ApiOperation("获取当前酒店现有房间类型列表")
-    public  Reply<List<RoomTypeVO>> currentRoomTypeList(@PathVariable("id") String id){
-        return Reply.success(roomTypeServeice.currentRoomTypeList(id));
+    public  Reply<List<RoomTypeVO>> currentRoomTypeList(@PathVariable("id") String id,@Param("isIsolation") Integer isIsolation){
+        return Reply.success(roomTypeServeice.currentRoomTypeList(id,isIsolation));
     }
 }
