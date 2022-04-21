@@ -157,6 +157,9 @@ public class HotelServiceImpl implements IHotelService {
             if (!"".equals(hotelVO.getAddress()) && hotelVO.getAddress() != null) {
                 wrapper.like("address",hotelVO.getAddress());
             }
+            if (hotelVO.getAllowIsolation() != null) {
+                wrapper.eq("allow_isolation",hotelVO.getAllowIsolation());
+            }
             wrapper.orderByAsc("sort").orderByAsc("id");
             Page<HotelPO> page = new Page<>(hotelVO.getPage().getPage(), hotelVO.getPage().getSize());
             Page<HotelPO> poiPage = (Page<HotelPO>) hotelMapper.selectPage(page, wrapper);
