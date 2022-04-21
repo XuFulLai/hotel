@@ -24,10 +24,11 @@
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="totalFee" column="total_fee" javaType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,id_card,
+        id,name,id_card,total_fee,
         type,phone,email,
         hotel_id,check_in_time,check_out_time,
         province,city,room_type,
@@ -37,7 +38,7 @@
     </sql>
 
     <select id="getPage" resultType="group.oneonetwo.hotelintelligencesystem.modules.review.model.vo.ReviewVO">
-        select  id,name,id_card,
+        select  id,name,id_card,total_fee,
         type,phone,email,
         hotel_id,check_in_time,check_out_time,
         province,city,room_type,
@@ -48,15 +49,10 @@
         <if test="vo.beginTime != null and vo.beginTime != '' and vo.endTime != null and vo.endTime != ''">
             and review.check_in_time between #{vo.beginTime} and #{vo.endTime} or review.check_out_time between #{vo.beginTime} and #{vo.endTime}
         </if>
-        <if test="vo.province != null and vo.province != ''">
-            and  and review.province like concat('%', #{vo.province}, '%')
-        </if>
-        <if test="vo.type != null and vo.type != ''">
-            and review.review_status = #{vo.type}
-        </if>
-        <if test="vo.city != null and vo.city != ''">
-            and  review.city like concat('%', #{vo.city}, '%')
-        </if>
+            <if test="vo.province != null and vo.province != ''">
+                and  review.province like concat('%', #{vo.province}, '%') or  review.city like concat('%', #{vo.province}, '%')
+            </if>
+
         <if test="vo.remark != null and vo.remark != ''">
             and  review.remark = #{vo.remark}
         </if>
