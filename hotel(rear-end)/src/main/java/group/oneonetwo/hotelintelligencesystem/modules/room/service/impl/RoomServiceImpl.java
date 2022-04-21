@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.components.websocket.WebSocketServer;
+import group.oneonetwo.hotelintelligencesystem.enums.RoomStatus;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscountsService;
@@ -20,6 +21,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.CheckInVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.DetailVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
+import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.po.RoomTypePO;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTypeServeice;
 import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
@@ -366,7 +368,7 @@ public class RoomServiceImpl implements IRoomService {
     @Override
     public void cancelRoom(RoomVO roomVO) {
         QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
-        wrapper.eq("order_id",roomVO.getOrderId()).eq("status",2);
+        wrapper.eq("order_id",roomVO.getOrderId()).eq("status",RoomStatus.BOOKED.getCode());
         List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
         if (roomPOS.size() > 0) {
             unlockRoom(roomPOS.get(0).getId());
@@ -399,18 +401,136 @@ public class RoomServiceImpl implements IRoomService {
         }
 
 
-        wrapper.eq("type",roomVO.getType()).eq("status",0);
+        wrapper.eq("type",roomVO.getType()).eq("status",RoomStatus.UNUSED.getCode());
         List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
-        if (roomPOS.size() > 1) {
+        if (roomPOS.size() > 0) {
             RoomVO vo = new RoomVO();
             vo.setId(roomPOS.get(0).getId());
-            vo.setStatus(2);
+            vo.setStatus(RoomStatus.BOOKED.getCode());
             vo.setOrderId(roomVO.getOrderId());
             save(vo);
         } else {
             throw new CommonException("已没同类型房间,请选择其他类型房间进行入住");
         }
     }
+
+    /**
+     * 入住隔离房间
+     * @param hotelId
+     * @param roomType
+     * @param roomId 不为空时直接安排这个房间
+     * @return
+     */
+    @Override
+    public RoomVO isolationCheckIn(String hotelId, String roomType, String roomId) {
+        RoomPO roomPO = null;
+        if (!WStringUtils.isBlank(roomId)) {
+            roomPO = selectOneById(roomId);
+            if (roomPO.getIsIsolation() == 0) {
+                throw new CommonException("该酒店不是隔离房间,请重新选择房间!");
+            }
+            if (!RoomStatus.UNUSED.getCode().equals(roomPO.getStatus())) {
+                throw new CommonException("该房间不是一个空闲的房间,请重新选择!");
+            }
+            hotelId = roomPO.getHotelId();
+        }
+        HotelVO hotel = hotelService.selectOneByIdReturnVO(hotelId);
+        if (hotel == null) {
+            throw new CommonException("酒店不存在,请重新选择酒店!");
+        }
+        if (hotel.getAllowIsolation() == 0) {
+            throw new CommonException("该酒店不是隔离酒店,请重新选择酒店!");
+        }
+
+        if (WStringUtils.isBlank(roomId)) {
+            QueryWrapper<RoomPO> wrapper = new QueryWrapper<>();
+            if (!WStringUtils.isBlank(roomType)) {
+                wrapper.eq("type", roomType);
+            }
+            wrapper.eq("hotel_id", hotelId).eq("is_isolation", 1);
+            List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
+            if (roomPOS.isEmpty()) {
+                throw new CommonException("该隔离酒店符合条件的房间不足,请重新选择!");
+            }
+            roomPO = roomPOS.get(0);
+        }
+        roomPO.setStatus(RoomStatus.USED.getCode());
+        roomMapper.updateById(roomPO);
+        RoomVO roomVO = new RoomVO();
+        BeanUtils.copyProperties(roomPO,roomVO);
+        return roomVO;
+    }
+
+    /**
+     * 离开隔离房间
+     * @param roomId
+     */
+    @Override
+    public void leaveIsolationRoom(String roomId) {
+        RoomPO roomPO = selectOneById(roomId);
+        if (roomPO == null) {
+            throw new CommonException("非法操作,请重新选择房间!");
+        }
+        if (!RoomStatus.USED.getCode().equals(roomPO.getStatus())) {
+            throw new CommonException("该房间非入住状态,请选择其他房间!");
+        }
+        roomPO.setStatus(RoomStatus.STERILIZE.getCode());
+        int i = roomMapper.updateById(roomPO);
+    }
+
+    /**
+     * 清理房间
+     * @param roomId
+     */
+    @Override
+    public void cleanRoom(String roomId) {
+        RoomPO roomPO = selectOneById(roomId);
+        if (roomPO == null) {
+            throw new CommonException("非法操作,请重新选择房间!");
+        }
+        if (!RoomStatus.STERILIZE.getCode().equals(roomPO.getStatus())) {
+            throw new CommonException("该房间不需要消毒,请选择其他房间!");
+        }
+        roomPO.setStatus(RoomStatus.UNUSED.getCode());
+        int i = roomMapper.updateById(roomPO);
+    }
+
+    /**
+     * 换隔离房间操作
+     * 1. 如果是管理员的话,可以进行更换酒店和房间
+     * 2. 如果是酒店员工,可以进行更换房间
+     * @param hotelId
+     * @param roomType
+     * @param roomId
+     */
+    @Override
+    public RoomVO changeRoomOnIsolation(String hotelId, String roomType, String roomId, RoomVO oldRoom) {
+        String role = authUtils.getRole();
+        RoomTypePO roomTypePO = roomTypeServeice.selectOneById(roomType);
+        if (roomTypePO == null) {
+            throw new CommonException("不存在该房间类型!");
+        }
+        //查询是否有空闲房间
+        QueryWrapper<RoomPO> wrapper = new QueryWrapper<>();
+        if (!roomTypePO.equals(oldRoom.getHotelId())) {
+            if (!"admin".equals(role)) {
+                throw new CommonException("您没有换酒店的权限!");
+            }
+        }
+        if (WStringUtils.isBlank(roomId)) {
+            wrapper.eq("type",roomType).eq("is_isolation",1);
+        }else {
+            wrapper.eq("id",roomId).eq("is_isolation",1);
+        }
+        List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
+        if (roomPOS.isEmpty()) {
+            throw new CommonException("该隔离酒店符合条件的房间不足,请重新选择!");
+        }
+        leaveIsolationRoom(oldRoom.getId());
+        return isolationCheckIn(null,null,roomPOS.get(0).getId());
+    }
+
+
 
 
 }

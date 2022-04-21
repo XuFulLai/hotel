@@ -44,6 +44,9 @@
             <if test="vo.address != null and vo.address != ''">
                 and h.address like concat('%',${vo.address},'%')
             </if>
+            <if test="vo.allowIsolation != null">
+                and h.allow_isolation = ${vo.allowIsolation}
+            </if>
         </where>
         order by distance asc,sort asc,id
     </select>

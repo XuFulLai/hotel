@@ -22,12 +22,12 @@ public interface IRoomService {
     DetailVO getDetail(String id);
     List<RoomVO> getRoomTypeList( RoomVO roomVO);
     OrderVO checkIn(CheckInVO checkInVO);
-
     String checkOut(String id);
-
     void assignRoom(RoomVO roomVO);
-
     void cancelRoom(RoomVO roomVO);
-
     List<String> getFloor();
+    void cleanRoom(String roomId);
+    void leaveIsolationRoom(String roomId);
+    RoomVO isolationCheckIn(String hotelId,String roomType,String roomId);
+    RoomVO changeRoomOnIsolation(String hotelId,String roomType,String roomId,RoomVO oldRoom);
 }
