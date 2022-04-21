@@ -305,24 +305,32 @@ export default {
       let data = this.form
       //格式化deptId数组
       let deptId = ''
-      for (let i = 0; i < this.form.deptId.length; i++) {
-        if (this.form.deptId[i]) {
-          deptId += this.form.deptId[i]
-          if (i != this.form.deptId.length - 1) {
-            deptId += ','
+      console.log(this.form.deptId)
+      console.log(this.form.role)
+      if (this.form.deptId) {
+        for (let i = 0; i < this.form.deptId.length; i++) {
+          if (this.form.deptId[i]) {
+            deptId += this.form.deptId[i]
+            if (i != this.form.deptId.length - 1) {
+              deptId += ','
+            }
           }
         }
       }
+
       //格式化role数组
       let role = ''
-      for (let i = 0; i < this.form.role.length; i++) {
-        if (this.form.role[i]) {
-          role += this.form.role[i]
-          if (i != this.form.role.length - 1) {
-            role += ','
+      if (this.form.role) {
+        for (let i = 0; i < this.form.role.length; i++) {
+          if (this.form.role[i]) {
+            role += this.form.role[i]
+            if (i != this.form.role.length - 1) {
+              role += ','
+            }
           }
         }
       }
+
       this.form.deptId = deptId
       this.form.role = role
       if (value == 'add') {
