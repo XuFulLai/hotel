@@ -106,6 +106,17 @@ public class ReviewPO implements Serializable {
     @TableField("is_deleted")
     private Integer isDeleted;
 
+    @TableField("total_fee")
+    private Integer totalFee;
+
+    public Integer getIsolationFee() {
+        return totalFee;
+    }
+
+    public void setIsolationFee(Integer totalFee) {
+        this.totalFee = totalFee;
+    }
+
     /**
      * 创建人
      */

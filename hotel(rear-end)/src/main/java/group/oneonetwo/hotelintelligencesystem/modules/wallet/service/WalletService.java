@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.wallet.service;
 
 
+import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.po.WalletPO;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.vo.WalletVO;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 
@@ -14,4 +15,6 @@ public interface WalletService {
     WalletVO getWallet(String pwd);
 
     Reply editPwd(String oldPwd, String newPwd);
+
+    WalletPO getWalletPO(String uid);
 }

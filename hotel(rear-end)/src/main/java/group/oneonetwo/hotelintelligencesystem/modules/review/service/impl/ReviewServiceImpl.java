@@ -2,15 +2,15 @@ package group.oneonetwo.hotelintelligencesystem.modules.review.service.impl;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
-import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.IsolationInfoPO;
-import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO;
-import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.po.ReviewPO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.vo.ReviewVO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.service.ReviewService;
 import group.oneonetwo.hotelintelligencesystem.modules.review.dao.ReviewMapper;
+import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.po.WalletPO;
+import group.oneonetwo.hotelintelligencesystem.modules.wallet.service.WalletService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +26,15 @@ public class ReviewServiceImpl implements ReviewService{
     @Autowired
     ReviewService reviewService;
 
+
+    @Autowired
+    WalletService walletService;
+
     @Autowired
     ReviewMapper reviewMapper;
+    
+    @Autowired
+    AuthUtils authUtils;
 
     @Override
     public ReviewPO selectOneById(String id) {
@@ -96,6 +103,36 @@ public class ReviewServiceImpl implements ReviewService{
         return reviewMapper.getPage(page,reviewVO);
 
     }
+
+    @Override
+    public void getCheck(ReviewVO reviewVO) {
+        ReviewVO reviewVO1=null;
+        if(reviewVO.getType()==0 || reviewVO.getType()==1){
+        }else {
+            String uid = authUtils.getUid();
+            WalletPO walletPO = walletService.getWalletPO(uid);
+            double balances=0;
+            balances=walletPO.getBalance()-reviewVO.getTotalFee();
+            if(balances<=0.0){
+                throw new CommonException(502,"账户余额不足");
+            }
+
+        }
+
+    }
+
+    @Override
+    public void getReviews(ReviewVO reviewVO) {
+        if(reviewVO.getReviewStatus()==2){
+            if(reviewVO.getRemark()==null || reviewVO.getRemark()==""){
+                throw  new CommonException(501,"拒绝的理由不能为空");
+            }
+        }
+
+
+
+    }
+
 
 
 }
