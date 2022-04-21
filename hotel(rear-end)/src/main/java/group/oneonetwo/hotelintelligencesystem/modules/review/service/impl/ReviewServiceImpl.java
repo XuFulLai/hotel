@@ -38,7 +38,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Autowired
     ReviewMapper reviewMapper;
-    
+
     @Autowired
     AuthUtils authUtils;
 
@@ -140,7 +140,7 @@ public class ReviewServiceImpl implements ReviewService{
         ReviewVO reviewVO1 = reviewService.add(reviewVO);
         RoomVO roomVO = roomService.isolationCheckIn(userHotelId, roomType, null);
         roomVO.getId();
-        new IsolationInfoPO()
+//        new IsolationInfoPO()
     }
 
 
