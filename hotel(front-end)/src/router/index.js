@@ -14,6 +14,7 @@ import MenuManage from "../components/MenuManage";
 import RoomManage from "../components/RoomManage";
 import UserManage from "../components/UserManage";
 import LogManage from "../components/LogManage";
+import IsolationManage from "../components/IsolationManage";
 
 
 Vue.use(VueRouter)
@@ -92,6 +93,11 @@ const routes = [
                 path: 'logManage',
                 name: 'logManage',
                 component: LogManage
+            },
+            {
+                path: 'isolationManage',
+                name: 'isolationManage',
+                component: IsolationManage
             }
 
         ]

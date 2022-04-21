@@ -195,7 +195,14 @@ public class RoomServiceImpl implements IRoomService {
 
     @Override
     public List<RoomVO> getAllList(RoomVO roomVO){
-        roomVO.setHotelId(authUtils.getUserHotelId());
+        String role = authUtils.getRole();
+        switch (role) {
+            case "hotel_admin":
+            case "hotel_member":
+                roomVO.setHotelId(authUtils.getUserHotelId());
+                break;
+            default:
+        }
         return roomMapper.getAllList(roomVO);
     }
 
