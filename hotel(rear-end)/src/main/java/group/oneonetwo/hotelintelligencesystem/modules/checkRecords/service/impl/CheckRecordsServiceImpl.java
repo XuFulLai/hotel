@@ -1,6 +1,9 @@
 package group.oneonetwo.hotelintelligencesystem.modules.checkRecords.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.dao.CheckRecordsMapper;
@@ -89,6 +92,14 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
         list.add(checkRecordsVO);
         foundAbnormal(list);
         return insert;
+    }
+
+    @Override
+    public Page<CheckRecordsVO> getPage(CheckRecordsVO checkRecordsVO) {
+        QueryWrapper<CheckRecordsPO> wrapper = new QueryWrapper<>();
+        Page<CheckRecordsPO> page = new Page<>(checkRecordsVO.getPage().getPage(),checkRecordsVO.getPage().getSize());
+        Page<CheckRecordsPO> poiPage = (Page<CheckRecordsPO>) checkRecordsMapper.selectPage(page, wrapper);
+        return ConvertUtils.transferPage(poiPage,CheckRecordsVO.class);
     }
 
     private void foundAbnormal(List<CheckRecordsVO> list) {

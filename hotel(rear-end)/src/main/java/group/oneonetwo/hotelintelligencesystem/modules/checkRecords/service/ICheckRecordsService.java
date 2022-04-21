@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.checkRecords.service;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsExcelTemplate;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsVO;
 
@@ -18,4 +19,6 @@ public interface ICheckRecordsService {
     public int batchInsert(List<CheckRecordsVO> list);
 
     int insertManually(CheckRecordsVO checkRecordsVO);
+
+    Page<CheckRecordsVO> getPage(CheckRecordsVO checkRecordsVO);
 }
