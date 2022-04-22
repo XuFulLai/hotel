@@ -15,6 +15,7 @@ import RoomManage from "../components/RoomManage";
 import UserManage from "../components/UserManage";
 import LogManage from "../components/LogManage";
 import IsolationManage from "../components/IsolationManage";
+import DailyTest from "../components/DailyTest";
 
 
 Vue.use(VueRouter)
@@ -98,6 +99,11 @@ const routes = [
                 path: 'isolationManage',
                 name: 'isolationManage',
                 component: IsolationManage
+            },
+            {
+                path: 'dailyTest',
+                name: 'dailyTest',
+                component: DailyTest,
             }
 
         ]

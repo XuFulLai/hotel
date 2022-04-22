@@ -40,8 +40,10 @@ public class CheckRecordsController {
     @PostMapping("add")
     @ApiOperation("增加每日测量")
     public Reply<CheckRecordsVO> add(@RequestBody CheckRecordsVO checkRecordsVO){
-        return Reply.success();
+        return Reply.success(checkRecordsService.add(checkRecordsVO));
     }
+
+
     @GetMapping("delete/{id}")
     @ApiOperation("根据id删除检测记录")
     public Reply deleteById(@PathVariable("id") String id) {
