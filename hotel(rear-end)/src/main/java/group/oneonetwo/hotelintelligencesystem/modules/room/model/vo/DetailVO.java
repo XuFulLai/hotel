@@ -32,6 +32,9 @@ public class DetailVO implements Serializable{
     @ApiModelProperty("绑定订单id")
     private String orderId;
 
+    @ApiModelProperty("是否为隔离")
+    private Integer isIsolation;
+
 
     //room_type
 
@@ -384,6 +387,14 @@ public class DetailVO implements Serializable{
 
     public void setPage(Page page) {
         this.page = page;
+    }
+
+    public Integer getIsIsolation() {
+        return isIsolation;
+    }
+
+    public void setIsIsolation(Integer isIsolation) {
+        this.isIsolation = isIsolation;
     }
 
     @Override

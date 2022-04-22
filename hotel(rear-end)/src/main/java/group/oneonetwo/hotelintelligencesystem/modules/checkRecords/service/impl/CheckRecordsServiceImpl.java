@@ -1,6 +1,9 @@
 package group.oneonetwo.hotelintelligencesystem.modules.checkRecords.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
@@ -94,6 +97,7 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
     }
 
     @Override
+
     public CheckRecordsVO add(CheckRecordsVO checkRecordsVO) {
         if(checkRecordsVO==null){
             throw new SavaException("插入检测信息为空:实体为空");
@@ -139,9 +143,9 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
     }
 
     @Override
-    public Page<CheckRecordsVO> getPage(CheckRecordsVO checkRecordsVO) {
+    public Page<CheckRecordsVO> getPages(CheckRecordsVO checkRecordsVO) {
         Page<CheckRecordsVO> page=new Page<>(checkRecordsVO.getPage().getPage(),checkRecordsVO.getPage().getSize());
-        return checkRecordsMapper.getPage(page,checkRecordsVO);
+        return checkRecordsMapper.getPages(page,checkRecordsVO);
     }
 
     @Override
@@ -170,6 +174,15 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
 
 
 
+
+
+
+    public Page<CheckRecordsVO> getPage(CheckRecordsVO checkRecordsVO) {
+        QueryWrapper<CheckRecordsPO> wrapper = new QueryWrapper<>();
+        Page<CheckRecordsPO> page = new Page<>(checkRecordsVO.getPage().getPage(),checkRecordsVO.getPage().getSize());
+        Page<CheckRecordsPO> poiPage = (Page<CheckRecordsPO>) checkRecordsMapper.selectPage(page, wrapper);
+        return ConvertUtils.transferPage(poiPage,CheckRecordsVO.class);
+    }
 
 
     private void foundAbnormal(List<CheckRecordsVO> list) {

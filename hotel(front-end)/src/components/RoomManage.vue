@@ -41,7 +41,7 @@
     <ul class="mt-10 room-list d-flex flex-wrap">
       <li class="cursor" v-for="(item,index) in roomList" @click="roomHandle(item)">
         <span :class="classList[item.status]" class="iconfont icon-menleianzhuang"></span>
-        <h3>{{ item.name }}</h3>
+        <h3 :style="item.isIsolation != 0 ? 'color:red':''">{{ item.isIsolation != 0 ? '* ' + item.name : item.name }}</h3>
         <h5>{{ item.roomTypeName }}</h5>
         <p>{{ statusList[item.status] }}</p>
       </li>
@@ -51,7 +51,7 @@
     <el-dialog
         :title="current.name"
         :visible.sync="roomHandleVisible"
-        width="300px"
+        width="420px"
     >
       <p class="text-left ml-10">房间信息：</p>
       <el-button
@@ -60,23 +60,53 @@
       >房间详情</el-button>
       <el-button
           type="primary"
-          class="ml-10 mb-10 mt-10"
+          class="ml-10 mb-10 mt-10 mr-10"
           @click="editRoom"
       >编辑房间</el-button>
+      <el-button
+          type="info"
+          class="ml-10 mb-10 mt-10"
+          v-if="current.isIsolation == 1"
+          :disabled="current.status != 1"
+          @click="checkInInfo"
+      >入住信息</el-button>
       <p class="text-left mt-10 ml-10">房间操作：</p>
       <el-button
           type="success"
           class="mr-10 mt-10"
-          :disabled="current.status == 1"
+          :disabled="current.status != 0"
+          v-if="current.isIsolation == 0"
           @click="checkInHandler"
       >登记入住
       </el-button>
       <el-button
-          type="danger"
-          class="ml-10"
+          type="success"
+          class="mr-10 mt-10"
           :disabled="current.status != 1"
+          v-else
+          @click="changeRoomHandler"
+      >换 房
+      </el-button>
+      <el-button
+          type="danger"
+          class="ml-10 mb-10 mt-10 mr-10"
+          :disabled="current.status != 1"
+          v-if="current.isIsolation == 0"
           @click="checkOutHandler"
       >退房结账</el-button>
+      <el-button
+          type="danger"
+          class="ml-10 mb-10 mt-10 mr-10"
+          v-else
+          :disabled="current.status != 1"
+          @click="checkOutHandleVisible == true"
+      >退 房</el-button>
+      <el-button
+          type="warning"
+          class="ml-10 mb-10 mt-10"
+          :disabled="current.status != 4"
+          @click="cleanRoom"
+      >房间消毒</el-button>
 
     </el-dialog>
 
@@ -131,8 +161,106 @@
             <el-button @click="checkInVisible = false">取 消</el-button>
             <el-button type="primary" @click="checkIn">确 定</el-button>
       </span>
+    </el-dialog>
 
+    <!--    隔离房间入住信息dialog-->
+    <el-dialog
+        :title="current.name + '入住信息'"
+        :visible.sync="checkInInfoVisible"
+        width="30%"
+        custom-class="min-w-450"
+    >
+      <div class="content">
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">姓名:</p>
+          <el-input
+              style="width: 350px;"
+              placeholder="请输入名称"
+              :disabled="true"
+              v-model="checkInInfoData.name"
+              clearable>
+          </el-input>
+        </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">身份证:</p>
+          <el-input
+              style="width: 350px;"
+              placeholder="请输入身份证"
+              :disabled="true"
+              v-model="checkInInfoData.idCard"
+              clearable>
+          </el-input>
+        </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">手机号:</p>
+          <el-input
+              style="width: 350px;"
+              placeholder="请输入手机号"
+              :disabled="true"
+              v-model="checkInInfoData.phone"
+              clearable>
+          </el-input>
+        </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">邮箱:</p>
+          <el-input
+              style="width: 350px;"
+              placeholder="请输入邮箱"
+              :disabled="true"
+              v-model="checkInInfoData.email"
+              clearable>
+          </el-input>
+        </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">人员类型:</p>
+          <el-select style="width: 350px;" v-model="checkInInfoData.type" placeholder="请选择" :disabled="true">
+            <el-option v-for="item in typeOptions" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="checkInInfoVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
 
+    <!--    隔离房间换房dialog-->
+    <el-dialog
+        :title="current.name + '换房'"
+        :visible.sync="changeRoomVisible"
+        width="30%"
+        custom-class="min-w-450"
+    >
+      <el-select v-model="newRoomId" placeholder="请选择">
+        <el-option
+            v-for="item in ableUseRoom"
+            :label="item.name"
+            :value="item.id">
+          <span style="float: left">{{ item.name }}</span>
+          <span style="float: right; color: #8492a6; font-size: 13px">{{ item.id }}</span>
+        </el-option>
+      </el-select>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="changeRoomVisible = false">取 消</el-button>
+            <el-button type="primary" @click="changeRoom">确 定</el-button>
+      </span>
+    </el-dialog>
+<!--    隔离房间退房选项-->
+    <el-dialog
+        :title="current.name + '退房'"
+        :visible.sync="checkInVisible"
+        width="30%"
+        custom-class="min-w-450"
+    >
+      <el-button
+          class="mr-10"
+          @click="isolationCheckOut(1)"
+          type="danger"
+      >阳性入院</el-button>
+      <el-button
+          type="success"
+          class="ml-10 mb-10 mt-10 mr-10"
+          @click="isolationCheckOut(0)"
+      >解除隔离</el-button>
     </el-dialog>
 
 <!--    详情/编辑表单-->
@@ -190,6 +318,15 @@
               v-model="form.direction"
               clearable>
           </el-input>
+        </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">房间类型:</p>
+          <el-switch
+              :disabled="current.infoMode == 'check'"
+              v-model="form.isIsolation"
+              active-text="隔离房间"
+              inactive-text="普通房间">
+          </el-switch>
         </div>
       </div>
 
@@ -318,7 +455,7 @@
 </template>
 
 <script>
-import {get, post} from "../utils/request";
+import {formDataPost, get, post} from "../utils/request";
 import { isJSON } from "../utils/isJSON";
 
 export default {
@@ -332,8 +469,8 @@ export default {
       roomList: [],
       floorList: [],
       roomTypeList: [],
-      classList: ['status-0', 'status-1', 'status-2'],
-      statusList: ['未入住', '已入住', '已预订'],
+      classList: ['status-0', 'status-1', 'status-2','status-3'],
+      statusList: ['未入住', '已入住', '已预订','暂定','待消毒'],
       roomNum: '',
       options: [{
         value: '选项1',
@@ -353,12 +490,23 @@ export default {
       }],
       floorNum: '',
       roomType: '',
+      changeRoomVisible: false,
+      checkInInfoVisible: false,
+      ableUseRoom: [],
+      newRoomId: undefined,
       current: {
         id: undefined,
         name: undefined,
         status: undefined,
         infoMode: "check",
-        infoTitle: "房间详情"
+        infoTitle: "房间详情",
+      },
+      checkInInfoData: {
+        name: '',
+        idCard: '',
+        phone: '',
+        email: '',
+        type: ''
       },
       pickerOptions: {
           disabledDate(v){
@@ -499,6 +647,19 @@ export default {
           value: '澳门',
           label: '澳门'
         }],
+      typeOptions: [{
+        value: 0,
+        label: '密接'
+      }, {
+        value: 1,
+        label: '应隔尽隔人员'
+      }, {
+        value: 2,
+        label: '入境人员'
+      }, {
+        value: 3,
+        label: '自行进入中高风险地区人员'
+      }],
     }
   },
   created() {
@@ -588,6 +749,94 @@ export default {
       })
     },
 
+    isolationCheckOut(val) {
+      let data = {
+        type:val,
+        roomId: this.current.id
+      }
+      formDataPost("api/xxxxxxx",data).then(res => {
+        if (res.data.code === "200") {
+          this.$notify.success({
+            title: '成功',
+            message: "退房成功"
+          });
+        }else{
+          this.$message({
+            message: res.data.msg,
+            type: 'error'
+          });
+        }
+      })
+    },
+    changeRoomHandler() {
+      this.newRoomId = undefined
+      this.changeRoomVisible = true
+      let data = {
+        hotelId: this.current.hotelId,
+        isIsolation: this.current.isIsolation
+      }
+      post("api/room/getAllList",data).then(res => {
+        console.log(res)
+        this.ableUseRoom = res.data.data
+      })
+    },
+    changeRoom() {
+      let data = {
+        currentRoomId: this.current.id,
+        newRoomId: this.newRoomId
+      }
+      formDataPost("api/xxxxxxx",data).then(res => {
+        if (res.data.code === "200") {
+          this.$notify.success({
+            title: '成功',
+            message: "换房成功"
+          });
+          this.changeRoomVisible = false
+        }else{
+          this.$message({
+            message: res.data.msg,
+            type: 'error'
+          });
+        }
+      })
+    },
+    cleanRoom() {
+      get("api/xxxxxxx/"+this.current.id).then(res => {
+        if (res.data.code === "200") {
+          this.$notify.success({
+            title: '成功',
+            message: "房间已成功消毒!"
+          });
+          this.infoVisible = false
+          this.getRoomList()
+        }else {
+          this.$notify.error({
+            title: '错误',
+            message: res.data.msg
+          });
+        }
+      })
+    },
+    checkInInfo() {
+      this.checkInInfoData = {
+        name: '',
+        idCard: '',
+        phone: '',
+        email: '',
+        type: ''
+      }
+      get("api/xxxxxxx/"+this.current.id).then(res => {
+        if (res.data.code === "200") {
+          this.checkInInfoData = res.data.data
+          this.checkInInfoVisible = true
+        }else {
+          this.$notify.error({
+            title: '错误',
+            message: res.data.msg
+          });
+        }
+      })
+    },
     roomHandle(item) {
       // alert(item.id)
       this.current = item
@@ -597,13 +846,26 @@ export default {
 
     confirmEdit() {
       this.form.id = this.current.id
+      if(this.form.isIsolation) {
+        this.form.isIsolation = 1
+      }else {
+        this.form.isIsolation = 0
+      }
       let data = this.form
       post("/api/room/modify",data).then(res => {
-        this.$notify.success({
-          title: '成功',
-          message: "修改成功"
-        });
-        this.infoVisible = false
+        if (res.data.code === "200") {
+          this.$notify.success({
+            title: '成功',
+            message: "修改成功"
+          });
+          this.infoVisible = false
+          this.getRoomList()
+        }else {
+          this.$notify.error({
+            title: '错误',
+            message: res.data.msg
+          });
+        }
       })
     },
 
@@ -725,6 +987,11 @@ export default {
       get("/api/room/getDetail/" + this.current.id).then(res => {
         console.log("getDetail",res)
         this.form = res.data.data
+        if(this.form.isIsolation == 1) {
+          this.form.isIsolation = true
+        }else {
+          this.form.isIsolation = false
+        }
       })
       this.infoVisible = true
     },
@@ -833,6 +1100,14 @@ export default {
 
 .status-2 {
   color: #E6A23C;
+}
+
+.status-3 {
+  color: purple;
+}
+
+.status-4 {
+  color: #909399;
 }
 
 .contont {

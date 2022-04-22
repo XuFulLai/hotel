@@ -282,7 +282,7 @@
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">人员状态:</p>
           <el-select style="width: 350px;" v-model="form.status" placeholder="请选择" :disabled="userValue == 'check'">
-            <el-option v-for="item in typeOptions" :label="item.label" :value="item.value"></el-option>
+            <el-option v-for="item in statusOptions" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </div>
 

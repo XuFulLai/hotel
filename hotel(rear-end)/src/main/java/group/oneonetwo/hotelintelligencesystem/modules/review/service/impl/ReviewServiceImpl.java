@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Autowired
     ReviewMapper reviewMapper;
-    
+
     @Autowired
     AuthUtils authUtils;
 
@@ -160,6 +160,7 @@ public class ReviewServiceImpl implements ReviewService{
         RoomVO roomVO = roomService.isolationCheckIn(userHotelId, roomType, null);
         roomVO.getId();
 
+
         IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
         isolationInfoVO.setName(reviewVO.getName());
         isolationInfoVO.setuId(uid);
@@ -178,6 +179,7 @@ public class ReviewServiceImpl implements ReviewService{
         isolationInfoVO.setCity(reviewVO.getCity());
         isolationInfoVO.setStatus(0);
         IsolationInfoVO infoVO = isolationInfoService.add(isolationInfoVO);
+
     }
 
 

@@ -1,6 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
+
 import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -96,13 +96,7 @@ public class CheckRecordsVO implements Serializable {
 
     private Page page;
 
-    public Page getPage() {
-        return page;
-    }
 
-    public void setPage(Page page) {
-        this.page = page;
-    }
 
     /**
      *
@@ -134,6 +128,13 @@ public class CheckRecordsVO implements Serializable {
     @ApiModelProperty("is_deleted")
     private Integer isDeleted;
 
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     /**
      *

@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsExcelTemplate;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsVO;
 
-
 import java.util.List;
 
 /**
@@ -27,7 +26,9 @@ public interface ICheckRecordsService {
 
     CheckRecordsVO save(CheckRecordsVO checkRecordsVO);
 
-    Page<CheckRecordsVO> getPage(CheckRecordsVO checkRecordsVO);
 
     CheckRecordsVO selectOneByIdReturnVO(String id);
+
+    Page<CheckRecordsVO> getPages(CheckRecordsVO checkRecordsVO);
+
 }
