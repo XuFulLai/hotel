@@ -44,9 +44,11 @@
         <el-button type="info" icon="el-icon-refresh" @click="reset">重置</el-button>
       </el-button-group>
     </div>
+
     <div class="d-flex justify-content-end" style="padding: 10px;">
       <el-button type="success" style="width: 120px;" @click="download">导出成Excel</el-button>
     </div>
+    
     <el-table
         stripe
         border
