@@ -131,42 +131,20 @@ public class RoomServiceImpl implements IRoomService {
         if (check == null) {
             throw new CommonException(4004, "找不到id为'" + roomVO.getId() + "'的数据");
         }
-        if (!RoomStatus.UNUSED.getCode().equals(check.getStatus())) {
-            throw new CommonException("当前状态下无法修改房间信息!");
-        }
-        if (roomVO.getIsIsolation() == 1) {
-            String userHotelId = authUtils.getUserHotelId();
-            HotelVO hotelVO = hotelService.selectOneByIdReturnVO(userHotelId);
-            if (hotelVO.getAllowIsolation() == 1) {
-                RoomPO roomPO = new RoomPO();
-                BeanUtils.copyProperties(roomVO, roomPO);
-                int save = roomMapper.updateById(roomPO);
-                RoomPO thisRoom = selectOneById(roomPO.getId());
-                BeanUtils.copyProperties(thisRoom, roomVO);
-                if (save > 0) {
-                    if (!WStringUtils.isBlank(thisRoom.getId()) && !WStringUtils.isBlank(thisRoom.getHotelId())) {
-                        sendUpdateInfo(roomVO);
-                    }
-                    return roomMapper.selectById(roomPO.getId());
-                }
 
+        RoomPO roomPO = new RoomPO();
+        BeanUtils.copyProperties(roomVO, roomPO);
+        int save = roomMapper.updateById(roomPO);
+        RoomPO thisRoom = selectOneById(roomPO.getId());
+        BeanUtils.copyProperties(thisRoom, roomVO);
+        if (save > 0) {
+            if (!WStringUtils.isBlank(thisRoom.getId()) && !WStringUtils.isBlank(thisRoom.getHotelId())) {
+                sendUpdateInfo(roomVO);
             }
-            throw new SavaException("酒店无设置隔离酒店权限");
-        } else {
-            RoomPO roomPO = new RoomPO();
-            BeanUtils.copyProperties(roomVO, roomPO);
-            int save = roomMapper.updateById(roomPO);
-            RoomPO thisRoom = selectOneById(roomPO.getId());
-            BeanUtils.copyProperties(thisRoom, roomVO);
-            if (save > 0) {
-                if (!WStringUtils.isBlank(thisRoom.getId()) && !WStringUtils.isBlank(thisRoom.getHotelId())) {
-                    sendUpdateInfo(roomVO);
-                }
-                return roomMapper.selectById(roomPO.getId());
-            }
-            throw new SavaException("更改房间失败");
+            return roomMapper.selectById(roomPO.getId());
         }
-    }
+        throw new SavaException("更改房间失败");
+        }
 
     @Override
     public Integer deleteById(String id) {
@@ -189,6 +167,14 @@ public class RoomServiceImpl implements IRoomService {
     @Override
     public RoomVO saveone(RoomVO roomVO) {
         RoomVO before = selectOneByIdReturnVO(roomVO.getId());
+
+        if(roomVO.getIsIsolation()==1){
+            HotelPO hotelPO = hotelService.selectOneById(before.getHotelId());
+            if(hotelPO.getAllowIsolation()==0){
+                throw new CommonException("无权限更改房间");
+            }
+        }
+
         RoomPO save = save(roomVO);
         BeanUtils.copyProperties(save, roomVO);
         Gson gson = new Gson();
@@ -552,7 +538,7 @@ public class RoomServiceImpl implements IRoomService {
         return isolationCheckIn(null, null, roomPOS.get(0).getId());
     }
 
-<<<<<<< HEAD
+
     @Override
     public RoomVO changeRoom(String isolationInfoId,String hotelId, String roomType, String roomId) {
         IsolationInfoPO isolationInfoPO = isolationInfoService.selectOneById(isolationInfoId);
@@ -573,7 +559,41 @@ public class RoomServiceImpl implements IRoomService {
         return roomVO1;
     }
 
-=======
->>>>>>> 28bf32e7498251f907daf8284a657878545294e3
+    //隔离房间的更换
+    @Override
+    public RoomVO checkInfo(String roomId) {
+        String userHotelId = authUtils.getUserHotelId();
+        RoomVO roomVO = isolationCheckIn(userHotelId, null, roomId);
+        return roomVO;
+    }
+
+  //隔离房间的更换
+    @Override
+    public void changeRoom(String currentRoomId, String newRoomId) {
+        IsolationInfoPO isolationInfoPO = isolationInfoService.selectOneByRoomId(currentRoomId);
+        RoomVO roomVO = changeRoom(isolationInfoPO.getId(), isolationInfoPO.getHotelId(), isolationInfoPO.getRoomType(), newRoomId);
+        if(roomVO!=null){
+            return;
+        }
+        throw new CommonException("换房失败");
+    }
+
+
+
+    //隔离房间的退房
+    @Override
+    public void isolationCheckOut(Integer status,String roomId) {
+        IsolationInfoPO isolationInfoPO = isolationInfoService.selectOneByRoomId(roomId);
+        isolationInfoPO.setStatus(status);
+        IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
+        BeanUtils.copyProperties(isolationInfoPO,isolationInfoVO);
+        isolationInfoService.save(isolationInfoVO);
+        RoomPO roomPO = selectOneById(roomId);
+        roomPO.setStatus(4);
+        RoomVO roomVO = new RoomVO();
+        BeanUtils.copyProperties(roomPO,roomVO);
+        save(roomVO);
+    }
+
 
 }

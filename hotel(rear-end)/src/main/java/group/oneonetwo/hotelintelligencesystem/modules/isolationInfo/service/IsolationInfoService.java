@@ -27,4 +27,8 @@ public interface IsolationInfoService{
 
     List<IsolationInfoVO> getAllList(IsolationInfoVO isolationInfoVO);
 
+    IsolationInfoPO selectOneByRoomId(String roomId);
+
+
+
 }
