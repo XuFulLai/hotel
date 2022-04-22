@@ -41,7 +41,7 @@ public class IsolationInfoController {
         return Reply.success(isolationInfoService.selectOneByIdReturnVO(id));
     }
 
-    @PostMapping("delete/{id}")
+    @GetMapping("delete/{id}")
     @ApiOperation("删除人员信息")
     public Reply deleteById(@PathVariable("id") String id){
         return isolationInfoService.deleteById(id)>0 ? Reply.success():Reply.failed();

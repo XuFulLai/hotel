@@ -2,13 +2,14 @@ package group.oneonetwo.hotelintelligencesystem.modules.checkRecords.controller;
 
 import com.alibaba.excel.EasyExcel;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import group.oneonetwo.hotelintelligencesystem.listener.CheckRecordsExcelListener;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsExcelTemplate;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsVO;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.service.ICheckRecordsService;
 
 import group.oneonetwo.hotelintelligencesystem.tools.FileUtils;
-import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,8 +56,8 @@ public class CheckRecordsController {
 
     @ApiOperation("查询检测列表(分页)")
     @PostMapping("page")
-    public Reply<Page<CheckRecordsVO>> getPage(@RequestBody CheckRecordsVO checkRecordsVO) {
-        return Reply.success(checkRecordsService.getPage(checkRecordsVO));
+    public Reply<Page<CheckRecordsVO>> getPages(@RequestBody CheckRecordsVO checkRecordsVO) {
+        return Reply.success(checkRecordsService.getPages(checkRecordsVO));
     }
 
 
@@ -89,6 +90,8 @@ public class CheckRecordsController {
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
         EasyExcel.write(response.getOutputStream(), CheckRecordsExcelTemplate.class).sheet("订单").doWrite(new ArrayList<CheckRecordsVO>());
     }
+
+
 
 
 

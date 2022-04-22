@@ -20,7 +20,7 @@ import java.util.List;
 @Repository
 @Mapper
 public interface CheckRecordsMapper extends BaseMapper<CheckRecordsPO> {
-    Page<CheckRecordsVO> getPage(@Param("page") Page<CheckRecordsVO> page, @Param("vo") CheckRecordsVO vo);
+    Page<CheckRecordsVO> getPages(@Param("page") Page<CheckRecordsVO> page, @Param("vo") CheckRecordsVO vo);
 
     int batchInsert(List<CheckRecordsPO> list);
 }
