@@ -118,6 +118,7 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public void getCheck(ReviewVO reviewVO) {
         if(reviewVO.getType()==0 || reviewVO.getType()==1){
+            add(reviewVO);
         }else {
             String uid = authUtils.getUid();
             WalletPO walletPO = walletService.getWalletPO(uid);
@@ -129,6 +130,7 @@ public class ReviewServiceImpl implements ReviewService{
             //这里貌似查了个更新
             walletPO.setBalance(balances);
             walletService.save(walletPO);
+            add(reviewVO);
 
 
         }
