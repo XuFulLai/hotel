@@ -543,7 +543,7 @@ public class RoomServiceImpl implements IRoomService {
         return isolationCheckIn(null, null, roomPOS.get(0).getId());
     }
 
-<<<<<<< HEAD
+
     @Override
     public RoomVO changeRoom(String isolationInfoId,String hotelId, String roomType, String roomId) {
         IsolationInfoPO isolationInfoPO = isolationInfoService.selectOneById(isolationInfoId);
