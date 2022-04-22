@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.room.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.CheckInVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.DetailVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
@@ -17,6 +18,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/room")
 public class RoomController {
+    @Autowired
+    AuthUtils authUtils;
+    
+    
     @Autowired
     IRoomService roomService;
 
@@ -86,6 +91,12 @@ public class RoomController {
     @GetMapping("floor")
     public Reply getFloor() {
         return Reply.success(roomService.getFloor());
+    }
+
+    @ApiOperation("更换房间")
+    @PostMapping("changeRoom")
+    public Reply<RoomVO> changeRoom(String isolationInfoId ,String hotelId,String roomType ,String roomId){
+        return Reply.success(roomService.changeRoom(isolationInfoId,hotelId,roomType,roomId));
     }
 
 }

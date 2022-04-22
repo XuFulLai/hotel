@@ -6,6 +6,8 @@ import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUti
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.IsolationInfoPO;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.IsolationInfoService;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.po.ReviewPO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.vo.ReviewVO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.service.ReviewService;
@@ -28,6 +30,9 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Autowired
     IRoomService roomService;
+
+    @Autowired
+    IsolationInfoService isolationInfoService;
 
     @Autowired
     ReviewService reviewService;
@@ -121,6 +126,11 @@ public class ReviewServiceImpl implements ReviewService{
             if(balances<=0.0){
                 throw new CommonException(502,"账户余额不足");
             }
+            //这里貌似查了个更新
+            walletPO.setBalance(balances);
+            walletService.save(walletPO);
+
+
         }
 
     }
@@ -128,19 +138,48 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public void getReviews(ReviewVO reviewVO) {
         if(reviewVO.getReviewStatus()==2){
-            if(reviewVO.getRemark()==null || reviewVO.getRemark()==""){
-                throw new CommonException(501,"拒绝的理由不能为空");
+            if(reviewVO.getRemark()==null || reviewVO.getRemark()=="") {
+                throw new CommonException(501, "拒绝的理由不能为空");
             }
-
             //这里有个如果拒绝后有个打回钱的流程
+            if(reviewVO.getType()==2 || reviewVO.getType()==3){
+                String uid = authUtils.getUid();
+                WalletPO walletPO = walletService.getWalletPO(uid);
+                walletPO.setBalance(walletPO.getBalance()+reviewVO.getTotalFee());
+                walletService.save(walletPO);
+            }
             return;
         }
+
+        String uid = authUtils.getUid();
         String userHotelId = authUtils.getUserHotelId();
         String roomType = reviewVO.getRoomType();
+        reviewVO.setHotelId(userHotelId);
+        reviewVO.setRoomType(roomType);
         ReviewVO reviewVO1 = reviewService.add(reviewVO);
         RoomVO roomVO = roomService.isolationCheckIn(userHotelId, roomType, null);
         roomVO.getId();
-//        new IsolationInfoPO()
+
+
+        IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
+        isolationInfoVO.setName(reviewVO.getName());
+        isolationInfoVO.setuId(uid);
+        isolationInfoVO.setIdCard(reviewVO.getIdCard());
+        isolationInfoVO.setType(reviewVO.getType());
+        isolationInfoVO.setPhone(reviewVO.getPhone());
+        isolationInfoVO.setEmail(reviewVO.getEmail());
+        isolationInfoVO.setHotelId(userHotelId);
+        isolationInfoVO.setRoomType(roomType);
+        isolationInfoVO.setPay(reviewVO.getTotalFee());
+        isolationInfoVO.setCheckInTime(reviewVO.getCheckInTime());
+        isolationInfoVO.setCheckOutTime(reviewVO.getCheckOutTime());
+        isolationInfoVO.setRoomId(roomVO.getId());
+        isolationInfoVO.setRoomName(roomVO.getName());
+        isolationInfoVO.setProvince(reviewVO.getProvince());
+        isolationInfoVO.setCity(reviewVO.getCity());
+        isolationInfoVO.setStatus(0);
+        IsolationInfoVO infoVO = isolationInfoService.add(isolationInfoVO);
+
     }
 
 

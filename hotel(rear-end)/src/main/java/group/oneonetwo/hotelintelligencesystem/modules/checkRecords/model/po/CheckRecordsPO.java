@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.po;
 
 import com.baomidou.mybatisplus.annotation.*;
+import io.swagger.annotations.ApiOperation;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,6 +22,8 @@ public class CheckRecordsPO implements Serializable {
     /**
      * 检测人id
      */
+
+
     @TableField("u_id")
     private String uId;
 
