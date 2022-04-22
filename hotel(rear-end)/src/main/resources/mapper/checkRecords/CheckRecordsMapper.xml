@@ -43,6 +43,9 @@
             <if test="vo.checkRes != null and vo.checkRes != ''">
                 and ch.check_res = #{vo.checkRes}
             </if>
+            <if test="vo.uId != null and vo.uId != ''">
+                and ch.u_id = #{vo.uId}
+            </if>
             and ch.is_deleted = 0
         </where>
         order by ch.create_time DESC

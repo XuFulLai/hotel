@@ -134,4 +134,11 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
         }
         return isolationInfoMapper.getAllList(isolationInfoVO);
     }
+
+    @Override
+    public Page<IsolationInfoVO> getOwnPage(IsolationInfoVO isolationInfoVO) {
+        String uid = authUtils.getUid();
+        isolationInfoVO.setuId(uid);
+        return getPage(isolationInfoVO);
+    }
 }
