@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.IsolationInfoPO">
             <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="uId" column="u_id" jdbcType="VARCHAR"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="idCard" column="id_card" jdbcType="VARCHAR"/>
             <result property="type" column="type" jdbcType="INTEGER"/>
@@ -13,7 +14,7 @@
             <result property="email" column="email" jdbcType="VARCHAR"/>
             <result property="hotelId" column="hotel_id" jdbcType="VARCHAR"/>
             <result property="roomType" column="room_type" jdbcType="VARCHAR"/>
-            <result property="pay" column="pay" jdbcType="VARCHAR"/>
+            <result property="pay" column="pay" jdbcType="INTEGER"/>
             <result property="checkInTime" column="check_in_time" jdbcType="TIMESTAMP"/>
             <result property="checkOutTime" column="check_out_time" jdbcType="TIMESTAMP"/>
             <result property="roomId" column="room_id" jdbcType="VARCHAR"/>
@@ -57,6 +58,7 @@
         <if test="vo.status != null and vo.status != ''">
             and  ii.status = #{vo.status}
         </if>
+            and ii.is_deleted = 0
         </where>
         order by ii.create_time DESC
     </select>
@@ -80,6 +82,7 @@
             <if test="vo.status != null and vo.status != ''">
                 and  ii.status = #{vo.status}
             </if>
+           and ii.is_deleted = 0
         </where>
         order by ii.create_time DESC
 

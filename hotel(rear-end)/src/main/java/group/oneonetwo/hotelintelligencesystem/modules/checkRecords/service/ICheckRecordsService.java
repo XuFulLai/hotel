@@ -1,8 +1,10 @@
 package group.oneonetwo.hotelintelligencesystem.modules.checkRecords.service;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsExcelTemplate;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsVO;
+
 
 import java.util.List;
 
@@ -18,4 +20,14 @@ public interface ICheckRecordsService {
     public int batchInsert(List<CheckRecordsVO> list);
 
     int insertManually(CheckRecordsVO checkRecordsVO);
+
+    CheckRecordsVO add(CheckRecordsVO checkRecordsVO);
+
+    int deleteById(String id);
+
+    CheckRecordsVO save(CheckRecordsVO checkRecordsVO);
+
+    Page<CheckRecordsVO> getPage(CheckRecordsVO checkRecordsVO);
+
+    CheckRecordsVO selectOneByIdReturnVO(String id);
 }
