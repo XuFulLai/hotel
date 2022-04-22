@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -26,6 +27,52 @@ public class CheckRecordsVO implements Serializable {
     @ApiModelProperty("检测人id")
     private String uId;
 
+
+    @ApiModelProperty("开始时间")
+    private Date beginTime;
+
+    @ApiModelProperty("结束时间")
+    private Date endTime;
+
+
+    @ApiModelProperty("用户名")
+    private String name;
+
+    @ApiModelProperty("身份证")
+    private String idCard;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
     /**
      * 检测类型
      */
@@ -40,9 +87,22 @@ public class CheckRecordsVO implements Serializable {
 
     /**
      * 检测时间
+     *
+     *
      */
     @ApiModelProperty("检测时间")
     private Date checkTime;
+
+
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     /**
      *

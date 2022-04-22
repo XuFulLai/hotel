@@ -30,4 +30,5 @@ public interface IRoomService {
     void leaveIsolationRoom(String roomId);
     RoomVO isolationCheckIn(String hotelId,String roomType,String roomId);
     RoomVO changeRoomOnIsolation(String hotelId,String roomType,String roomId,RoomVO oldRoom);
+    RoomVO changeRoom(String isolationInfoId,String hotelId,String roomType,String roomId);
 }
