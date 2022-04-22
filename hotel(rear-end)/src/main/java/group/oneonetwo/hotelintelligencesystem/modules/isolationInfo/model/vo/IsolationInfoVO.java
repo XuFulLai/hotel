@@ -33,6 +33,18 @@ public class IsolationInfoVO  implements Serializable {
     @ApiModelProperty("隔离人员姓名")
     private String name;
 
+    @ExcelIgnore()
+    @ApiModelProperty("隔离人员id")
+    private String uId;
+
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
     /**
      * 身份证
      */
@@ -80,7 +92,7 @@ public class IsolationInfoVO  implements Serializable {
      */
     @ExcelProperty(value = "隔离支付",index = 6)
     @ApiModelProperty("隔离支付")
-    private String pay;
+    private Integer pay;
 
     /**
      * 入住时间
@@ -313,11 +325,11 @@ public class IsolationInfoVO  implements Serializable {
         this.roomType = roomType;
     }
 
-    public String getPay() {
+    public Integer getPay() {
         return pay;
     }
 
-    public void setPay(String pay) {
+    public void setPay(Integer pay) {
         this.pay = pay;
     }
 

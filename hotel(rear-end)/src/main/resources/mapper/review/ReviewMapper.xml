@@ -59,6 +59,7 @@
         <if test="vo.reviewStatus != null and vo.reviewStatus != ''">
             and  review.review_status = #{vo.reviewStatus}
         </if>
+            and review.is_deleted = 0
         </where>
         order by review.create_time DESC
     </select>

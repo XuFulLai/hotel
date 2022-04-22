@@ -12,6 +12,9 @@ import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscou
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelPO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.IsolationInfoPO;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.IsolationInfoService;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.po.OrderPO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderService;
@@ -49,6 +52,9 @@ public class RoomServiceImpl implements IRoomService {
 
     @Autowired
     RoomMapper roomMapper;
+
+    @Autowired
+    IsolationInfoService isolationInfoService;
 
     @Autowired
     IHotelService hotelService;
@@ -528,7 +534,7 @@ public class RoomServiceImpl implements IRoomService {
         }
         //查询是否有空闲房间
         QueryWrapper<RoomPO> wrapper = new QueryWrapper<>();
-        if (!roomTypePO.equals(oldRoom.getHotelId())) {
+        if (!roomTypePO.getHotelId().equals(oldRoom.getHotelId())) {
             if (!"admin".equals(role)) {
                 throw new CommonException("您没有换酒店的权限!");
             }
@@ -546,5 +552,28 @@ public class RoomServiceImpl implements IRoomService {
         return isolationCheckIn(null, null, roomPOS.get(0).getId());
     }
 
+<<<<<<< HEAD
+    @Override
+    public RoomVO changeRoom(String isolationInfoId,String hotelId, String roomType, String roomId) {
+        IsolationInfoPO isolationInfoPO = isolationInfoService.selectOneById(isolationInfoId);
+        String roomId1 = isolationInfoPO.getRoomId();
+        RoomPO roomPO = selectOneById(roomId1);
+        RoomVO roomVO = new RoomVO();
+        BeanUtils.copyProperties(roomPO,roomVO);
+        RoomVO roomVO1 = changeRoomOnIsolation(hotelId, roomType, roomId, roomVO);
+        if(roomVO1==null){
+            throw new CommonException(501,"更改房间失败");
+        }
+        isolationInfoPO.setRoomId(roomVO1.getId());
+        isolationInfoPO.setRoomName(roomVO1.getName());
+        isolationInfoPO.setRoomType(roomVO1.getType());
+        IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
+        BeanUtils.copyProperties(isolationInfoPO,isolationInfoVO);
+        isolationInfoService.save(isolationInfoVO);
+        return roomVO1;
+    }
+
+=======
+>>>>>>> 28bf32e7498251f907daf8284a657878545294e3
 
 }

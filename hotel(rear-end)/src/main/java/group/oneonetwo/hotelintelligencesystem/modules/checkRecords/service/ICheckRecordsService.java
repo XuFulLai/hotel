@@ -20,5 +20,15 @@ public interface ICheckRecordsService {
 
     int insertManually(CheckRecordsVO checkRecordsVO);
 
-    Page<CheckRecordsVO> getPage(CheckRecordsVO checkRecordsVO);
+    CheckRecordsVO add(CheckRecordsVO checkRecordsVO);
+
+    int deleteById(String id);
+
+    CheckRecordsVO save(CheckRecordsVO checkRecordsVO);
+
+
+    CheckRecordsVO selectOneByIdReturnVO(String id);
+
+    Page<CheckRecordsVO> getPages(CheckRecordsVO checkRecordsVO);
+
 }
