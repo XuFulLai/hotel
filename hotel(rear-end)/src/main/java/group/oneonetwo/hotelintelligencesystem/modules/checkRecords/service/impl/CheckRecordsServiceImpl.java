@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
+import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.dao.CheckRecordsMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.po.CheckRecordsPO;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsExcelTemplate;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsVO;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.service.ICheckRecordsService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.EmailUtils;
 import org.slf4j.Logger;
@@ -95,12 +97,93 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
     }
 
     @Override
+
+    public CheckRecordsVO add(CheckRecordsVO checkRecordsVO) {
+        if(checkRecordsVO==null){
+            throw new SavaException("插入检测信息为空:实体为空");
+        }
+        CheckRecordsPO checkRecordsPO = new CheckRecordsPO();
+        BeanUtils.copyProperties(checkRecordsVO,checkRecordsPO);
+        int insert=checkRecordsMapper.insert(checkRecordsPO);
+        if(insert>0){
+            return checkRecordsVO;
+        }
+        throw new SavaException("插入检测信息失败");
+
+    }
+
+    @Override
+    public int deleteById(String id) {
+        CheckRecordsVO check = selectOneByIdReturnVO(id);
+        if(check==null){
+            throw  new CommonException(4004,"找不到id为"+id+"的数据");
+        }
+        int i=checkRecordsMapper.deleteById(id);
+        return i;
+
+    }
+
+    @Override
+    public CheckRecordsVO save(CheckRecordsVO checkRecordsVO) {
+        if (checkRecordsVO==null){
+            throw new CommonException(501,"检测信息实体为空");
+        }
+        CheckRecordsVO check = selectOneByIdReturnVO(checkRecordsVO.getId());
+        if(check==null){
+            throw new CommonException(4004,"找不到id为:"+checkRecordsVO.getId()+"的数据");
+        }
+        CheckRecordsPO checkRecordsPO = new CheckRecordsPO();
+        BeanUtils.copyProperties(checkRecordsVO,checkRecordsPO);
+        int save=checkRecordsMapper.updateById(checkRecordsPO);
+        if(save>0){
+            return checkRecordsVO;
+        }
+        throw new SavaException("更改隔离人员信息失败");
+
+    }
+
+    @Override
+    public Page<CheckRecordsVO> getPages(CheckRecordsVO checkRecordsVO) {
+        Page<CheckRecordsVO> page=new Page<>(checkRecordsVO.getPage().getPage(),checkRecordsVO.getPage().getSize());
+        return checkRecordsMapper.getPages(page,checkRecordsVO);
+    }
+
+    @Override
+    public CheckRecordsVO selectOneByIdReturnVO(String id) {
+        if(id==null){
+            throw new CommonException(501,"参数为空");
+        }
+        CheckRecordsPO checkRecordsPO = checkRecordsMapper.selectById(id);
+        CheckRecordsVO checkRecordsVO = new CheckRecordsVO();
+        if(checkRecordsPO!=null){
+            BeanUtils.copyProperties(checkRecordsPO,checkRecordsVO);
+        }
+        return checkRecordsVO;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public Page<CheckRecordsVO> getPage(CheckRecordsVO checkRecordsVO) {
         QueryWrapper<CheckRecordsPO> wrapper = new QueryWrapper<>();
         Page<CheckRecordsPO> page = new Page<>(checkRecordsVO.getPage().getPage(),checkRecordsVO.getPage().getSize());
         Page<CheckRecordsPO> poiPage = (Page<CheckRecordsPO>) checkRecordsMapper.selectPage(page, wrapper);
         return ConvertUtils.transferPage(poiPage,CheckRecordsVO.class);
     }
+
 
     private void foundAbnormal(List<CheckRecordsVO> list) {
         for (CheckRecordsVO item: list) {

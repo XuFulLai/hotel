@@ -1,25 +1,24 @@
 package group.oneonetwo.hotelintelligencesystem.modules.checkRecords.controller;
 
 import com.alibaba.excel.EasyExcel;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import group.oneonetwo.hotelintelligencesystem.listener.CheckRecordsExcelListener;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsExcelTemplate;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsVO;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.service.ICheckRecordsService;
-import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
+
 import group.oneonetwo.hotelintelligencesystem.tools.FileUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -37,6 +36,32 @@ public class CheckRecordsController {
 
     @Autowired
     ICheckRecordsService checkRecordsService;
+
+    @PostMapping("add")
+    @ApiOperation("增加每日测量")
+    public Reply<CheckRecordsVO> add(@RequestBody CheckRecordsVO checkRecordsVO){
+        return Reply.success();
+    }
+    @GetMapping("delete/{id}")
+    @ApiOperation("根据id删除检测记录")
+    public Reply deleteById(@PathVariable("id") String id) {
+        return checkRecordsService.deleteById(id) > 0 ? Reply.success() : Reply.failed();
+    }
+
+    @PostMapping("modify")
+    @ApiOperation("更改检测结果")
+    public Reply<CheckRecordsVO> modify(@RequestBody CheckRecordsVO checkRecordsVO) {
+        return Reply.success(checkRecordsService.save(checkRecordsVO));
+    }
+
+    @ApiOperation("查询检测列表(分页)")
+    @PostMapping("page")
+    public Reply<Page<CheckRecordsVO>> getPages(@RequestBody CheckRecordsVO checkRecordsVO) {
+        return Reply.success(checkRecordsService.getPages(checkRecordsVO));
+    }
+
+
+
 
     @ApiOperation("手动插入")
     @PostMapping("manually")
@@ -66,11 +91,7 @@ public class CheckRecordsController {
         EasyExcel.write(response.getOutputStream(), CheckRecordsExcelTemplate.class).sheet("订单").doWrite(new ArrayList<CheckRecordsVO>());
     }
 
-    @ApiOperation("分页查询")
-    @PostMapping("page")
-    public Reply<Page<CheckRecordsVO>> getPage(@RequestBody CheckRecordsVO checkRecordsVO) {
-        return Reply.success(checkRecordsService.getPage(checkRecordsVO));
-    }
+
 
 
 

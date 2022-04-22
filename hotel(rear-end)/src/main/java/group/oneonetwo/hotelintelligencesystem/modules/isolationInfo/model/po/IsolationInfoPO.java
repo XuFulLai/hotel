@@ -23,6 +23,18 @@ public class IsolationInfoPO implements Serializable {
     /**
      * 隔离人员姓名
      */
+
+    @TableField("u_id")
+    private  String uId;
+
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
     @TableField("name")
     private String name;
 
@@ -66,7 +78,7 @@ public class IsolationInfoPO implements Serializable {
      * 隔离支付
      */
     @TableField("pay")
-    private String pay;
+    private Integer pay;
 
     /**
      * 入住时间
@@ -228,11 +240,11 @@ public class IsolationInfoPO implements Serializable {
         this.roomType = roomType;
     }
 
-    public String getPay() {
+    public Integer getPay() {
         return pay;
     }
 
-    public void setPay(String pay) {
+    public void setPay(Integer pay) {
         this.pay = pay;
     }
 
