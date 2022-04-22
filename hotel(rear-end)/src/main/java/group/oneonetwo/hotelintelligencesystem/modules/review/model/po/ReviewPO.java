@@ -21,6 +21,18 @@ public class ReviewPO implements Serializable {
     @TableId("id")
     private String id;
 
+
+    @TableField("u_id")
+    private String uId;
+
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
     /**
      * 申报名称
      */

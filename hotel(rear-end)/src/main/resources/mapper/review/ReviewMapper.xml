@@ -24,11 +24,12 @@
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
-            <result property="totalFee" column="total_fee" javaType="INTEGER"/>
+            <result property="totalFee" column="total_fee" jdbcType="INTEGER"/>
+            <result property="uId" column="u_id" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,id_card,total_fee,
+        id,name,id_card,total_fee,u_id,
         type,phone,email,
         hotel_id,check_in_time,check_out_time,
         province,city,room_type,
@@ -38,13 +39,7 @@
     </sql>
 
     <select id="getPage" resultType="group.oneonetwo.hotelintelligencesystem.modules.review.model.vo.ReviewVO">
-        select  id,name,id_card,total_fee,
-        type,phone,email,
-        hotel_id,check_in_time,check_out_time,
-        province,city,room_type,
-        review_status,remark,is_deleted,
-        create_by,create_time,update_time,
-        update_by from review r
+        select * from review
         <where>
         <if test="vo.beginTime != null and vo.beginTime != '' and vo.endTime != null and vo.endTime != ''">
             and review.check_in_time between #{vo.beginTime} and #{vo.endTime} or review.check_out_time between #{vo.beginTime} and #{vo.endTime}

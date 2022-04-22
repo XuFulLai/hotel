@@ -179,18 +179,6 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     public Page<CheckRecordsVO> getPage(CheckRecordsVO checkRecordsVO) {
         QueryWrapper<CheckRecordsPO> wrapper = new QueryWrapper<>();
         Page<CheckRecordsPO> page = new Page<>(checkRecordsVO.getPage().getPage(),checkRecordsVO.getPage().getSize());
