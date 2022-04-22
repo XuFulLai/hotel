@@ -580,6 +580,13 @@ export default {
   background: #4f93fe;
   padding: 6px 8px;
   color: #fff !important;
+  cursor: default;
+}
+.badge:first-child {
+  margin-left: 0px;
+}
+.badge:last-child {
+  margin-right: 0px;
 }
 
 
