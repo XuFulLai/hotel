@@ -5,7 +5,7 @@
             <el-aside width="235px">
                 <div
                         style="display: flex;justify-content: center;align-items: center;height: 80px;border-bottom: 1px solid gray">
-                    <p style="font-size: 30px;color: gray">酒店管理系统</p>
+                    <p style="font-size: 24px;color: gray">防疫酒店管控系统</p>
                 </div>
                 <el-menu
                         :default-active=active

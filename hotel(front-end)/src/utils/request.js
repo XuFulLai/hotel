@@ -53,7 +53,7 @@ export function formDataPost(url,data) {
     const config = {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
-          }
+          },
     }
     return instance.post(url,data,config)
 }
