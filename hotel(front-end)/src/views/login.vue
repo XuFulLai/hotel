@@ -58,7 +58,7 @@
 
         data() {
             return {
-                username: 'hotel_admin',
+                username: 'admin',
                 password: '123456',
                 logoSrc: '',
                 code: '25760875-7b97-4594-996f-fd2a041257dc',
