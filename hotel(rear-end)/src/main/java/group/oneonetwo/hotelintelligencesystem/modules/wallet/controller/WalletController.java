@@ -5,6 +5,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.wallet.service.WalletServ
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

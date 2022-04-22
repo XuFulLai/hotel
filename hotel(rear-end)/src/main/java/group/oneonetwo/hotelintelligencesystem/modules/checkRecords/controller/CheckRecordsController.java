@@ -60,7 +60,11 @@ public class CheckRecordsController {
         return Reply.success(checkRecordsService.getPages(checkRecordsVO));
     }
 
-
+    @ApiOperation("查询自己的检测列表(分页)")
+    @PostMapping("ownPage")
+    public Reply<Page<CheckRecordsVO>> getOwnPage(@RequestBody CheckRecordsVO checkRecordsVO) {
+        return Reply.success(checkRecordsService.getOwnPage(checkRecordsVO));
+    }
 
 
     @ApiOperation("手动插入")

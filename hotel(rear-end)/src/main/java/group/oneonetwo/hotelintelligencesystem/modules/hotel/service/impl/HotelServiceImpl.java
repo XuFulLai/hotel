@@ -78,7 +78,7 @@ public class HotelServiceImpl implements IHotelService {
         }
         HotelPO hotelP0=hotelMapper.selectById(id);
         HotelVO hotelVO=new HotelVO();
-        if(hotelVO!=null){
+        if(hotelP0!=null){
             BeanUtils.copyProperties(hotelP0,hotelVO);
         }
         return hotelVO;

@@ -27,4 +27,5 @@ public interface IsolationInfoService{
 
     List<IsolationInfoVO> getAllList(IsolationInfoVO isolationInfoVO);
 
+    Page<IsolationInfoVO> getOwnPage(IsolationInfoVO isolationInfoVO);
 }

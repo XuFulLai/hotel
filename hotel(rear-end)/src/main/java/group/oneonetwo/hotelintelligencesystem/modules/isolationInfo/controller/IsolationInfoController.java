@@ -59,6 +59,12 @@ public class IsolationInfoController {
         return Reply.success(isolationInfoService.getPage(isolationInfoVO));
     }
 
+    @ApiOperation("查询自己的隔离记录(分页)")
+    @PostMapping("my")
+    public Reply<Page<IsolationInfoVO>> getOwnPage(@RequestBody IsolationInfoVO isolationInfoVO) {
+        return Reply.success(isolationInfoService.getOwnPage(isolationInfoVO));
+    }
+
 
     @ApiOperation("下载订单记录")
     @PostMapping("download")
