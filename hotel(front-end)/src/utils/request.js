@@ -60,7 +60,7 @@ export function formDataPost(url,data) {
                 ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
             }
             return ret
-        }]
+        }]        
     }
     return instance.post(url,data,config)
 }
