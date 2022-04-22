@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import {get, post,postOnForm} from "../utils/request";
+import {formDataPost, get, post, postOnForm} from "../utils/request";
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer.vue';
 
@@ -63,7 +63,7 @@ export default {
       let data = {
         pwd:this.pwd
       }
-      postOnForm("api/wallet/get",data).then(res => {
+      formDataPost("api/wallet/get",data).then(res => {
         console.log(res)
         if (res.data.code === "200") {
           this.walletInfo = res.data.data

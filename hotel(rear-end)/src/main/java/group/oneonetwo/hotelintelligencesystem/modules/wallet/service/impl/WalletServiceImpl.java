@@ -3,6 +3,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.wallet.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
+import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.vo.ReviewVO;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.dao.WalletMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.po.WalletPO;
@@ -91,5 +92,17 @@ public class WalletServiceImpl implements WalletService{
         wrapper.eq("u_id",uid);
         List<WalletPO> walletPOS = walletMapper.selectList(wrapper);
         return walletPOS.get(0);
+    }
+
+    @Override
+    public WalletPO save(WalletPO walletPO) {
+        if (walletPO==null){
+            throw new CommonException(501,"钱包实体为空");
+        }
+        int i = walletMapper.updateById(walletPO);
+        if(i>0){
+            return walletPO;
+        }
+        throw new SavaException("钱包修改时异常");
     }
 }
