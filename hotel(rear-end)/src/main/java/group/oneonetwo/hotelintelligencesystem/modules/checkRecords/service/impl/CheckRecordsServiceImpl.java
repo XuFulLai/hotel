@@ -13,6 +13,8 @@ import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.Che
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsVO;
 import group.oneonetwo.hotelintelligencesystem.modules.checkRecords.service.ICheckRecordsService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.IsolationInfoPO;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.IsolationInfoService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.EmailUtils;
 import org.slf4j.Logger;
@@ -39,6 +41,9 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
 
     @Autowired
     CheckRecordsMapper checkRecordsMapper;
+
+    @Autowired
+    IsolationInfoService isolationInfoService;
 
     @Autowired
     AuthUtils authUtils;
@@ -149,6 +154,15 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
     }
 
     @Override
+    public Page<CheckRecordsVO> getOwnPage(CheckRecordsVO checkRecordsVO) {
+        IsolationInfoPO isolationInfoPO = isolationInfoService.selectOneById(checkRecordsVO.getuId());
+        if (!authUtils.getUid().equals(isolationInfoPO.getuId())) {
+            throw new CommonException("没有查看这些信息的权限!");
+        }
+        return getPages(checkRecordsVO);
+    }
+
+    @Override
     public CheckRecordsVO selectOneByIdReturnVO(String id) {
         if(id==null){
             throw new CommonException(501,"参数为空");
@@ -161,18 +175,6 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
         return checkRecordsVO;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

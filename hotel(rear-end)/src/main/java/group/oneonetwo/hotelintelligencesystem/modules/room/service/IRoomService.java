@@ -1,12 +1,15 @@
 package group.oneonetwo.hotelintelligencesystem.modules.room.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.po.RoomPO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.CheckInVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.DetailVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
+import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -31,4 +34,7 @@ public interface IRoomService {
     RoomVO isolationCheckIn(String hotelId,String roomType,String roomId);
     RoomVO changeRoomOnIsolation(String hotelId,String roomType,String roomId,RoomVO oldRoom);
     RoomVO changeRoom(String isolationInfoId,String hotelId,String roomType,String roomId);
+    RoomVO checkInfo(String id);
+    void changeRoom(String currentRoomId ,String newRoomId);
+    void isolationCheckOut(Integer status,String roomId);
 }

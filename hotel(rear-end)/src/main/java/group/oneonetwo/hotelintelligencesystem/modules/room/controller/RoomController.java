@@ -76,7 +76,7 @@ public class RoomController {
     }
 
     @PostMapping("checkIn")
-    @ApiOperation("入住")
+    @ApiOperation("入    住")
     public Reply checkIn(@RequestBody CheckInVO checkInVO) {
         return Reply.success(roomService.checkIn(checkInVO));
     }
@@ -93,11 +93,35 @@ public class RoomController {
         return Reply.success(roomService.getFloor());
     }
 
-    @ApiOperation("更换房间")
-    @PostMapping("changeRoom")
-    public Reply<RoomVO> changeRoom(String isolationInfoId ,String hotelId,String roomType ,String roomId){
-        return Reply.success(roomService.changeRoom(isolationInfoId,hotelId,roomType,roomId));
+
+    @GetMapping("checkInfo/{id}")
+    @ApiOperation("入    住")
+    public Reply checkInfo(@PathVariable("id") String id) {
+        return Reply.success(roomService.checkInfo(id));
     }
+
+
+    @ApiOperation("隔离人员更换房间")
+    @PostMapping("changeRoom")
+    public Reply changeRoom(String currentRoomId ,String newRoomId){
+        roomService.changeRoom(currentRoomId,newRoomId);
+        return Reply.success();
+    }
+
+    @ApiOperation("隔离人员的退房")
+    @PostMapping("isolationCheckOut")
+    public Reply isolationCheckOut(Integer status,String roomId){
+        roomService.isolationCheckOut(status,roomId);
+        return Reply.success();
+    }
+
+    @ApiOperation(("清理消毒房间"))
+    @GetMapping("cleanRoom/{roomId}")
+    public Reply cleanRoom(@PathVariable("roomId")String roomId){
+        roomService.cleanRoom(roomId);
+        return Reply.success();
+    }
+
 
 }
 

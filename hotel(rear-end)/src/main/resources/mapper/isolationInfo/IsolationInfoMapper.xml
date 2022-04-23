@@ -58,6 +58,9 @@
         <if test="vo.status != null and vo.status != ''">
             and  ii.status = #{vo.status}
         </if>
+        <if test="vo.uId != null and vo.uId != ''">
+            and  ii.u_id = #{vo.uId}
+        </if>
             and ii.is_deleted = 0
         </where>
         order by ii.create_time DESC

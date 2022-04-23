@@ -21,6 +21,5 @@ import java.util.List;
 @Mapper
 public interface CheckRecordsMapper extends BaseMapper<CheckRecordsPO> {
     Page<CheckRecordsVO> getPages(@Param("page") Page<CheckRecordsVO> page, @Param("vo") CheckRecordsVO vo);
-
     int batchInsert(List<CheckRecordsPO> list);
 }
