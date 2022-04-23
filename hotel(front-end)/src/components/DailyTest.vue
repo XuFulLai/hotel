@@ -78,12 +78,13 @@
         <el-table-column
             align="center"
             prop="checkTime"
+            :formatter="eTableDateTime"
             label="检测时间">
         </el-table-column>
         <el-table-column
             align="center"
             prop="createTime"
-            :formatter="dateFormatter"
+            :formatter="eTableDateTime"
             label="创建时间">
         </el-table-column>
         <el-table-column
@@ -195,7 +196,7 @@
 
 <script>
 import { get, post } from "../utils/request";
-// import { dateFormatter } from "../utils/dateFormat";
+import { dateTimeFormat } from "../utils/dateTime";
 
 export default {
     name: "DailyTest",
@@ -252,7 +253,7 @@ export default {
             }
 
         },
-    },    
+    },
     mounted() {
         this.getTestList()
     },
@@ -437,39 +438,23 @@ export default {
         },
 
         // 日期时间格式化
-        dateFormatter(val){
-            var d = new Date(val.createTime);
+        eTableDateTime(row, column, cellValue, index){
+            const dateTime = new Date(cellValue) // Date实例
 
-            var year = d.getFullYear();       //年
-            var month = d.getMonth() + 1;     //月
-            var day = d.getDate();            //日
+            const YYYY = dateTime.getFullYear() // 获取当前年份
+            const MM = dateTime.getMonth() + 1 // 获取当前月份
+            const DD = dateTime.getDate() // 获取当前天数
+            const hh = this.fillPrefix(dateTime.getHours()) // 获取当前小时，并判断是否需要补零
+            const mm = this.fillPrefix(dateTime.getMinutes()) // 获取当前分钟，并判断是否需要补零
+            const ss = this.fillPrefix(dateTime.getSeconds()) // 获取当前秒数，并判断是否需要补零
+            // 返回格式化之后的当前时间
+            return `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss}`
+            // return `${YYYY}-${MM}-${DD}`
+        },
 
-            var hh = d.getHours();            //时
-            var mm = d.getMinutes();          //分
-            var ss = d.getSeconds();           //秒
-
-            var clock = year + "/";
-
-            if (month < 10)
-                clock += "0";
-
-            clock += month + "/";
-
-            if (day < 10)
-                clock += "0";
-
-            clock += day + " ";
-
-            if (hh < 10)
-                clock += "0";
-
-            clock += hh + ":";
-            if (mm < 10) clock += '0';
-            clock += mm + ":";
-
-            if (ss < 10) clock += '0';
-            clock += ss;
-            return (clock);
+        // 补零函数
+        fillPrefix(val){
+            return val > 9 ? val : `0${val}` // 个位数时间进行补零操作
         },
 
         // 修改记录函数
