@@ -204,7 +204,10 @@ export default {
             },
             pageNum: 0,
             dialogVisible: false,
-            form: {},
+            form: {
+                textarea: '',
+                switch: false,
+            },
             currentIndex: '',
             page: ''
         }
@@ -243,6 +246,10 @@ export default {
                     console.log(res);
                     this.reviewData = res.data.data.records
                     this.pageNum = res.data.data.total
+
+                    this.currentIndex = 0
+                    let row = this.reviewData[this.currentIndex]
+                    this.form = row
                 })
                 .catch( err => {
                     console.error(err);
@@ -282,7 +289,7 @@ export default {
         //下一页
         nextPage(num) {
             console.log(this.page);
-            console.log(num);            
+            console.log(num);     
             const data = {
                 page: {
                     page: num,
@@ -311,7 +318,22 @@ export default {
             this.currentIndex--
             const row = this.reviewData[this.currentIndex]
             console.log(row);
-            this.form = row
+            if (row) {
+                this.form = row
+            } else if (this.currentIndex == -1 && row == undefined) {
+                this.page--
+                this.prevPage(this.page)
+                this.currentIndex = 9
+                row = this.reviewData[this.currentIndex]
+                this.form = row
+            } else {
+                this.$message({
+                    message: '已经是第一条了！',
+                    type: 'warning',
+                    duration: 2000
+                });
+                return                
+            }            
         },
 
         // 下一条
@@ -321,11 +343,19 @@ export default {
             console.log(row);
             if (row) {
                 this.form = row
-            } else {
-                debugger
-                this.nextPage(++this.page)
+            } else if (this.currentIndex == 10 && row == undefined) {
+                this.page++
+                this.nextPage(this.page)
+                this.currentIndex = 0
                 row = this.reviewData[this.currentIndex]
                 this.form = row
+            } else {
+                this.$message({
+                    message: '已经是最后一条了！',
+                    type: 'warning',
+                    duration: 2000
+                });
+                return                
             }
         },
 
