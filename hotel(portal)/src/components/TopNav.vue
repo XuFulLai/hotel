@@ -7,6 +7,7 @@
                     <li><router-link to="/index">{{ $t('nav.index') }}</router-link></li>
                     <li><router-link to="/hotelList">{{ $t('nav.list') }}</router-link></li>
                     <li><router-link to="/orderList">{{ $t('nav.order') }}</router-link></li>
+                    <li><router-link to="/recordList">{{ $t('nav.record') }}</router-link></li>
                     <li><router-link to="/wallet">{{ $t('nav.wallet') }}</router-link></li>
                     <li><router-link to="/login">{{ $t('nav.logOut') }}</router-link></li>
                     <li>
