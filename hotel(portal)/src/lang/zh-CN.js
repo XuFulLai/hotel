@@ -76,6 +76,9 @@ export default {
         xianggang: '香港',
         aomen: '澳门',
     },
+    isolationList: {
+      roomName: '入住房间：'
+    },
     orderList: {
         cancelOrder: '取消订单',
         hotelName: '酒店名称：',

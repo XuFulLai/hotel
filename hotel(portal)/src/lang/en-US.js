@@ -83,6 +83,9 @@ export default {
         xianggang: 'Hong Kong',
         aomen: 'Macao',
     },
+    isolationList: {
+        roomName: 'Room:'
+    },
     orderList: {
         cancelOrder: 'Cancel the order',
         hotelName: 'Hotel name:',

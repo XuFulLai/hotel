@@ -40,8 +40,10 @@ public class CheckRecordsController {
     @PostMapping("add")
     @ApiOperation("增加每日测量")
     public Reply<CheckRecordsVO> add(@RequestBody CheckRecordsVO checkRecordsVO){
-        return Reply.success();
+        return Reply.success(checkRecordsService.add(checkRecordsVO));
     }
+
+
     @GetMapping("delete/{id}")
     @ApiOperation("根据id删除检测记录")
     public Reply deleteById(@PathVariable("id") String id) {
@@ -60,7 +62,11 @@ public class CheckRecordsController {
         return Reply.success(checkRecordsService.getPages(checkRecordsVO));
     }
 
-
+    @ApiOperation("查询自己的检测列表(分页)")
+    @PostMapping("ownPage")
+    public Reply<Page<CheckRecordsVO>> getOwnPage(@RequestBody CheckRecordsVO checkRecordsVO) {
+        return Reply.success(checkRecordsService.getOwnPage(checkRecordsVO));
+    }
 
 
     @ApiOperation("手动插入")

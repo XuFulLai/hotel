@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
@@ -133,5 +134,20 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
                 throw new CommonException(401,"无权限");
         }
         return isolationInfoMapper.getAllList(isolationInfoVO);
+    }
+
+    @Override
+    public Page<IsolationInfoVO> getOwnPage(IsolationInfoVO isolationInfoVO) {
+        String uid = authUtils.getUid();
+        isolationInfoVO.setuId(uid);
+        return getPage(isolationInfoVO);
+    }
+
+    @Override
+    public IsolationInfoPO selectOneByRoomId(String roomId) {
+        QueryWrapper<IsolationInfoPO> wrapper = new QueryWrapper<>();
+        wrapper.eq("room_id",roomId);
+        IsolationInfoPO isolationInfoPO = isolationInfoMapper.selectOne(wrapper);
+        return isolationInfoPO;
     }
 }

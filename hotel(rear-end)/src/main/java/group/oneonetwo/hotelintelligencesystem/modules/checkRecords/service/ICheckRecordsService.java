@@ -31,4 +31,5 @@ public interface ICheckRecordsService {
 
     Page<CheckRecordsVO> getPages(CheckRecordsVO checkRecordsVO);
 
+    Page<CheckRecordsVO> getOwnPage(CheckRecordsVO checkRecordsVO);
 }
