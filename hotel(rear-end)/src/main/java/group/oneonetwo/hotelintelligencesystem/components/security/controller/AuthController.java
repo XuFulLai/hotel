@@ -71,15 +71,9 @@ public class AuthController {
 
 
     @PostMapping("open/test1")
-    public Reply registerUser1(@RequestBody UserVO userVO){
-        String rawPwd = userVO.getPassword();
-        String encode = "$2a$10$p04YXfyFsVV9V7wp1LKhEugRi2cPsHtCF4Q/FbyXZhWuCnb5CSDT2";
-        logger.info("rawPwd:" + rawPwd);
-        logger.info("encodePwd:" + encode);
-        boolean a = bCryptPasswordEncoder.matches(userVO.getPassword(),
-                encode);
-        logger.info(bCryptPasswordEncoder.matches(rawPwd,encode)? "true" : "false");
-        return Reply.success(a);
+    public Reply registerUser1(){
+        userService.addTestData();
+        return Reply.success();
     }
 
     /**

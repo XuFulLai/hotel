@@ -75,7 +75,7 @@ public class OrderServiceImpl implements IOrderService {
         }
         OrderPO orderPO=orderMapper.selectById(id);
         OrderVO orderVO=new OrderVO();
-        if(orderVO!=null){
+        if(orderPO!=null){
             BeanUtils.copyProperties(orderPO,orderVO);
         }
         return orderVO;

@@ -50,4 +50,23 @@ public class ChartServiceImpl implements IChartService {
     public List<ChartVO> incomeOf7Day() {
         return chartMapper.incomeOf7Day(authUtils.getUserHotelId());
     }
+
+    @Override
+    public List<ChartVO> wayOnIsolationOf7Day(Integer way) {
+        String hotelId = null;
+        if (!"admin".equals(authUtils.getRole())) {
+            hotelId = authUtils.getUserHotelId();
+        }
+        return chartMapper.wayOnIsolationOf7Day(way,hotelId);
+    }
+
+    @Override
+    public List<ChartVO> isolationIncome() {
+        return chartMapper.isolationIncome(authUtils.getUserHotelId());
+    }
+
+    @Override
+    public List<ChartVO> isolationCheckIn() {
+        return chartMapper.isolationCheckIn();
+    }
 }
