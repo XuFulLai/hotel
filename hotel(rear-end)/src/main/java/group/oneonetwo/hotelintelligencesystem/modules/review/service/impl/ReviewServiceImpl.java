@@ -14,6 +14,9 @@ import group.oneonetwo.hotelintelligencesystem.modules.review.service.ReviewServ
 import group.oneonetwo.hotelintelligencesystem.modules.review.dao.ReviewMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
+import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.po.RoomTypePO;
+import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTypeServeice;
+import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.po.WalletPO;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.service.WalletService;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +35,9 @@ public class ReviewServiceImpl implements ReviewService{
     IRoomService roomService;
 
     @Autowired
+    IRoomTypeServeice roomTypeServeice;
+
+    @Autowired
     IsolationInfoService isolationInfoService;
 
     @Autowired
@@ -46,6 +52,9 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Autowired
     AuthUtils authUtils;
+
+    @Autowired
+    IUserService userService;
 
     @Override
     public ReviewPO selectOneById(String id) {
@@ -121,17 +130,21 @@ public class ReviewServiceImpl implements ReviewService{
             add(reviewVO);
         }else {
             String uid = authUtils.getUid();
+            if(userService.selectOneById(uid)==null){
+                throw new CommonException(501,"账户未注册");
+            }
+            RoomTypePO roomTypePO = roomTypeServeice.selectOneById(reviewVO.getRoomType());
+            Integer isolationFee = roomTypePO.getIsolationFee();
             WalletPO walletPO = walletService.getWalletPO(uid);
+            add(reviewVO);
             double balances=0;
-            balances=walletPO.getBalance()-reviewVO.getTotalFee();
+            balances=walletPO.getBalance()-isolationFee;
             if(balances<=0.0){
                 throw new CommonException(502,"账户余额不足");
             }
             //这里貌似查了个更新
             walletPO.setBalance(balances);
             walletService.save(walletPO);
-            add(reviewVO);
-
 
         }
 
@@ -145,9 +158,10 @@ public class ReviewServiceImpl implements ReviewService{
             }
             //这里有个如果拒绝后有个打回钱的流程
             if(reviewVO.getType()==2 || reviewVO.getType()==3){
+                RoomTypePO roomTypePO = roomTypeServeice.selectOneById(reviewVO.getRoomType());
                 String uid = authUtils.getUid();
                 WalletPO walletPO = walletService.getWalletPO(uid);
-                walletPO.setBalance(walletPO.getBalance()+reviewVO.getTotalFee());
+                walletPO.setBalance(walletPO.getBalance()+roomTypePO.getIsolationFee());
                 walletService.save(walletPO);
             }
             return;
