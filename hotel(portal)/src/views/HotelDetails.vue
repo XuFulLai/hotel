@@ -156,13 +156,14 @@
                 <!-- 自申报 -->
                 <div v-show="switchType == false" class="abnormal">
 
-                  <span class="price-sum mb-10">
+                  <span v-show="situation == 2 || situation == 3" class="price-sum mb-10">
                     <span>
                       <span class="unit">¥</span>
                       <span class="zg-price">
                         <strong>
-                          <span v-if="!bookDay || !totalFee">{{ minFee + '~' + maxFee }}</span>
-                          <span v-else>{{ totalFee }}</span>
+
+                          <!-- <span v-if="!bookDay || !totalFee">{{ minFee + '~' + maxFee }}</span> -->
+                          <span>{{ isolateFee }}</span>
                         </strong>
                       </span>
                     </span>
@@ -188,9 +189,9 @@
                   </el-select>
 
                   <!-- 选择房型 -->
-                  <el-select v-show="situation == 2 || situation == 3" class="mb-10" v-model="currentRoomType" :placeholder="$t('hotelList.selectRoom')">
+                  <el-select v-show="situation == 2 || situation == 3" class="mb-10" v-model="isolateRoomType" :placeholder="$t('hotelList.selectRoom')">
                     <el-option
-                        v-for="item in roomTypeList"
+                        v-for="item in isolateRoomTypeList"
                         :label="item.name"
                         :value="item.id">
                       <span style="float: left">{{ item.name }}</span>
@@ -206,7 +207,8 @@
 
                   <el-input class="mb-10"  v-model="userEmail" placeholder="邮箱"></el-input>
 
-                  <div class="mb-10">
+                  <!-- 陪同人员 start -->
+                  <!-- <div class="mb-10">
                     <el-switch                    
                       active-text="是否需要陪同人员"
                       v-model="accompany"
@@ -215,8 +217,7 @@
                     </el-switch>
 
                     <el-tooltip placement="right">
-                      <div slot="content">根据规定，<br/>14岁以下儿童，<br/>岁以上老人可申请陪同</div>
-                      <!-- <el-button style="padding: 0;">？</el-button> -->
+                      <div slot="content">根据规定，<br/>14岁以下儿童，<br/>岁以上老人可申请陪同</div>        
                       <el-button style="border-radius: 50%;padding: 5px 8px;margin-left: 10px;">?</el-button>
                     </el-tooltip>                    
       
@@ -224,7 +225,8 @@
 
                   <el-input v-show="accompany == true" class="mb-10" v-model="accompanyName" placeholder="陪同人员姓名"></el-input>
 
-                  <el-input v-show="accompany == true" class="mb-10" v-model="accompanyId" placeholder="陪同人员身份证"></el-input>
+                  <el-input v-show="accompany == true" class="mb-10" v-model="accompanyId" placeholder="陪同人员身份证"></el-input> -->
+                  <!-- 陪同人员 end -->
 
                   <div>
                     <el-cascader
@@ -262,6 +264,7 @@
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer.vue';
 import {get, post} from "../utils/request";
+import { dateTimeFormat } from "../utils/format";
 import {CodeToText, provinceAndCityData} from 'element-china-area-data'
 
 export default {
@@ -303,6 +306,9 @@ export default {
       hotelId: '',
       hotelDetails: '',
       roomTypeList: [],
+      isolateRoomTypeList: [],
+      isolateRoomType: '',
+      isolateFee: '',
       roomTypeMap: {},
       currentRoomType: '',
       dateValue: '',
@@ -442,6 +448,19 @@ export default {
         this.updateFee()
       }
     },
+    // "date"(val, oldVal) {
+    //   this.isolateFee = 0
+    //   if (val) {
+    //     this.isolateFeeF()
+    //   }
+    // },
+    "isolateRoomType"(val, oldVal){
+      console.log(val);
+      console.log(oldVal);
+      if (val) {
+        this.isolateFeeF()
+      }
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -452,15 +471,51 @@ export default {
     this.hotelId = this.$route.params.hotelId
     this.getHotelDetails()
     this.getRoomType();
+    this.getIsolateRoomTypeList()
   },
   methods: {
-    submit(){
+    // 获取酒店隔离房间类型函数
+    getIsolateRoomTypeList() {
       const data = {
-
+        isIsolation: 1
       }
-      post('url',data)
+      get(`api/roomType/currentRoomTypeList/${this.hotelId}`, data)
         .then( res => {
           console.log(res);
+          console.log(res.data.data);
+          this.isolateRoomTypeList = res.data.data
+
+        })
+        .catch( err => {
+          console.error(err);
+        })
+    }, 
+    // 提交审核按钮
+    submit(){
+      const data = {
+        checkInTime: this.date,
+        checkOutTime: new Date(Date.parse(this.date) + 1209600000), // 14天之后的时间
+        type: this.situation,
+        name: this.userName,
+        idCard: this.userId,
+        phone: this.phoneNum,
+        email: this.userEmail,
+        province: this.area[0],
+        city: this.area[1],
+        hotelId: this.hotelId,
+        roomType: this.isolateRoomType
+
+      }
+      console.log(data);
+      post('/api/review/check',data)
+        .then( res => {
+          console.log(res);
+          if (res.data.code == 200) {
+            this.$message({
+              message: this.$t('common.success'),
+              type: 'success'
+            });
+          }
         })
         .catch( err => {
           console.error(err);
@@ -481,6 +536,10 @@ export default {
       this.countTime()
       this.totalFee = this.bookDay * this.roomTypeMap[this.currentRoomType].fee
     },
+    isolateFeeF() {
+      // this.countTime()
+      this.isolateFee = 14 * this.roomTypeMap[this.isolateRoomType].fee
+    },    
     countTime() {
       let estimatedCheckIn = new Date(this.dateValue[0])
       let estimatedCheckOut = new Date(this.dateValue[1])
