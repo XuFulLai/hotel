@@ -21,6 +21,7 @@
             <result property="roomName" column="room_name" jdbcType="VARCHAR"/>
             <result property="province" column="province" jdbcType="VARCHAR"/>
             <result property="city" column="city" jdbcType="VARCHAR"/>
+            <result property="way" column="way" jdbcType="INTEGER"/>
             <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -34,7 +35,7 @@
         type,phone,email,status,
         hotel_id,room_type,pay,
         check_in_time,check_out_time,room_id,
-        room_name,province,city,
+        room_name,province,city,way,
         is_deleted,create_by,create_time,
         update_by,update_time
     </sql>
