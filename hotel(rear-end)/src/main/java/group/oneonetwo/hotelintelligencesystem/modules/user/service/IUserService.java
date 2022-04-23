@@ -27,4 +27,6 @@ public interface IUserService {
     UserVO addOneUser(UserVO userVO);
 
     Page<UserVO> getPage(UserVO userVO);
+
+    void addTestData();
 }
