@@ -754,7 +754,7 @@ export default {
         type:val,
         roomId: this.current.id
       }
-      formDataPost("api/xxxxxxx",data).then(res => {
+      formDataPost("api/room/isolationCheckOut",data).then(res => {
         if (res.data.code === "200") {
           this.$notify.success({
             title: '成功',
@@ -785,7 +785,7 @@ export default {
         currentRoomId: this.current.id,
         newRoomId: this.newRoomId
       }
-      formDataPost("api/xxxxxxx",data).then(res => {
+      formDataPost("api/room/changeRoom",data).then(res => {
         if (res.data.code === "200") {
           this.$notify.success({
             title: '成功',
@@ -801,7 +801,7 @@ export default {
       })
     },
     cleanRoom() {
-      get("api/xxxxxxx/"+this.current.id).then(res => {
+      get("api/room/cleanRoom"+this.current.id).then(res => {
         if (res.data.code === "200") {
           this.$notify.success({
             title: '成功',
@@ -825,7 +825,7 @@ export default {
         email: '',
         type: ''
       }
-      get("api/xxxxxxx/"+this.current.id).then(res => {
+      get("api/room/checkInfo"+this.current.id).then(res => {
         if (res.data.code === "200") {
           this.checkInInfoData = res.data.data
           this.checkInInfoVisible = true
