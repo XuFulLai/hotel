@@ -595,7 +595,7 @@ public class RoomServiceImpl implements IRoomService {
         BeanUtils.copyProperties(isolationInfoPO,isolationInfoVO);
         isolationInfoService.save(isolationInfoVO);
         RoomPO roomPO = selectOneById(roomId);
-        roomPO.setStatus(4);
+        roomPO.setStatus(RoomStatus.STERILIZE.getCode());
         RoomVO roomVO = new RoomVO();
         BeanUtils.copyProperties(roomPO,roomVO);
         save(roomVO);
