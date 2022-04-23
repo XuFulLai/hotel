@@ -37,7 +37,7 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
     @Override
     public MaterialsApplyVO add(MaterialsApplyVO materialsApplyVO) {
         if(materialsApplyVO==null){
-            throw new SavaException("插入检测信息为空:实体为空");
+            throw new SavaException("插入物资为空:实体为空");
         }
         MaterialsApplyPO materialsApplyPO = new MaterialsApplyPO();
         BeanUtils.copyProperties(materialsApplyVO,materialsApplyPO);
@@ -46,7 +46,7 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
             BeanUtils.copyProperties(materialsApplyPO,materialsApplyVO);
             return materialsApplyVO;
         }
-        throw new SavaException("插入检测信息失败");
+        throw new SavaException("插入物资信息失败");
     }
 
     @Override
@@ -76,8 +76,6 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
         if(materialsApplyPO!=null){
             BeanUtils.copyProperties(materialsApplyPO,materialsApplyVO);
         }
-
-
         return materialsApplyVO;
     }
 
@@ -116,6 +114,25 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
             return materialsApplyVO;
         }
         throw new SavaException("更改物资信息失败");
+    }
+
+    //id u_id review_status
+    @Override
+    public void review(MaterialsApplyVO materialsApplyVO) {
+        if(materialsApplyVO.getReviewStatus()==2){
+            if(materialsApplyVO.getReviewRemarks()==null){
+                throw new  CommonException("请填写拒绝的理由");
+            }
+            MaterialsApplyVO materialsApplyVO1 = selectOneByIdReturnVO(materialsApplyVO.getId());
+            materialsApplyVO1.setReviewStatus(2);
+            materialsApplyVO1.setReviewRemarks(materialsApplyVO.getReviewRemarks());
+            save(materialsApplyVO1);
+            return;
+        }
+        MaterialsApplyVO materialsApplyVO1 = selectOneByIdReturnVO(materialsApplyVO.getId());
+        materialsApplyVO1.setReviewStatus(1);
+        MaterialsApplyVO save = save(materialsApplyVO1);
+
     }
 
 

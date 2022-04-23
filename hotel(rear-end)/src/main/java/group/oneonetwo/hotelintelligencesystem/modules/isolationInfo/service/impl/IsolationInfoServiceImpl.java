@@ -12,6 +12,8 @@ import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.Is
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.IsolationInfoService;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.dao.IsolationInfoMapper;
 
+import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
+import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import org.springframework.beans.BeanUtils;
@@ -41,6 +43,9 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
 
     @Autowired
     IHotelService hotelService;
+
+    @Autowired
+    IRoomService roomService;
 
     @Override
     public IsolationInfoVO add(IsolationInfoVO isolationInfoVO) {
@@ -143,6 +148,8 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
         return getPage(isolationInfoVO);
     }
 
+
+
     @Override
     public IsolationInfoPO selectOneByRoomId(String roomId) {
         QueryWrapper<IsolationInfoPO> wrapper = new QueryWrapper<>();
@@ -150,4 +157,14 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
         IsolationInfoPO isolationInfoPO = isolationInfoMapper.selectOne(wrapper);
         return isolationInfoPO;
     }
+
+
+    @Override
+    public void distribution(IsolationInfoVO isolationInfoVO) {
+        RoomVO roomVO = roomService.isolationCheckIn(isolationInfoVO.getHotelId(), isolationInfoVO.getRoomType(), null);
+        isolationInfoVO.setRoomId(roomVO.getId());
+        add(isolationInfoVO);
+    }
+
+
 }
