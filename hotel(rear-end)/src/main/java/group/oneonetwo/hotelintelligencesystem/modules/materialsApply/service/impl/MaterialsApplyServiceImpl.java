@@ -3,6 +3,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.materialsApply.service.i
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
+import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.po.DiscountsPO;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.vo.DiscountsVO;
@@ -15,6 +16,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.awt.*;
 
 /**
 * @author 文
@@ -61,6 +64,58 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
         Page<MaterialsApplyPO> page = new Page<>(materialsApplyVO.getPage().getPage(),materialsApplyVO.getPage().getSize());
         Page<MaterialsApplyPO> poiPage= (Page<MaterialsApplyPO>) materialsApplyMapper.selectPage(page,wrapper);
         return ConvertUtils.transferPage(poiPage, MaterialsApplyVO.class);
+    }
+
+    @Override
+    public MaterialsApplyVO selectOneByIdReturnVO(String id) {
+        if(id==null){
+            throw new CommonException(501,"参数为空");
+        }
+        MaterialsApplyPO materialsApplyPO = materialsApplyMapper.selectById(id);
+        MaterialsApplyVO materialsApplyVO = new MaterialsApplyVO();
+        if(materialsApplyPO!=null){
+            BeanUtils.copyProperties(materialsApplyPO,materialsApplyVO);
+        }
+
+
+        return materialsApplyVO;
+    }
+
+    @Override
+    public MaterialsApplyPO selectOneById(String id) {
+        MaterialsApplyPO materialsApplyPO = materialsApplyMapper.selectById(id);
+        if(id==null){
+            throw new CommonException(501,"参数为空");
+        }
+        return materialsApplyPO;
+    }
+
+    @Override
+    public Integer deleteById(String id) {
+        MaterialsApplyVO materialsApplyVO = selectOneByIdReturnVO(id);
+        if (materialsApplyVO==null){
+            throw  new CommonException(4004,"找不到id为"+id+"的数据");
+        }
+        int i = materialsApplyMapper.deleteById(id);
+        return i;
+    }
+
+    @Override
+    public MaterialsApplyVO save(MaterialsApplyVO materialsApplyVO) {
+        if(materialsApplyVO==null){
+            throw new CommonException(501,"隔离人员信息实体为空");
+        }
+        MaterialsApplyVO materialsApplyVO1 = selectOneByIdReturnVO(materialsApplyVO.getId());
+        if (materialsApplyVO1==null){
+            throw  new CommonException(4004,"找不到id为"+materialsApplyVO.getId()+"的数据");
+        }
+        MaterialsApplyPO materialsApplyPO = new MaterialsApplyPO();
+        BeanUtils.copyProperties(materialsApplyVO,materialsApplyPO);
+        int i = materialsApplyMapper.updateById(materialsApplyPO);
+        if(i>0){
+            return materialsApplyVO;
+        }
+        throw new SavaException("更改物资信息失败");
     }
 
 
