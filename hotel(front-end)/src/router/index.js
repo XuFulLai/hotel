@@ -18,6 +18,8 @@ import IsolationManage from "../components/IsolationManage";
 import DailyTest from "../components/DailyTest";
 import DeclarationReview from "../components/DeclarationReview";
 import AssignPersonnel from "../components/AssignPersonnel";
+import MaterialReview from "../components/MaterialReview";
+import MaterialApplication from "../components/MaterialApplication";
 
 
 Vue.use(VueRouter)
@@ -116,6 +118,16 @@ const routes = [
                 path: 'assignPersonnel',
                 name: 'assignPersonnel',
                 component: AssignPersonnel,
+            },
+            {
+                path: 'materialReview',
+                name: 'materialReview',
+                component: MaterialReview,                
+            },
+            {
+                path: 'materialApplication',
+                name: 'materialApplication',
+                component: MaterialApplication,                    
             }
 
         ]
