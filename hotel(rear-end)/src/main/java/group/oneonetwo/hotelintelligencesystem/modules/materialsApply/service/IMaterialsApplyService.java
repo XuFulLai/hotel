@@ -2,6 +2,9 @@ package group.oneonetwo.hotelintelligencesystem.modules.materialsApply.service;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.IsolationInfoPO;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO;
+import group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.po.MaterialsApplyPO;
 import group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.vo.MaterialsApplyVO;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 
@@ -17,4 +20,14 @@ public interface IMaterialsApplyService {
     MaterialsApplyVO apply(MaterialsApplyVO materialsApplyVO);
 
     Page<MaterialsApplyVO> getPage(MaterialsApplyVO materialsApplyVO);
+
+    MaterialsApplyVO selectOneByIdReturnVO(String id);
+
+    MaterialsApplyPO selectOneById(String id);
+
+    Integer deleteById(String id);
+
+    MaterialsApplyVO save(MaterialsApplyVO materialsApplyVO);
+
+
 }
