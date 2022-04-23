@@ -3,6 +3,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.materialsApply.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.po.MaterialsApplyPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
 * @author 文
@@ -11,6 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
 * @Entity group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.po.MaterialsApply
 */
 @Mapper
+@Repository
 public interface MaterialsApplyMapper extends BaseMapper<MaterialsApplyPO> {
 
 
