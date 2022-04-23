@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.modules.review.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
@@ -22,6 +23,8 @@ import group.oneonetwo.hotelintelligencesystem.modules.wallet.service.WalletServ
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author 文
@@ -150,6 +153,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     }
 
+    //admin  id  review_status
     @Override
     public void getReviews(ReviewVO reviewVO) {
         if(reviewVO.getReviewStatus()==2){
@@ -157,47 +161,49 @@ public class ReviewServiceImpl implements ReviewService{
                 throw new CommonException(501, "拒绝的理由不能为空");
             }
             //这里有个如果拒绝后有个打回钱的流程
-            if(reviewVO.getType()==2 || reviewVO.getType()==3){
-                RoomTypePO roomTypePO = roomTypeServeice.selectOneById(reviewVO.getRoomType());
-                String uid = authUtils.getUid();
-                WalletPO walletPO = walletService.getWalletPO(uid);
+            ReviewPO reviewPO = selectOneById(reviewVO.getId());
+            if(reviewPO.getType()==2 || reviewPO.getType()==3){
+                RoomTypePO roomTypePO = roomTypeServeice.selectOneById(reviewPO.getRoomType());
+                WalletPO walletPO = walletService.getWalletPO(reviewPO.getuId());
                 walletPO.setBalance(walletPO.getBalance()+roomTypePO.getIsolationFee());
                 walletService.save(walletPO);
             }
             return;
         }
 
-        String uid = authUtils.getUid();
-        String userHotelId = authUtils.getUserHotelId();
-        String roomType = reviewVO.getRoomType();
-        reviewVO.setHotelId(userHotelId);
-        reviewVO.setRoomType(roomType);
-        ReviewVO reviewVO1 = reviewService.add(reviewVO);
-        RoomVO roomVO = roomService.isolationCheckIn(userHotelId, roomType, null);
+        ReviewPO reviewPO = selectByUID(reviewVO.getuId());
+        String roomType = reviewPO.getRoomType();
+        RoomVO roomVO = roomService.isolationCheckIn(reviewPO.getHotelId(), roomType, null);
         roomVO.getId();
 
-
         IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
-        isolationInfoVO.setName(reviewVO.getName());
-        isolationInfoVO.setuId(uid);
-        isolationInfoVO.setIdCard(reviewVO.getIdCard());
-        isolationInfoVO.setType(reviewVO.getType());
-        isolationInfoVO.setPhone(reviewVO.getPhone());
-        isolationInfoVO.setEmail(reviewVO.getEmail());
-        isolationInfoVO.setHotelId(userHotelId);
-        isolationInfoVO.setRoomType(roomType);
-        isolationInfoVO.setPay(reviewVO.getTotalFee());
-        isolationInfoVO.setCheckInTime(reviewVO.getCheckInTime());
-        isolationInfoVO.setCheckOutTime(reviewVO.getCheckOutTime());
-        isolationInfoVO.setRoomId(roomVO.getId());
-        isolationInfoVO.setRoomName(roomVO.getName());
-        isolationInfoVO.setProvince(reviewVO.getProvince());
-        isolationInfoVO.setCity(reviewVO.getCity());
+        isolationInfoVO.setName(reviewPO.getName());
+        isolationInfoVO.setuId(reviewPO.getuId());
+        isolationInfoVO.setIdCard(reviewPO.getIdCard());
+        isolationInfoVO.setType(reviewPO.getType());
+        isolationInfoVO.setPhone(reviewPO.getPhone());
+        isolationInfoVO.setEmail(reviewPO.getEmail());
+        isolationInfoVO.setHotelId(reviewPO.getHotelId());
+        isolationInfoVO.setRoomType(reviewPO.getRoomType());
+        isolationInfoVO.setPay(reviewPO.getTotalFee());
+        isolationInfoVO.setCheckInTime(reviewPO.getCheckInTime());
+        isolationInfoVO.setCheckOutTime(reviewPO.getCheckOutTime());
+        isolationInfoVO.setRoomId(reviewPO.getId());
+        isolationInfoVO.setRoomName(reviewPO.getName());
+        isolationInfoVO.setProvince(reviewPO.getProvince());
+        isolationInfoVO.setCity(reviewPO.getCity());
         isolationInfoVO.setStatus(0);
-        IsolationInfoVO infoVO = isolationInfoService.add(isolationInfoVO);
+        isolationInfoService.add(isolationInfoVO);
 
     }
 
+    @Override
+    public ReviewPO selectByUID(String id) {
+        QueryWrapper<ReviewPO> wrapper = new QueryWrapper<>();
+        wrapper.eq("u_id",id);
+        List<ReviewPO> reviewPOS = reviewMapper.selectList(wrapper);
+        return reviewPOS.get(0);
+    }
 
 
 }

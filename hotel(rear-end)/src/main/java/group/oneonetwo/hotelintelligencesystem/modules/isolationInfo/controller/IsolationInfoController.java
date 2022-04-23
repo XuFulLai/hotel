@@ -80,4 +80,12 @@ public class IsolationInfoController {
        EasyExcel.write(response.getOutputStream(), OrderVO.class).sheet("隔离人员信息").doWrite(isolationInfoService.getAllList(isolationInfoVO));
     }
 
+    @ApiOperation("防疫人员直接分配房间")
+    @PostMapping("distribution")
+    public Reply distribution(IsolationInfoVO isolationInfoVO){
+        isolationInfoService.distribution(isolationInfoVO);
+        return Reply.success();
+
+    }
+
 }
