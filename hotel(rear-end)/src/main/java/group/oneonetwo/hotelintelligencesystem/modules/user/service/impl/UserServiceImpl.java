@@ -205,4 +205,25 @@ public class UserServiceImpl implements IUserService {
         return ConvertUtils.transferPage(poiPage,UserVO.class);
     }
 
+    @Override
+    public void addTestData() {
+        String[] nameArr = {"陈金玲", "蓝文悦", "王健宇", "李海泉", "许嗣益", "宋沛蓉", "何梅敏", "陆彩飞", "蔡晓玲",
+                "杨凯竣", "黎浩存", "胡馨月", "吴柏青", "詹宏水", "罗家成", "曾锦涛", "钟展政", "王志斌", "徐铱煊",
+                "黄智群", "李宁", "钱宇轩", "林文俊", "蓝昭豪", "杨娟", "董迎春", "何嘉诚", "蔡权纬", "陈奕斌", "吴沛蓉",
+                "黄伟昊", "关卓耀", "彭琨", "吴忠劲", "何鸿业", "姜亚伟", "卢俊晓", "王镜清", "柯炳奕", "梁东升", "黄泰彬",
+                "林焕然", "谢锡昭", "欧阳俊辉", "夏雨飞", "黄天疆", "雷镇桂", "梁健", "高雅", "李瑞峥", "温毅豪"
+        };
+        String pwd = "654321";
+        int i = 1001;
+        for (String s :
+                nameArr) {
+            UserVO userVO = new UserVO();
+            userVO.setUsername("testUser" + i);
+            userVO.setPassword(pwd);
+            userVO.setNickname(s);
+            register(userVO);
+            i++;
+        }
+    }
+
 }

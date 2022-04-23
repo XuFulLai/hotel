@@ -21,4 +21,10 @@ public interface ChartMapper {
     List<ChartVO> orderNumOf1Year(String hotelId);
 
     List<ChartVO> incomeOf7Day(String hotelId);
+
+    List<ChartVO> wayOnIsolationOf7Day(Integer way, String hotelId);
+
+    List<ChartVO> isolationCheckIn();
+
+    List<ChartVO> isolationIncome(String hotelId);
 }

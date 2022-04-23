@@ -21,4 +21,10 @@ public interface IChartService {
     List<ChartVO> orderNumOf1Year();
 
     List<ChartVO> incomeOf7Day();
+
+    List<ChartVO> wayOnIsolationOf7Day(Integer way);
+
+    List<ChartVO> isolationIncome();
+
+    List<ChartVO> isolationCheckIn();
 }

@@ -114,5 +114,41 @@
         group by name
         order by name
     </select>
+    <select id="wayOnIsolationOf7Day" resultMap="chartMap">
+        SELECT i.name,COUNT(i.way) value
+        from (
+            SELECT
+            DATE_FORMAT(check_in_time, '%Y-%m-%d') name,
+            way
+            FROM
+            isolation_info
+            where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(check_in_time) and is_deleted = 0
+            <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+                and hotel_id = #{hotelId}
+            </if>
+            <if test='way != null and way != ""'>
+                and way = #{way}
+            </if>
+            ) i
+        GROUP BY
+            i.name
+    </select>
+    <select id="isolationCheckIn" resultMap="chartMap">
+        select h.province name,count(h.province) value
+        from isolation_info ii
+            left join hotel h
+        on ii.hotel_id = h.id
+        where ii.is_delete = 0
+        group by h.province
+    </select>
+    <select id="isolationIncome" resultMap="chartMap">
+        SELECT province name,count(province) value
+        from isolation_info
+        where is_deleted = 0
+        <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+            and hotel_id = #{hotelId}
+        </if>
+        GROUP BY province
+    </select>
 
 </mapper>

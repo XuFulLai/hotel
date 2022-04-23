@@ -140,6 +140,9 @@ public class IsolationInfoVO  implements Serializable {
     @ApiModelProperty("城市")
     private String city;
 
+    @ApiModelProperty("来源(0,防疫人员分配,1,自己申报)")
+    private Integer way;
+
     /**
      * 是否删除
      */
@@ -219,12 +222,13 @@ public class IsolationInfoVO  implements Serializable {
         this.endTime = endTime;
     }
 
-    /**
-     * 隔离人员id
-     *
-     *
-     *
-     */
+    public Integer getWay() {
+        return way;
+    }
+
+    public void setWay(Integer way) {
+        this.way = way;
+    }
 
     private Page page;
 
