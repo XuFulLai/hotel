@@ -71,6 +71,17 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
         if(check==null){
             throw new CommonException(4004,"找不到id为:"+isolationInfoVO.getId()+"的数据");
         }
+        if (check.getStatus() == 1 || check.getStatus() == 2) {
+            if (isolationInfoVO.getStatus() == 0) {
+                throw new CommonException("请重新增加隔离人员数据!");
+            }
+        }else {
+            if (isolationInfoVO.getStatus() != 0) {
+                String roomId = check.getRoomId();
+                roomService.isolationCheckOut(isolationInfoVO.getStatus(),roomId);
+            }
+        }
+
         IsolationInfoPO isolationInfoPO = new IsolationInfoPO();
         BeanUtils.copyProperties(isolationInfoVO,isolationInfoPO);
         int save=isolationInfoMapper.updateById(isolationInfoPO);
