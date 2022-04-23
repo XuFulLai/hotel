@@ -37,4 +37,5 @@ public interface IRoomService {
     RoomVO checkInfo(String id);
     void changeRoom(String currentRoomId ,String newRoomId);
     void isolationCheckOut(Integer status,String roomId);
+
 }

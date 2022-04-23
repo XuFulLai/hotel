@@ -21,4 +21,6 @@ public interface ReviewService  {
     void  getCheck(ReviewVO reviewVO);
     void getReviews(ReviewVO reviewVO);
 
+    ReviewPO selectByUID(String id);
+
 }

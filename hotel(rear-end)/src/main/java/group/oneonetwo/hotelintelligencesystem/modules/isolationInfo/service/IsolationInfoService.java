@@ -31,4 +31,7 @@ public interface IsolationInfoService{
 
     Page<IsolationInfoVO> getOwnPage(IsolationInfoVO isolationInfoVO);
 
+
+    void distribution(IsolationInfoVO isolationInfoVO);
+
 }
