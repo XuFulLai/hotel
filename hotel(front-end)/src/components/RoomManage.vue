@@ -802,7 +802,7 @@ export default {
       })
     },
     cleanRoom() {
-      get("api/room/cleanRoom"+this.current.id).then(res => {
+      get("api/room/cleanRoom/"+this.current.id).then(res => {
         if (res.data.code === "200") {
           this.$notify.success({
             title: '成功',
