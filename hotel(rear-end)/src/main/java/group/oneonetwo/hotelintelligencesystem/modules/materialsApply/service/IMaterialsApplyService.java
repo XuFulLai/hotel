@@ -29,5 +29,7 @@ public interface IMaterialsApplyService {
 
     MaterialsApplyVO save(MaterialsApplyVO materialsApplyVO);
 
+    void review(MaterialsApplyVO materialsApplyVO);
+
 
 }

@@ -59,4 +59,11 @@ public class MaterialsApplyController {
         return Reply.success(maintainableService.save(materialsApplyVO));
     }
 
+    @PostMapping("review")
+    @ApiOperation("admin审核")
+    public Reply getCheck(@RequestBody MaterialsApplyVO materialsApplyVO){
+        maintainableService.review(materialsApplyVO);
+        return Reply.success();
+    }
+
 }
