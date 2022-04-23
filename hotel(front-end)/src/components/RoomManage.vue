@@ -99,7 +99,7 @@
           class="ml-10 mb-10 mt-10 mr-10"
           v-else
           :disabled="current.status != 1"
-          @click="checkOutHandleVisible == true"
+          @click="isolationCheckOutVisible = true"
       >退 房</el-button>
       <el-button
           type="warning"
@@ -247,7 +247,7 @@
 <!--    隔离房间退房选项-->
     <el-dialog
         :title="current.name + '退房'"
-        :visible.sync="checkInVisible"
+        :visible.sync="isolationCheckOutVisible"
         width="30%"
         custom-class="min-w-450"
     >
@@ -465,6 +465,7 @@ export default {
       roomHandleVisible: false,
       checkInVisible: false,
       infoVisible: false,
+      isolationCheckOutVisible: false,
       ws: null,
       roomList: [],
       floorList: [],
@@ -754,7 +755,7 @@ export default {
         type:val,
         roomId: this.current.id
       }
-      formDataPost("api/xxxxxxx",data).then(res => {
+      formDataPost("api/room/isolationCheckOut",data).then(res => {
         if (res.data.code === "200") {
           this.$notify.success({
             title: '成功',
@@ -785,7 +786,7 @@ export default {
         currentRoomId: this.current.id,
         newRoomId: this.newRoomId
       }
-      formDataPost("api/xxxxxxx",data).then(res => {
+      formDataPost("api/room/changeRoom",data).then(res => {
         if (res.data.code === "200") {
           this.$notify.success({
             title: '成功',
@@ -801,7 +802,7 @@ export default {
       })
     },
     cleanRoom() {
-      get("api/xxxxxxx/"+this.current.id).then(res => {
+      get("api/room/cleanRoom/"+this.current.id).then(res => {
         if (res.data.code === "200") {
           this.$notify.success({
             title: '成功',
@@ -825,7 +826,7 @@ export default {
         email: '',
         type: ''
       }
-      get("api/xxxxxxx/"+this.current.id).then(res => {
+      get("api/room/checkInfo"+this.current.id).then(res => {
         if (res.data.code === "200") {
           this.checkInInfoData = res.data.data
           this.checkInInfoVisible = true

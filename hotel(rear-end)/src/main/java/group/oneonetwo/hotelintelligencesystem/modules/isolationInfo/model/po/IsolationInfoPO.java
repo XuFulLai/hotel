@@ -116,6 +116,9 @@ public class IsolationInfoPO implements Serializable {
     @TableField("city")
     private String city;
 
+    @TableField("way")
+    private Integer way;
+
     /**
      * 是否删除
      */
@@ -162,6 +165,14 @@ public class IsolationInfoPO implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public Integer getWay() {
+        return way;
+    }
+
+    public void setWay(Integer way) {
+        this.way = way;
+    }
 
     /**
      * 隔离人员id

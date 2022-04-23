@@ -91,6 +91,12 @@ public class WalletServiceImpl implements WalletService{
         QueryWrapper<WalletPO> wrapper = new QueryWrapper<>();
         wrapper.eq("u_id",uid);
         List<WalletPO> walletPOS = walletMapper.selectList(wrapper);
+
+        try {
+            walletPOS.get(0);
+        } catch (Exception e) {
+            throw new CommonException("该用户未开通账户");
+            }
         return walletPOS.get(0);
     }
 
