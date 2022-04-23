@@ -61,7 +61,8 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public ReviewPO selectOneById(String id) {
-        return null;
+        ReviewPO reviewPO = reviewMapper.selectById(id);
+        return reviewPO;
     }
 
     @Override
@@ -126,19 +127,19 @@ public class ReviewServiceImpl implements ReviewService{
         return reviewMapper.getPage(page,reviewVO);
 
     }
-
+    //id
     @Override
     public void getCheck(ReviewVO reviewVO) {
         if(reviewVO.getType()==0 || reviewVO.getType()==1){
             add(reviewVO);
         }else {
-            String uid = authUtils.getUid();
-            if(userService.selectOneById(uid)==null){
+
+            if(userService.selectOneById(reviewVO.getuId())==null){
                 throw new CommonException(501,"账户未注册");
             }
             RoomTypePO roomTypePO = roomTypeServeice.selectOneById(reviewVO.getRoomType());
             Integer isolationFee = roomTypePO.getIsolationFee();
-            WalletPO walletPO = walletService.getWalletPO(uid);
+            WalletPO walletPO = walletService.getWalletPO(reviewVO.getuId());
             add(reviewVO);
             double balances=0;
             balances=walletPO.getBalance()-isolationFee;
@@ -171,10 +172,9 @@ public class ReviewServiceImpl implements ReviewService{
             return;
         }
 
-        ReviewPO reviewPO = selectByUID(reviewVO.getuId());
+        ReviewPO reviewPO = selectOneById(reviewVO.getId());
         String roomType = reviewPO.getRoomType();
         RoomVO roomVO = roomService.isolationCheckIn(reviewPO.getHotelId(), roomType, null);
-        roomVO.getId();
 
         IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
         isolationInfoVO.setName(reviewPO.getName());
