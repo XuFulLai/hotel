@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 /**
@@ -60,6 +61,22 @@ public class ChartController {
         return Reply.success(chartService.incomeOf7Day());
     }
 
+    @ApiOperation("近一周隔离人员分配/自申报统计")
+    @GetMapping("isolation/way/day/7/{way}")
+    public Reply<List<ChartVO>> wayOnIsolationOf7Day(@PathParam("way") Integer way) {
+        return Reply.success(chartService.wayOnIsolationOf7Day(way));
+    }
 
+    @ApiOperation("各地酒店接收隔离人员情况")
+    @GetMapping("isolation/receive")
+    public Reply<List<ChartVO>> isolationCheckIn() {
+        return Reply.success(chartService.isolationCheckIn());
+    }
+
+    @ApiOperation("当前酒店接收隔离人员来访地")
+    @GetMapping("isolation/income")
+    public Reply<List<ChartVO>> isolationIncome() {
+        return Reply.success(chartService.isolationIncome());
+    }
 
 }

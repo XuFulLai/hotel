@@ -79,66 +79,172 @@
           <div class="detail-right" >
             <div class="detail-right-price" id="detailRight" :style="isFixed ? 'position:fixed;top:90px;width: 440px;' : ''">
               <div class="book-box">
-                <span class="price-sum">
-                  <span>
-                    <span class="unit">¥</span>
-                    <span class="zg-price">
-                      <strong>
-                        <span v-if="!bookDay || !totalFee">{{ minFee + '~' + maxFee }}</span>
-                        <span v-else>{{ totalFee }}</span>
-                      </strong>
+
+                <el-switch
+                  style="display: block;margin: 20px 10px;"
+                  v-model="switchType"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  active-text="正常预定"
+                  inactive-text="自申报">
+                </el-switch>                
+
+                <!-- 正常预定模块 -->
+                <div v-show="switchType == true" class="natural">
+                  <span class="price-sum">
+                    <span>
+                      <span class="unit">¥</span>
+                      <span class="zg-price">
+                        <strong>
+                          <span v-if="!bookDay || !totalFee">{{ minFee + '~' + maxFee }}</span>
+                          <span v-else>{{ totalFee }}</span>
+                        </strong>
+                      </span>
+                    </span>
+                    <!--                  <small class="text-weak">/晚</small>-->
+                  </span>
+                  <div class="book-date flex flex-row align-items-center">
+                    <el-date-picker
+                        v-model="dateValue"
+                        type="daterange"
+                        value-format="yyyy-MM-dd"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :picker-options="pickerOptions">
+                    </el-date-picker>
+                    <p v-if="bookDay" style="margin: 2px">共{{ bookDay }}晚</p>
+                  </div>
+                  <div class="book-room">
+                    <el-select v-model="currentRoomType" :placeholder="$t('hotelList.selectRoom')">
+                      <el-option
+                          v-for="item in roomTypeList"
+                          :label="item.name"
+                          :value="item.id">
+                        <span style="float: left">{{ item.name }}</span>
+                        <span style="float: right; color: #8492a6; font-size: 13px">￥{{ item.fee }}</span>
+                      </el-option>
+                    </el-select>
+                    <div class="room-detail" v-if="currentRoomType">
+                      <i class="el-icon-files"> 床位数:{{ roomTypeMap[currentRoomType].bed }}</i><br>
+                      <i class="el-icon-user"> 最大容纳:{{ roomTypeMap[currentRoomType].maxLoad }}</i><br>
+                      <i class="el-icon-picture-outline"> 是否有窗:{{
+                          roomTypeMap[currentRoomType].haveWindow == 1 ? "是" : "否"
+                        }}</i><br>
+                      <i class="el-icon-fork-spoon"> 是否含早餐:{{
+                          roomTypeMap[currentRoomType].haveBreakfast == 1 ? "是" : "否"
+                        }}</i><br>
+                      <i class="el-icon-magic-stick"> 是否有网络:{{
+                          roomTypeMap[currentRoomType].network == 1 ? "是" : "否"
+                        }}</i>
+                    </div>
+                    <div class="mt-10">
+                      <el-select v-model="provinceVal" :placeholder="$t('hotelList.province')">
+                        <el-option
+                            v-for="item in options"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                      </el-select>
+                    </div>
+                    <div>
+                      <el-button @click="confirm()" type="primary" style="width: 100%;margin: 10px 0">预订</el-button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 自申报 -->
+                <div v-show="switchType == false" class="abnormal">
+
+                  <span v-show="situation == 2 || situation == 3" class="price-sum mb-10">
+                    <span>
+                      <span class="unit">¥</span>
+                      <span class="zg-price">
+                        <strong>
+
+                          <!-- <span v-if="!bookDay || !totalFee">{{ minFee + '~' + maxFee }}</span> -->
+                          <span>{{ isolateFee }}</span>
+                        </strong>
+                      </span>
                     </span>
                   </span>
-                  <!--                  <small class="text-weak">/晚</small>-->
-                </span>
-                <div class="book-date flex flex-row align-items-center">
-                  <el-date-picker
-                      v-model="dateValue"
-                      type="daterange"
-                      value-format="yyyy-MM-dd"
-                      range-separator="至"
-                      start-placeholder="开始日期"
-                      end-placeholder="结束日期"
+
+                  <div class="block mb-10">
+                    <el-date-picker
+                      v-model="date"
+                      type="date"
+                      placeholder="入住时间"
                       :picker-options="pickerOptions">
-                  </el-date-picker>
-                  <p v-if="bookDay" style="margin: 2px">共{{ bookDay }}晚</p>
-                </div>
-                <div class="book-room">
-                  <el-select v-model="currentRoomType" :placeholder="$t('hotelList.selectRoom')">
+                    </el-date-picker>
+                  </div>
+
+                  <!-- 申报类型 -->
+                  <el-select class="mb-10" v-model="situation" placeholder="申报类型">
                     <el-option
-                        v-for="item in roomTypeList"
+                      v-for="item in situationOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+
+                  <!-- 选择房型 -->
+                  <el-select v-show="situation == 2 || situation == 3" class="mb-10" v-model="isolateRoomType" :placeholder="$t('hotelList.selectRoom')">
+                    <el-option
+                        v-for="item in isolateRoomTypeList"
                         :label="item.name"
                         :value="item.id">
                       <span style="float: left">{{ item.name }}</span>
                       <span style="float: right; color: #8492a6; font-size: 13px">￥{{ item.fee }}</span>
                     </el-option>
                   </el-select>
-                  <div class="room-detail" v-if="currentRoomType">
-                    <i class="el-icon-files"> 床位数:{{ roomTypeMap[currentRoomType].bed }}</i><br>
-                    <i class="el-icon-user"> 最大容纳:{{ roomTypeMap[currentRoomType].maxLoad }}</i><br>
-                    <i class="el-icon-picture-outline"> 是否有窗:{{
-                        roomTypeMap[currentRoomType].haveWindow == 1 ? "是" : "否"
-                      }}</i><br>
-                    <i class="el-icon-fork-spoon"> 是否含早餐:{{
-                        roomTypeMap[currentRoomType].haveBreakfast == 1 ? "是" : "否"
-                      }}</i><br>
-                    <i class="el-icon-magic-stick"> 是否有网络:{{
-                        roomTypeMap[currentRoomType].network == 1 ? "是" : "否"
-                      }}</i>
-                  </div>
-                  <div class="mt-10">
-                    <el-select v-model="provinceVal" :placeholder="$t('hotelList.province')">
-                      <el-option
-                          v-for="item in options"
-                          :label="item.label"
-                          :value="item.value">
-                      </el-option>
-                    </el-select>
-                  </div>
+
+                  <el-input class="mb-10" v-model="userName" placeholder="姓名"></el-input>
+
+                  <el-input class="mb-10" v-model="userId" placeholder="身份证"></el-input>
+
+                  <el-input class="mb-10"  v-model="phoneNum" placeholder="手机号"></el-input>
+
+                  <el-input class="mb-10"  v-model="userEmail" placeholder="邮箱"></el-input>
+
+                  <!-- 陪同人员 start -->
+                  <!-- <div class="mb-10">
+                    <el-switch                    
+                      active-text="是否需要陪同人员"
+                      v-model="accompany"
+                      active-color="#13ce66"
+                      inactive-color="#ff4949">
+                    </el-switch>
+
+                    <el-tooltip placement="right">
+                      <div slot="content">根据规定，<br/>14岁以下儿童，<br/>岁以上老人可申请陪同</div>        
+                      <el-button style="border-radius: 50%;padding: 5px 8px;margin-left: 10px;">?</el-button>
+                    </el-tooltip>                    
+      
+                  </div>               
+
+                  <el-input v-show="accompany == true" class="mb-10" v-model="accompanyName" placeholder="陪同人员姓名"></el-input>
+
+                  <el-input v-show="accompany == true" class="mb-10" v-model="accompanyId" placeholder="陪同人员身份证"></el-input> -->
+                  <!-- 陪同人员 end -->
+
                   <div>
-                    <el-button @click="confirm()" type="primary" style="width: 100%;margin: 10px 0">预订</el-button>
+                    <el-cascader
+                        class="mb-10"
+                        size="large"
+                        :options="addressData"
+                        :v-model="area"
+                        @change="getAddress"
+                    ></el-cascader>
                   </div>
+
+                  <p class="mb-10 font-16"><i class="el-icon-warning-outline mr-5"></i>自行申报需提前48小时申报。</p>    
+
+                  <el-button class="w-percent-100" @click="submit" type="primary">提交申报</el-button>
+
+
                 </div>
+
               </div>
             </div>
           </div>
@@ -158,6 +264,8 @@
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer.vue';
 import {get, post} from "../utils/request";
+import { dateTimeFormat } from "../utils/format";
+import {CodeToText, provinceAndCityData} from 'element-china-area-data'
 
 export default {
   name: "HotelDetails",
@@ -167,9 +275,40 @@ export default {
   },
   data() {
     return {
+      form: {
+        
+      },
+      accompany: false,      
+      date: '',
+      accompanyName: '',
+      accompanyId: '',
+      userName: '',
+      userId: '',
+      phoneNum: '',
+      userEmail: '',
+      addressData: provinceAndCityData,
+      area: [],
+      situation: '',
+      situationOptions: [{
+        value: 0,
+        label: '密接'
+      }, {
+        value: 1,
+        label: '应隔尽隔人员'
+      }, {
+        value: 2,
+        label: '入境人员'
+      }, {
+        value: 3,
+        label: '中高风险地区人员'
+      }],
+      switchType: true,
       hotelId: '',
       hotelDetails: '',
       roomTypeList: [],
+      isolateRoomTypeList: [],
+      isolateRoomType: '',
+      isolateFee: '',
       roomTypeMap: {},
       currentRoomType: '',
       dateValue: '',
@@ -309,6 +448,19 @@ export default {
         this.updateFee()
       }
     },
+    // "date"(val, oldVal) {
+    //   this.isolateFee = 0
+    //   if (val) {
+    //     this.isolateFeeF()
+    //   }
+    // },
+    "isolateRoomType"(val, oldVal){
+      console.log(val);
+      console.log(oldVal);
+      if (val) {
+        this.isolateFeeF()
+      }
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -319,12 +471,75 @@ export default {
     this.hotelId = this.$route.params.hotelId
     this.getHotelDetails()
     this.getRoomType();
+    this.getIsolateRoomTypeList()
   },
   methods: {
+    // 获取酒店隔离房间类型函数
+    getIsolateRoomTypeList() {
+      const data = {
+        isIsolation: 1
+      }
+      get(`api/roomType/currentRoomTypeList/${this.hotelId}`, data)
+        .then( res => {
+          console.log(res);
+          console.log(res.data.data);
+          this.isolateRoomTypeList = res.data.data
+
+        })
+        .catch( err => {
+          console.error(err);
+        })
+    }, 
+    // 提交审核按钮
+    submit(){
+      const data = {
+        checkInTime: this.date,
+        checkOutTime: new Date(Date.parse(this.date) + 1209600000), // 14天之后的时间
+        type: this.situation,
+        name: this.userName,
+        idCard: this.userId,
+        phone: this.phoneNum,
+        email: this.userEmail,
+        province: this.area[0],
+        city: this.area[1],
+        hotelId: this.hotelId,
+        roomType: this.isolateRoomType
+
+      }
+      console.log(data);
+      post('/api/review/check',data)
+        .then( res => {
+          console.log(res);
+          if (res.data.code == 200) {
+            this.$message({
+              message: this.$t('common.success'),
+              type: 'success'
+            });
+          }
+        })
+        .catch( err => {
+          console.error(err);
+        })
+
+    },
+    getAddress(value) { //value是长度为2的装有被选择省、市代码的数组;CodeToText是个对象，键名为代码，键值为省和城市
+      this.area = [];
+      for (let i = 0; i < value.length; i++) {
+        let code = value[i];
+        this.area.push(CodeToText[code]);
+      }
+      this.form.province = this.area[0]
+      this.form.city = this.area[1]
+      console.log(this.area); //["河北省","唐山市"]
+    },    
     updateFee() {
       this.countTime()
       this.totalFee = this.bookDay * this.roomTypeMap[this.currentRoomType].fee
     },
+    isolateFeeF() {
+      // this.countTime()
+      this.isolateFee = 14 * this.roomTypeMap[this.isolateRoomType].fee
+    },    
     countTime() {
       let estimatedCheckIn = new Date(this.dateValue[0])
       let estimatedCheckOut = new Date(this.dateValue[1])
@@ -336,7 +551,7 @@ export default {
       let scrollTop =
           document.documentElement.scrollTop || document.body.scrollTop;
       this.isFixed = scrollTop > this.offsetTop*1.15 ? true : false;
-      console.log(this.offsetTop)
+      // console.log(this.offsetTop)
       // console.log(this.isFixed)
       // console.log(scrollTop);
     },
@@ -613,6 +828,9 @@ h3.sub-title .en {
   background: #4f93fe;
   padding: 6px 8px;
   color: #fff !important;
+}
+.abnormal {
+  padding: 10px;
 }
 
 

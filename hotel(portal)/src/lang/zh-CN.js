@@ -1,4 +1,7 @@
 export default {
+    common: {
+        success: '成功！'
+    },
     login: {
         title: '酒店管理系统',
         text: 'Welcome欢迎登录',

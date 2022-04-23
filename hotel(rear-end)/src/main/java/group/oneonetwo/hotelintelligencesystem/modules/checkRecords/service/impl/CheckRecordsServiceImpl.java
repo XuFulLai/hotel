@@ -17,6 +17,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.Is
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.IsolationInfoService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.EmailUtils;
+import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -192,10 +193,29 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
             if (item.getCheckType() == 0 && item.getCheckRes() > 37.3) {
                 logger.info("id为{}的体温检测异常,检测结果为{}℃",item.getuId(),item.getCheckRes());
                 //获取该人邮箱和房间信息进行业务处理
-                //emailUtils.sendMail("15218066874@qq.com","1243626786@qq.com",null,"这是体温检测标题","id为"+item.getuId()+"的体温检测异常,检测结果为"+item.getCheckRes()+"℃");
+                IsolationInfoPO isolationInfoPO = isolationInfoService.selectOneById(item.getuId());
+                if (isolationInfoPO == null) {
+                    logger.info("id为{}的用户不存在,无法发送邮件!",item.getuId());
+                }
+                if (WStringUtils.isBlank(isolationInfoPO.getEmail())) {
+                    logger.info("id为{}的用户没有填写电子邮箱地址,无法发送邮件!",item.getuId());
+                }
+                emailUtils.sendMail(null,isolationInfoPO.getEmail(), null,
+                        " 【防疫酒店管控系统】"+item.getCheckTime().toString()+"体温检测报告",
+                        "您于"+item.getCheckTime().toString()+"检测的体温检测结果异常,检测结果为"+item.getCheckRes()+"℃");
             }else if (item.getCheckType() == 1 && item.getCheckRes() == 1.00) {
                 logger.info("id为{}的核酸检测异常,检测结果为阳性",item.getuId());
                 //获取该人邮箱和房间信息进行业务处理
+                IsolationInfoPO isolationInfoPO = isolationInfoService.selectOneById(item.getuId());
+                if (isolationInfoPO == null) {
+                    logger.info("id为{}的用户不存在,无法发送邮件!",item.getuId());
+                }
+                if (WStringUtils.isBlank(isolationInfoPO.getEmail())) {
+                    logger.info("id为{}的用户没有填写电子邮箱地址,无法发送邮件!",item.getuId());
+                }
+                emailUtils.sendMail(null,isolationInfoPO.getEmail(), null,
+                        " 【防疫酒店管控系统】"+item.getCheckTime().toString()+"核酸检测报告",
+                        "您于"+item.getCheckTime().toString()+"检测的核酸检测异常,检测结果为+");
                 //emailUtils.sendMail(null,"1499602163@qq.com",null,"这是核酸检测标题","id为"+item.getuId()+"的核酸检测异常,检测结果为+");
 
             }
