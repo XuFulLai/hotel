@@ -13,6 +13,7 @@
       <div class="order-list-content">
 
         <div class="d-flex align-items-center justify-content-between">
+
           <div v-for="(item,index) in statusList" class="order-status">
             <img :src="require(`../assets/images/status_${item.status}.png`)" alt="">
             <div>
@@ -22,83 +23,9 @@
             </div>
           </div>
 
-          <div :class="isIsolation  ? 'isolation' : ''" class="order-status cursor"
-               @click="isolationRecordsHandle(!isIsolation)">
-            <!--                    <img :src="require(`../assets/images/status_${item.status}.png`)" alt="">-->
-            <div>
-              <!-- <h3 class="font-22">{{ statusTextList[item.status] }}</h3> -->
-              <h3 class="font-22">隔离记录</h3>
-              <p class="font-16">12</p>
-            </div>
-          </div>
-          <div :class="isApply  ? 'isolation' : ''" class="order-status cursor"
-               @click="applyRecordsHandle(!isApply)">
-            <!--                    <img :src="require(`../assets/images/status_${item.status}.png`)" alt="">-->
-            <div>
-              <!-- <h3 class="font-22">{{ statusTextList[item.status] }}</h3> -->
-              <h3 class="font-22">申请记录</h3>
-              <p class="font-16">12</p>
-            </div>
-          </div>
         </div>
 
-
-        <!--        隔离记录-->
-        <ul class="order-list" v-if="isIsolation">
-          <li v-for="(item,index) in isolationList">
-
-            <div class="d-flex align-items-center justify-content-between mb-15 font-20">
-              <p>{{ item.status | isolationStatusFilter }}</p>
-              <div>
-                <el-button v-if="item.status == 0" @click="getCheckRecords(item.id)">检测记录</el-button>
-                <el-button v-if="item.status == 0" type="primary" @click="applyHandle">物质申请</el-button>
-              </div>
-              <!--              <a v-if="item.status == 1" class="color-red cursor"-->
-              <!--                 @click="cancelOrder(item.id)">{{ $t('orderList.cancelOrder') }}</a>-->
-            </div>
-            <div class="d-flex align-items-center justify-content-between font-16 color-6">
-              <div>
-                <p class="mb-10">{{ $t('orderList.hotelName') }}{{ item.hotelName }}</p>
-                <p class="mb-10">隔离ID：{{ item.id }}</p>
-                <div class="d-flex align-items-center">
-                  <p>{{ $t('orderList.roomType') }}{{ item.roomTypeName | roomNameFormat }}</p>
-                  <p class="ml-10 mr-10" style="color: #e0e0e0"> | </p>
-                  <p>{{ $t('isolationList.roomName') }}{{ item.roomName }} </p>
-                </div>
-              </div>
-              <p v-if="item.pay">{{ $t('orderList.spend') }}￥{{ item.pay }} </p>
-            </div>
-          </li>
-        </ul>
-
-        <!--        申请记录-->
-        <ul class="order-list" v-else-if="isApply">
-          <li v-for="(item,index) in applyList">
-
-            <div class="d-flex align-items-center justify-content-between mb-15 font-20">
-              <p>{{ item.reviewStatus | applyStatusFilter }}</p>
-              <!--              <a v-if="item.status == 1" class="color-red cursor"-->
-              <!--                 @click="cancelOrder(item.id)">{{ $t('orderList.cancelOrder') }}</a>-->
-            </div>
-            <div class="d-flex align-items-center justify-content-between font-16 color-6">
-              <div>
-                <p class="mb-10">申请物品：{{ item.applyThing }}</p>
-                <p class="mb-10">申请数量：{{ "" + item.applyNum + item.thingUnit }}</p>
-                <p class="mb-10">申请ID：{{ item.id }}</p>
-                <p class="mb-10">申请说明：{{ item.applyRemark }}</p>
-                <p style="color: red" v-if="item.reviewRemarks" class="mb-10">审核说明：{{ item.reviewRemarks }}</p>
-<!--                <div class="d-flex align-items-center">-->
-<!--                  <p>{{ $t('orderList.roomType') }}{{ item.roomTypeName | roomNameFormat }}</p>-->
-<!--                  <p class="ml-10 mr-10" style="color: #e0e0e0"> | </p>-->
-<!--                  <p>{{ $t('isolationList.roomName') }}{{ item.roomName }} </p>-->
-<!--                </div>-->
-              </div>
-              <p v-if="item.pay">{{ $t('orderList.spend') }}￥{{ item.pay }} </p>
-            </div>
-          </li>
-        </ul>
-
-        <ul class="order-list" v-else>
+        <ul class="order-list">
           <li v-for="(item,index) in orderList">
             <div class="d-flex align-items-center justify-content-between mb-15 font-20">
               <p>{{ item.status | statusFilter }}</p>
@@ -134,69 +61,6 @@
       </div>
 
       <div v-show="orderList.length == 0" class="order-null text-center font-30">{{ $t('orderList.noOrder') }}</div>
-
-      <!--      物资申请dialog-->
-      <el-dialog
-          title="物质申请"
-          :visible.sync="applyVisible"
-          width="40%"
-          custom-class="min-w-450"
-      >
-        <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请物资:</p>
-          <el-input
-              style="width: 350px;"
-              placeholder="请输入物质名称"
-              v-model="applyForm.applyThing"
-              clearable>
-          </el-input>
-        </div>
-        <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请数量:</p>
-          <el-input-number
-              v-model="applyForm.applyNum"
-              :precision="2"
-              :step="0.1"
-              :max="10"
-              style="width: 350px;"
-              placeholder="请输入申请数量"
-              clearable
-          ></el-input-number>
-
-        </div>
-        <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请单位:</p>
-          <el-input
-              style="width: 350px;"
-              placeholder="请输入物质单位"
-              v-model="applyForm.thingUnit"
-              clearable>
-          </el-input>
-        </div>
-        <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">紧急程度:</p>
-          <el-select style="width: 350px;" v-model="applyForm.emergencyLevel" placeholder="请选择紧急程度">
-            <el-option v-for="item in emergencyLevelOptions" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </div>
-        <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请备注:</p>
-          <el-input
-              style="width: 350px;"
-              type="textarea"
-              placeholder="请输入备注"
-              v-model="applyForm.applyRemark"
-              maxlength="70"
-              show-word-limit
-          >
-          </el-input>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="applyVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirmApply">确 定</el-button>
-        </span>
-
-      </el-dialog>
 
 
       <Footer></Footer>
@@ -390,50 +254,6 @@ export default {
     this.getStatus()
   },
   methods: {
-    getCheckRecords(id) {
-      let data = {
-        uId: id,
-        page: {
-          page: 1,
-          size: 10
-        }
-      }
-      post("api/checkRecords/ownPage",data)
-        .then( res => {
-          console.log(res);
-        })
-        .catch( err => {
-          console.error(err);
-        })
-    },
-    confirmApply() {
-      let data = this.applyForm
-      post("api/materialsApply/apply",data).then(res => {
-        if (res.data.code === "200") {
-          this.$notify.success({
-            title: '成功',
-            message: "申请成功"
-          });
-          this.applyVisible = false
-        }else{
-          this.$message({
-            message: res.data.msg,
-            type: 'error'
-          });
-        }
-      })
-    },
-    applyHandle() {
-      this.applyVisible = true
-      this.applyForm = {
-        applyThing: '',
-        applyNum: 0,
-        thingUnit: '',
-        emergencyLevel: '',
-        applyRemark: '',
-        uType:1
-      }
-    },
     getStatus() {
       const data = {
         page: {
@@ -454,57 +274,6 @@ export default {
             });
             console.log(resStatusList);
             console.log(this.statusList);
-          })
-          .catch(err => {
-            console.log(err);
-          })
-    },
-    getApplyRecords() {
-      let data = {
-        page: {
-          page:1,
-          size:10
-        }
-      }
-      post("api/materialsApply/page",data).then(res => {
-        this.applyList = res.data.data.records
-        this.pageNum = res.data.data.total
-      })
-    },
-    applyRecordsHandle(val) {
-      this.isApply = val
-      if (val) {
-        this.isIsolation = false
-        this.getApplyRecords()
-      } else {
-        this.getOrderList()
-      }
-    },
-    isolationRecordsHandle(val) {
-      this.isIsolation = val
-      if (val) {
-        this.isApply = false
-        this.getIsolationRecords()
-      } else {
-        this.getOrderList()
-      }
-    },
-    getIsolationRecords() {
-      let data = {
-        page: {
-          page: 1,
-          size: 10
-        }
-      }
-      this.isolationRecordsRequest(data)
-    },
-    //获取隔离列表请求
-    isolationRecordsRequest(data) {
-      post('/api/isolationInfo/my', data)
-          .then(res => {
-            console.log(res);
-            this.isolationList = res.data.data.records
-            this.pageNum = res.data.data.total
           })
           .catch(err => {
             console.log(err);
