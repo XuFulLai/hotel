@@ -13,11 +13,11 @@
                 </el-input>
             </div>          
             <div class="d-flex align-items-center mb-15">
-                <p class="w-120 text-left font-16">用户id:</p>
+                <p class="w-120 text-left font-16">用户名:</p>
                 <el-input
                     style="width: 350px;"
-                    placeholder="请输入用户id"
-                    v-model="form.id"
+                    placeholder="请输入用户名"
+                    v-model="form.userName"
                     clearable>
                 </el-input>
             </div>              
@@ -140,7 +140,7 @@ export default {
         return {
             form: {
                 name: '',
-                id: '',
+                userName: '',
                 idCardNum: '',
                 phone: '',
                 email: '',
@@ -238,7 +238,7 @@ export default {
         confirm() {
             const data = {
                 name: this.form.name,
-                uId: this.form.id,
+                userName: this.form.userName,
                 idCard: this.form.idCardNum,
                 phone: this.form.phone,
                 email: this.form.email,
