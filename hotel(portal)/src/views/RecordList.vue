@@ -28,12 +28,24 @@
           </div>
 
           <div
+            :class="isReview ? 'active' : ''"
+            class="order-status cursor"
+            @click="reviewRecordsHandle(!isReview)">
+
+            <div>
+              <h3 class="font-22">自申报记录</h3>
+              <p class="font-16">{{ reviewListNum }}</p>
+            </div>
+
+          </div>          
+
+          <div
             :class="isApply ? 'active' : ''"
             class="order-status cursor"
             @click="applyRecordsHandle(!isApply)">
 
             <div>
-              <h3 class="font-22">申请记录</h3>
+              <h3 class="font-22">物资申请记录</h3>
               <p class="font-16">{{ applyListNum }}</p>
             </div>
 
@@ -88,8 +100,40 @@
 
         </div>
 
+        <!-- 自申报记录 -->
+        <div v-else-if="isReview" class="d-flex flex-column justify-content-between">
+          <ul class="order-list">
+            <li v-for="(item, index) in reviewList">
+              <div class="d-flex align-items-center justify-content-between mb-15 font-20">
+                <p>{{ item.reviewStatus | applyStatusFilter }}</p>
+              </div>
+              <div class="d-flex align-items-center justify-content-between font-16 color-6">
+                <div>
+                  <p class="mb-10">申报人姓名：{{ item.name }}</p>
+                  <p class="mb-10">申报人身份证号码：{{ item.idCard }}</p>
+                  <p class="mb-10">申报人电话：{{ item.phone }}</p>
+                  <p class="mb-10">申报ID：{{ item.id }}</p>
+                  <p v-if="item.reviewStatus == 2" style="color: red;" class="mb-10">拒绝理由：{{ item.remark }}</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <div v-if="reviewListNum > 5" class="d-flex align-items-center justify-content-center">
+            <el-pagination
+                background
+                @current-change="reviewCurrent"
+                @prev-click="reviewPrev"
+                @next-click="reviewNext"
+                layout="prev, pager, next"
+                :total="reviewListNum">
+            </el-pagination>
+          </div>
+
+        </div>        
+
+        <!-- 物资申请记录 -->
         <div v-else-if="isApply" class="d-flex flex-column justify-content-between">
-          <!-- 申请记录 -->
           <ul class="order-list">
             <li v-for="(item, index) in applyList">
               <div class="d-flex align-items-center justify-content-between mb-15 font-20">
@@ -269,10 +313,13 @@ export default {
       applyList: [],
       pageNum: 0,
       isolationNum: 0,
+      reviewListNum: 0,
+      isReview: [],
       // pageNum: 0,
       statusList: [],
       isIsolation: true,
       isApply: false,
+      isReview: false,
       applyForm: {
         applyThing: "",
         applyNum: 0,
@@ -445,6 +492,7 @@ export default {
   mounted() {
     this.getIsolationRecords()
     this.getApplyRecords()
+    this.getRevieList()
   },
   methods: {
     // 隔离记录 Start
@@ -453,6 +501,7 @@ export default {
       this.isIsolation = val;
       if (val) {
         this.isApply = false;
+        this.isReview = false;
         this.getIsolationRecords();
       }
     },
@@ -565,12 +614,81 @@ export default {
     },
     // 隔离记录 End
 
-    // 申请记录 Start
+    // 自申报记录 Start
+    // 点击函数
+    reviewRecordsHandle(val) {
+      this.isReview = val;
+      if (val) {
+        this.isIsolation = false;
+        this.isApply = false;
+        this.getApplyRecords();
+      }
+    },
+
+    // 列表获取函数
+    getRevieList() {
+      const data = {
+        page: {
+          page: 1,
+          size: 10,
+        }
+      }
+      this.revieListRequest(data)
+    },
+    // 列表请求函数
+    revieListRequest(data) {
+      post('/api/review/my',data)
+        .then( res => {
+          console.log(res);
+          this.reviewList = res.data.data.records
+          this.reviewListNum = res.data.data.total;
+        })
+        .catch( err => {
+          console.error(err);
+        })
+    },
+    //选择页码
+    reviewCurrent(num) {
+      let data = {
+        page: {
+          page: num,
+          size: 10
+        }
+      }
+      this.revieListRequest(data)
+    },
+
+    //上一页
+    reviewPrev(num) {
+      let data = {
+        page: {
+          page: num,
+          size: 10
+        }
+      }
+      this.revieListRequest(data)
+    },
+
+    //下一页
+    reviewNext(num) {
+      let data = {
+        page: {
+          page: num,
+          size: 10
+        }
+      }
+      this.revieListRequest(data)
+    }, 
+
+    // 自申报记录 End
+
+    // 物资申请记录 Start
     // 点击申请记录大按钮函数
     applyRecordsHandle(val) {
       this.isApply = val;
       if (val) {
         this.isIsolation = false;
+        this.isReview = false;
         this.getApplyRecords();
       }
     },
