@@ -190,24 +190,10 @@ public class HotelServiceImpl implements IHotelService {
     }
 
     @Override
-    public HotelVO allow(int id) {
-        String userHotelId = authUtils.getUserHotelId();
-        HotelPO hotelPO = selectOneById(userHotelId);
-        String role = authUtils.getRole();
-        switch (role) {
-            case "admin":break;
-            case "hotel_admin":
-               if(id==0){
-                   hotelPO.setAllowIsolation(0);
-                   hotelMapper.updateById(hotelPO);
-               }else {
-                   hotelPO.setAllowIsolation(1);
-                   hotelMapper.updateById(hotelPO);
-               }
-            break;
-            default:
-                break;
-        }
+    public HotelVO allow(String hotelId ,Integer id) {
+        HotelPO hotelPO = selectOneById(hotelId);
+        hotelPO.setAllowIsolation(id);
+        hotelMapper.updateById(hotelPO);
         HotelVO hotelVO = new HotelVO();
         BeanUtils.copyProperties(hotelPO,hotelVO);
         return hotelVO;

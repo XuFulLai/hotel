@@ -17,5 +17,5 @@ public interface IHotelService {
 
     HotelVO myHotel();
 
-    HotelVO allow(int id);
+    HotelVO allow(String hotelId,Integer id );
 }
