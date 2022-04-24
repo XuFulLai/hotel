@@ -486,7 +486,7 @@ export default {
       post('/api/review/reviews', data)
           .then(res => {
             console.log(res);
-            this.form.reviewStatus = 0
+            this.form.reviewStatus = 2
           })
           .catch(err => {
             console.error(err);
