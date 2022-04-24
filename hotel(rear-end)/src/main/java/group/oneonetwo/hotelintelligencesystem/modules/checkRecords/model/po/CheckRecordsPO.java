@@ -48,25 +48,25 @@ public class CheckRecordsPO implements Serializable {
     /**
      *
      */
-    @TableField("create_time")
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
     private Date createTime;
 
     /**
      *
      */
-    @TableField("create_by")
+    @TableField(value = "create_by",fill = FieldFill.INSERT)
     private String createBy;
 
     /**
      *
      */
-    @TableField("update_time")
+    @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
 
     /**
      *
      */
-    @TableField("update_by")
+    @TableField(value = "update_by",fill = FieldFill.UPDATE)
     private String updateBy;
 
     /**
