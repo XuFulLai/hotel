@@ -130,11 +130,32 @@
                     style="width: 350px;"
                     placeholder="请输入受检人ID"
                     v-model="form.uId"
+                    @blur="getIsolationInfo"
                     :disabled="testValue == 'modify'"
                     clearable>
                 </el-input>
-            </div>            
-            <div v-if="testValue == 'modify'" class="d-flex align-items-center mb-15">
+            </div>
+          <div class="d-flex align-items-center mb-15" v-if="isolationInfo.name">
+            <p class="w-100 text-left">受检人姓名:</p>
+            <el-input
+                style="width: 350px;"
+                placeholder="请输入受检人姓名"
+                v-model="isolationInfo.name"
+                :disabled="true"
+                clearable>
+            </el-input>
+          </div>
+          <div class="d-flex align-items-center mb-15" v-if="isolationInfo.idCard">
+            <p class="w-100 text-left">受检人身份证:</p>
+            <el-input
+                style="width: 350px;"
+                placeholder="请输入受检人身份证"
+                v-model="isolationInfo.idCard"
+                :disabled="true"
+                clearable>
+            </el-input>
+          </div>
+          <div v-if="testValue == 'modify'" class="d-flex align-items-center mb-15">
                 <p class="w-100 text-left">受检人姓名:</p>
                 <el-input
                     style="width: 350px;"
@@ -202,6 +223,10 @@ export default {
     name: "DailyTest",
     data() {
         return {
+          isolationInfo: {
+            name: undefined,
+            idCard: undefined
+          },
             searchParams: { // 筛选框数据
                 dateRange: '',
                 beginTime: '',
@@ -258,6 +283,20 @@ export default {
         this.getTestList()
     },
     methods: {
+      getIsolationInfo() {
+        get("api/isolationInfo/get/"+this.form.uId).then(res => {
+          if (res.data.data.name || res.data.data.idCard) {
+            this.isolationInfo.name = res.data.data.name
+            this.isolationInfo.idCard = res.data.data.idCard
+            this.$message({
+              message: '查询成功',
+              type: 'success',
+              duration: 1000
+            });
+          }
+
+        })
+      },
         // 页面初次渲染函数
         getTestList(){
             const data = { // 设置data数据

@@ -253,13 +253,13 @@
     >
       <el-button
           class="mr-10"
-          @click="isolationCheckOut(1)"
+          @click="isolationCheckOut(2)"
           type="danger"
       >阳性入院</el-button>
       <el-button
           type="success"
           class="ml-10 mb-10 mt-10 mr-10"
-          @click="isolationCheckOut(0)"
+          @click="isolationCheckOut(1)"
       >解除隔离</el-button>
     </el-dialog>
 
@@ -691,10 +691,11 @@ export default {
       }
       // const redata = JSON.parse(e.data); // 个别数据不是JSON格式数据
       // const redata = e.data
-      console.log(redata);
+      console.log("redata",redata);
       for (let i = 0; i < this.roomList.length; i++) {
         if (this.roomList[i].id == redata.id) {
           this.roomList[i].status = redata.status
+          this.roomList[i].isIsolation = redata.isIsolation
         }
       }
       this.$forceUpdate()
@@ -708,8 +709,8 @@ export default {
     initWebSocket() { //初始化weosocket
       let token = localStorage.getItem('Token')
       let tokenModify = token.split(' ')[1]
-      this.ws = new WebSocket('ws://106.52.219.171:8102/wsServer?Authentication=' + tokenModify)
-      // this.ws = new WebSocket(`ws://106.52.219.171:8102/wsServer?Authentication=${tokenModify}`)
+      this.ws = new WebSocket('ws://127.0.0.1:8105/wsServer?Authentication=' + tokenModify)
+      // this.ws = new WebSocket(`ws://106.52.219.171:8105/wsServer?Authentication=${tokenModify}`)
       this.ws.onmessage = this.websocketonmessage;
       this.ws.onopen = this.websocketonopen;
       this.ws.onerror = this.websocketonerror;
@@ -752,7 +753,7 @@ export default {
 
     isolationCheckOut(val) {
       let data = {
-        type:val,
+        status:val,
         roomId: this.current.id
       }
       formDataPost("api/room/isolationCheckOut",data).then(res => {
@@ -809,7 +810,7 @@ export default {
             message: "房间已成功消毒!"
           });
           this.infoVisible = false
-          this.getRoomList()
+          // this.getRoomList()
         }else {
           this.$notify.error({
             title: '错误',
@@ -826,7 +827,7 @@ export default {
         email: '',
         type: ''
       }
-      get("api/room/checkInfo"+this.current.id).then(res => {
+      get("api/room/checkInfo/"+this.current.id).then(res => {
         if (res.data.code === "200") {
           this.checkInInfoData = res.data.data
           this.checkInInfoVisible = true
@@ -860,7 +861,7 @@ export default {
             message: "修改成功"
           });
           this.infoVisible = false
-          this.getRoomList()
+          // this.getRoomList()
         }else {
           this.$notify.error({
             title: '错误',
