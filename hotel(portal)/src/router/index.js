@@ -8,6 +8,7 @@ import OrderList from '../views/OrderList'
 import SignIn from '../components/SignIn'
 import Register from '../components/Register'
 import Wallet from '../views/wallet'
+import RecordList from '../views/RecordList'
 
 Vue.use(VueRouter)
 
@@ -56,6 +57,11 @@ const routes = [
         path: '/wallet',
         name: 'wallet',
         component: Wallet
+    },
+    {
+        path: '/recordList',
+        name: 'recordList',
+        component: RecordList
     }
 ]
 
