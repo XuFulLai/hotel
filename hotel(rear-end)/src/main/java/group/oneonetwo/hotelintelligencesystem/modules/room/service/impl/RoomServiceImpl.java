@@ -486,7 +486,9 @@ public class RoomServiceImpl implements IRoomService {
             throw new CommonException("该房间非入住状态,请选择其他房间!");
         }
         roomPO.setStatus(RoomStatus.STERILIZE.getCode());
-        int i = roomMapper.updateById(roomPO);
+        RoomVO roomVO = new RoomVO();
+        BeanUtils.copyProperties(roomPO,roomVO);
+        RoomPO save = save(roomVO);
     }
 
     /**
