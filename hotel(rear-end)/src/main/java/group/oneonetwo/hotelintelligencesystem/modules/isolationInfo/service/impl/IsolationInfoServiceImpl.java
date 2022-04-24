@@ -12,10 +12,13 @@ import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.Is
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.IsolationInfoService;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.dao.IsolationInfoMapper;
 
+import group.oneonetwo.hotelintelligencesystem.modules.room.model.po.RoomPO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
+import group.oneonetwo.hotelintelligencesystem.modules.user.model.po.UserPO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
+import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,7 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
 
     @Autowired
     IHotelService hotelService;
+
 
     @Autowired
     IRoomService roomService;
@@ -173,8 +177,13 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
     @Override
     public void distribution(IsolationInfoVO isolationInfoVO) {
         RoomVO roomVO = roomService.isolationCheckIn(isolationInfoVO.getHotelId(), isolationInfoVO.getRoomType(), null);
+        if(!WStringUtils.isBlank(isolationInfoVO.getUserName())) {
+            UserPO username = userService.findByUsername(isolationInfoVO.getUserName());
+            isolationInfoVO.setuId(username.getId());
+        }
         isolationInfoVO.setStatus(0);
         isolationInfoVO.setRoomId(roomVO.getId());
+        isolationInfoVO.setRoomName(roomVO.getName());
         add(isolationInfoVO);
     }
 
