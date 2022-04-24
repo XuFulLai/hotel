@@ -489,7 +489,8 @@ export default {
         status: undefined,
         type: undefined,
         province: undefined
-      }
+      },
+      title: ''
     }
   },
   watch: {

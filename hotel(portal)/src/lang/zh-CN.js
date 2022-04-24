@@ -27,6 +27,7 @@ export default {
         index: '首页',
         list: '酒店列表',
         order: '我的订单',
+        record: '我的记录',
         wallet: '我的钱包',
         logOut: '注销',
     },

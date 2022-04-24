@@ -398,9 +398,13 @@ export default {
           size: 10
         }
       }
-      post("api/checkRecords/ownPage",data).then(res => {
-
-      })
+      post("api/checkRecords/ownPage",data)
+        .then( res => {
+          console.log(res);
+        })
+        .catch( err => {
+          console.error(err);
+        })
     },
     confirmApply() {
       let data = this.applyForm
