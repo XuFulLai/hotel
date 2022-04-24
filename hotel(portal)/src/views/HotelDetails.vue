@@ -195,7 +195,7 @@
                         :label="item.name"
                         :value="item.id">
                       <span style="float: left">{{ item.name }}</span>
-                      <span style="float: right; color: #8492a6; font-size: 13px">￥{{ item.fee }}</span>
+                      <span style="float: right; color: #8492a6; font-size: 13px">￥{{ item.isolationFee }}</span>
                     </el-option>
                   </el-select>
 
@@ -538,7 +538,7 @@ export default {
     },
     isolateFeeF() {
       // this.countTime()
-      this.isolateFee = 14 * this.roomTypeMap[this.isolateRoomType].fee
+      this.isolateFee = 14 * this.roomTypeMap[this.isolateRoomType].isolationFee
     },    
     countTime() {
       let estimatedCheckIn = new Date(this.dateValue[0])
