@@ -37,6 +37,17 @@ public class IsolationInfoVO  implements Serializable {
     @ApiModelProperty("隔离人员id")
     private String uId;
 
+    @ApiModelProperty("用户名")
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getuId() {
         return uId;
     }
