@@ -203,7 +203,7 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
                     logger.info("id为{}的用户没有填写电子邮箱地址,无法发送邮件!",item.getuId());
                 }
                 emailUtils.sendMail(null,isolationInfoPO.getEmail(), null,
-                        " 【防疫酒店管控系统】"+item.getCheckTime().toString()+"体温检测报告",
+                        " 【防疫酒店管控系统】"+sdf1.format(item.getCheckTime())+"体温检测报告",
                         "您于"+sdf1.format(item.getCheckTime())+"检测的体温检测结果异常,检测结果为"+item.getCheckRes()+"℃");
             }else if (item.getCheckType() == 1 && item.getCheckRes() == 1.00) {
                 logger.info("id为{}的核酸检测异常,检测结果为阳性",item.getuId());
@@ -217,7 +217,7 @@ public class CheckRecordsServiceImpl implements ICheckRecordsService {
                 }
 
                 emailUtils.sendMail(null,isolationInfoPO.getEmail(), null,
-                        " 【防疫酒店管控系统】"+item.getCheckTime().toString()+"核酸检测报告",
+                        " 【防疫酒店管控系统】"+sdf1.format(item.getCheckTime())+"核酸检测报告",
                         "您于"+sdf1.format(item.getCheckTime())+"检测的核酸检测异常,检测结果为+");
                 //emailUtils.sendMail(null,"1499602163@qq.com",null,"这是核酸检测标题","id为"+item.getuId()+"的核酸检测异常,检测结果为+");
 
