@@ -82,7 +82,7 @@ public class IsolationInfoController {
 
     @ApiOperation("防疫人员直接分配房间")
     @PostMapping("distribution")
-    public Reply distribution(IsolationInfoVO isolationInfoVO){
+    public Reply distribution(@RequestBody  IsolationInfoVO isolationInfoVO){
         isolationInfoService.distribution(isolationInfoVO);
         return Reply.success();
 

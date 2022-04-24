@@ -130,6 +130,7 @@ public class ReviewServiceImpl implements ReviewService{
     //id
     @Override
     public void getCheck(ReviewVO reviewVO) {
+        reviewVO.setuId(authUtils.getUid());
         if(reviewVO.getType()==0 || reviewVO.getType()==1){
             add(reviewVO);
         }else {
@@ -184,11 +185,11 @@ public class ReviewServiceImpl implements ReviewService{
         isolationInfoVO.setPhone(reviewPO.getPhone());
         isolationInfoVO.setEmail(reviewPO.getEmail());
         isolationInfoVO.setHotelId(reviewPO.getHotelId());
-        isolationInfoVO.setRoomType(reviewPO.getRoomType());
+        isolationInfoVO.setRoomType(roomVO.getType());
         isolationInfoVO.setPay(reviewPO.getTotalFee());
         isolationInfoVO.setCheckInTime(reviewPO.getCheckInTime());
         isolationInfoVO.setCheckOutTime(reviewPO.getCheckOutTime());
-        isolationInfoVO.setRoomId(reviewPO.getId());
+        isolationInfoVO.setRoomId(roomVO.getId());
         isolationInfoVO.setRoomName(reviewPO.getName());
         isolationInfoVO.setProvince(reviewPO.getProvince());
         isolationInfoVO.setCity(reviewPO.getCity());
