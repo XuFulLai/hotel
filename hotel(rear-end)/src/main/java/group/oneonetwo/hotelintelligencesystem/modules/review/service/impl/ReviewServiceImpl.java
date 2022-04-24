@@ -171,10 +171,16 @@ public class ReviewServiceImpl implements ReviewService{
                 walletPO.setBalance(walletPO.getBalance()+roomTypePO.getIsolationFee());
                 walletService.save(walletPO);
             }
+            reviewPO.setReviewStatus(2);
+            ReviewVO reviewVO1 = new ReviewVO();
+            BeanUtils.copyProperties(reviewPO,reviewVO1);
+            reviewService.save(reviewVO1);
             return;
         }
 
         ReviewPO reviewPO = selectOneById(reviewVO.getId());
+
+
         RoomVO roomVO = roomService.isolationCheckIn(reviewVO.getHotelId(), reviewVO.getRoomType(), null);
 
         IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
@@ -195,6 +201,11 @@ public class ReviewServiceImpl implements ReviewService{
         isolationInfoVO.setCity(reviewPO.getCity());
         isolationInfoVO.setStatus(0);
         isolationInfoService.add(isolationInfoVO);
+
+        ReviewVO reviewVO1 = new ReviewVO();
+        reviewPO.setReviewStatus(1);
+        BeanUtils.copyProperties(reviewPO,reviewVO1);
+        reviewService.save(reviewVO1);
 
     }
 
