@@ -3,8 +3,8 @@ import axios from "axios";
 //创建axios实例
 const instance = axios.create({
     //baseURL:"http://106.52.219.171/tomato/hotel/api",
-    //baseURL:"http://106.52.219.171:8105",
-     baseURL:"http://127.0.0.1:8105",
+    baseURL:"http://106.52.219.171:8105",
+    //  baseURL:"http://127.0.0.1:8105",
     timeout:15000,
 })
 
