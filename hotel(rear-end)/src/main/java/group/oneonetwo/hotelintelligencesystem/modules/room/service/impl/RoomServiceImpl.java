@@ -567,10 +567,9 @@ public class RoomServiceImpl implements IRoomService {
 
     //隔离房间的更换
     @Override
-    public RoomVO checkInfo(String roomId) {
-        String userHotelId = authUtils.getUserHotelId();
-        RoomVO roomVO = isolationCheckIn(userHotelId, null, roomId);
-        return roomVO;
+    public IsolationInfoVO checkInfo(String roomId) {
+        IsolationInfoVO isolationInfoVO = isolationInfoService.selectByRoomIdAndStaus(roomId);
+        return isolationInfoVO;
     }
 
   //隔离房间的更换
