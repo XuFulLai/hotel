@@ -47,6 +47,18 @@
             label="地址">
         </el-table-column>
         <el-table-column
+            label="设置"
+            width="240"
+            align="center">
+          <template slot-scope="scope">
+            <el-button
+                size="mini"
+                type="warning"
+                @click="setHotel(scope.$index, scope.row)">设置为隔离酒店
+            </el-button>            
+          </template>
+        </el-table-column>        
+        <el-table-column
             label="操作"
             width="240"
             align="center">
@@ -59,7 +71,7 @@
                 size="mini"
                 type="primary"
                 @click="handleModify(scope.$index, scope.row)">编辑
-            </el-button>
+            </el-button>           
             <el-button
                 size="mini"
                 type="danger"
@@ -168,6 +180,17 @@
         </span>
     </el-dialog>
 
+    <el-dialog
+      title="提示"
+      :visible.sync="sureDialog"
+      width="300px">
+      <span>确定要将该酒店设置成隔离酒店吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="sureDialog = false">取 消</el-button>
+        <el-button type="primary" @click="confirmSet">确 定</el-button>
+      </span>
+    </el-dialog>    
+
   </div>
 
 </template>
@@ -201,7 +224,9 @@ export default {
         name: undefined,
         address: undefined,
         badge: ''
-      }
+      },
+      sureDialog: false,
+      currentHotelId: ''
     }
   },
   methods: {
@@ -276,6 +301,33 @@ export default {
       this.dialogVisible = true
       this.title = '修改酒店信息'
       this.hotelValue = 'modify'
+    },
+
+    setHotel(index, row) {
+      console.log(index);
+      console.log(row);
+      console.log(row.id);
+      this.currentHotelId = row.id
+      this.sureDialog = true
+
+    },
+
+    confirmSet() {
+      get(`/api/hotel/allow/${this.currentHotelId}`)
+        .then( res => {
+          console.log(res);
+          if (res.data.code == 200) {
+            this.$message({
+                message: '操作成功',
+                type: 'success',
+                duration: 2000
+            });     
+            this.sureDialog = false       
+          }
+        })
+        .catch( err => {
+          console.error(err);
+        })
     },
 
     //
