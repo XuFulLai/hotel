@@ -34,7 +34,7 @@
 
             <div>
               <h3 class="font-22">申请记录</h3>
-              <p class="font-16">12</p>
+              <p class="font-16">{{ applyListNum }}</p>
             </div>
 
           </div>
@@ -107,6 +107,18 @@
               </div>
             </li>
           </ul>
+
+          <div v-if="applyListNum > 5" class="d-flex align-items-center justify-content-center">
+            <el-pagination
+                background
+                @current-change="applyCurrent"
+                @prev-click="applyPrev"
+                @next-click="applyNext"
+                layout="prev, pager, next"
+                :total="applyListNum">
+            </el-pagination>
+          </div>
+
         </div>
 
 
@@ -118,80 +130,45 @@
       <Footer></Footer>
 
       <!-- 检测记录dialog -->
-      <!-- <el-dialog
+      <el-dialog
           title="检测记录"
           :visible.sync="checkVisible"
           width="570px">
-      <div class="content">
-          <div class="d-flex align-items-center mb-15">
-              <p class="w-100 text-left">检测人姓名:</p>
-              <el-input
-                  style="width: 350px;"
-                  placeholder="检测人姓名"
-                  v-model="check.name"
-                  disabled
-                  clearable>
-              </el-input>
-          </div>            
-          <div v-if="testValue == 'modify'" class="d-flex align-items-center mb-15">
-              <p class="w-100 text-left">检测类型:</p>
-              <el-tag v-if="form.checkType==0" type="danger">紧急</el-tag>
-              <el-tag v-if="form.checkType==1" type="warning">应隔离人员</el-tag>
-              <el-tag v-if="form.checkType==2" type="info">入境人员</el-tag>
-              <el-tag v-if="form.checkType==3" >中高风险地区人员</el-tag>
-          </div>
-          <div class="d-flex align-items-center mb-15">
-              <p class="w-100 text-left">检测类型：</p>
-              <el-select v-model="form.checkType" placeholder="请选择">
-                  <el-option
-                  v-for="item in testOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                  </el-option>
-              </el-select>
-          </div>
-          <div class="d-flex align-items-center mb-15">
-              <p class="w-100 text-left">检测结果：</p>
-              <el-input
-                  v-if="form.checkType == 0"
-                  style="width: 350px;"
-                  placeholder="请输入检测温度"
-                  v-model="form.checkRes"
-                  clearable>
-              </el-input>
-              <el-select v-else v-model="form.checkRes" placeholder="请选择">
-                  <el-option
-                      v-for="item in resultOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                  </el-option>
-              </el-select>
-          </div>
-          <div class="d-flex align-items-center">
-              <p class="w-100 text-left">检测时间:</p>
-              <el-date-picker
-                  v-model="form.checkTime"
-                  type="datetime"
-                  placeholder="选择日期时间">
-              </el-date-picker>
-          </div>
+        <el-table :data="ownTestData">
+          <el-table-column
+            property="checkTime"
+            label="检测时间"
+            :formatter="eTableDateTime"
+            align="center"
+            width="250px">
+          </el-table-column>
+          <el-table-column
+            property="checkType"
+            label="检测类型"
+            align="center">
+            <template slot-scope="scope">
+                <el-tag v-if="scope.row.checkType==0" type="danger">体温</el-tag>
+                <el-tag v-if="scope.row.checkType==1" >核酸</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column 
+            property="checkRes"
+            label="检测结果"
+            align="center">
+            <template slot-scope="scope">
+                <el-tag v-if="scope.row.checkRes==0">阴性</el-tag>
+                <el-tag v-else-if="scope.row.checkRes==1" type="danger">阳性</el-tag>
+                <el-tag v-else type="danger">{{ scope.row.checkRes }}°</el-tag>
+            </template>           
+          </el-table-column>
+        </el-table>
+      </el-dialog>
 
-      </div>
-      <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="confirm">确 定</el-button>
-          </span>
-      </el-dialog> -->
-
-      <!--      物资申请dialog-->
-      <!-- <el-dialog
+      <!-- 物资申请dialog -->
+      <el-dialog
           title="物质申请"
           :visible.sync="applyVisible"
-          width="40%"
-          custom-class="min-w-450"
-      >
+          width="570px">
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">申请物资:</p>
           <el-input
@@ -246,7 +223,7 @@
           <el-button type="primary" @click="confirmApply">确 定</el-button>
         </span>
 
-      </el-dialog>       -->
+      </el-dialog>      
 
     </div>
   </div>
@@ -269,6 +246,26 @@ export default {
       applyVisible: false,
       // orderList: [],
       isolationList: [],
+      testOptions: [
+          {
+              value: 0,
+              label: '体温'
+          },
+          {
+              value: 1,
+              label: '核酸'
+          }
+      ],
+      resultOptions: [
+          {
+              value: 0,
+              label: '阴性'
+          },
+          {
+              value: 1,
+              label: '阳性'
+          }
+      ],      
       applyList: [],
       pageNum: 0,
       isolationNum: 0,
@@ -303,7 +300,10 @@ export default {
         checkType: '',
         checkRes: '',
         checkTime: '',
-      }
+      },
+      form: {},
+      ownTestData: [],
+      applyListNum: 0,
     };
   },
   filters: {
@@ -444,6 +444,7 @@ export default {
   },
   mounted() {
     this.getIsolationRecords()
+    this.getApplyRecords()
   },
   methods: {
     // 隔离记录 Start
@@ -523,6 +524,8 @@ export default {
       post("api/checkRecords/ownPage", data)
         .then((res) => {
           console.log(res);
+          this.ownTestData = res.data.data.records
+          this.checkVisible = true
         })
         .catch((err) => {
           console.error(err);
@@ -562,6 +565,7 @@ export default {
     },
     // 隔离记录 End
 
+    // 申请记录 Start
     // 点击申请记录大按钮函数
     applyRecordsHandle(val) {
       this.isApply = val;
@@ -573,18 +577,74 @@ export default {
 
     // 获取申请记录函数
     getApplyRecords() {
-      let data = {
+      const data = {
         page: {
           page: 1,
           size: 10,
-        },
-      };
+        }
+      }
+      this.ApplyRecordsRequest(data)
+    },
+    ApplyRecordsRequest(data) {
       post("api/materialsApply/page", data)
         .then( res => {
           this.applyList = res.data.data.records;
-          this.pageNum = res.data.data.total;
+          this.applyListNum = res.data.data.total;
         })
+    },
+        //选择页码
+    applyCurrent(num) {
+      let data = {
+        page: {
+          page: num,
+          size: 10
+        }
+      }
+      this.ApplyRecordsRequest(data)
+    },
+
+    //上一页
+    applyPrev(num) {
+      let data = {
+        page: {
+          page: num,
+          size: 10
+        }
+      }
+      this.ApplyRecordsRequest(data)
+    },
+
+    //下一页
+    applyNext(num) {
+      let data = {
+        page: {
+          page: num,
+          size: 10
+        }
+      }
+      this.ApplyRecordsRequest(data)
     },   
+    // 申请记录 End
+
+    // 日期时间格式化
+    eTableDateTime(row, column, cellValue, index){
+        const dateTime = new Date(cellValue) // Date实例
+
+        const YYYY = dateTime.getFullYear() // 获取当前年份
+        const MM = dateTime.getMonth() + 1 // 获取当前月份
+        const DD = dateTime.getDate() // 获取当前天数
+        const hh = this.fillPrefix(dateTime.getHours()) // 获取当前小时，并判断是否需要补零
+        const mm = this.fillPrefix(dateTime.getMinutes()) // 获取当前分钟，并判断是否需要补零
+        const ss = this.fillPrefix(dateTime.getSeconds()) // 获取当前秒数，并判断是否需要补零
+        // 返回格式化之后的当前时间
+        return `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss}`
+        // return `${YYYY}-${MM}-${DD}`
+    },
+
+    // 补零函数
+    fillPrefix(val){
+        return val > 9 ? val : `0${val}` // 个位数时间进行补零操作
+    },
 
   },
 };
