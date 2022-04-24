@@ -465,9 +465,9 @@ public class RoomServiceImpl implements IRoomService {
             roomPO = roomPOS.get(0);
         }
         roomPO.setStatus(RoomStatus.USED.getCode());
-        roomMapper.updateById(roomPO);
         RoomVO roomVO = new RoomVO();
         BeanUtils.copyProperties(roomPO, roomVO);
+        RoomPO save = save(roomVO);
         return roomVO;
     }
 
