@@ -56,6 +56,13 @@
             prop="name"
             label="受检人姓名">
         </el-table-column>
+          <el-table-column
+              align="center"
+              prop="idCard"
+              label="受检人身份证"
+              width="170px">
+
+          </el-table-column>
         <el-table-column
             align="center"
             prop="checkType"
