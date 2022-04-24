@@ -254,6 +254,13 @@ export default {
             post('/api/isolationInfo/distribution',data)
                 .then( res => {
                     console.log(res);
+                    if (res.data.code == 200) {
+                        this.$message({
+                            message: '成功',
+                            type: 'success',
+                            duration: 2000
+                        });                        
+                    }
                 })
                 .catch( err => {
                     console.error(err);

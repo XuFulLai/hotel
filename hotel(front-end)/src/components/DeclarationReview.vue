@@ -461,6 +461,14 @@ export default {
           .then(res => {
             console.log(res);
             this.form.reviewStatus = 1
+            if (res.data.code == 200) {
+                this.$message({
+                    message: '成功',
+                    type: 'success',
+                    duration: 2000
+                });                        
+            }
+            this.dialogVisible = false
           })
           .catch(err => {
             console.error(err);
