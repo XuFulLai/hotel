@@ -515,6 +515,8 @@ export default {
               message: this.$t('common.success'),
               type: 'success'
             });
+          } else {
+            this.$message.error(res.data.msg);     
           }
         })
         .catch( err => {
