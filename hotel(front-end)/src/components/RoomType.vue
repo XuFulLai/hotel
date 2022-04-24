@@ -20,6 +20,11 @@
       </el-table-column>
       <el-table-column
           align="center"
+          prop="isolationFee"
+          label="隔离费用">
+      </el-table-column>
+      <el-table-column
+          align="center"
           prop="maxLoad"
           label="最大容量">
       </el-table-column>
