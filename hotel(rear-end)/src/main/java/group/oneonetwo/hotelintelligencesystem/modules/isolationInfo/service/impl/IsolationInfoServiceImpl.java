@@ -78,7 +78,7 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
         }else {
             if (isolationInfoVO.getStatus() != 0) {
                 String roomId = check.getRoomId();
-                roomService.isolationCheckOut(isolationInfoVO.getStatus(),roomId);
+                roomService.leaveIsolationRoom(roomId);
             }
         }
 

@@ -503,8 +503,10 @@ public class RoomServiceImpl implements IRoomService {
         if (!RoomStatus.STERILIZE.getCode().equals(roomPO.getStatus())) {
             throw new CommonException("该房间不需要消毒,请选择其他房间!");
         }
-        roomPO.setStatus(RoomStatus.UNUSED.getCode());
-        int i = roomMapper.updateById(roomPO);
+        RoomVO roomVO = new RoomVO();
+        roomVO.setId(roomPO.getId());
+        roomVO.setStatus(RoomStatus.UNUSED.getCode());
+        RoomPO save = save(roomVO);
     }
 
     /**

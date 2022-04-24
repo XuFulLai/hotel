@@ -22,7 +22,7 @@
                 <div style="background: #F56C6C" class="badge" v-if="hotelDetails.allowIsolation">
                   隔离酒店
                 </div>
-                <div class="badge" v-for="i in hotelDetails.badge.split(',')">
+                <div  v-if="hotelDetails.badge" class="badge" v-for="i in hotelDetails.badge.split(',')">
                   {{ i }}
                 </div>
               </div>
