@@ -78,7 +78,7 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
         }else {
             if (isolationInfoVO.getStatus() != 0) {
                 String roomId = check.getRoomId();
-                roomService.isolationCheckOut(isolationInfoVO.getStatus(),roomId);
+                roomService.leaveIsolationRoom(roomId);
             }
         }
 
@@ -173,8 +173,20 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
     @Override
     public void distribution(IsolationInfoVO isolationInfoVO) {
         RoomVO roomVO = roomService.isolationCheckIn(isolationInfoVO.getHotelId(), isolationInfoVO.getRoomType(), null);
+        isolationInfoVO.setStatus(0);
         isolationInfoVO.setRoomId(roomVO.getId());
         add(isolationInfoVO);
+    }
+
+    @Override
+    public IsolationInfoVO selectByRoomIdAndStaus(String roomId) {
+        QueryWrapper<IsolationInfoPO> wrapper = new QueryWrapper<>();
+        wrapper.eq("room_id",roomId);
+        wrapper.eq("status",0);
+        List<IsolationInfoPO> isolationInfoPOS = isolationInfoMapper.selectList(wrapper);
+        IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
+        BeanUtils.copyProperties(isolationInfoPOS.get(0),isolationInfoVO);
+        return isolationInfoVO;
     }
 
 

@@ -2,6 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.room.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.CheckInVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.DetailVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
@@ -95,8 +96,8 @@ public class RoomController {
 
 
     @GetMapping("checkInfo/{id}")
-    @ApiOperation("入    住")
-    public Reply checkInfo(@PathVariable("id") String id) {
+    @ApiOperation("入 住 的人是谁")
+    public Reply<IsolationInfoVO> checkInfo(@PathVariable("id") String id) {
         return Reply.success(roomService.checkInfo(id));
     }
 
@@ -121,8 +122,6 @@ public class RoomController {
         roomService.cleanRoom(roomId);
         return Reply.success();
     }
-
-
 
 
 }
