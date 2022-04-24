@@ -167,6 +167,28 @@
               clearable>
           </el-input>
         </div>
+        <div v-if="form.type==0 || form.type==1" class="d-flex align-items-center mb-15">
+            <p class="w-100 text-left font-16">酒店:</p>
+            <el-select style="width:350px;" v-model="form.hotel" placeholder="请选择">
+                <el-option
+                    v-for="item in hotelOptions"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+            </el-select>                
+        </div>
+        <div v-if="form.type==0 || form.type==1" class="d-flex align-items-center mb-15">
+            <p class="w-100 text-left font-16">房间类型:</p>
+            <el-select style="width:350px;" v-model="form.roomType" placeholder="请选择">
+                <el-option
+                    v-for="item in roomTypeOptions"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+            </el-select>
+        </div>
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">审核说明:</p>
           <el-input
@@ -202,7 +224,7 @@
 </template>
 
 <script>
-import {post} from "../utils/request";
+import { get,post } from "../utils/request";
 import {dateFormat} from "../utils/dateTime";
 
 export default {
@@ -225,7 +247,9 @@ export default {
         switch: false,
       },
       currentIndex: '',
-      page: ''
+      page: '',
+      hotelOptions: [],
+      roomTypeOptions: [],
     }
   },
   watch: {
@@ -236,6 +260,9 @@ export default {
       }
 
     },
+    "form.hotel"(val, oldVal){
+        this.getIsolationRoomType()
+    }    
   },
   mounted() {
     this.getReviewList()
@@ -336,6 +363,7 @@ export default {
       this.form = row
       this.form.checkInTime = dateFormat(this.form.checkInTime)
       this.form.checkOutTime = dateFormat(this.form.checkOutTime)
+      this.getIsolationHotelList()
       this.dialogVisible = true
 
     },
@@ -386,11 +414,47 @@ export default {
       }
     },
 
+    // 获取隔离酒店
+    getIsolationHotelList() {
+      const data = {
+          page: {
+              page: 1,
+              size: 99999
+          },
+          allowIsolation: 1                
+      }
+      post('/api/hotel/page', data)
+        .then( res => {
+            console.log(res);
+            this.hotelOptions = res.data.data.records
+        })
+        .catch( err => {
+            console.error(err);
+        })
+    },
+
+    // 获取隔离酒店对应的房间
+    getIsolationRoomType() {
+      const data = {
+          isIsolation: 1
+      }
+      get(`api/roomType/currentRoomTypeList/${this.form.hotel}`, data)
+        .then( res => {
+            console.log(res);
+            this.roomTypeOptions = res.data.data
+        })
+        .catch( err => {
+            console.error(err);
+        })
+    },    
+
     // 同意
     confirm() {
       const data = {
         id: this.form.id,
         reviewStatus: 1,
+        hotelId: this.form.hotelId,
+        roomType: this.form.roomType,
         remark: this.form.textarea
       }
       post('/api/review/reviews', data)
