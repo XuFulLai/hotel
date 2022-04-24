@@ -8,7 +8,7 @@
             </div>
 
             <div class="login-r" v-if="!qrShow">
-                <h3>酒店管理系统</h3>
+                <h3>防疫酒店管控系统</h3>
                 <p>Welcome欢迎登录</p>
 
                 <div class="inp">
