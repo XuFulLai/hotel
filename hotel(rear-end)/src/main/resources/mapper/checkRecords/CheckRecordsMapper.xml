@@ -32,7 +32,7 @@
     </insert>
 
     <select id="getPages" resultType="group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsVO">
-        select ch.*,iss.id_card idCard,iss.`name` name from check_records ch left join isolation_info  iss on ch.u_id=iss.u_id
+        select ch.*,iss.id_card idCard,iss.`name` name from check_records ch left join isolation_info iss on ch.u_id=iss.id
         <where>
             <if test="vo.beginTime != null and vo.beginTime != '' and vo.endTime != null and vo.endTime != ''">
                 and ch.check_time between #{vo.beginTime} and #{vo.endTime}

@@ -156,6 +156,14 @@
           </el-input>
         </div>
         <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">隔离费用:</p>
+          <el-input
+              style="width: 350px;"
+              v-model="form.isolationFee"
+              clearable>
+          </el-input>
+        </div>
+        <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">排序:</p>
           <el-input-number
               v-model="form.sort"
@@ -205,7 +213,8 @@ export default {
         haveBreakfast: undefined,
         sort: undefined,
         fee: undefined,
-        bedType: undefined
+        bedType: undefined,
+        isolationFee:undefined
       }
 
     }

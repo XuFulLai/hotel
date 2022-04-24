@@ -130,6 +130,7 @@ public class ReviewServiceImpl implements ReviewService{
     //id
     @Override
     public void getCheck(ReviewVO reviewVO) {
+        reviewVO.setuId(authUtils.getUid());
         if(reviewVO.getType()==0 || reviewVO.getType()==1){
             add(reviewVO);
         }else {
@@ -140,7 +141,7 @@ public class ReviewServiceImpl implements ReviewService{
             RoomTypePO roomTypePO = roomTypeServeice.selectOneById(reviewVO.getRoomType());
             Integer isolationFee = roomTypePO.getIsolationFee();
             WalletPO walletPO = walletService.getWalletPO(reviewVO.getuId());
-            add(reviewVO);
+
             double balances=0;
             balances=walletPO.getBalance()-isolationFee;
             if(balances<=0.0){
@@ -149,7 +150,8 @@ public class ReviewServiceImpl implements ReviewService{
             //这里貌似查了个更新
             walletPO.setBalance(balances);
             walletService.save(walletPO);
-
+            reviewVO.setTotalFee((int)balances);
+            add(reviewVO);
         }
 
     }
@@ -173,8 +175,7 @@ public class ReviewServiceImpl implements ReviewService{
         }
 
         ReviewPO reviewPO = selectOneById(reviewVO.getId());
-        String roomType = reviewPO.getRoomType();
-        RoomVO roomVO = roomService.isolationCheckIn(reviewPO.getHotelId(), roomType, null);
+        RoomVO roomVO = roomService.isolationCheckIn(reviewVO.getHotelId(), reviewVO.getRoomType(), null);
 
         IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
         isolationInfoVO.setName(reviewPO.getName());
@@ -184,11 +185,11 @@ public class ReviewServiceImpl implements ReviewService{
         isolationInfoVO.setPhone(reviewPO.getPhone());
         isolationInfoVO.setEmail(reviewPO.getEmail());
         isolationInfoVO.setHotelId(reviewPO.getHotelId());
-        isolationInfoVO.setRoomType(reviewPO.getRoomType());
+        isolationInfoVO.setRoomType(roomVO.getType());
         isolationInfoVO.setPay(reviewPO.getTotalFee());
         isolationInfoVO.setCheckInTime(reviewPO.getCheckInTime());
         isolationInfoVO.setCheckOutTime(reviewPO.getCheckOutTime());
-        isolationInfoVO.setRoomId(reviewPO.getId());
+        isolationInfoVO.setRoomId(roomVO.getId());
         isolationInfoVO.setRoomName(reviewPO.getName());
         isolationInfoVO.setProvince(reviewPO.getProvince());
         isolationInfoVO.setCity(reviewPO.getCity());

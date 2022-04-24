@@ -56,10 +56,10 @@ public class HotelCtroller {
         return Reply.success(hotelService.myHotel());
     }
 
-    @GetMapping("allow/{id}")
+    @PostMapping("allow")
     @ApiOperation("是否允许为酒店设置隔离权限")
-    public Reply<HotelVO> allow(@PathVariable("id") int id){
-        return Reply.success(hotelService.allow(id));
+    public Reply<HotelVO> allow(String hotelId,Integer id ){
+        return Reply.success(hotelService.allow(hotelId,id));
     }
 
 

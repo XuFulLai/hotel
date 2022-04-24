@@ -34,4 +34,6 @@ public interface IsolationInfoService{
 
     void distribution(IsolationInfoVO isolationInfoVO);
 
+    IsolationInfoVO selectByRoomIdAndStaus(String roomId);
+
 }

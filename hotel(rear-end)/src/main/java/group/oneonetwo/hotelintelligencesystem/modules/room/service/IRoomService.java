@@ -34,7 +34,7 @@ public interface IRoomService {
     RoomVO isolationCheckIn(String hotelId,String roomType,String roomId);
     RoomVO changeRoomOnIsolation(String hotelId,String roomType,String roomId,RoomVO oldRoom);
     RoomVO changeRoom(String isolationInfoId,String hotelId,String roomType,String roomId);
-    RoomVO checkInfo(String id);
+    IsolationInfoVO checkInfo(String id);
     void changeRoom(String currentRoomId ,String newRoomId);
     void isolationCheckOut(Integer status,String roomId);
 
