@@ -528,7 +528,7 @@ export default {
     },
     changeRoom() {
       let data = this.changeForm
-      formDataPost("api/xxxxxx",data).then(res => {
+      formDataPost("api/room/changeRoom",data).then(res => {
         if (res.data.code === "200") {
           this.getOneInfo(this.form.id)
           this.changeDialogVisible = false
