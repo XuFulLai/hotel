@@ -378,6 +378,7 @@ export default {
         confirm() {
             const value = this.testValue
             const data = {
+                uId: this.form.uId,
                 checkRes: this.form.checkRes,
                 checkTime: this.form.checkTime,
                 checkType: this.form.checkType,
