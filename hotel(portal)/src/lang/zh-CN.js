@@ -3,7 +3,7 @@ export default {
         success: '成功！'
     },
     login: {
-        title: '酒店管理系统',
+        title: '防疫酒店管控系统',
         text: 'Welcome欢迎登录',
         login: '登录',
         register: '注册',
@@ -84,6 +84,7 @@ export default {
       roomName: '入住房间：'
     },
     orderList: {
+        orderId: '订单ID：',
         cancelOrder: '取消订单',
         hotelName: '酒店名称：',
         roomType: '房间类型：',
