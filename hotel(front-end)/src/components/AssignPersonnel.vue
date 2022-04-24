@@ -11,13 +11,22 @@
                     v-model="form.name"
                     clearable>
                 </el-input>
-            </div>            
+            </div>          
+            <div class="d-flex align-items-center mb-15">
+                <p class="w-120 text-left font-16">用户id:</p>
+                <el-input
+                    style="width: 350px;"
+                    placeholder="请输入用户id"
+                    v-model="form.id"
+                    clearable>
+                </el-input>
+            </div>              
             <div class="d-flex align-items-center mb-15">
                 <p class="w-120 text-left font-16">身份证:</p>
                 <el-input
                     style="width: 350px;"
                     placeholder="请输入身份证号码"
-                    v-model="form.id"
+                    v-model="form.idCardNum"
                     clearable>
                 </el-input>
             </div>
@@ -100,7 +109,17 @@
                         :value="item.value">
                     </el-option>
                 </el-select>                
-            </div>            
+            </div>     
+            <div class="d-flex align-items-center mb-15">
+                <p class="w-120 text-left font-16">人员省份:</p>
+                <el-cascader
+                    style="width: 350px;"
+                    size="large"
+                    :options="addressData"
+                    :v-model="area"
+                    @change="getAddress"
+                ></el-cascader>                               
+            </div>                    
             <div>
                 <el-button type="primary" @click="confirm">确定</el-button>
             </div>
@@ -112,6 +131,8 @@
 
 <script>
 import { get, post } from "../utils/request";
+import {CodeToText, provinceAndCityData} from 'element-china-area-data'
+
 
 export default {
     name: "AssignPersonnel",
@@ -120,6 +141,7 @@ export default {
             form: {
                 name: '',
                 id: '',
+                idCardNum: '',
                 phone: '',
                 email: '',
                 situation: '',
@@ -128,6 +150,8 @@ export default {
                 status: '',
                 hotel: '',
                 roomType: '',
+                province: '',
+                city: '',
             },
             situationOptions: [{
                 value: 0,
@@ -153,7 +177,9 @@ export default {
                 label: '阳性入院'
             }],
             hotelOptions: [],
-            roomTypeOptions: []
+            roomTypeOptions: [],
+            addressData: provinceAndCityData,
+            area: [],
         }
     },
     watch: {
@@ -165,6 +191,16 @@ export default {
         this.getIsolationHotelList()
     },
     methods: {
+        getAddress(value) { //value是长度为2的装有被选择省、市代码的数组;CodeToText是个对象，键名为代码，键值为省和城市
+            this.area = [];
+            for (let i = 0; i < value.length; i++) {
+                let code = value[i];
+                this.area.push(CodeToText[code]);
+            }
+            this.form.province = this.area[0]
+            this.form.city = this.area[1]
+            console.log(this.area); //["河北省","唐山市"]
+        },
         // 获取隔离酒店
         getIsolationHotelList() {
             const data = {
@@ -203,6 +239,7 @@ export default {
             const data = {
                 name: this.form.name,
                 uId: this.form.id,
+                idCard: this.form.idCardNum,
                 phone: this.form.phone,
                 email: this.form.email,
                 type: this.form.situation,
@@ -211,6 +248,8 @@ export default {
                 status: this.form.status,
                 hotelId: this.form.hotel,
                 roomType: this.form.roomType,
+                province: this.form.province,
+                city: this.form.city,
             }
             post('/api/isolationInfo/distribution',data)
                 .then( res => {
