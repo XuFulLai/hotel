@@ -62,7 +62,7 @@
                 <p>{{ item.status | isolationStatusFilter }}</p>
                 <div>
                   <el-button
-                    v-if="item.status == 0"
+
                     @click="getCheckRecords(item.id)">检测记录</el-button>
                   <el-button
                     v-if="item.status == 0"
