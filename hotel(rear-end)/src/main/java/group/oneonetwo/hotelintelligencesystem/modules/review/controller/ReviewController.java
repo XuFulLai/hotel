@@ -67,6 +67,13 @@ public class ReviewController {
         reviewService.getReviews(reviewVO);
         return  Reply.success();
     }
+    @ApiOperation("获取个人申请记录")
+    @PostMapping("my")
+    public Reply<Page<ReviewVO>> my(@RequestBody ReviewVO reviewVO){
+        return  Reply.success(reviewService.my(reviewVO));
+    }
+
+
 
 
 

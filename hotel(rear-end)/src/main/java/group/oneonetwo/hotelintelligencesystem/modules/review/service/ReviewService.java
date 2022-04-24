@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.po.ReviewPO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.vo.ReviewVO;
+import group.oneonetwo.hotelintelligencesystem.tools.Reply;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
 * @author 文
@@ -21,5 +23,5 @@ public interface ReviewService  {
     void getReviews(ReviewVO reviewVO);
 
     ReviewPO selectByUID(String id);
-
+    Page<ReviewVO> my(ReviewVO reviewVO);
 }

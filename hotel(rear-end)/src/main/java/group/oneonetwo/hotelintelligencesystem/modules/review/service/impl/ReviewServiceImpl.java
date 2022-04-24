@@ -143,14 +143,14 @@ public class ReviewServiceImpl implements ReviewService{
             WalletPO walletPO = walletService.getWalletPO(reviewVO.getuId());
 
             double balances=0;
-            balances=walletPO.getBalance()-isolationFee;
+            balances=walletPO.getBalance()-isolationFee*14;
             if(balances<=0.0){
                 throw new CommonException(502,"账户余额不足");
             }
             //这里貌似查了个更新
             walletPO.setBalance(balances);
             walletService.save(walletPO);
-            reviewVO.setTotalFee((int)balances);
+            reviewVO.setTotalFee((int)isolationFee*14);
             add(reviewVO);
         }
 
@@ -171,6 +171,7 @@ public class ReviewServiceImpl implements ReviewService{
                 walletPO.setBalance(walletPO.getBalance()+roomTypePO.getIsolationFee());
                 walletService.save(walletPO);
             }
+            reviewPO.setRemark(reviewVO.getRemark());
             reviewPO.setReviewStatus(2);
             ReviewVO reviewVO1 = new ReviewVO();
             BeanUtils.copyProperties(reviewPO,reviewVO1);
@@ -182,7 +183,6 @@ public class ReviewServiceImpl implements ReviewService{
 
 
         RoomVO roomVO = roomService.isolationCheckIn(reviewVO.getHotelId(), reviewVO.getRoomType(), null);
-
         IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
         isolationInfoVO.setName(reviewPO.getName());
         isolationInfoVO.setuId(reviewPO.getuId());
@@ -201,7 +201,6 @@ public class ReviewServiceImpl implements ReviewService{
         isolationInfoVO.setCity(reviewPO.getCity());
         isolationInfoVO.setStatus(0);
         isolationInfoService.add(isolationInfoVO);
-
         ReviewVO reviewVO1 = new ReviewVO();
         reviewPO.setReviewStatus(1);
         BeanUtils.copyProperties(reviewPO,reviewVO1);
@@ -215,6 +214,14 @@ public class ReviewServiceImpl implements ReviewService{
         wrapper.eq("u_id",id);
         List<ReviewPO> reviewPOS = reviewMapper.selectList(wrapper);
         return reviewPOS.get(0);
+    }
+
+    @Override
+    public Page<ReviewVO> my(ReviewVO reviewVO) {
+        String uid = authUtils.getUid();
+        reviewVO.setuId(uid);
+        Page<ReviewVO> page = this.getPage(reviewVO);
+        return page;
     }
 
 
