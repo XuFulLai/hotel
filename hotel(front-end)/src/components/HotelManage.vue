@@ -46,18 +46,18 @@
             prop="address"
             label="地址">
         </el-table-column>
-        <el-table-column
-            label="设置"
-            width="240"
-            align="center">
-          <template slot-scope="scope">
-            <el-button
-                size="mini"
-                type="warning"
-                @click="setHotel(scope.$index, scope.row)">设置为隔离酒店
-            </el-button>            
-          </template>
-        </el-table-column>        
+<!--        <el-table-column-->
+<!--            label="设置"-->
+<!--            width="240"-->
+<!--            align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-button-->
+<!--                size="mini"-->
+<!--                type="warning"-->
+<!--                @click="setHotel(scope.$index, scope.row)">设置为隔离酒店-->
+<!--            </el-button>            -->
+<!--          </template>-->
+<!--        </el-table-column>        -->
         <el-table-column
             label="操作"
             width="240"
@@ -146,6 +146,15 @@
               clearable>
           </el-input>
         </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">房间类型:</p>
+          <el-switch
+              :disabled="hotelValue == 'check'"
+              v-model="form.allowIsolation"
+              active-text="隔离房间"
+              inactive-text="普通房间">
+          </el-switch>
+        </div>
         <div class="d-flex align-items-center mt-10">
           <p class="w-100 text-left">封面:</p>
           <div class="d-flex align-items-center mb-15">
@@ -180,16 +189,16 @@
         </span>
     </el-dialog>
 
-    <el-dialog
-      title="提示"
-      :visible.sync="sureDialog"
-      width="300px">
-      <span>确定要将该酒店设置成隔离酒店吗？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="sureDialog = false">取 消</el-button>
-        <el-button type="primary" @click="confirmSet">确 定</el-button>
-      </span>
-    </el-dialog>    
+<!--    <el-dialog-->
+<!--      title="提示"-->
+<!--      :visible.sync="sureDialog"-->
+<!--      width="300px">-->
+<!--      <span>确定要将该酒店设置成隔离酒店吗？</span>-->
+<!--      <span slot="footer" class="dialog-footer">-->
+<!--        <el-button @click="sureDialog = false">取 消</el-button>-->
+<!--        <el-button type="primary" @click="confirmSet">确 定</el-button>-->
+<!--      </span>-->
+<!--    </el-dialog>    -->
 
   </div>
 
@@ -223,7 +232,8 @@ export default {
         parkingLot: '',
         name: undefined,
         address: undefined,
-        badge: ''
+        badge: '',
+        allowIsolation:''
       },
       sureDialog: false,
       currentHotelId: ''
@@ -296,8 +306,13 @@ export default {
     //修改酒店信息
     handleModify(index, row) {
       console.log(index);
-      console.log(row);
+      console.log("row",row);
       this.form = row
+      if (row.allowIsolation == 1){
+        this.form.allowIsolation = true
+      }else{
+        this.form.allowIsolation = false
+      }
       this.dialogVisible = true
       this.title = '修改酒店信息'
       this.hotelValue = 'modify'
@@ -339,7 +354,8 @@ export default {
         address: this.form.address,
         parkingLot: this.form.parkingLot,
         cover: this.form.cover,
-        badge: this.form.badge
+        badge: this.form.badge,
+        allowIsolation: this.form.allowIsolation
       }
       if (value == 'add') {
         this.hotelRequest(value, data)
@@ -352,6 +368,12 @@ export default {
 
     //请求方法
     hotelRequest(url, data) {
+      if(data.allowIsolation) {
+        data.allowIsolation = 1
+      }else {
+        data.allowIsolation = 0
+      }
+      console.log("data",data)
       post('/api/hotel/' + url, data)
           .then(res => {
             console.log(res);
