@@ -91,6 +91,7 @@ export default {
         roomName: 'Room:'
     },
     orderList: {
+        orderId: 'OrderID:',
         cancelOrder: 'Cancel the order',
         hotelName: 'Hotel name:',
         roomType: 'room type:',
