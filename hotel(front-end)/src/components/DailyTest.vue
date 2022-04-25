@@ -479,6 +479,16 @@ export default {
             post('/api/checkRecords/upload',fd ,config)
                 .then( res => {
                     console.log(res);
+                    if(res.data.code == 200) {
+                        this.$message({
+                            message: '成功',
+                            type: 'success',
+                            duration: 2000
+                        });
+                    setTimeout(() => {
+                        this.$router.go(0)
+                    }, 1000)                        
+                    }
                 })
                 .catch( err => {
                     console.error(err);
