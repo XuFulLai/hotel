@@ -77,7 +77,7 @@
             prop="checkRes"
             label="检测结果">
             <template slot-scope="scope">
-                <el-tag v-if="scope.row.checkRes==0">阴性</el-tag>
+                <el-tag v-if="scope.row.checkRes==0" type="success">阴性</el-tag>
                 <el-tag v-else-if="scope.row.checkRes==1" type="danger">阳性</el-tag>
                 <el-tag v-else-if="scope.row.checkRes > 37.3" type="danger">{{ scope.row.checkRes }}°</el-tag>
                 <el-tag v-else type="success">{{ scope.row.checkRes }}°</el-tag>
