@@ -329,7 +329,7 @@
 </template>
 
 <script>
-import {formDataPost, get, post, reqFuc} from "../utils/request";
+import {formDataPost, get, post, reqIsolation} from "../utils/request";
 import axios from 'axios'
 
 export default {
@@ -615,7 +615,7 @@ export default {
         province: this.searchParams.province
       }
 
-      reqFuc(data)
+      reqIsolation(data)
           .then(res => {
             console.log(res);
 
