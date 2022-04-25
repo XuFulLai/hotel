@@ -592,10 +592,10 @@ public class RoomServiceImpl implements IRoomService {
     //隔离房间的退房
     @Override
     public void isolationCheckOut(Integer status,String roomId) {
-        IsolationInfoPO isolationInfoPO = isolationInfoService.selectOneByRoomId(roomId);
-        isolationInfoPO.setStatus(status);
-        IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
-        BeanUtils.copyProperties(isolationInfoPO,isolationInfoVO);
+        IsolationInfoVO isolationInfoVO = isolationInfoService.selectByRoomIdAndStaus(roomId);
+        isolationInfoVO.setStatus(status);
+//        IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
+//        BeanUtils.copyProperties(isolationInfoPO,isolationInfoVO);
         //保存人员时状态改变会直接改变当前房间的状态!!!!!!!!!!!!!!!!!!!!!
         isolationInfoService.save(isolationInfoVO);
 
