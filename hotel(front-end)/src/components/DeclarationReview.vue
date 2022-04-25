@@ -468,7 +468,7 @@ export default {
                     duration: 2000
                 });                        
             }
-            this.dialogVisible = false
+            // this.dialogVisible = false
           })
           .catch(err => {
             console.error(err);
