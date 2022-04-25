@@ -485,9 +485,9 @@ export default {
                             type: 'success',
                             duration: 2000
                         });
-                    setTimeout(() => {
-                        this.$router.go(0)
-                    }, 1000)                        
+                        setTimeout(() => {
+                            this.$router.go(0)
+                        }, 1000)                        
                     }
                 })
                 .catch( err => {
