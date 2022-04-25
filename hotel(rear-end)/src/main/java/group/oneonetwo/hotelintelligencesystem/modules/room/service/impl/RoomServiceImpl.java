@@ -596,12 +596,9 @@ public class RoomServiceImpl implements IRoomService {
         isolationInfoPO.setStatus(status);
         IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
         BeanUtils.copyProperties(isolationInfoPO,isolationInfoVO);
+        //保存人员时状态改变会直接改变当前房间的状态!!!!!!!!!!!!!!!!!!!!!
         isolationInfoService.save(isolationInfoVO);
-        RoomPO roomPO = selectOneById(roomId);
-        roomPO.setStatus(RoomStatus.STERILIZE.getCode());
-        RoomVO roomVO = new RoomVO();
-        BeanUtils.copyProperties(roomPO,roomVO);
-        save(roomVO);
+
     }
 
 
