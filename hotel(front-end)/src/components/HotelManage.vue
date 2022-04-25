@@ -147,12 +147,12 @@
           </el-input>
         </div>
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">房间类型:</p>
+          <p class="w-100 text-left">酒店类型:</p>
           <el-switch
               :disabled="hotelValue == 'check'"
               v-model="form.allowIsolation"
-              active-text="隔离房间"
-              inactive-text="普通房间">
+              active-text="隔离酒店"
+              inactive-text="普通酒店">
           </el-switch>
         </div>
         <div class="d-flex align-items-center mt-10">
