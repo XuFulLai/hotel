@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="group.oneonetwo.hotelintelligencesystem.modules.chart.dao.ChartMapper">
+    <resultMap id="chartMap" type="group.oneonetwo.hotelintelligencesystem.modules.chart.model.vo.ChartVO"
+               autoMapping="true">
+    </resultMap>
+
+
+    <select id="orderRoomTypeChart" resultMap="chartMap">
+        with baseT as (
+            select room_type.name name,count(room_type.name) value
+            from orders
+            left join room_type
+            on orders.room_type = room_type.id
+            <where>
+                <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+                    and orders.hotel_id = #{hotelId}
+                    and orders.is_deleted = 0
+                </if>
+            </where>
+            group by room_type.name
+            order by value desc
+        )
+
+        select *
+        from (
+                 select *
+                 from baseT
+                 limit 10
+             ) a
+        union all
+        select '其他',sum(value)
+        from baseT
+        where name not in (
+            select name
+            from (
+                 select name
+                 from baseT
+                 limit 10
+            ) t
+        )
+    </select>
+
+    <select id="mapChart" resultMap="chartMap">
+        select province name,COUNT(province) value
+        from orders
+        <where>
+            <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+                and hotel_id = #{hotelId} and is_deleted = 0
+            </if>
+        </where>
+        group by province
+        order by value desc
+    </select>
+
+    <select id="wayChart" resultMap="chartMap">
+        select (
+                   case way
+                       when way = 1 then '到店'
+                       else '网单'
+                       end
+                   ) name,count(way) value
+        from orders
+        <where>
+            <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+                and hotel_id = #{hotelId}
+            </if>
+            and is_deleted = 0
+        </where>
+        group by way
+    </select>
+
+    <select id="orderNumOf7Day" resultMap="chartMap">
+        select name,count(name) value
+        from (
+        select DATE_FORMAT(create_time,'%Y-%m-%d') name
+        from orders
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time)
+        <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+            and hotel_id = #{hotelId}
+        </if>
+        and is_deleted = 0
+        )t
+        group by name
+        order by name
+    </select>
+
+    <select id="orderNumOf1Year" resultMap="chartMap">
+        select name,count(name) value
+        from (
+        select DATE_FORMAT(create_time,'%Y-%m') name
+        from orders
+        where DATE_SUB(CURDATE(), INTERVAL 1 year) &lt;= date(create_time) and is_deleted = 0
+        <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+            and hotel_id = #{hotelId}
+        </if>
+        )t
+        group by name
+        order by name
+    </select>
+
+    <select id="incomeOf7Day" resultMap="chartMap">
+        select name,sum(last_pay) value
+        from (
+        select DATE_FORMAT(create_time,'%Y-%m-%d') name,last_pay
+        from orders
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time) and is_deleted = 0
+        <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+            and hotel_id = #{hotelId}
+        </if>
+        )t
+        group by name
+        order by name
+    </select>
+
+</mapper>
