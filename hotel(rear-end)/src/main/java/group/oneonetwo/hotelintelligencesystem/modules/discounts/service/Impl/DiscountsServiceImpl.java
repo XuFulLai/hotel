@@ -124,7 +124,7 @@ public class DiscountsServiceImpl implements IDiscountsService {
      * @return int[0]为原价,int[1]为折后价
      */
     @Override
-    public int[] countPay(Integer days, Integer price){
+    public int[] countPay(Integer days, Integer price,String hotelDiscount,String personalDiscount){
         int[] pays = new int[2];
         pays[0] = days * price;
         //下面可写优惠政策

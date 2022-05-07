@@ -102,6 +102,14 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("方式")
     private Integer way;
 
+    @ExcelIgnore
+    @ApiModelProperty("酒店优惠")
+    private String hotelDiscount;
+
+    @ExcelIgnore
+    @ApiModelProperty("个人优惠")
+    private String personalDiscount;
+
     @ExcelProperty(value = "入住时间",index = 6)
     @ApiModelProperty("实际入住时间")
     private Date checkInTime;
@@ -125,6 +133,22 @@ public class OrderVO implements Serializable {
     @ExcelIgnore
     @ApiModelProperty("订单次数")
     private  String counts;
+
+    public String getHotelDiscount() {
+        return hotelDiscount;
+    }
+
+    public void setHotelDiscount(String hotelDiscount) {
+        this.hotelDiscount = hotelDiscount;
+    }
+
+    public String getPersonalDiscount() {
+        return personalDiscount;
+    }
+
+    public void setPersonalDiscount(String personalDiscount) {
+        this.personalDiscount = personalDiscount;
+    }
 
     public String getCounts() {
         return counts;
