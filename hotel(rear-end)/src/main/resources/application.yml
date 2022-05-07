@@ -6,7 +6,7 @@ spring:
   datasource:
     username: root
     password: admin123
-    url: jdbc:mysql://106.52.219.171:3306/hotel-plus?useAffectedRows=true&characterEncoding=utf-8
+    url: jdbc:mysql://106.52.219.171:3306/hotel-2?useAffectedRows=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
   sql:

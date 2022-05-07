@@ -160,6 +160,9 @@ public class HotelServiceImpl implements IHotelService {
             if (hotelVO.getAllowIsolation() != null) {
                 wrapper.eq("allow_isolation",hotelVO.getAllowIsolation());
             }
+            if (!WStringUtils.isBlank(hotelVO.getProvince())) {
+                wrapper.eq("province",hotelVO.getProvince());
+            }
             wrapper.orderByAsc("sort").orderByAsc("id");
             Page<HotelPO> page = new Page<>(hotelVO.getPage().getPage(), hotelVO.getPage().getSize());
             Page<HotelPO> poiPage = (Page<HotelPO>) hotelMapper.selectPage(page, wrapper);
