@@ -64,7 +64,7 @@ jwt:
   expireTime: 3600000
   token-prefix: Bearer
 server:
-  port: 8105
+  port: 8100
   tomcat:
     basedir: /data/temp
 

@@ -17,7 +17,8 @@ public interface IDiscountsService {
     DiscountsVO saveone (DiscountsVO discountsVO);
     Page<DiscountsVO> getPage(DiscountsVO discountsVO);
 
-    int[] countPay(Integer days, Integer price,String hotelDiscount,String personalDiscount);
+    int[] countPay(Integer days, Integer price,String discount);
 
+    List<DiscountsVO> getListByHotelId(String id);
 }
 
