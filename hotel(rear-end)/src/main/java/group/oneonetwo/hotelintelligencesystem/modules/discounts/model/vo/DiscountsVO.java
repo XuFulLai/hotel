@@ -18,17 +18,17 @@ public class DiscountsVO implements Serializable {
     @ApiModelProperty("折扣描述")
     private String  description;
 
-    @ApiModelProperty("折扣类型")
-    private String type;
+    @ApiModelProperty("折扣类型(0:酒店折扣;1:酒店内个人折扣;2:全局个人折扣)")
+    private Integer type;
 
     @ApiModelProperty("折扣幅度")
     private String discounts;
 
-    @ApiModelProperty("生效条件类型(0:满足xx天,1:提前xx天,2:会员卡)")
+    @ApiModelProperty("生效条件类型(0:满足xx天,1:满减;2:无门槛)")
     private Integer effectType;
 
     @ApiModelProperty("生效条件(天数)")
-    private Integer effectCondition;
+    private Double effectCondition;
 
     @ApiModelProperty("酒店id")
     private String hotelId;
@@ -55,6 +55,9 @@ public class DiscountsVO implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    @ApiModelProperty("有效期")
+    private Date validityTime;
 
     private Page page;
 
@@ -130,11 +133,11 @@ public class DiscountsVO implements Serializable {
         this.description = description;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -154,12 +157,20 @@ public class DiscountsVO implements Serializable {
         this.effectType = effectType;
     }
 
-    public Integer getEffectCondition() {
+    public Double getEffectCondition() {
         return effectCondition;
     }
 
-    public void setEffectCondition(Integer effectCondition) {
+    public void setEffectCondition(Double effectCondition) {
         this.effectCondition = effectCondition;
+    }
+
+    public Date getValidityTime() {
+        return validityTime;
+    }
+
+    public void setValidityTime(Date validityTime) {
+        this.validityTime = validityTime;
     }
 
     @Override

@@ -202,7 +202,7 @@ public class OrderServiceImpl implements IOrderService {
         RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(orderVO.getRoomType());
 
         //计算价钱
-        int[] pays = discountsService.countPay(orderVO.getDays(), roomTypeVO.getFee(),orderVO.getHotelDiscount(),orderVO.getPersonalDiscount());
+        int[] pays = discountsService.countPay(orderVO.getDays(), roomTypeVO.getFee(),orderVO.getDiscount());
         orderVO.setPay(String.valueOf(pays[0]));
         orderVO.setLastPay(String.valueOf(pays[1]));
 

@@ -262,7 +262,7 @@ public class RoomServiceImpl implements IRoomService {
         }
         updateOrder.setEstimatedCheckOut(TimeUtils.setSplitTime(checkInVO.getEstimatedCheckOut()));
         updateOrder.setDays(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(), updateOrder.getEstimatedCheckOut(), "ceil"));
-        pays = discountsService.countPay(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(), updateOrder.getEstimatedCheckOut(), "ceil"), roomTypeVO.getFee(),null,null);
+        pays = discountsService.countPay(TimeUtils.daysBetween(updateOrder.getEstimatedCheckIn(), updateOrder.getEstimatedCheckOut(), "ceil"), roomTypeVO.getFee(),null);
         updateOrder.setPay(String.valueOf(pays[0]));
         updateOrder.setLastPay(String.valueOf(pays[1]));
 

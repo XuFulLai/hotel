@@ -18,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
+
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
 public class DiscountsServiceImpl implements IDiscountsService {
@@ -36,7 +39,7 @@ public class DiscountsServiceImpl implements IDiscountsService {
             throw  new SavaException(("插入用户失败,折扣实体为空"));
         }
         DiscountsPO discountsPO=new DiscountsPO();
-        discountsPO.setHotel_Id(authUtils.getUserHotelId());
+        discountsPO.setHotelId(authUtils.getUserHotelId());
         BeanUtils.copyProperties(discountsVO,discountsPO);
         int insert=discountsMapper.insert(discountsPO);
         Gson gson = new Gson();
@@ -121,10 +124,13 @@ public class DiscountsServiceImpl implements IDiscountsService {
 
     /**
      * 计算价格
+     * @param days 天数
+     * @param price 房间价格
+     * @param discount 折扣
      * @return int[0]为原价,int[1]为折后价
      */
     @Override
-    public int[] countPay(Integer days, Integer price,String hotelDiscount,String personalDiscount){
+    public int[] countPay(Integer days, Integer price,String discount){
         int[] pays = new int[2];
         pays[0] = days * price;
         //下面可写优惠政策
@@ -132,6 +138,15 @@ public class DiscountsServiceImpl implements IDiscountsService {
 
         pays[1] = pays[0];
         return pays;
+    }
+
+    @Override
+    public List<DiscountsVO> getListByHotelId(String id) {
+        QueryWrapper<DiscountsPO> wrapper = new QueryWrapper<>();
+        wrapper.eq("hotel_id",id).le("validity_time",new Date());
+        List<DiscountsPO> list = discountsMapper.selectList(wrapper);
+        List<DiscountsVO> res = ConvertUtils.transferList(list, DiscountsVO.class);
+        return res;
     }
 
 }

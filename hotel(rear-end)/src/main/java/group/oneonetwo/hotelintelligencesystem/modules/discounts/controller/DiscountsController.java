@@ -9,6 +9,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+/**
+ * @author 文
+ */
 @Api(tags="折扣相关接口")
 @RestController
 @RequestMapping("api/discounts")
@@ -45,5 +50,11 @@ public class DiscountsController {
     @PostMapping("page")
     public Reply<Page<DiscountsVO>> getPage(@RequestBody DiscountsVO discountsVO){
         return Reply.success(discountsService.getPage(discountsVO));
+    }
+
+    @ApiOperation("查询当下酒店优惠券")
+    @GetMapping("list/{id}")
+    public Reply<List<DiscountsVO>> getListByHotelId(@PathVariable("id") String id) {
+        return Reply.success(discountsService.getListByHotelId(id));
     }
 }
