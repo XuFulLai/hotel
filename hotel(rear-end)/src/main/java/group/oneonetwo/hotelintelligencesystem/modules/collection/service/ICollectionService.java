@@ -10,7 +10,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 */
 public interface ICollectionService {
 
-    void collection(String id);
+    String collection(String id);
 
     Page<HotelVO> myCollectionList(group.oneonetwo.hotelintelligencesystem.tools.Page page);
 }

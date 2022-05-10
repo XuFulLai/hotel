@@ -32,7 +32,8 @@ public class CollectionServiceImpl implements ICollectionService {
     AuthUtils authUtils;
 
     @Override
-    public void collection(String id) {
+    public String collection(String id) {
+        String res = null;
         String uid = authUtils.getUid();
         QueryWrapper<CollectionPO> wrapper = new QueryWrapper<>();
         wrapper.eq("uid",uid).eq("hotel_id",id);
@@ -42,15 +43,19 @@ public class CollectionServiceImpl implements ICollectionService {
             collectionPO.setUid(uid);
             collectionPO.setStatus(1);
             collectionMapper.insert(collectionPO);
+            res = "收藏成功";
         }else {
             CollectionPO po = list.get(0);
             if (po.getStatus() == 0) {
                 po.setStatus(1);
+                res = "收藏成功";
             }else {
                 po.setStatus(0);
+                res = "取消收藏成功";
             }
             collectionMapper.updateById(po);
         }
+        return res;
     }
 
     @Override
