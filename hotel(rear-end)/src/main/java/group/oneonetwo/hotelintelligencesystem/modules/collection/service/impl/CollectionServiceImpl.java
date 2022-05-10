@@ -41,6 +41,7 @@ public class CollectionServiceImpl implements ICollectionService {
         if (list.isEmpty()) {
             CollectionPO collectionPO = new CollectionPO();
             collectionPO.setUid(uid);
+            collectionPO.setHotelId(id);
             collectionPO.setStatus(1);
             collectionMapper.insert(collectionPO);
             res = "收藏成功";
