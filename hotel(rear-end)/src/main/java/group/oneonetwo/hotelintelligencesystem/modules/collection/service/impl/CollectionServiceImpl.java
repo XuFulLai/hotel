@@ -74,4 +74,16 @@ public class CollectionServiceImpl implements ICollectionService {
         hotelVO.setPage(page);
         return hotelService.getPage(hotelVO);
     }
+
+    @Override
+    public boolean isCollection(String id) {
+        String uid = authUtils.getUid();
+        QueryWrapper<CollectionPO> wrapper = new QueryWrapper<>();
+        wrapper.eq("uid",uid).eq("hotel_id",id);
+        List<CollectionPO> collectionPOS = collectionMapper.selectList(wrapper);
+        if (collectionPOS.isEmpty() && collectionPOS.get(0).getStatus() == 0) {
+            return false;
+        }
+        return true;
+    }
 }

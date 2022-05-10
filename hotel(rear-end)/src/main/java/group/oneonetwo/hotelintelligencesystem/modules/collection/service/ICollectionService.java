@@ -13,4 +13,6 @@ public interface ICollectionService {
     String collection(String id);
 
     Page<HotelVO> myCollectionList(group.oneonetwo.hotelintelligencesystem.tools.Page page);
+
+    boolean isCollection(String id);
 }

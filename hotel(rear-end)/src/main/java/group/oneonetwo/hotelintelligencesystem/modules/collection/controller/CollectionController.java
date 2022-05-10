@@ -22,11 +22,16 @@ public class CollectionController {
     @Autowired
     ICollectionService collectionService;
 
+    @ApiOperation("获取当前酒店收藏状态")
+    @GetMapping("isCollection/{hotelId}")
+    public Reply isCollection(@PathVariable("hotelId") String id) {
+        return Reply.success(collectionService.isCollection(id));
+    }
+
     @ApiOperation("收藏/取消收藏")
-    @GetMapping("collection/{hotelId}")
-    public Reply collection(@PathVariable("hotelId") String id) {
-        collectionService.collection(id);
-        return Reply.success();
+    @PostMapping("collection")
+    public Reply collection(String id) {
+        return Reply.success(collectionService.collection(id));
     }
 
     @ApiOperation("获取我的收藏")
