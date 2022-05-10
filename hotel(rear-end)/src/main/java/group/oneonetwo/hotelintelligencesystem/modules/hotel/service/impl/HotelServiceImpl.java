@@ -163,7 +163,7 @@ public class HotelServiceImpl implements IHotelService {
             if (!WStringUtils.isBlank(hotelVO.getProvince())) {
                 wrapper.eq("province",hotelVO.getProvince());
             }
-            if (hotelVO.getCollection() != null && !hotelVO.getCollection().isEmpty()) {
+            if (hotelVO.getCollection() != null) {
                 wrapper.in("id",hotelVO.getCollection());
             }
             wrapper.orderByAsc("sort").orderByAsc("id");
