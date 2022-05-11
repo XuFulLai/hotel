@@ -33,6 +33,7 @@ export default {
     nav: {
         index: 'Index',
         list: 'Hotel list',
+        collection: 'My Collection',
         order: 'My order',
         record: 'My record',
         wallet: 'My wallet',

@@ -32,6 +32,7 @@
                   <p>{{ hotelDetails.address }}</p>
                 </div>
                 <div class="flex justify-content-end align-items-center" style="width: 50%">
+                  <i :class="isCollection ? 'el-icon-star-on' : 'el-icon-star-off'" class="location" @click="collection()"></i>
                   <i class="el-icon-map-location location" @click="toMap()"></i>
                 </div>
               </div>
@@ -263,7 +264,7 @@
 
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer.vue';
-import {get, post} from "../utils/request";
+import {formDataPost, get, post} from "../utils/request";
 import { dateTimeFormat } from "../utils/format";
 import {CodeToText, provinceAndCityData} from 'element-china-area-data'
 
@@ -304,6 +305,7 @@ export default {
       }],
       switchType: true,
       hotelId: '',
+      isCollection: false,
       hotelDetails: '',
       roomTypeList: [],
       isolateRoomTypeList: [],
@@ -472,8 +474,17 @@ export default {
     this.getHotelDetails()
     this.getRoomType();
     this.getIsolateRoomTypeList()
+    this.getCollectionStatus()
   },
   methods: {
+    getCollectionStatus() {
+      get('/api/collection/isCollection/' + this.hotelId).then(res => {
+        if (res.data.code == 200) {
+          this.isCollection = res.data.data
+        }
+      })
+    },
+
     // 获取酒店隔离房间类型函数
     getIsolateRoomTypeList() {
       const data = {
@@ -558,6 +569,22 @@ export default {
       // console.log(scrollTop);
     },
 
+    collection() {
+      let data = {
+        id: this.hotelId
+      }
+      formDataPost("/api/collection/collection",data).then(res => {
+        if (res.data.code == 200) {
+          this.isCollection = !this.isCollection
+          this.$message({
+            message: res.data.data,
+            type: 'success'
+          });
+        }else {
+
+        }
+      })
+    },
 
     toMap() {
       let that = this;
