@@ -63,11 +63,14 @@ public class CollectionServiceImpl implements ICollectionService {
     public Page<HotelVO> myCollectionList(group.oneonetwo.hotelintelligencesystem.tools.Page page) {
         String uid = authUtils.getUid();
         QueryWrapper<CollectionPO> wrapper = new QueryWrapper<>();
-        wrapper.eq("uid",uid).select("id");
+        wrapper.eq("uid",uid).select("hotel_id");
         List<CollectionPO> collectionPOS = collectionMapper.selectList(wrapper);
+        if (collectionPOS.isEmpty()) {
+            return new Page<HotelVO>();
+        }
         List<String> list = new ArrayList<>();
         for(CollectionPO item: collectionPOS) {
-            list.add(item.getId());
+            list.add(item.getHotelId());
         }
         HotelVO hotelVO = new HotelVO();
         hotelVO.setCollection(list);
@@ -79,9 +82,9 @@ public class CollectionServiceImpl implements ICollectionService {
     public boolean isCollection(String id) {
         String uid = authUtils.getUid();
         QueryWrapper<CollectionPO> wrapper = new QueryWrapper<>();
-        wrapper.eq("uid",uid).eq("hotel_id",id);
+        wrapper.eq("uid",uid).eq("hotel_id",id).eq("status",1);
         List<CollectionPO> collectionPOS = collectionMapper.selectList(wrapper);
-        if (collectionPOS.isEmpty() && collectionPOS.get(0).getStatus() == 0) {
+        if (collectionPOS.isEmpty()) {
             return false;
         }
         return true;
