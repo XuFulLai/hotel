@@ -7,6 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author 文
+ */
 @ApiModel("折扣实体")
 public class DiscountsVO implements Serializable {
     @ApiModelProperty("主键")
@@ -23,6 +26,9 @@ public class DiscountsVO implements Serializable {
 
     @ApiModelProperty("折扣幅度")
     private String discounts;
+
+    @ApiModelProperty("折扣方式(0:立减;1:折扣)")
+    private Integer discountsType;
 
     @ApiModelProperty("生效条件类型(0:满足xx天,1:满减;2:无门槛)")
     private Integer effectType;
@@ -171,6 +177,14 @@ public class DiscountsVO implements Serializable {
 
     public void setValidityTime(Date validityTime) {
         this.validityTime = validityTime;
+    }
+
+    public Integer getDiscountsType() {
+        return discountsType;
+    }
+
+    public void setDiscountsType(Integer discountsType) {
+        this.discountsType = discountsType;
     }
 
     @Override

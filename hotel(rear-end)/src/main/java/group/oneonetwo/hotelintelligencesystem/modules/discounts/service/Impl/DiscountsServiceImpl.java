@@ -39,8 +39,8 @@ public class DiscountsServiceImpl implements IDiscountsService {
             throw  new SavaException(("插入用户失败,折扣实体为空"));
         }
         DiscountsPO discountsPO=new DiscountsPO();
-        discountsPO.setHotelId(authUtils.getUserHotelId());
         BeanUtils.copyProperties(discountsVO,discountsPO);
+        discountsPO.setHotelId(authUtils.getUserHotelId());
         int insert=discountsMapper.insert(discountsPO);
         Gson gson = new Gson();
         logsService.createLog("【添加】折扣信息",gson.toJson(discountsVO),1,1);

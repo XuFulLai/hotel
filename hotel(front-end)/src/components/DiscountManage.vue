@@ -18,11 +18,28 @@
           align="center"
           prop="type"
           label="类型">
+        <template slot-scope="scope">
+          <div class="cell" v-if="scope.row.type == '0'"><el-tag>酒店折扣</el-tag></div>
+          <div class="cell" v-if="scope.row.type == '1'"><el-tag type="success">酒店内个人折扣</el-tag></div>
+        </template>
+      </el-table-column>
+      <el-table-column
+          align="center"
+          prop="discountsType"
+          label="折扣方式">
+        <template slot-scope="scope">
+          <div class="cell" v-if="scope.row.discountsType == '0'"><el-tag>立减</el-tag></div>
+          <div class="cell" v-if="scope.row.discountsType == '1'"><el-tag type="success">折扣</el-tag></div>
+        </template>
       </el-table-column>
       <el-table-column
           align="center"
           prop="discounts"
           label="幅度">
+        <template slot-scope="scope">
+          <div class="cell" v-if="scope.row.discountsType == '0'">{{ scope.row.discounts + '元' }}</div>
+          <div class="cell" v-if="scope.row.discountsType == '1'">{{ scope.row.discounts * 100 + '%' }}</div>
+        </template>
       </el-table-column>
       <el-table-column
           align="center"
@@ -88,37 +105,52 @@
         </div>
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">折扣类型:</p>
-          <el-input
-              style="width: 350px;"
-              placeholder="请输入折扣类型"
-              v-model="form.type"
-              clearable>
-          </el-input>
+          <div>
+            <el-radio v-model="form.type" label="0">酒店折扣</el-radio>
+            <el-radio v-model="form.type" label="1">酒店内个人折扣</el-radio>
+<!--            <el-radio v-model="form.type" label="2">折扣</el-radio>-->
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">折扣方式:</p>
+          <div>
+            <el-radio v-model="form.discountsType" label="0">立减</el-radio>
+            <el-radio v-model="form.discountsType" label="1">折扣</el-radio>
+          </div>
         </div>
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">折扣幅度:</p>
           <el-input
               style="width: 350px;"
+              type="number"
               placeholder="请输入折扣幅度"
               v-model="form.discounts"
               clearable>
           </el-input>
         </div>
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">生效条件（类型）:</p>
+          <p class="w-100 text-left">生效条件类型:</p>
           <div>
-            <el-radio v-model="form.effectType" label="0">满足xxx天</el-radio>
-            <el-radio v-model="form.effectType" label="1">提前xxx天</el-radio>
-            <el-radio v-model="form.effectType" label="2">会员卡</el-radio>
+            <el-radio v-model="form.effectType" label="0">满?天立减</el-radio>
+            <el-radio v-model="form.effectType" label="1">满?钱立减</el-radio>
+            <el-radio v-model="form.effectType" label="2">无门槛</el-radio>
           </div>
         </div>
-        <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">生效条件（天数）:</p>
+        <div class="d-flex align-items-center mb-15" v-if="!(form.effectType == '2')">
+          <p class="w-100 text-left">生效条件（天数/钱数）:</p>
           <el-input
               style="width: 350px;"
               v-model="form.effectCondition"
               clearable>
           </el-input>
+        </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">有效期:</p>
+          <el-date-picker
+              v-model="form.validityTime"
+              type="datetime"
+              placeholder="选择日期时间">
+          </el-date-picker>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -155,9 +187,11 @@ export default {
         name: undefined,
         description: undefined,
         type: undefined,
+        discountsType: undefined,
         discounts: undefined,
         effectType: undefined,
-        effectCondition: undefined
+        effectCondition: undefined,
+        validityTime: undefined
       }
     }
   },
@@ -226,9 +260,11 @@ export default {
         name: undefined,
         description: undefined,
         type: undefined,
+        discountsType: undefined,
         discounts: undefined,
         effectType: undefined,
-        effectCondition: undefined
+        effectCondition: undefined,
+        validityTime: undefined
       }
       this.title = '添加折扣'
       this.discountValue = 'add'
@@ -273,8 +309,10 @@ export default {
         description: this.form.description,
         type: this.form.type,
         discounts: this.form.discounts,
+        discountsType: this.form.discountsType,
         effectType: this.form.effectType,
         effectCondition: this.form.effectCondition,
+        validityTime: this.form.validityTime
       }
 
       if (value == 'add') {

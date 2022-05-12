@@ -25,6 +25,9 @@ public class DiscountsPO implements Serializable {
     @TableField("discounts")
     private String discounts;
 
+    @TableField("discounts_type")
+    private Integer discountsType;
+
     @TableField("effect_type")
     private Integer effectType;
 
@@ -163,5 +166,13 @@ public class DiscountsPO implements Serializable {
 
     public void setValidityTime(Date validityTime) {
         this.validityTime = validityTime;
+    }
+
+    public Integer getDiscountsType() {
+        return discountsType;
+    }
+
+    public void setDiscountsType(Integer discountsType) {
+        this.discountsType = discountsType;
     }
 }
