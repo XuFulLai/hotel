@@ -13,6 +13,7 @@
         <result property="discounts" column="discounts"/>
         <result property="effectType" column="effect_type"/>
         <result property="effectCondition" column="effect_condition"/>
+        <result property="hotelId" column="hotel_id"/>
         <result property="isDeleted" column="is_deleted"/>
         <result property="createBy" column="create_by"/>
         <result property="createTime" column="create_time"/>

@@ -3,6 +3,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.discounts.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.gson.Gson;
+import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 
@@ -26,12 +27,16 @@ public class DiscountsServiceImpl implements IDiscountsService {
     @Autowired
     LogsService logsService;
 
+    @Autowired
+    AuthUtils authUtils;
+
     @Override
     public DiscountsVO add(DiscountsVO discountsVO){
         if (discountsVO==null){
             throw  new SavaException(("插入用户失败,折扣实体为空"));
         }
         DiscountsPO discountsPO=new DiscountsPO();
+        discountsPO.setHotel_Id(authUtils.getUserHotelId());
         BeanUtils.copyProperties(discountsVO,discountsPO);
         int insert=discountsMapper.insert(discountsPO);
         Gson gson = new Gson();
@@ -105,6 +110,10 @@ public class DiscountsServiceImpl implements IDiscountsService {
     @Override
     public Page<DiscountsVO> getPage(DiscountsVO discountsVO){
         QueryWrapper<DiscountsPO> wrapper=new QueryWrapper<>();
+        if(!"admin".equals(authUtils.getRole())){
+            wrapper.eq("hotel_id",authUtils.getUserHotelId());
+        }
+
         Page<DiscountsPO> page = new Page<>(discountsVO.getPage().getPage(),discountsVO.getPage().getSize());
         Page<DiscountsPO> poiPage=(Page<DiscountsPO>) discountsMapper.selectPage(page,wrapper);
         return ConvertUtils.transferPage(poiPage,DiscountsVO.class);

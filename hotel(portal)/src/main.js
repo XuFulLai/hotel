@@ -20,20 +20,21 @@ Vue.prototype.$axios = axios
 
 
 const messages = {
+  zh: {
+    ...znCH,
+    ...zhLocale
+  },
   en: {
       ...enUS,
       ...enLocale
-  },
-  zh: {
-      ...znCH,
-      ...zhLocale
   }
+
 }
 
 const i18n = new VueI18n({
-  locale: localStorage.getItem('lang'), // set locale
+  locale: localStorage.getItem('lang') || 'zh',
   fallbackLocale: 'zh',
-  messages, // set locale messages
+  messages,
 })
 
 Vue.use(ElementUI, {
