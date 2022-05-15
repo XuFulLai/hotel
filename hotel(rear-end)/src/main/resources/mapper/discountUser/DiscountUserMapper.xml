@@ -10,7 +10,7 @@
             <result property="uid" column="uid" jdbcType="VARCHAR"/>
             <result property="isUsed" column="is_used" jdbcType="INTEGER"/>
             <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
-            <result property="create_by" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
@@ -23,12 +23,12 @@
     </sql>
 
     <select id="getMyDiscount"
-            resultType="group.oneonetwo.hotelintelligencesystem.modules.discountUser.model.vo.DiscountUserVO">
+            resultType="group.oneonetwo.hotelintelligencesystem.modules.discountUser.model.vo.DiscountUserAndDiscountsVO">
         select *
         from discount_user du
         left join discounts d
         on du.d_id = d.id
-        where du.uid = #{id} and d.validity_time &lt;= #{date}
+        where du.uid = #{uid} and d.validity_time &gt;= #{date}
         and d.is_deleted = 0 and du.is_deleted = 0
         and du.is_used = 0
 

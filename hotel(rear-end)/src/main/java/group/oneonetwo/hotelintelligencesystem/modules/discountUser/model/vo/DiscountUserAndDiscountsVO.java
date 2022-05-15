@@ -1,9 +1,9 @@
-package group.oneonetwo.hotelintelligencesystem.modules.discountUser.model.po;
+package group.oneonetwo.hotelintelligencesystem.modules.discountUser.model.vo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.vo.DiscountsVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,61 +13,60 @@ import java.util.Date;
  * @author 文
  * @TableName discount_user
  */
-@TableName(value ="discount_user")
-public class DiscountUserPO implements Serializable {
+@ApiModel("折扣-用户表实体")
+public class DiscountUserAndDiscountsVO extends DiscountsVO implements Serializable  {
     /**
      *
      */
-    @TableId
+    @ApiModelProperty("主键")
     private String id;
 
     /**
      *
      */
-    @TableField("d_id")
+    @ApiModelProperty("折扣id")
     private String dId;
 
     /**
      *
      */
-    @TableField("uid")
+    @ApiModelProperty("用户id")
     private String uid;
 
     /**
      *
      */
-    @TableField("is_used")
+    @ApiModelProperty("是否使用")
     private Integer isUsed;
 
     /**
      *
      */
-    @TableLogic
-    @TableField("is_deleted")
+    @ApiModelProperty("是否删除")
     private Integer isDeleted;
 
     /**
      *
      */
-    @TableField("create_by")
+    @ApiModelProperty("创建人")
     private String createBy;
 
     /**
      *
      */
-    @TableField("create_time")
+    @ApiModelProperty("创建时间")
     private Date createTime;
 
     /**
      *
      */
-    @TableField("update_by")
+    @ApiModelProperty("更新人")
     private String updateBy;
 
     /**
      *
      */
-    @TableField("update_time")
+    @ApiModelProperty("更新时间")
     private Date updateTime;
 
     @TableField(exist = false)
@@ -111,42 +110,52 @@ public class DiscountUserPO implements Serializable {
         this.isUsed = isUsed;
     }
 
+    @Override
     public Integer getIsDeleted() {
         return isDeleted;
     }
 
+    @Override
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
     }
 
+    @Override
     public String getCreateBy() {
         return createBy;
     }
 
+    @Override
     public void setCreateBy(String createBy) {
         this.createBy = createBy;
     }
 
+    @Override
     public Date getCreateTime() {
         return createTime;
     }
 
+    @Override
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
+    @Override
     public String getUpdateBy() {
         return updateBy;
     }
 
+    @Override
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
     }
 
+    @Override
     public Date getUpdateTime() {
         return updateTime;
     }
 
+    @Override
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }

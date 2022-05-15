@@ -53,8 +53,20 @@ public class DiscountsController {
     }
 
     @ApiOperation("查询当下酒店优惠券")
-    @GetMapping("list/{id}")
-    public Reply<List<DiscountsVO>> getListByHotelId(@PathVariable("id") String id) {
-        return Reply.success(discountsService.getListByHotelId(id));
+    @GetMapping("list/hotel/{id}")
+    public Reply<List<DiscountsVO>> getHotelDiscountListByHotelId(@PathVariable("id") String id) {
+        return Reply.success(discountsService.getHotelDiscountListByHotelId(id));
+    }
+
+    @ApiOperation("查询当下酒店个人优惠券(未领取)")
+    @GetMapping("list/personal/{id}")
+    public Reply<List<DiscountsVO>> getPersonalDiscountListByHotelId(@PathVariable("id") String id) {
+        return Reply.success(discountsService.getPersonalDiscountListByHotelId(id));
+    }
+
+    @ApiOperation("查询当前可用优惠券(含是否可使用状态)")
+    @PostMapping("list/personal/got")
+    public Reply<List<DiscountsVO>> getCurrentCanUseMyPersonalDiscountList(@RequestBody DiscountsVO discountsVO) {
+        return Reply.success(discountsService.getCurrentCanUseMyPersonalDiscountList(discountsVO));
     }
 }

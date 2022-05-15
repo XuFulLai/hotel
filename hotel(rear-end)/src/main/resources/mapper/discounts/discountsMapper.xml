@@ -14,6 +14,8 @@
         <result property="discounts" column="discounts"/>
         <result property="effectType" column="effect_type"/>
         <result property="effectCondition" column="effect_condition"/>
+        <result property="exclusiveType" column="exclusive_type"/>
+        <result property="exclusiveRange" column="exclusive_range"/>
         <result property="validityTime" column="validity_time"/>
         <result property="hotelId" column="hotel_id"/>
         <result property="isDeleted" column="is_deleted"/>

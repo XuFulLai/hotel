@@ -10,6 +10,7 @@
 
 
       <div class="big-box">
+<!--        <el-button @click="confirmOrder"></el-button>-->
         <!--        <p>酒店id：{{ hotelDetails.hotleId }}</p>-->
         <div class="hotel-title">
           {{ hotelDetails.name }}
@@ -22,7 +23,7 @@
                 <div style="background: #F56C6C" class="badge" v-if="hotelDetails.allowIsolation">
                   隔离酒店
                 </div>
-                <div  v-if="hotelDetails.badge" class="badge" v-for="i in hotelDetails.badge.split(',')">
+                <div v-if="hotelDetails.badge" class="badge" v-for="i in hotelDetails.badge.split(',')">
                   {{ i }}
                 </div>
               </div>
@@ -32,12 +33,53 @@
                   <p>{{ hotelDetails.address }}</p>
                 </div>
                 <div class="flex justify-content-end align-items-center" style="width: 50%">
-                  <i :class="isCollection ? 'el-icon-star-on' : 'el-icon-star-off'" class="location" @click="collection()"></i>
+                  <i :class="isCollection ? 'el-icon-star-on' : 'el-icon-star-off'" class="location"
+                     @click="collection()"></i>
                   <i class="el-icon-map-location location" @click="toMap()"></i>
                 </div>
               </div>
               <el-divider content-position="left">酒店介绍</el-divider>
               <div class="detail-introduce" v-html="hotelDetails.introduce"></div>
+            </div>
+
+            <div class="detail-block" v-if="hotelDiscounts != null && hotelDiscounts.length !== 0">
+              <h3 class="sub-title">
+                酒店优惠
+                <span class="en">discount</span>
+              </h3>
+
+              <div class="detail-content flex flex-row flex-wrap" style="margin: 0;padding: 0">
+                <div @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts">
+                  <div class="discounts-title flex flex-row justify-content-between">
+                    <p style="margin-left: 6px;font-size: 14px;font-weight: 700">{{ i.name }}</p>
+                    <el-tooltip placement="right" style="margin: 4px">
+                      <div slot="content">{{ i.description }}</div>
+                      <el-button
+                          style="border-radius: 50%;padding: 2px 8px;margin-left: 10px;font-weight: 800;color: #999">!
+                      </el-button>
+                    </el-tooltip>
+                  </div>
+                  <div style="border-top: 1px dotted #999;"></div>
+                  <div class="discounts-body flex flex-column">
+                    <div class="discounts-body-top flex flex-row align-items-end">
+                      <div class="discounts-body-price">
+                        {{ i.discountsType == 0 ? '￥' + i.discounts : i.discounts * 10 + '折' }}
+                      </div>
+                      <div class="discounts-body-condition" v-if="i.effectType == 0">
+                        {{ '[满' + i.effectCondition + '天可用]' }}
+                      </div>
+                      <div class="discounts-body-condition" v-if="i.effectType == 1">
+                        {{ '[满' + i.effectCondition + '元可用]' }}
+                      </div>
+                      <div class="discounts-body-condition" v-if="i.effectType == 2">[无门槛使用]</div>
+                    </div>
+                    <div class="discounts-body-bottom">
+                      有效期到 {{ dateTimeFormat(i.validityTime) }}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="detail-block">
@@ -77,18 +119,19 @@
               </div>
             </div>
           </div>
-          <div class="detail-right" >
-            <div class="detail-right-price" id="detailRight" :style="isFixed ? 'position:fixed;top:90px;width: 440px;' : ''">
+          <div class="detail-right">
+            <div class="detail-right-price" id="detailRight"
+                 :style="isFixed ? 'position:fixed;top:90px;width: 440px;' : ''">
               <div class="book-box">
 
                 <el-switch
-                  style="display: block;margin: 20px 10px;"
-                  v-model="switchType"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
-                  active-text="正常预定"
-                  inactive-text="自申报">
-                </el-switch>                
+                    style="display: block;margin: 20px 10px;"
+                    v-model="switchType"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    active-text="正常预定"
+                    inactive-text="自申报">
+                </el-switch>
 
                 <!-- 正常预定模块 -->
                 <div v-show="switchType == true" class="natural">
@@ -149,7 +192,7 @@
                       </el-select>
                     </div>
                     <div>
-                      <el-button @click="confirm()" type="primary" style="width: 100%;margin: 10px 0">预订</el-button>
+                      <el-button @click="confirmOrder" type="primary" style="width: 100%;margin: 10px 0">预订</el-button>
                     </div>
                   </div>
                 </div>
@@ -172,25 +215,26 @@
 
                   <div class="block mb-10">
                     <el-date-picker
-                      v-model="date"
-                      type="date"
-                      placeholder="入住时间"
-                      :picker-options="pickerOptions">
+                        v-model="date"
+                        type="date"
+                        placeholder="入住时间"
+                        :picker-options="pickerOptions">
                     </el-date-picker>
                   </div>
 
                   <!-- 申报类型 -->
                   <el-select class="mb-10" v-model="situation" placeholder="申报类型">
                     <el-option
-                      v-for="item in situationOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
+                        v-for="item in situationOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
                     </el-option>
                   </el-select>
 
                   <!-- 选择房型 -->
-                  <el-select v-show="situation == 2 || situation == 3" class="mb-10" v-model="isolateRoomType" :placeholder="$t('hotelList.selectRoom')">
+                  <el-select v-show="situation == 2 || situation == 3" class="mb-10" v-model="isolateRoomType"
+                             :placeholder="$t('hotelList.selectRoom')">
                     <el-option
                         v-for="item in isolateRoomTypeList"
                         :label="item.name"
@@ -204,9 +248,9 @@
 
                   <el-input class="mb-10" v-model="userId" placeholder="身份证"></el-input>
 
-                  <el-input class="mb-10"  v-model="phoneNum" placeholder="手机号"></el-input>
+                  <el-input class="mb-10" v-model="phoneNum" placeholder="手机号"></el-input>
 
-                  <el-input class="mb-10"  v-model="userEmail" placeholder="邮箱"></el-input>
+                  <el-input class="mb-10" v-model="userEmail" placeholder="邮箱"></el-input>
 
                   <!-- 陪同人员 start -->
                   <!-- <div class="mb-10">
@@ -239,7 +283,7 @@
                     ></el-cascader>
                   </div>
 
-                  <p class="mb-10 font-16"><i class="el-icon-warning-outline mr-5"></i>自行申报需提前48小时申报。</p>    
+                  <p class="mb-10 font-16"><i class="el-icon-warning-outline mr-5"></i>自行申报需提前48小时申报。</p>
 
                   <el-button class="w-percent-100" @click="submit" type="primary">提交申报</el-button>
 
@@ -255,6 +299,127 @@
       <Footer></Footer>
 
     </div>
+    <el-dialog
+        title="确认订单"
+        :visible.sync="confirmOrderVisible"
+        width="460px"
+        >
+      <div class="order-box flex flex-column">
+        <div class="order-hotel-detail-box flex flex-row">
+          <el-image
+              style="width: 150px; height: 100px"
+              :src="hotelDetails.cover"
+              fit="fit"></el-image>
+          <div class="order-hotel-detail-detail flex flex-column">
+            <p class="mb-5" style="font-weight: 700;font-size: 16px">{{ hotelDetails.name }}</p>
+            <p class="mt-5 mb-5">{{ roomTypeMap[currentRoomType] ? roomTypeMap[currentRoomType].name : '' }}</p>
+            <p class="mb-5">{{ dateValue[0] +  ' -- ' + dateValue[1] + ', 共' + bookDay + '晚' }}</p>
+            <p>{{ '来自: ' + provinceVal }}</p>
+          </div>
+        </div>
+
+        <div class="mt-5 mb-5" style="border-top: 1px dashed #999;width: 100%"></div>
+
+        <div v-if="confirmOrderData.hotelDiscountList.length != 0 || confirmOrderData.personalDiscountList.length != 0" class="order-choose-discount flex flex-column">
+          <el-collapse>
+            <el-collapse-item v-if="confirmOrderData.hotelDiscountList.length != 0" title="酒店优惠券" name="1">
+              <div class="choose-hotel-discount">
+                <div class="choose-discount-box flex flex-row" v-for="i in confirmOrderData.hotelDiscountList" @click="addUseDiscount(i.id)">
+                  <div :class="confirmOrderData.useDiscountMap[i.id].use ? 'choose-discount-chosen' : ''" class="choose-discount-left flex flex-row justify-content-between align-items-end">
+                    <div class="choose-discount-name">
+                      {{ i.name }}
+                      <el-tooltip placement="right" style="margin: 4px 4px 4px 0px;">
+                        <div slot="content">{{ i.description }}</div>
+                        <el-button
+                            style="border-radius: 50%;padding: 2px 7px;margin-left: 0px;font-weight: 800;color: #999">!
+                        </el-button>
+                      </el-tooltip>
+                    </div>
+                    <div class="choose-discount-date">
+                      有效期至 {{ dateTimeFormat(i.validityTime) }}
+                    </div>
+                  </div>
+                  <div style="border-left: 1px dashed #999;height: 100%"></div>
+                  <div :class="confirmOrderData.useDiscountMap[i].use ? 'choose-discount-chosen' : ''" class="choose-discount-right flex align-items-center justify-content-center">
+                    {{ i.discountsType == 0 ?  i.discounts +'元' : i.discounts * 10 + '折' }}
+                  </div>
+                </div>
+              </div>
+            </el-collapse-item>
+
+            <el-collapse-item v-if="confirmOrderData.personalDiscountList.length != 0" title="个人优惠券" name="1">
+              <div class="choose-hotel-discount">
+                <div class="choose-discount-box flex flex-row cursor" v-for="i in confirmOrderData.personalDiscountList" @click="addUseDiscount(i)">
+                  <div :class="confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : ''" class="choose-discount-left flex flex-row justify-content-between align-items-end">
+                    <div class="choose-discount-name">
+                      {{ i.name }}
+                      <el-tooltip placement="right" style="margin: 4px 4px 4px 0px;">
+                        <div slot="content">{{ i.description }}</div>
+                        <el-button
+                            style="border-radius: 50%;padding: 2px 7px;margin-left: 0px;font-weight: 800;color: #999">!
+                        </el-button>
+                      </el-tooltip>
+                    </div>
+                    <div class="choose-discount-date">
+                      有效期至 {{ dateTimeFormat(i.validityTime) }}
+                    </div>
+                  </div>
+                  <div style="border-left: 1px dashed #999;height: 100%"></div>
+                  <div :class="confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : ''" class="choose-discount-right flex align-items-center justify-content-center">
+                    {{ i.discountsType == 0 ?  i.discounts +'元' : i.discounts * 10 + '折' }}
+                  </div>
+                </div>
+              </div>
+            </el-collapse-item>
+
+          </el-collapse>
+
+          <div class="mt-5 mb-5" style="border-top: 1px dashed #999;width: 100%"></div>
+
+
+        </div>
+        <div class="order-count">
+          <div class="order-count-item">
+            <div>房间单价</div>
+            <div>￥{{ this.confirmOrderData.totalFee / bookDay }}</div>
+          </div>
+          <div class="order-count-item">
+            <div>订单总价</div>
+            <div>￥{{ this.confirmOrderData.totalFee }}</div>
+          </div>
+          <div class="order-count-item" v-for="i in discountVisibleList">
+            <div>{{ i.name }}</div>
+            <div>-￥{{ i.price }}</div>
+          </div>
+          <div class="order-count-item" style="font-size: 18px;color: black">
+            <div>预计实付款</div>
+            <div style="color: #ff4d6a;">￥{{ this.confirmOrderData.totalFee - this.confirmOrderData.discountFee }}</div>
+          </div>
+        </div>
+      </div>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="confirmOrderVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirm">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog
+        title="请输入钱包密码"
+        :visible.sync="payVisible"
+        width="460px"
+        center
+    >
+      <div class="flex flex-column pay-box align-items-center">
+        <div>当前支付金额</div>
+        <div class="pay-box-price"><span style="font-size: 26px">￥</span>{{ payForm.lastPay }}</div>
+        <el-input placeholder="请输入密码" v-model="payForm.pwd" show-password></el-input>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="pay">确 定</el-button>
+      </span>
+
+    </el-dialog>
 
 
   </div>
@@ -265,7 +430,7 @@
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer.vue';
 import {formDataPost, get, post} from "../utils/request";
-import { dateTimeFormat } from "../utils/format";
+import {dateTimeFormat} from "../utils/format";
 import {CodeToText, provinceAndCityData} from 'element-china-area-data'
 
 export default {
@@ -276,10 +441,8 @@ export default {
   },
   data() {
     return {
-      form: {
-        
-      },
-      accompany: false,      
+      form: {},
+      accompany: false,
       date: '',
       accompanyName: '',
       accompanyId: '',
@@ -303,12 +466,38 @@ export default {
         value: 3,
         label: '中高风险地区人员'
       }],
+      payVisible: false,
+      confirmOrderVisible: false,
+      payForm: {
+        orderId: undefined,
+        lastPay: undefined,
+        walletPwd: undefined
+      },
+      confirmOrderData: {
+        totalFee: undefined,
+        discountFee: undefined,
+        hotelDiscountList: [],
+        personalDiscountList:[],
+        useDiscountMap: {
+          1:{
+            use: false
+          },
+          2:{
+            use: false
+          },
+          3:{
+            use: false
+          }
+        },
+      },
+      discountVisibleList:[],
       switchType: true,
       hotelId: '',
       isCollection: false,
       hotelDetails: '',
       roomTypeList: [],
       isolateRoomTypeList: [],
+      hotelDiscounts: [],
       isolateRoomType: '',
       isolateFee: '',
       roomTypeMap: {},
@@ -456,7 +645,7 @@ export default {
     //     this.isolateFeeF()
     //   }
     // },
-    "isolateRoomType"(val, oldVal){
+    "isolateRoomType"(val, oldVal) {
       console.log(val);
       console.log(oldVal);
       if (val) {
@@ -475,8 +664,106 @@ export default {
     this.getRoomType();
     this.getIsolateRoomTypeList()
     this.getCollectionStatus()
+    this.getHotelDiscountList()
   },
   methods: {
+    updateDiscountVisible() {
+      this.discountVisibleList = []
+      this.confirmOrderData.discountFee = 0
+      this.getCurrentCanUseDiscount()
+      for (let val of this.confirmOrderData.useDiscountMap.values()) {
+        let map = {
+          name: val.name + '[优惠券]',
+          price: 0
+        }
+        if (val.discountsType == 0) {
+          this.confirmOrderData.discountFee += 0 + val.discounts
+          map.price = val.discounts
+        }else if (val.discountsType == 1) {
+          this.confirmOrderData.discountFee += 0 + this.confirmOrderData.totalFee*(1-val.discounts);
+          map.price = this.confirmOrderData.totalFee*(1-val.discounts)
+        }
+        console.log(this.confirmOrderData.discountFee)
+        this.discountVisibleList.push(map)
+      }
+    },
+    confirmOrder() {
+      this.confirmOrderData.discountFee = 0
+      this.confirmOrderData.totalFee = this.roomTypeMap[this.currentRoomType].fee * this.bookDay
+      this.confirmOrderData.useDiscountMap = new Map();
+      this.getCurrentCanUseDiscount()
+    },
+
+    map2String(map) {
+      let str = ""
+      let size = map.size
+      if (size != 0) {
+        let currentNum = 1;
+        for (let key of map.keys()) {
+          str += key
+          if (currentNum != size) {
+            str += ','
+          }
+          currentNum++
+        }
+      }
+      return str
+    },
+    getCurrentCanUseDiscount() {
+      let currentUse = this.map2String(this.confirmOrderData.useDiscountMap)
+
+      let data = {
+        hotelId: this.hotelId,
+        orderFee: this.confirmOrderData.totalFee,
+        bookDay: this.bookDay,
+        currentUse: currentUse
+      }
+      post("/api/discounts/list/personal/got/",data).then(res => {
+        if (res.data.code == 200) {
+          this.confirmOrderData.personalDiscountList = res.data.data
+          // for (var index in this.confirmOrderData.personalDiscountList) {
+          //   let map = {
+          //     obj: this.confirmOrderData.personalDiscountList[index],
+          //     use: false
+          //   }
+          //   this.confirmOrderData.useDiscountMap[this.confirmOrderData.personalDiscountList[index].id] = map;
+          // }
+          // console.log("map",this.confirmOrderData.useDiscountMap)
+          this.confirmOrderVisible = true
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+    },
+
+    gotCoupon(id) {
+      let data = {
+        discountsId: id
+      }
+      formDataPost("/api/discountsUser/gotCoupon",data).then(res => {
+        if (res.data.code == 200) {
+          this.$message({
+            message: this.$t('common.success'),
+            type: 'success'
+          });
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+    },
+
+    dateTimeFormat(val) {
+      return dateTimeFormat(val)
+    },
+
+    getHotelDiscountList() {
+      get("/api/discounts/list/personal/" + this.hotelId).then(res => {
+        if (res.data.code == 200) {
+          this.hotelDiscounts = res.data.data
+        }
+      })
+    },
+
     getCollectionStatus() {
       get('/api/collection/isCollection/' + this.hotelId).then(res => {
         if (res.data.code == 200) {
@@ -491,18 +778,18 @@ export default {
         isIsolation: 1
       }
       get(`api/roomType/currentRoomTypeList/${this.hotelId}`, data)
-        .then( res => {
-          console.log(res);
-          console.log(res.data.data);
-          this.isolateRoomTypeList = res.data.data
+          .then(res => {
+            console.log(res);
+            console.log(res.data.data);
+            this.isolateRoomTypeList = res.data.data
 
-        })
-        .catch( err => {
-          console.error(err);
-        })
-    }, 
+          })
+          .catch(err => {
+            console.error(err);
+          })
+    },
     // 提交审核按钮
-    submit(){
+    submit() {
       const data = {
         checkInTime: this.date,
         checkOutTime: new Date(Date.parse(this.date) + 1209600000), // 14天之后的时间
@@ -518,21 +805,21 @@ export default {
 
       }
       console.log(data);
-      post('/api/review/check',data)
-        .then( res => {
-          console.log(res);
-          if (res.data.code == 200) {
-            this.$message({
-              message: this.$t('common.success'),
-              type: 'success'
-            });
-          } else {
-            this.$message.error(res.data.msg);     
-          }
-        })
-        .catch( err => {
-          console.error(err);
-        })
+      post('/api/review/check', data)
+          .then(res => {
+            console.log(res);
+            if (res.data.code == 200) {
+              this.$message({
+                message: this.$t('common.success'),
+                type: 'success'
+              });
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          })
 
     },
     getAddress(value) { //value是长度为2的装有被选择省、市代码的数组;CodeToText是个对象，键名为代码，键值为省和城市
@@ -544,7 +831,7 @@ export default {
       this.form.province = this.area[0]
       this.form.city = this.area[1]
       console.log(this.area); //["河北省","唐山市"]
-    },    
+    },
     updateFee() {
       this.countTime()
       this.totalFee = this.bookDay * this.roomTypeMap[this.currentRoomType].fee
@@ -552,7 +839,7 @@ export default {
     isolateFeeF() {
       // this.countTime()
       this.isolateFee = 14 * this.roomTypeMap[this.isolateRoomType].isolationFee
-    },    
+    },
     countTime() {
       let estimatedCheckIn = new Date(this.dateValue[0])
       let estimatedCheckOut = new Date(this.dateValue[1])
@@ -563,24 +850,36 @@ export default {
     handleScroll() {
       let scrollTop =
           document.documentElement.scrollTop || document.body.scrollTop;
-      this.isFixed = scrollTop > this.offsetTop*1.15 ? true : false;
+      this.isFixed = scrollTop > this.offsetTop * 1.15 ? true : false;
       // console.log(this.offsetTop)
       // console.log(this.isFixed)
       // console.log(scrollTop);
+    },
+
+    addUseDiscount(val) {
+      console.log("this.confirmOrderData.useDiscountMap.has(val.id)",this.confirmOrderData.useDiscountMap.has(val.id))
+      if (this.confirmOrderData.useDiscountMap.has(val.id)) {
+        this.confirmOrderData.useDiscountMap.delete(val.id)
+      }else {
+        this.confirmOrderData.useDiscountMap.set(val.id,val)
+      }
+      this.updateDiscountVisible()
+      console.log(this.confirmOrderData.useDiscountMap)
+
     },
 
     collection() {
       let data = {
         id: this.hotelId
       }
-      formDataPost("/api/collection/collection",data).then(res => {
+      formDataPost("/api/collection/collection", data).then(res => {
         if (res.data.code == 200) {
           this.isCollection = !this.isCollection
           this.$message({
             message: res.data.data,
             type: 'success'
           });
-        }else {
+        } else {
 
         }
       })
@@ -619,6 +918,34 @@ export default {
             console.log(err);
           })
     },
+    pay() {
+      let data = {
+        orderId: this.payForm.orderId,
+        walletPwd: this.payForm.walletPwd
+      }
+      formDataPost("/api/order/pay",data).then(res => {
+        if (res.data.code == 200) {
+          this.$message({
+            message: this.$t('hotelList.success'),
+            type: 'success'
+          });
+          this.payVisible = false
+          this.confirmOrderVisible = false
+          this.payForm = {
+            orderId: undefined,
+            lastPay: undefined,
+            walletPwd: undefined
+          }
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: 'warning',
+            duration: 4000
+          });
+        }
+
+      })
+    },
 
     confirm() {
       let data = {
@@ -628,9 +955,10 @@ export default {
         estimatedCheckIn: this.dateValue[0],
         estimatedCheckOut: this.dateValue[1],
         province: this.provinceVal,
+        discount: this.map2String(this.confirmOrderData.useDiscountMap)
       }
       // console.log("data=========", data)
-      post('/api/order/create',data)
+      post('/api/order/create', data)
           .then(res => {
             console.log(res);
             if (res.data.code == 200) {
@@ -638,8 +966,10 @@ export default {
                 message: this.$t('hotelList.success'),
                 type: 'success'
               });
-              this.dialogVisible = false
-              console.log("订单id：",res.data.data.id)
+              this.payForm.orderId = res.data.data.id
+              this.payForm.lastPay = res.data.data.lastPay
+              this.payVisible = true
+              console.log("订单id：", res.data.data.id)
             } else {
               this.$message({
                 message: res.data.msg,
@@ -671,6 +1001,30 @@ export default {
 </script>
 
 <style scoped>
+
+/* 定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: #eeeeee;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0px rgb(245, 245, 245);
+  border-radius: 10px;
+  background-color: #eeeeee;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
+  background-color: #b2b2b2;
+}
+
+
 .hotel-list-main {
   /*height: calc(100vh - 220px);*/
   display: flex;
@@ -858,8 +1212,134 @@ h3.sub-title .en {
   padding: 6px 8px;
   color: #fff !important;
 }
+
 .abnormal {
   padding: 10px;
+}
+
+.discounts-box {
+  /*border: 1px solid red;*/
+  width: 220px;
+  height: 110px;
+  margin: 10px;
+  box-shadow: 0 12px 5px -10px rgba(0, 0, 0, 0.1), 0 0 4px 0 rgba(0, 0, 0, 0.1);
+
+}
+
+.discounts-title {
+
+  width: 100%;
+  height: 29%;
+  background: rgb(217, 236, 255);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.discounts-body {
+  width: 100%;
+  height: 70%;
+  background: rgb(217, 236, 255);
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.discounts-body-top {
+  margin: 10px 4px;
+}
+
+.discounts-body-price {
+  color: #ff4d6a;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 30px;
+}
+
+.discounts-body-bottom {
+  color: #999;
+  margin-top: -6px;
+  margin-left: 6px;
+}
+
+.order-hotel-detail-detail {
+  margin: 0px 6px;
+}
+
+.choose-hotel-discount {
+  width: 100%;
+  max-height: 110px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.choose-discount-box {
+  margin: 6px;
+  width: 96%;
+  height: 40px;
+  background: #fff;
+  /*border: 1px solid red;*/
+  box-shadow: 0 12px 5px -10px rgba(0, 0, 0, 0.1), 0 0 4px 0 rgba(0, 0, 0, 0.1);
+
+}
+
+.choose-discount-left {
+  width: 79%;
+  height: 100%;
+  background: rgb(217, 236, 255);
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.choose-discount-right {
+  width: 21%;
+  height: 100%;
+  background: rgb(217, 236, 255);
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 44px;
+  color: #ff4d6a;
+}
+
+.choose-discount-chosen {
+  background: #d9d9d9;
+  text-decoration: line-through;
+}
+
+.choose-discount-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin: auto 0;
+  margin-left: 8px;
+}
+
+.choose-discount-date {
+  color: #999;
+  font-size: 10px;
+  margin-right: 8px;
+}
+
+.order-count-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 6px;
+  color: #999;
+}
+
+.pay-box {
+  width: 100%;
+  height: 200px;
+  margin-bottom: -50px;
+}
+
+.pay-box-price {
+  font-size: 56px;
+  font-weight: 700;
+  color: #ff4d6a;
+  width: 100%;
+  text-align: center;
+  margin: 10px 0 30px 0;
 }
 
 

@@ -63,7 +63,7 @@ public class CollectionServiceImpl implements ICollectionService {
     public Page<HotelVO> myCollectionList(group.oneonetwo.hotelintelligencesystem.tools.Page page) {
         String uid = authUtils.getUid();
         QueryWrapper<CollectionPO> wrapper = new QueryWrapper<>();
-        wrapper.eq("uid",uid).select("hotel_id");
+        wrapper.eq("uid",uid).select("hotel_id").eq("status",1);
         List<CollectionPO> collectionPOS = collectionMapper.selectList(wrapper);
         if (collectionPOS.isEmpty()) {
             return new Page<HotelVO>();

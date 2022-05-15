@@ -7,16 +7,19 @@ package group.oneonetwo.hotelintelligencesystem.enums;
  */
 public enum DiscountEnums {
     //type
-    TYPE_HOTEL(0),
-    TYPE_PERSONAL_HOTEL(1),
-    TYPE_PERSONAL_ALL(2),
+    TYPE_ALL(0),
+    TYPE_HOTEL(1),
     //effect_type
     EFFECT_TYPE_DAYS(0),
     EFFECT_TYPE_MONEY(1),
     EFFECT_TYPE_ALL(2),
     //discounts_type
     DISCOUNTS_TYPE_REDUCTION(0),
-    DISCOUNTS_TYPE_DISCOUNT(0)
+    DISCOUNTS_TYPE_DISCOUNT(0),
+    //exclusive_type
+    EXCLUSIVE_TYPE_NONE(0),
+    EXCLUSIVE_TYPE_ALL(1),
+    EXCLUSIVE_TYPE_RANGE(2)
     ;
 
     private Integer code;

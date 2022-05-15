@@ -132,7 +132,7 @@ public class OrderVO implements Serializable {
 
     @ExcelIgnore
     @ApiModelProperty("订单次数")
-    private  String counts;
+    private String counts;
 
 //    public String getHotelDiscount() {
 //        return hotelDiscount;

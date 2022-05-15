@@ -40,6 +40,12 @@ public class DiscountsPO implements Serializable {
     @TableField("validity_time")
     private Date validityTime;
 
+    @TableField("exclusive_type")
+    private Integer exclusiveType;
+
+    @TableField("exclusive_range")
+    private String exclusiveRange;
+
     public String getHotelId() {
         return hotelId;
     }
@@ -174,5 +180,21 @@ public class DiscountsPO implements Serializable {
 
     public void setDiscountsType(Integer discountsType) {
         this.discountsType = discountsType;
+    }
+
+    public Integer getExclusiveType() {
+        return exclusiveType;
+    }
+
+    public void setExclusiveType(Integer exclusiveType) {
+        this.exclusiveType = exclusiveType;
+    }
+
+    public String getExclusiveRange() {
+        return exclusiveRange;
+    }
+
+    public void setExclusiveRange(String exclusiveRange) {
+        this.exclusiveRange = exclusiveRange;
     }
 }
