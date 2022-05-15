@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author 文
+ */
 @TableName("discounts")
 public class DiscountsPO implements Serializable {
     @TableId("id")
@@ -17,26 +20,38 @@ public class DiscountsPO implements Serializable {
     private String description;
 
     @TableField("type")
-    private String type;
+    private Integer type;
 
     @TableField("discounts")
     private String discounts;
+
+    @TableField("discounts_type")
+    private Integer discountsType;
 
     @TableField("effect_type")
     private Integer effectType;
 
     @TableField("effect_condition")
-    private Integer effectCondition;
+    private Double effectCondition;
 
     @TableField("hotel_id")
-    private String hotel_Id;
+    private String hotelId;
 
-    public String getHotel_Id() {
-        return hotel_Id;
+    @TableField("validity_time")
+    private Date validityTime;
+
+    @TableField("exclusive_type")
+    private Integer exclusiveType;
+
+    @TableField("exclusive_range")
+    private String exclusiveRange;
+
+    public String getHotelId() {
+        return hotelId;
     }
 
-    public void setHotel_Id(String hotel_Id) {
-        this.hotel_Id = hotel_Id;
+    public void setHotelId(String hotelId) {
+        this.hotelId = hotelId;
     }
 
     @TableLogic
@@ -119,11 +134,11 @@ public class DiscountsPO implements Serializable {
         this.description = description;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -143,11 +158,43 @@ public class DiscountsPO implements Serializable {
         this.effectType = effectType;
     }
 
-    public Integer getEffectCondition() {
+    public Double getEffectCondition() {
         return effectCondition;
     }
 
-    public void setEffectCondition(Integer effectCondition) {
+    public void setEffectCondition(Double effectCondition) {
         this.effectCondition = effectCondition;
+    }
+
+    public Date getValidityTime() {
+        return validityTime;
+    }
+
+    public void setValidityTime(Date validityTime) {
+        this.validityTime = validityTime;
+    }
+
+    public Integer getDiscountsType() {
+        return discountsType;
+    }
+
+    public void setDiscountsType(Integer discountsType) {
+        this.discountsType = discountsType;
+    }
+
+    public Integer getExclusiveType() {
+        return exclusiveType;
+    }
+
+    public void setExclusiveType(Integer exclusiveType) {
+        this.exclusiveType = exclusiveType;
+    }
+
+    public String getExclusiveRange() {
+        return exclusiveRange;
+    }
+
+    public void setExclusiveRange(String exclusiveRange) {
+        this.exclusiveRange = exclusiveRange;
     }
 }

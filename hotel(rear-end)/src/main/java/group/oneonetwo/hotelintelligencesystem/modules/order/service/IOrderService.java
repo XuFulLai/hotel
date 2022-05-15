@@ -28,4 +28,6 @@ public interface IOrderService {
     Page<OrderVO> my(OrderVO orderVO);
 
     List<OrderVO> count(OrderVO orderVO);
+
+    void payOrder(String orderId,String walletPwd);
 }
