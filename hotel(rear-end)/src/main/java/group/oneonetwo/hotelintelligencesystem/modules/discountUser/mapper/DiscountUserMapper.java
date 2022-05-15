@@ -2,7 +2,7 @@ package group.oneonetwo.hotelintelligencesystem.modules.discountUser.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.discountUser.model.po.DiscountUserPO;
-import group.oneonetwo.hotelintelligencesystem.modules.discountUser.model.vo.DiscountUserVO;
+import group.oneonetwo.hotelintelligencesystem.modules.discountUser.model.vo.DiscountUserAndDiscountsVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Date;
@@ -18,5 +18,5 @@ import java.util.List;
 public interface DiscountUserMapper extends BaseMapper<DiscountUserPO> {
 
 
-    List<DiscountUserVO> getMyDiscount(String uid, Date date);
+    List<DiscountUserAndDiscountsVO> getMyDiscount(String uid, Date date);
 }

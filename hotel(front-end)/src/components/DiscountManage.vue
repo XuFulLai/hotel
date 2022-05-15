@@ -11,16 +11,21 @@
         style="width: 100%">
       <el-table-column
           align="center"
+          prop="id"
+          label="ID">
+      </el-table-column>
+      <el-table-column
+          align="center"
           prop="name"
           label="名称">
       </el-table-column>
       <el-table-column
           align="center"
-          prop="type"
-          label="类型">
+          prop="effectType"
+          label="生效类型">
         <template slot-scope="scope">
-          <div class="cell" v-if="scope.row.type == '0'"><el-tag>酒店折扣</el-tag></div>
-          <div class="cell" v-if="scope.row.type == '1'"><el-tag type="success">酒店内个人折扣</el-tag></div>
+          <div class="cell" v-if="scope.row.effectType == '2'"><el-tag>无门槛</el-tag></div>
+          <div class="cell" v-if="scope.row.effectType == '0' || scope.row.effectType == '1'"><el-tag type="success">满减</el-tag></div>
         </template>
       </el-table-column>
       <el-table-column
@@ -89,6 +94,8 @@
               style="width: 350px;"
               placeholder="请输入名称"
               v-model="form.name"
+              maxlength="10"
+              show-word-limit
               clearable>
           </el-input>
         </div>
@@ -136,11 +143,29 @@
             <el-radio v-model="form.effectType" label="2">无门槛</el-radio>
           </div>
         </div>
-        <div class="d-flex align-items-center mb-15" v-if="!(form.effectType == '2')">
-          <p class="w-100 text-left">生效条件（天数/钱数）:</p>
+        <div class="d-flex align-items-center mb-15" v-if="form.effectType && !(form.effectType == '2')">
+          <p class="w-100 text-left">生效条件:</p>
           <el-input
+              placeholder="请输入生效的天数或钱数"
               style="width: 350px;"
               v-model="form.effectCondition"
+              clearable>
+          </el-input>
+        </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100 text-left">互斥性:</p>
+          <div>
+            <el-radio v-model="form.exclusiveType" label="0">不互斥</el-radio>
+            <el-radio v-model="form.exclusiveType" label="1">与所有优惠券互斥</el-radio>
+            <el-radio v-model="form.exclusiveType" label="2">与指定优惠券互斥</el-radio>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-15" v-if="form.exclusiveType == '2'">
+          <p class="w-100 text-left">互斥券ID:</p>
+          <el-input
+              placeholder="填写券码ID，多个ID请用英文字符逗号隔开"
+              style="width: 350px;"
+              v-model="form.exclusiveRange"
               clearable>
           </el-input>
         </div>
@@ -191,6 +216,8 @@ export default {
         discounts: undefined,
         effectType: undefined,
         effectCondition: undefined,
+        exclusiveType: undefined,
+        exclusiveRange: undefined,
         validityTime: undefined
       }
     }
@@ -255,7 +282,7 @@ export default {
 
     //添加按钮
     add() {
-      this.from = {
+      this.form = {
         id: undefined,
         name: undefined,
         description: undefined,
@@ -264,6 +291,8 @@ export default {
         discounts: undefined,
         effectType: undefined,
         effectCondition: undefined,
+        exclusiveType: undefined,
+        exclusiveRange: undefined,
         validityTime: undefined
       }
       this.title = '添加折扣'
@@ -312,7 +341,9 @@ export default {
         discountsType: this.form.discountsType,
         effectType: this.form.effectType,
         effectCondition: this.form.effectCondition,
-        validityTime: this.form.validityTime
+        validityTime: this.form.validityTime,
+        exclusiveType: this.form.exclusiveType,
+        exclusiveRange: this.form.exclusiveRange
       }
 
       if (value == 'add') {

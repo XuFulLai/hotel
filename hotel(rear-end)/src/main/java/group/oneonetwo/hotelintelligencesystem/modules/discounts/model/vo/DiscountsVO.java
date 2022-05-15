@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.discounts.model.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,7 +22,7 @@ public class DiscountsVO implements Serializable {
     @ApiModelProperty("折扣描述")
     private String  description;
 
-    @ApiModelProperty("折扣类型(0:酒店折扣;1:酒店内个人折扣;2:全局个人折扣)")
+    @ApiModelProperty("折扣类型(0:全局个人折扣;1:酒店内个人折扣;)")
     private Integer type;
 
     @ApiModelProperty("折扣幅度")
@@ -64,6 +65,22 @@ public class DiscountsVO implements Serializable {
 
     @ApiModelProperty("有效期")
     private Date validityTime;
+
+    @ApiModelProperty("互斥性(0:不互斥;1:与所有优惠券互斥;2与指定优惠券互斥)")
+    private Integer exclusiveType;
+
+    @ApiModelProperty("互斥范围")
+    private String exclusiveRange;
+
+    private String bookDay;
+
+    private String orderFee;
+
+    private String currentUse;
+
+    private Boolean canUse;
+
+    private String cantUseReason;
 
     private Page page;
 
@@ -185,6 +202,62 @@ public class DiscountsVO implements Serializable {
 
     public void setDiscountsType(Integer discountsType) {
         this.discountsType = discountsType;
+    }
+
+    public Integer getExclusiveType() {
+        return exclusiveType;
+    }
+
+    public void setExclusiveType(Integer exclusiveType) {
+        this.exclusiveType = exclusiveType;
+    }
+
+    public String getExclusiveRange() {
+        return exclusiveRange;
+    }
+
+    public void setExclusiveRange(String exclusiveRange) {
+        this.exclusiveRange = exclusiveRange;
+    }
+
+    public String getCurrentUse() {
+        return currentUse;
+    }
+
+    public void setCurrentUse(String currentUse) {
+        this.currentUse = currentUse;
+    }
+
+    public Boolean getCanUse() {
+        return canUse;
+    }
+
+    public void setCanUse(Boolean canUse) {
+        this.canUse = canUse;
+    }
+
+    public String getCantUseReason() {
+        return cantUseReason;
+    }
+
+    public void setCantUseReason(String cantUseReason) {
+        this.cantUseReason = cantUseReason;
+    }
+
+    public String getBookDay() {
+        return bookDay;
+    }
+
+    public void setBookDay(String bookDay) {
+        this.bookDay = bookDay;
+    }
+
+    public String getOrderFee() {
+        return orderFee;
+    }
+
+    public void setOrderFee(String orderFee) {
+        this.orderFee = orderFee;
     }
 
     @Override
