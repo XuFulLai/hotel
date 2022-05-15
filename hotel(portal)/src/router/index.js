@@ -9,6 +9,7 @@ import SignIn from '../components/SignIn'
 import Register from '../components/Register'
 import Wallet from '../views/wallet'
 import RecordList from '../views/RecordList'
+import CollectionList from "../views/CollectionList";
 
 Vue.use(VueRouter)
 
@@ -42,6 +43,11 @@ const routes = [
         path: '/hotelList',
         name: 'hotelList',
         component: HotelList
+    },
+    {
+        path: '/collectionList',
+        name: 'collectionList',
+        component: CollectionList
     },
     {
         path: '/hotelDetails',
