@@ -82,6 +82,8 @@ public class DiscountsVO implements Serializable {
 
     private String cantUseReason;
 
+    private Boolean isGot;
+
     private Page page;
 
     public Page getPage() {
@@ -258,6 +260,14 @@ public class DiscountsVO implements Serializable {
 
     public void setOrderFee(String orderFee) {
         this.orderFee = orderFee;
+    }
+
+    public Boolean getIsGot() {
+        return isGot;
+    }
+
+    public void setIsGot(Boolean isGot) {
+        this.isGot = isGot;
     }
 
     @Override

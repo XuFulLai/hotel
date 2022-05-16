@@ -160,14 +160,14 @@ public class DiscountsServiceImpl implements IDiscountsService {
         QueryWrapper<DiscountsPO> wrapper = new QueryWrapper<>();
         wrapper.eq("hotel_id", id).ge("validity_time", new Date()).eq("type", DiscountEnums.TYPE_HOTEL.getCode());
         List<DiscountsPO> list = discountsMapper.selectList(wrapper);
-        String uid = authUtils.getUid();
-        Iterator<DiscountsPO> iterator = list.iterator();
-        while (iterator.hasNext()) {
-            if (discountUserService.isGotThisCoupon(uid, iterator.next().getId())) {
-                iterator.remove();
-            }
-        }
         List<DiscountsVO> res = ConvertUtils.transferList(list, DiscountsVO.class);
+        String uid = authUtils.getUid();
+        Iterator<DiscountsVO> iterator = res.iterator();
+        while (iterator.hasNext()) {
+            DiscountsVO next = iterator.next();
+            next.setIsGot(discountUserService.isGotThisCoupon(uid, next.getId()));
+        }
+
         return res;
     }
 
