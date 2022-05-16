@@ -1,9 +1,9 @@
 package group.oneonetwo.hotelintelligencesystem.modules.order.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.enums.BalanceHandleMode;
+import group.oneonetwo.hotelintelligencesystem.enums.OrderEnums;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscountsService;
@@ -21,21 +21,19 @@ import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.vo.WalletVO;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.service.WalletService;
-import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.TimeUtils;
+import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @author 文
+ */
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
 public class OrderServiceImpl implements IOrderService {
@@ -168,6 +166,9 @@ public class OrderServiceImpl implements IOrderService {
     public void payOrder(String orderId, String walletPwd) {
         //查询订单
         OrderVO orderVO = selectOneByIdReturnVO(orderId);
+        if (!OrderEnums.STATUS_UNPAID.toString().equals(orderVO.getStatus())) {
+            throw new CommonException("该订单不允许该操作");
+        }
         //查询钱包(顺便验证密码了)
         WalletVO wallet = walletService.getWallet(walletPwd);
         if (wallet.getBalance() < Double.parseDouble(orderVO.getLastPay())) {
@@ -180,15 +181,31 @@ public class OrderServiceImpl implements IOrderService {
         roomVO.setOrderId(orderVO.getId());
         roomService.assignRoom(roomVO);
 
+        //更新订单状态
+        OrderVO update = new OrderVO();
+        update.setId(orderVO.getId());
+        update.setStatus(OrderEnums.STATUS_PAID.getCode().toString());
+        OrderPO save = save(update);
     }
 
 
     @Override
     public OrderVO createNewOrder(OrderVO orderVO) {
+        if (orderVO.getEstimatedCheckIn() == null || orderVO.getEstimatedCheckOut() == null) {
+            throw new CommonException("入住/退房时间参数为空");
+        }
+        if (WStringUtils.isBlank(orderVO.getProvince())) {
+            throw new CommonException("来访地参数为空");
+        }
+        if (WStringUtils.isBlank(orderVO.getRoomType())) {
+            throw new CommonException("房间类型参数为空");
+        }
 
+        //预创建,获取订单id
         orderVO = addOne(orderVO);
 
-        orderVO.setWay(2);
+        orderVO.setStatus(OrderEnums.STATUS_UNPAID.getCode().toString());
+        orderVO.setWay(OrderEnums.WAY_ONLINE.getCode());
 
 
         //格式化时间
@@ -200,6 +217,7 @@ public class OrderServiceImpl implements IOrderService {
 
         //获取订单房间类型
         RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(orderVO.getRoomType());
+        orderVO.setHotelId(roomTypeVO.getHotelId());
 
         //计算价钱
         int[] pays = discountsService.countPay(orderVO.getDays(), roomTypeVO.getFee(),orderVO.getDiscount());

@@ -1,5 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.exception;
 
+import group.oneonetwo.hotelintelligencesystem.enums.ResultCode;
+
 /**
  * @author 文
  * @description 保存/插入时异常
@@ -13,6 +15,7 @@ public class CommonException extends RuntimeException {
 
     public CommonException(String message) {
         super(message);
+        this.code = 5000;
     }
 
     public CommonException(Integer code, String message) {
