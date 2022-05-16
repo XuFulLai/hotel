@@ -192,7 +192,7 @@
                       </el-select>
                     </div>
                     <div>
-                      <el-button @click="confirmOrder" type="primary" style="width: 100%;margin: 10px 0">预订</el-button>
+                      <el-button @click="confirmOrderHandle" type="primary" style="width: 100%;margin: 10px 0">预订</el-button>
                     </div>
                   </div>
                 </div>
@@ -478,17 +478,7 @@ export default {
         discountFee: undefined,
         hotelDiscountList: [],
         personalDiscountList:[],
-        useDiscountMap: {
-          1:{
-            use: false
-          },
-          2:{
-            use: false
-          },
-          3:{
-            use: false
-          }
-        },
+        useDiscountMap: {},
       },
       discountVisibleList:[],
       switchType: true,
@@ -677,17 +667,17 @@ export default {
           price: 0
         }
         if (val.discountsType == 0) {
-          this.confirmOrderData.discountFee += 0 + val.discounts
+          this.confirmOrderData.discountFee += val.discounts - 0
           map.price = val.discounts
         }else if (val.discountsType == 1) {
-          this.confirmOrderData.discountFee += 0 + this.confirmOrderData.totalFee*(1-val.discounts);
+          this.confirmOrderData.discountFee += this.confirmOrderData.totalFee*(1-val.discounts) - 0;
           map.price = this.confirmOrderData.totalFee*(1-val.discounts)
         }
         console.log(this.confirmOrderData.discountFee)
         this.discountVisibleList.push(map)
       }
     },
-    confirmOrder() {
+    confirmOrderHandle() {
       this.confirmOrderData.discountFee = 0
       this.confirmOrderData.totalFee = this.roomTypeMap[this.currentRoomType].fee * this.bookDay
       this.confirmOrderData.useDiscountMap = new Map();
@@ -969,6 +959,12 @@ export default {
               this.payForm.orderId = res.data.data.id
               this.payForm.lastPay = res.data.data.lastPay
               this.payVisible = true
+              this.confirmOrderVisible = false
+
+              //初始化表单
+              this.currentRoomType = undefined
+              this.dateValue = ''
+              this.provinceVal = ''
               console.log("订单id：", res.data.data.id)
             } else {
               this.$message({
