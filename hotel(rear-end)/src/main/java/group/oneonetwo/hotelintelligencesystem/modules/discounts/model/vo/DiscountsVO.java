@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.discounts.model.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,6 +8,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author 文
+ */
 @ApiModel("折扣实体")
 public class DiscountsVO implements Serializable {
     @ApiModelProperty("主键")
@@ -18,17 +22,20 @@ public class DiscountsVO implements Serializable {
     @ApiModelProperty("折扣描述")
     private String  description;
 
-    @ApiModelProperty("折扣类型")
-    private String type;
+    @ApiModelProperty("折扣类型(0:全局个人折扣;1:酒店内个人折扣;)")
+    private Integer type;
 
     @ApiModelProperty("折扣幅度")
     private String discounts;
 
-    @ApiModelProperty("生效条件类型(0:满足xx天,1:提前xx天,2:会员卡)")
+    @ApiModelProperty("折扣方式(0:立减;1:折扣)")
+    private Integer discountsType;
+
+    @ApiModelProperty("生效条件类型(0:满足xx天,1:满减;2:无门槛)")
     private Integer effectType;
 
     @ApiModelProperty("生效条件(天数)")
-    private Integer effectCondition;
+    private Double effectCondition;
 
     @ApiModelProperty("酒店id")
     private String hotelId;
@@ -55,6 +62,27 @@ public class DiscountsVO implements Serializable {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    @ApiModelProperty("有效期")
+    private Date validityTime;
+
+    @ApiModelProperty("互斥性(0:不互斥;1:与所有优惠券互斥;2与指定优惠券互斥)")
+    private Integer exclusiveType;
+
+    @ApiModelProperty("互斥范围")
+    private String exclusiveRange;
+
+    private String bookDay;
+
+    private String orderFee;
+
+    private String currentUse;
+
+    private Boolean canUse;
+
+    private String cantUseReason;
+
+    private Boolean isGot;
 
     private Page page;
 
@@ -130,11 +158,11 @@ public class DiscountsVO implements Serializable {
         this.description = description;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -154,12 +182,92 @@ public class DiscountsVO implements Serializable {
         this.effectType = effectType;
     }
 
-    public Integer getEffectCondition() {
+    public Double getEffectCondition() {
         return effectCondition;
     }
 
-    public void setEffectCondition(Integer effectCondition) {
+    public void setEffectCondition(Double effectCondition) {
         this.effectCondition = effectCondition;
+    }
+
+    public Date getValidityTime() {
+        return validityTime;
+    }
+
+    public void setValidityTime(Date validityTime) {
+        this.validityTime = validityTime;
+    }
+
+    public Integer getDiscountsType() {
+        return discountsType;
+    }
+
+    public void setDiscountsType(Integer discountsType) {
+        this.discountsType = discountsType;
+    }
+
+    public Integer getExclusiveType() {
+        return exclusiveType;
+    }
+
+    public void setExclusiveType(Integer exclusiveType) {
+        this.exclusiveType = exclusiveType;
+    }
+
+    public String getExclusiveRange() {
+        return exclusiveRange;
+    }
+
+    public void setExclusiveRange(String exclusiveRange) {
+        this.exclusiveRange = exclusiveRange;
+    }
+
+    public String getCurrentUse() {
+        return currentUse;
+    }
+
+    public void setCurrentUse(String currentUse) {
+        this.currentUse = currentUse;
+    }
+
+    public Boolean getCanUse() {
+        return canUse;
+    }
+
+    public void setCanUse(Boolean canUse) {
+        this.canUse = canUse;
+    }
+
+    public String getCantUseReason() {
+        return cantUseReason;
+    }
+
+    public void setCantUseReason(String cantUseReason) {
+        this.cantUseReason = cantUseReason;
+    }
+
+    public String getBookDay() {
+        return bookDay;
+    }
+
+    public void setBookDay(String bookDay) {
+        this.bookDay = bookDay;
+    }
+
+    public String getOrderFee() {
+        return orderFee;
+    }
+
+    public void setOrderFee(String orderFee) {
+        this.orderFee = orderFee;
+    }
+
+    public Boolean getIsGot() {
+        return isGot;
+    }
+
+    public void setIsGot(Boolean isGot) {
+        this.isGot = isGot;
     }
 
     @Override

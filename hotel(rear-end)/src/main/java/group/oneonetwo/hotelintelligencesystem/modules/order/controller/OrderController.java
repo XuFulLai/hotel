@@ -76,6 +76,13 @@ public class OrderController {
         return Reply.success(orderService.createNewOrder(orderVO));
     }
 
+    @ApiOperation("支付订单")
+    @PostMapping("payOrder")
+    public Reply payOrder(String orderId,String walletPwd) {
+        orderService.payOrder(orderId,walletPwd);
+        return Reply.success();
+    }
+
     @ApiOperation("取消订单")
     @GetMapping("cancel/{id}")
     public Reply<String> cancelOrder(@PathVariable("id") String id) {

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
-import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.IsolationInfoPO;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.IsolationInfoService;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.po.ReviewPO;
@@ -140,7 +139,7 @@ public class ReviewServiceImpl implements ReviewService{
             }
             RoomTypePO roomTypePO = roomTypeServeice.selectOneById(reviewVO.getRoomType());
             Integer isolationFee = roomTypePO.getIsolationFee();
-            WalletPO walletPO = walletService.getWalletPO(reviewVO.getuId());
+            WalletPO walletPO = walletService.getWalletPOByUid(reviewVO.getuId());
 
             double balances=0;
             balances=walletPO.getBalance()-isolationFee*14;
@@ -167,7 +166,7 @@ public class ReviewServiceImpl implements ReviewService{
             ReviewPO reviewPO = selectOneById(reviewVO.getId());
             if(reviewPO.getType()==2 || reviewPO.getType()==3){
                 RoomTypePO roomTypePO = roomTypeServeice.selectOneById(reviewPO.getRoomType());
-                WalletPO walletPO = walletService.getWalletPO(reviewPO.getuId());
+                WalletPO walletPO = walletService.getWalletPOByUid(reviewPO.getuId());
                 walletPO.setBalance(walletPO.getBalance()+roomTypePO.getIsolationFee());
                 walletService.save(walletPO);
             }

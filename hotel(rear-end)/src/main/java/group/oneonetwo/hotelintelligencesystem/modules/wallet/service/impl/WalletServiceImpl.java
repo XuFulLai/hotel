@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
-import group.oneonetwo.hotelintelligencesystem.modules.review.model.vo.ReviewVO;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.dao.WalletMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.po.WalletPO;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.vo.WalletVO;
@@ -87,7 +86,8 @@ public class WalletServiceImpl implements WalletService{
 
     }
 
-    public WalletPO getWalletPO(String uid){
+    @Override
+    public WalletPO getWalletPOByUid(String uid){
         QueryWrapper<WalletPO> wrapper = new QueryWrapper<>();
         wrapper.eq("u_id",uid);
         List<WalletPO> walletPOS = walletMapper.selectList(wrapper);
@@ -110,5 +110,25 @@ public class WalletServiceImpl implements WalletService{
             return walletPO;
         }
         throw new SavaException("钱包修改时异常");
+    }
+
+    @Override
+    public void editBalance(Integer mode, Double num) {
+        WalletPO current = getWalletPOByUid(authUtils.getUid());
+        WalletPO walletPO = new WalletPO();
+        walletPO.setId(current.getId());
+        switch (mode) {
+            case 0:
+                walletPO.setBalance(0.00);
+                break;
+            case 1:
+                walletPO.setBalance(current.getBalance()+num);
+                break;
+            case 2:
+                walletPO.setBalance(current.getBalance()-num);
+                break;
+            default:
+                throw new CommonException("非法操作");
+        }
     }
 }

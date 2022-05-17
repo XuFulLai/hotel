@@ -16,7 +16,9 @@ public interface WalletService {
 
     Reply editPwd(String oldPwd, String newPwd);
 
-    WalletPO getWalletPO(String uid);
+    WalletPO getWalletPOByUid(String uid);
 
     WalletPO save(WalletPO walletPO);
+
+    void editBalance(Integer mode,Double num);
 }
