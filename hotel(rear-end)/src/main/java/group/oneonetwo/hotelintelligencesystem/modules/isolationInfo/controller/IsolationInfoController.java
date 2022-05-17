@@ -77,7 +77,7 @@ public class IsolationInfoController {
         String fileName = URLEncoder.encode(exportFileName, "UTF-8").replaceAll("\\+", "%20");
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
-       EasyExcel.write(response.getOutputStream(), OrderVO.class).sheet("隔离人员信息").doWrite(isolationInfoService.getAllList(isolationInfoVO));
+       EasyExcel.write(response.getOutputStream(), IsolationInfoVO.class).sheet("隔离人员信息").doWrite(isolationInfoService.getAllList(isolationInfoVO));
     }
 
     @ApiOperation("防疫人员直接分配房间")

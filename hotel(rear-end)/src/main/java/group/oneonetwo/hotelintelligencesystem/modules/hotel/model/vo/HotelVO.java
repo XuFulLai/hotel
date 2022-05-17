@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 文
@@ -71,6 +72,9 @@ public class HotelVO implements Serializable {
 
     @ApiModelProperty("排序")
     private Integer sort;
+
+    @ApiModelProperty("收藏列表")
+    private List<String> collection;
 
     @ApiModelProperty("是否删除")
     private Integer isDeleted;
@@ -302,6 +306,14 @@ public class HotelVO implements Serializable {
 
     public void setBadge(String badge) {
         this.badge = badge;
+    }
+
+    public List<String> getCollection() {
+        return collection;
+    }
+
+    public void setCollection(List<String> collection) {
+        this.collection = collection;
     }
 
     @Override

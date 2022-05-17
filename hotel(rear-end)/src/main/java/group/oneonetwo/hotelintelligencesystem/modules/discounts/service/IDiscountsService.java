@@ -3,7 +3,6 @@ package group.oneonetwo.hotelintelligencesystem.modules.discounts.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.po.DiscountsPO;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.vo.DiscountsVO;
-import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 
 
 import java.util.List;
@@ -17,7 +16,14 @@ public interface IDiscountsService {
     DiscountsVO saveone (DiscountsVO discountsVO);
     Page<DiscountsVO> getPage(DiscountsVO discountsVO);
 
-    int[] countPay(Integer days, Integer price);
+    int[] countPay(Integer days, Integer price,String discount);
 
+    List<DiscountsVO> getHotelDiscountListByHotelId(String id);
+
+    List<DiscountsVO> getPersonalDiscountListByHotelId(String id);
+
+    boolean isLegal(String discountsId);
+
+    List<DiscountsVO> getCurrentCanUseMyPersonalDiscountList(DiscountsVO id);
 }
 

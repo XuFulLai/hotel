@@ -1,8 +1,9 @@
 package group.oneonetwo.hotelintelligencesystem.modules.order.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
+import group.oneonetwo.hotelintelligencesystem.enums.BalanceHandleMode;
+import group.oneonetwo.hotelintelligencesystem.enums.OrderEnums;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscountsService;
@@ -18,21 +19,21 @@ import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTy
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTypeServeice;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
-import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
+import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.vo.WalletVO;
+import group.oneonetwo.hotelintelligencesystem.modules.wallet.service.WalletService;
 import group.oneonetwo.hotelintelligencesystem.tools.TimeUtils;
+import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @author 文
+ */
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
 public class OrderServiceImpl implements IOrderService {
@@ -53,6 +54,9 @@ public class OrderServiceImpl implements IOrderService {
 
     @Autowired
     IRoomService roomService;
+
+    @Autowired
+    WalletService walletService;
 
     @Override
     public OrderPO add(OrderVO orderVO){
@@ -159,17 +163,50 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public OrderVO createNewOrder(OrderVO orderVO) {
-
-        orderVO = addOne(orderVO);
-
-        orderVO.setWay(2);
-
+    public void payOrder(String orderId, String walletPwd) {
+        //查询订单
+        OrderVO orderVO = selectOneByIdReturnVO(orderId);
+        if (!OrderEnums.STATUS_UNPAID.toString().equals(orderVO.getStatus())) {
+            throw new CommonException("该订单不允许该操作");
+        }
+        //查询钱包(顺便验证密码了)
+        WalletVO wallet = walletService.getWallet(walletPwd);
+        if (wallet.getBalance() < Double.parseDouble(orderVO.getLastPay())) {
+            throw new CommonException("余额不足!");
+        }
+        walletService.editBalance(BalanceHandleMode.REDUCE.getCode(), Double.valueOf(orderVO.getLastPay()));
         //分配房间
         RoomVO roomVO = new RoomVO();
         roomVO.setType(orderVO.getRoomType());
         roomVO.setOrderId(orderVO.getId());
         roomService.assignRoom(roomVO);
+
+        //更新订单状态
+        OrderVO update = new OrderVO();
+        update.setId(orderVO.getId());
+        update.setStatus(OrderEnums.STATUS_PAID.getCode().toString());
+        OrderPO save = save(update);
+    }
+
+
+    @Override
+    public OrderVO createNewOrder(OrderVO orderVO) {
+        if (orderVO.getEstimatedCheckIn() == null || orderVO.getEstimatedCheckOut() == null) {
+            throw new CommonException("入住/退房时间参数为空");
+        }
+        if (WStringUtils.isBlank(orderVO.getProvince())) {
+            throw new CommonException("来访地参数为空");
+        }
+        if (WStringUtils.isBlank(orderVO.getRoomType())) {
+            throw new CommonException("房间类型参数为空");
+        }
+
+        //预创建,获取订单id
+        orderVO = addOne(orderVO);
+
+        orderVO.setStatus(OrderEnums.STATUS_UNPAID.getCode().toString());
+        orderVO.setWay(OrderEnums.WAY_ONLINE.getCode());
+
 
         //格式化时间
         orderVO.setEstimatedCheckIn(TimeUtils.setSplitTime(orderVO.getEstimatedCheckIn()));
@@ -180,9 +217,10 @@ public class OrderServiceImpl implements IOrderService {
 
         //获取订单房间类型
         RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(orderVO.getRoomType());
+        orderVO.setHotelId(roomTypeVO.getHotelId());
 
         //计算价钱
-        int[] pays = discountsService.countPay(orderVO.getDays(), roomTypeVO.getFee());
+        int[] pays = discountsService.countPay(orderVO.getDays(), roomTypeVO.getFee(),orderVO.getDiscount());
         orderVO.setPay(String.valueOf(pays[0]));
         orderVO.setLastPay(String.valueOf(pays[1]));
 
@@ -235,10 +273,14 @@ public class OrderServiceImpl implements IOrderService {
                 "广东省","海南省","四川省","贵州省","云南省","陕西省","甘肃省","青海省",
                 "台湾省","内蒙古自治区","广西壮族自治区","西藏自治区","宁夏回族自治区",
                 "新疆维吾尔自治区","北京市","天津市","上海市","重庆市","香港特别行政区","澳门特别行政区"};
-        String[] members = {"3","4","5","6","7","1506647494363246593"};
+        String[] members = {"3","4","5","6","7","1506647494363246593","10086"};
         String hotel = "1";
         Integer[] ways = {1,2};
-        String[] roomTypes = {"1463764265293885441", "1463890996549947394", "1463891142348148737","1470613302300102658","1470613446756126722"};
+        String[] roomTypes = {"1463764265293885441","1463764265293885441","1463764265293885441","1463764265293885441", "1463764265293885441","1463764265293885441",
+                "1463890996549947394", "1463890996549947394","1463890996549947394","1463890996549947394",
+                "1463891142348148737","1463891142348148737","1463891142348148737",
+                "1470613302300102658","1470613302300102658",
+                "1470613446756126722"};
         for (int i = 0; i < 1500; i++) {
             OrderVO orderVO = new OrderVO();
             Random random = new Random();
