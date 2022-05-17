@@ -986,16 +986,21 @@ export default {
     editRoom() {
       this.current.infoMode = "edit"
       this.current.infoTitle = "房间信息编辑"
-      get("/api/room/getDetail/" + this.current.id).then(res => {
-        console.log("getDetail",res)
-        this.form = res.data.data
-        if(this.form.isIsolation == 1) {
-          this.form.isIsolation = true
-        }else {
-          this.form.isIsolation = false
-        }
-      })
-      this.infoVisible = true
+      // get("/api/room/getDetail/" + this.current.id).then(res => {
+      get(`/api/room/getDetail/${this.current.id}`) // ES6写法
+        .then(res => {
+          console.log("getDetail",res)
+          this.form = res.data.data
+          if(this.form.isIsolation == 1) {
+            this.form.isIsolation = true
+          } else {
+            this.form.isIsolation = false
+          }
+        })
+        .catch( err => {
+          console.error(err);
+        })
+      this.infoVisible = true // 
     },
 
     reset() {
