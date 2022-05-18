@@ -42,6 +42,71 @@
               <div class="detail-introduce" v-html="hotelDetails.introduce"></div>
             </div>
 
+            <div class="detail-block">
+              <h3 class="sub-title">
+                酒店评价
+                <span class="en">Evaluation</span>
+              </h3>
+
+              <div class="detail-content" style="margin: 0;padding: 0">
+                <div class="comment-box flex flex-column">
+                  <div class="comment-total-box">
+                    <div class="comment-total-score flex flex-row align-items-end">
+                      <div class="comment-total-score-ball flex justify-content-center align-items-center">
+                        {{ hotelAvgScore }}
+                      </div>
+                      <div class="comment-total-score-star">
+                        <el-rate
+                            v-model="hotelAvgScore"
+                            :colors="colors"
+                            disabled
+                            show-text>
+                        </el-rate>
+                      </div>
+                    </div>
+                  </div>
+                  <el-divider content-position="left">用户评价</el-divider>
+                  <div class="comment-user-box flex flex-row">
+                    <div class="comment-user-box-left">
+                      <el-avatar :size="50" :src="circleUrl"></el-avatar>
+                    </div>
+                    <div class="comment-user-box-right flex flex-column">
+                      <div class="comment-user-nickname-date flex flex-row justify-content-between">
+                        <div class="comment-user-nickname">
+                          得闲一齐饮茶
+                        </div>
+                        <div class="comment-user-date">
+                          发布于 2022-5-18 21:50:30
+                        </div>
+                      </div>
+                      <div class="comment-user-roomType">
+                        单人房
+                      </div>
+                      <div class="comment-user-score">
+                        <el-rate
+                            v-model="4.7"
+                            :colors="colors"
+                            disabled
+                            show-score>
+                        </el-rate>
+                      </div>
+                      <div class="comment-user-content">
+                        不错不错,下次继续来!!!
+                      </div>
+                      <div class="comment-user-pic">
+                        <el-image
+                            style="width: 100px; height: 100px"
+                            :src="url"
+                            :preview-src-list="srcList">
+                        </el-image>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
             <div class="detail-block" v-if="hotelDiscounts != null && hotelDiscounts.length !== 0">
               <h3 class="sub-title">
                 酒店优惠
@@ -441,6 +506,8 @@ export default {
   },
   data() {
     return {
+      colors: ['#99A9BF', '#F7BA2A', '#ff7300'],
+      hotelAvgScore: 0,
       form: {},
       accompany: false,
       date: '',
@@ -655,8 +722,18 @@ export default {
     this.getIsolateRoomTypeList()
     this.getCollectionStatus()
     this.getHotelDiscountList()
+    this.getHotelAvgScore()
   },
   methods: {
+    getHotelAvgScore() {
+      get(`/api/orderComment/score/${this.hotelId}`).then(res => {
+        if (res.data.code == 200) {
+          this.hotelAvgScore = res.data.data - 0
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+    },
     updateDiscountVisible() {
       this.discountVisibleList = []
       this.confirmOrderData.discountFee = 0
@@ -1338,5 +1415,37 @@ h3.sub-title .en {
   margin: 10px 0 30px 0;
 }
 
+.comment-box {
+  margin: 16px;
+  width: 100%;
+}
+
+.comment-total-box {
+
+}
+
+.comment-total-score-ball {
+  border-radius: 50%;
+  background: #00aaff;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  margin-right: 6px;
+}
+
+.comment-user-box-right {
+  margin-left: 10px;
+  width: 100%;
+}
+
+.comment-user-date {
+  color: #999;
+}
+
+.comment-user-roomType {
+  color: #999;
+}
 
 </style>

@@ -27,6 +27,9 @@ import java.util.List;
 
 import static java.lang.Math.PI;
 
+/**
+ * @author 文
+ */
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
 public class HotelServiceImpl implements IHotelService {

@@ -12,6 +12,7 @@
         <result property="roomType" column="room_type"/>
         <result property="days" column="days"/>
         <result property="discount" column="discount"/>
+        <result property="commentId" column="comment_id"/>
         <result property="pay" column="pay"/>
         <result property="lastPay" column="last_pay"/>
         <result property="status" column="status"/>

@@ -36,6 +36,10 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("折扣类型")
     private String discount;
 
+    @ExcelIgnore
+    @ApiModelProperty("评论id")
+    private String commentId;
+
     @ExcelProperty(value = "应付价格",index = 8)
     @ApiModelProperty("原价")
     private  String pay;
@@ -380,6 +384,14 @@ public class OrderVO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 
     @Override

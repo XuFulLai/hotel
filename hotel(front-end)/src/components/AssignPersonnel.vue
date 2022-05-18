@@ -3,7 +3,9 @@
   <div class="personnel-main">
 
         <div class="personnel-content">
-            <div class="d-flex align-items-center mb-15">
+          <h1 style="font-size: 20px;color: #999;margin-bottom: 12px">隔离人员分配</h1>
+
+          <div class="d-flex align-items-center mb-15">
                 <p class="w-120 text-left font-16">姓名:</p>
                 <el-input
                     style="width: 350px;"
@@ -285,5 +287,10 @@ export default {
 }
 .personnel-content {
     padding: 30px 25px;
+  border: 1px solid #d5d5d5;
+  width: 500px;
+  margin: 0 auto;
+  margin-top: 30px;
+  border-radius: 6px;
 }
 </style>
