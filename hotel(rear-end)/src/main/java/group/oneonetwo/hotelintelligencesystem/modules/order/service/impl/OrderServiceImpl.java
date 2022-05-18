@@ -217,6 +217,9 @@ public class OrderServiceImpl implements IOrderService {
 
         //获取订单房间类型
         RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(orderVO.getRoomType());
+        if (roomTypeVO == null) {
+            throw new CommonException("找不到对应的房间类型");
+        }
         orderVO.setHotelId(roomTypeVO.getHotelId());
 
         //计算价钱

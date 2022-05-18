@@ -28,6 +28,9 @@ public class OrderPO implements Serializable {
     @TableField("discount")
     private String discount;
 
+    @TableField("comment_id")
+    private String commentId;
+
     @TableField("pay")
     private  String pay;
 
@@ -39,7 +42,7 @@ public class OrderPO implements Serializable {
 
     @TableField("province")
     private String province;
-   
+
     @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
@@ -242,5 +245,11 @@ public class OrderPO implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public String getCommentId() {
+        return commentId;
+    }
 
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
+    }
 }
