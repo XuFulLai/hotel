@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.orderComment.model.vo;
 
+import group.oneonetwo.hotelintelligencesystem.tools.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -69,6 +70,38 @@ public class OrderCommentVO implements Serializable {
      */
     @ApiModelProperty("创建人")
     private String createBy;
+
+    private Page page;
+
+    private String header;
+
+    private  String roomType;
+
+    private String name;
+
+    public String getHeader() {
+        return header;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
      *
@@ -191,5 +224,13 @@ public class OrderCommentVO implements Serializable {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 }

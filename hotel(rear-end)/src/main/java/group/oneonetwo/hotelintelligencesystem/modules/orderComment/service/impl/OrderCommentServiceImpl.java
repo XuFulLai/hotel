@@ -85,6 +85,8 @@ public class OrderCommentServiceImpl implements IOrderCommentService {
 
     @Override
     public Page<OrderCommentVO> getPage(OrderCommentVO orderCommentVO) {
-        return null;
+        Page<Object> page = new Page<>(orderCommentVO.getPage().getPage(), orderCommentVO.getPage().getSize());
+
+        return orderCommentMapper.getPage(page,orderCommentVO);
     }
 }
