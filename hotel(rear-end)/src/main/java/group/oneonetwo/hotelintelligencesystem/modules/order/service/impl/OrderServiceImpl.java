@@ -166,7 +166,8 @@ public class OrderServiceImpl implements IOrderService {
     public void payOrder(String orderId, String walletPwd) {
         //查询订单
         OrderVO orderVO = selectOneByIdReturnVO(orderId);
-        if (!OrderEnums.STATUS_UNPAID.toString().equals(orderVO.getStatus())) {
+
+        if (!(OrderEnums.STATUS_UNPAID.getCode().toString().equals(orderVO.getStatus()))) {
             throw new CommonException("该订单不允许该操作");
         }
         //查询钱包(顺便验证密码了)

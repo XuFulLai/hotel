@@ -990,7 +990,7 @@ export default {
         orderId: this.payForm.orderId,
         walletPwd: this.payForm.walletPwd
       }
-      formDataPost("/api/order/pay",data).then(res => {
+      formDataPost("/api/order/payOrder",data).then(res => {
         if (res.data.code == 200) {
           this.$message({
             message: this.$t('hotelList.success'),
