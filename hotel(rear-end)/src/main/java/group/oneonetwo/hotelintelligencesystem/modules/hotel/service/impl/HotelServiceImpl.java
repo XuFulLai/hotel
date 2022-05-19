@@ -217,7 +217,7 @@ public class HotelServiceImpl implements IHotelService {
     private HotelVO countCoordinateRange(HotelVO hotelVO) {
         Double longitude = Double.valueOf(hotelVO.getLongitude());
         Double latitude = Double.valueOf(hotelVO.getLatitude());
-        Double raidus = Double.valueOf(hotelVO.getDistance());
+        Double radius = Double.valueOf(hotelVO.getDistance());
         if (longitude >= 180
                 || longitude <= -180
                 || latitude >= 90
@@ -226,11 +226,11 @@ public class HotelServiceImpl implements IHotelService {
         }
         Double degree = (24901 * 1609) / 360.0;
 
-        Double radiusLng = (1 / (degree * Math.cos(latitude * (PI / 180)))) * raidus;
+        Double radiusLng = (1 / (degree * Math.cos(latitude * (PI / 180)))) * radius;
         hotelVO.setMinLongitude(String.valueOf(longitude-radiusLng));
         hotelVO.setMaxLongitude(String.valueOf(longitude+radiusLng));
 
-        Double radiusLat = (1/degree)*raidus;
+        Double radiusLat = (1/degree)*radius;
         hotelVO.setMinLatitude(String.valueOf(latitude-radiusLat));
         hotelVO.setMaxLatitude(String.valueOf(latitude+radiusLat));
 
