@@ -1,7 +1,9 @@
 package group.oneonetwo.hotelintelligencesystem.modules.orderComment.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.orderComment.model.vo.OrderCommentVO;
 import group.oneonetwo.hotelintelligencesystem.modules.orderComment.service.IOrderCommentService;
+
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,8 +36,11 @@ public class OrderCommentController {
         return Reply.success(orderCommentService.getAvgScore(hotelId));
     }
 
-    public Reply getPage(@RequestBody OrderCommentVO orderCommentVO) {
-        return Reply.success(orderCommentService.getPage(orderCommentVO));
-    }
+    @ApiOperation("获取评论分页数据")
+    @PostMapping("page")
+    public Reply<Page<OrderCommentVO>> getPage(@RequestBody OrderCommentVO orderCommentVO) {
+        return Reply.success(orderCommentService.getPage(orderCommentVO));}
+
+
 
 }
