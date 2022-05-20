@@ -1,8 +1,8 @@
 export function dateTimeFormat(value) {
-    console.log(value);
+    // console.log(value);
     const dateTime = new Date(value) // Date实例
 
-    console.log(dateTime);
+    // console.log(dateTime);
 
     const YYYY = dateTime.getFullYear() // 获取当前年份
     const MM = dateTime.getMonth() + 1 // 获取当前月份

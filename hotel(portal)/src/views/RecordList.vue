@@ -33,7 +33,8 @@
             @click="reviewRecordsHandle(!isReview)">
 
             <div>
-              <h3 class="font-22">自申报记录</h3>
+              <!-- <h3 class="font-22">自申报记录</h3> -->
+              <h3 class="font-22">隔离入住申请记录</h3>
               <p class="font-16">{{ reviewListNum }}</p>
             </div>
 
@@ -76,6 +77,11 @@
                     {{ $t("orderList.hotelName") }}{{ item.hotelName }}
                   </p>
                   <p class="mb-10">隔离ID：{{ item.id }}</p>
+                  <p class="mb-10">
+                    <span class="mr-10">隔离开始时间：{{ item.checkInTime | dateTimeFormat }}</span>
+                    <span>隔离结束时间：{{ item.checkOutTime | dateTimeFormat }}</span>
+                  </p>
+                  <p class="mb-10">来源地：{{ item.province }}{{ item.city }}</p>
                   <div class="d-flex align-items-center">
                     <p>{{ $t("orderList.roomType") }}{{ item.roomTypeName | roomNameFormat }}</p>
                     <p class="ml-10 mr-10" style="color: #e0e0e0">|</p>
@@ -101,6 +107,7 @@
         </div>
 
         <!-- 自申报记录 -->
+        <!-- 隔离入住申请记录 -->
         <div v-else-if="isReview" class="d-flex flex-column justify-content-between">
           <ul class="order-list">
             <li v-for="(item, index) in reviewList">
@@ -113,6 +120,11 @@
                   <p class="mb-10">申报人身份证号码：{{ item.idCard }}</p>
                   <p class="mb-10">申报人电话：{{ item.phone }}</p>
                   <p class="mb-10">申报ID：{{ item.id }}</p>
+                  <p class="mb-10">来源地：{{ item.province }}{{ item.city }}</p>
+                  <p class="mb-10">
+                    <span class="mr-10">隔离开始时间：{{ item.checkInTime | dateTimeFormat }}</span>
+                    <span>隔离结束时间：{{ item.checkOutTime | dateTimeFormat }}</span>
+                  </p>
                   <p v-if="item.reviewStatus == 2" style="color: red;" class="mb-10">拒绝理由：{{ item.remark }}</p>
                 </div>
               </div>
@@ -951,7 +963,7 @@ export default {
 }
 
 .order-list li {
-  padding: 25px;
+  padding: 15px 20px;
   margin-bottom: 10px;
   background-color: white;
   border-radius: 15px;

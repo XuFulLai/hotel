@@ -6,7 +6,7 @@
         </div>
         <div class="inp font-14">
             <p class="m-0">{{  $t('login.password') }}:</p>
-            <input v-model="password" type="password" :placeholder="$t('login.passwordTips')">
+            <input @keyup.enter="login" v-model="password" type="password" :placeholder="$t('login.passwordTips')">
         </div>
         <div class="d-flex align-items-center justify-content-center">
             <button @click="login">{{  $t('login.login') }}</button>

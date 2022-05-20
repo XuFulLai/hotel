@@ -11,10 +11,12 @@ import znCH from './lang/zh-CN'
 import enUS from './lang/en-US'
 import enLocale from 'element-ui/lib/locale/lang/en'
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
+import { dateTimeFormat } from "./utils/format";
 
 Vue.config.productionTip = false
 
 Vue.use(VueI18n)
+Vue.filter('dateTimeFormat',dateTimeFormat)
 
 Vue.prototype.$axios = axios
 

@@ -49,35 +49,41 @@
               </h3>
 
               <div class="detail-content flex flex-row flex-wrap" style="margin: 0;padding: 0">
-                <div @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts">
-                  <div class="discounts-title flex flex-row justify-content-between">
-                    <p style="margin-left: 6px;font-size: 14px;font-weight: 700">{{ i.name }}</p>
-                    <el-tooltip placement="right" style="margin: 4px">
-                      <div slot="content">{{ i.description }}</div>
-                      <el-button
-                          style="border-radius: 50%;padding: 2px 8px;margin-left: 10px;font-weight: 800;color: #999">!
-                      </el-button>
-                    </el-tooltip>
-                  </div>
-                  <div style="border-top: 1px dotted #999;"></div>
-                  <div class="discounts-body flex flex-column">
-                    <div class="discounts-body-top flex flex-row align-items-end">
-                      <div class="discounts-body-price">
-                        {{ i.discountsType == 0 ? '￥' + i.discounts : i.discounts * 10 + '折' }}
-                      </div>
-                      <div class="discounts-body-condition" v-if="i.effectType == 0">
-                        {{ '[满' + i.effectCondition + '天可用]' }}
-                      </div>
-                      <div class="discounts-body-condition" v-if="i.effectType == 1">
-                        {{ '[满' + i.effectCondition + '元可用]' }}
-                      </div>
-                      <div class="discounts-body-condition" v-if="i.effectType == 2">[无门槛使用]</div>
+                <div class="d-flex flex-row flex-wrap">
+                  <div @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts">
+                    <div class="discounts-title flex flex-row justify-content-between" :class="[i.isGot?'active':'', isGot?'active':'']">
+                      <p style="margin-left: 6px;font-size: 14px;font-weight: 700">{{ i.name }}</p>
+                      <el-tooltip placement="right" style="margin: 4px">
+                        <div slot="content">{{ i.description }}</div>
+                        <el-button
+                            style="border-radius: 50%;padding: 2px 8px;margin-left: 10px;font-weight: 800;color: #999">!
+                        </el-button>
+                      </el-tooltip>
                     </div>
-                    <div class="discounts-body-bottom">
-                      有效期到 {{ dateTimeFormat(i.validityTime) }}
-                    </div>
+                    <div style="border-top: 1px dotted #999;"></div>
+                    <div class="discounts-body flex flex-column" :class="[i.isGot?'active':'', isGot?'active':'']">
+                      <div class="discounts-body-top flex flex-row align-items-end">
+                        <div class="discounts-body-price">
+                          {{ i.discountsType == 0 ? '￥' + i.discounts : i.discounts * 10 + '折' }}
+                        </div>
+                        <div class="discounts-body-condition" v-if="i.effectType == 0">
+                          {{ '[满' + i.effectCondition + '天可用]' }}
+                        </div>
+                        <div class="discounts-body-condition" v-if="i.effectType == 1">
+                          {{ '[满' + i.effectCondition + '元可用]' }}
+                        </div>
+                        <div class="discounts-body-condition" v-if="i.effectType == 2">[无门槛使用]</div>
+                      </div>
+                      <div class="discounts-body-bottom">
+                        有效期到 {{ dateTimeFormat(i.validityTime) }}
+                      </div>
 
-                  </div>
+                    </div>
+                  </div>                  
+                
+                </div>
+                <div class="d-flex align-items-center">
+                  <el-button type="success">展开按钮</el-button>
                 </div>
               </div>
             </div>
@@ -453,6 +459,7 @@ export default {
       addressData: provinceAndCityData,
       area: [],
       situation: '',
+      isGot: false,
       situationOptions: [{
         value: 0,
         label: '密接'
@@ -681,6 +688,7 @@ export default {
       this.confirmOrderData.discountFee = 0
       this.confirmOrderData.totalFee = this.roomTypeMap[this.currentRoomType].fee * this.bookDay
       this.confirmOrderData.useDiscountMap = new Map();
+      this.discountVisibleList = []
       this.getCurrentCanUseDiscount()
     },
 
@@ -736,6 +744,7 @@ export default {
             message: this.$t('common.success'),
             type: 'success'
           });
+          this.isGot = true
         } else {
           this.$message.error(res.data.msg);
         }
@@ -748,6 +757,7 @@ export default {
 
     getHotelDiscountList() {
       get("/api/discounts/list/personal/" + this.hotelId).then(res => {
+        console.log(res.data);
         if (res.data.code == 200) {
           this.hotelDiscounts = res.data.data
         }
@@ -1120,7 +1130,7 @@ h3.sub-title .en {
 
 .detail-content {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   padding: 12px 10px;
   line-height: 2;
@@ -1219,8 +1229,25 @@ h3.sub-title .en {
   height: 110px;
   margin: 10px;
   box-shadow: 0 12px 5px -10px rgba(0, 0, 0, 0.1), 0 0 4px 0 rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 
 }
+
+/* .discounts-box.active {
+  cursor: no-drop;
+} */
+.discounts-box .discounts-title.active {
+  background: rgb(210 211 213);
+  cursor: no-drop;
+}
+.discounts-box .discounts-title button {
+  cursor: no-drop;
+}
+.discounts-box .discounts-body.active {
+  background: rgb(210 211 213);
+  cursor: no-drop;
+}
+
 
 .discounts-title {
 
@@ -1262,9 +1289,9 @@ h3.sub-title .en {
 
 .choose-hotel-discount {
   width: 100%;
-  max-height: 110px;
+  /* max-height: 110px;
   overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-x: hidden; */
 }
 
 .choose-discount-box {
