@@ -279,7 +279,7 @@ export default {
   border-radius: 6px;
   /*border: 1px solid red;*/
   width: 600px;
-  height: 60%;
+  height: 450px;
   background: #fff;
   box-shadow: 0 12px 5px -10px rgba(0, 0, 0, 0.1), 0 0 4px 0 rgba(0, 0, 0, 0.1);
 

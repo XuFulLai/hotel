@@ -31,6 +31,8 @@
               <p>{{ item.status | statusFilter }}</p>
               <a v-if="item.status == 1" class="color-red cursor"
                  @click="cancelOrder(item.id)">{{ $t('orderList.cancelOrder') }}</a>
+              <a v-if="item.status == 4 && !item.commentId" class="color-red cursor"
+                 @click="writeComment(item)">{{ $t('orderList.writeComment') }}</a>
             </div>
             <div class="d-flex align-items-center justify-content-between font-16 color-6">
               <div>
@@ -67,7 +69,86 @@
       <Footer></Footer>
 
     </div>
+    <el-dialog
+        title="撰写评价"
+        :visible.sync="writeCommentVisible"
+        width="460px"
+    >
+      <div class="comment-box">
 
+        <div class="block flex flex-column">
+          <h3>{{ currentOrder.hotelName }}</h3>
+          <div style="color: #999" class="d-flex align-items-center mt-5 mb-15">
+            <p>{{ $t('orderList.roomType') }}{{ currentOrder.roomTypeName | roomNameFormat }}</p>
+            <p class="ml-10 mr-10" style="color: #e0e0e0"> | </p>
+            <p>{{ $t('orderList.day') }} {{ currentOrder.days }} {{ $t('orderList.dayNum') }}</p>
+          </div>
+          <div style="border-top: 1px solid #d9d9d9"></div>
+        </div>
+
+        <div class="block">
+          <span class="demonstration">评分</span>
+          <el-rate
+              :allow-half="true"
+              v-model="commentForm.score"
+              :colors="colors"
+              show-text>
+          </el-rate>
+        </div>
+
+
+        <div class="block">
+          <span class="demonstration">评价</span>
+          <el-input
+              type="textarea"
+              :autosize="{ minRows: 2}"
+              placeholder="可以对酒店设施、房间环境、服务等多方面进行评价哟！"
+              maxlength="100"
+              show-word-limit
+              v-model="commentForm.content">
+          </el-input>
+        </div>
+
+        <div class="block">
+          <span class="demonstration">上传图片</span>
+          <div class="d-flex align-items-center mb-15">
+            <el-image style="width: 100px; height: 100px"
+                      :src="commentForm.attachment"
+                      v-if="commentForm.attachment"
+                      fit="fit">
+            </el-image>
+            <el-upload
+                ref="upload"
+                action="#"
+                class="avatar-uploader ml-10"
+                accept="image/png,image/gif,image/jpg,image/jpeg"
+                :show-file-list="false"
+                :on-change="onChangeFile"
+                :before-upload="beforeAvatarUpload"
+                :http-request="uploadImg">
+              <el-button
+                  type="success"
+                  plain
+                  round
+                  size="mini">
+                选择图片
+              </el-button>
+            </el-upload>
+          </div>
+        </div>
+
+
+
+        <span style="margin: 24px 6px 0 6px;display: block" slot="footer" class="dialog-footer">
+          <el-button @click="writeCommentVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirmComment">确 定</el-button>
+        </span>
+
+
+      </div>
+
+
+    </el-dialog>
 
   </div>
 </template>
@@ -86,6 +167,7 @@ export default {
   data() {
     return {
       applyVisible: false,
+      writeCommentVisible: false,
       orderList: [],
       isolationList: [],
       applyList: [],
@@ -93,6 +175,13 @@ export default {
       statusList: [],
       isIsolation: false,
       isApply: false,
+      colors: ['#99A9BF', '#F7BA2A', '#ff7300'],
+      currentOrder: {},
+      commentForm: {
+        score: undefined,
+        content: undefined,
+        attachment: undefined
+      },
       applyForm: {
         applyThing: '',
         applyNum: 0,
@@ -255,6 +344,63 @@ export default {
     this.getStatus()
   },
   methods: {
+
+    //图片改变调用函数
+    onChangeFile(file) {
+      this.commentForm.attachment = URL.createObjectURL(file.raw);
+
+    },
+    //图片上传之前的回调函数
+    beforeAvatarUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 5;
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 5MB!');
+      }
+      return isLt2M;
+    },
+    //图片上传函数
+    uploadImg(params) {
+      console.log(params);
+      const config = {
+        headers: {'Content-Type': 'multipart/form-data'},
+      }
+      const file = params.file
+
+      //formdata
+      const fd = new FormData();//通过form数据格式来传
+      fd.append("img", file); //传文件
+      fd.append("key", "comment");
+
+      post("/upload/img", fd, config)
+          .then(res => {
+            console.log(res);
+            this.commentForm.attachment = 'http://' + res.data.data
+          })
+          .catch(err => {
+            console.log(err);
+          })
+    },
+    writeComment(order) {
+      this.writeCommentVisible = true
+      this.currentOrder = order
+    },
+    confirmComment() {
+      console.log(this.commentForm)
+      let data = this.commentForm
+      data.orderId = this.currentOrder.id
+      post("/api/orderComment/write",data).then(res => {
+        if (res.data.code == 200) {
+          this.$message({
+            message: this.$t('common.success'),
+            type: 'success'
+          });
+          this.writeCommentVisible = false
+          this.$router.go(0)
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+    },
     getStatus() {
       const data = {
         page: {
@@ -556,5 +702,18 @@ export default {
 .isolation {
   border: 1px solid #d2d2d3;
   background: #f5f7fa;
+}
+
+.comment-box {
+  margin-top: -30px;
+}
+
+.block {
+  margin: 18px 6px;
+}
+
+.demonstration {
+  display: block;
+  margin-bottom: 8px;
 }
 </style>

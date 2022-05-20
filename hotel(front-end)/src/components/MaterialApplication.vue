@@ -2,7 +2,8 @@
 
   <div class="material-application-main">
 
-      <div class="application-content">
+      <div class="application-content flex flex-column justify-content-center">
+            <h1 style="font-size: 20px;color: #999;margin-bottom: 12px">物资申请</h1>
             <div class="d-flex align-items-center mb-15">
                 <p class="w-120 text-left font-16">申请物品名称:</p>
                 <el-input
@@ -124,5 +125,11 @@ export default {
 }
 .application-content {
     padding: 30px 25px;
+    border: 1px solid #d5d5d5;
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 30px;
+    border-radius: 6px;
+
 }
 </style>

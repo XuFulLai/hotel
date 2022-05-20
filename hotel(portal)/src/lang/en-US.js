@@ -94,6 +94,7 @@ export default {
     orderList: {
         orderId: 'OrderID:',
         cancelOrder: 'Cancel the order',
+        writeComment: 'Write comment',
         hotelName: 'Hotel name:',
         roomType: 'room type:',
         day: 'day:',
