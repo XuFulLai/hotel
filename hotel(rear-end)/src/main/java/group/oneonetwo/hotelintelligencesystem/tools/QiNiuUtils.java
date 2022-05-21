@@ -10,31 +10,39 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+@Component
 public class QiNiuUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(Object.class);
 
     // 设置需要操作的账号的AK和SK
-    private static final String ACCESS_KEY = "mRdcukwnSilb9YAyngC6-LNW6AW8rzHIfi-o7PKP";
-    private static final String SECRET_KEY = "eJd55kd1wzVPkiGS54hSPe-D9REypOlnfSJEEaMH";
+    @Value("${qiniuyun.ak}")
+    private String ACCESS_KEY;
+    @Value("${qiniuyun.sk}")
+    private String SECRET_KEY;
 
     // 要上传的空间名称
-    private static final String BUCKETNAME = "hotel-1";
-
-    // 密钥
-    private static final Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+    @Value("${qiniuyun.bucket}")
+    private String BUCKETNAME;
 
     // 外链默认域名
-    private static final String DOMAIN = "r8w2attho.hn-bkt.clouddn.com";
+    @Value("${qiniuyun.domain}")
+    private String DOMAIN;
 
     /**
      * 将图片上传到七牛云
      */
-    public static String uploadQNImg(InputStream file, String key) {
+    public String uploadQNImg(InputStream file, String key) {
+//        ACCESS_KEY = qiniuyunConfig.getAk();
+//        SECRET_KEY = qiniuyunConfig.getSk();
+//        BUCKETNAME = qiniuyunConfig.getBucket();
+//        DOMAIN = qiniuyunConfig.getDomain();
         // 构造一个带指定Zone对象的配置类, 注意这里的Zone.zone0需要根据主机选择
         Configuration cfg = new Configuration(Zone.zone2());
         // 其他参数参考类注释
@@ -43,6 +51,7 @@ public class QiNiuUtils {
 
         try {
             //    Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+            Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
             String upToken = auth.uploadToken(BUCKETNAME);
             try {
                 Response response = uploadManager.put(file, createKey(key), upToken, null, null);
@@ -69,7 +78,7 @@ public class QiNiuUtils {
         return "";
     }
 
-    private static String createKey(String key) {
+    private String createKey(String key) {
         String time = String.valueOf(System.currentTimeMillis());
         key += "_";
         key += time;

@@ -61,12 +61,21 @@ jwt:
   # 令牌秘钥
   secret: 12d8sxsm+xswxyy+2d8sxswxyybmaik/2dwzmztbdwtb/3rggdxfnjppspaparggdxfnjppspapapa+hbgwjybqyl+++++
   # 令牌有效期（默认30分钟）
-  expireTime: 3600000
+  expireTime: 7200000
   token-prefix: Bearer
+  iss: tomato
+  roleClaims: rol
 server:
   port: 8105
   tomcat:
     basedir: /data/temp
+
+qiniuyun:
+  ak: mRdcukwnSilb9YAyngC6-LNW6AW8rzHIfi-o7PKP
+  sk: eJd55kd1wzVPkiGS54hSPe-D9REypOlnfSJEEaMH
+  bucket: hotel-1
+  domain: hotelsystem.top
+
 
 
 

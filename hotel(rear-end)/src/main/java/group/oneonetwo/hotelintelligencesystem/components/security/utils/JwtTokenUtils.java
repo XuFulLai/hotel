@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -13,33 +15,37 @@ import java.util.HashMap;
  * @author 文
  * @description token工具类
  */
+@Component
 public class JwtTokenUtils {
 
     /**
      * 自定义标识
      */
-//    @Value("${jwt.header}")
-    public final static String TOKEN_HEADER = "Authorization";
+    @Value("${jwt.header}")
+    public String TOKEN_HEADER = "Authorization";
 
     /**
      * 前缀
      */
-//    @Value("${jwt.token-prefix}")
-    public final static String TOKEN_PREFIX = "Bearer";
+    @Value("${jwt.token-prefix}")
+    public String TOKEN_PREFIX;
 
     /**
      * 密钥(基于base64)
      */
-//    @Value("${jwt.secret}")
-    private final static String SECRET = "12d8sxsm+xswxyy+2d8sxswxyybmaik/2dwzmztbdwtb/3rggdxfnjppspaparggdxfnjppspapapa+hbgwjybqyl+++++";
+    @Value("${jwt.secret}")
+    private String SECRET;
 
+    @Value("${jwt.iss}")
     private static final String ISS = "tomato";
 
     // 角色的key
-    private static final String ROLE_CLAIMS = "rol";
+    @Value("${jwt.roleClaims}")
+    private String ROLE_CLAIMS;
 
     //过期时间
-    private static final long EXPIRATION = 7200000L;
+    @Value("${jwt.expireTime}")
+    private long EXPIRATION;
 
 //    // 选择了记住我之后的过期时间为7天
 //    private static final long EXPIRATION_REMEMBER = 604800L;
@@ -51,7 +57,7 @@ public class JwtTokenUtils {
      * @param role
      * @return
      */
-    public static String createToken(String uid,String role) {
+    public String createToken(String uid,String role) {
         HashMap<String, Object> map = new HashMap<>();
         //获取当前时间,以计算过期时间
         long time = System.currentTimeMillis();
@@ -79,7 +85,7 @@ public class JwtTokenUtils {
      * @param token
      * @return
      */
-    public static String getUsername(String token){
+    public String getUsername(String token){
         return getTokenBody(token).getSubject();
     }
 
@@ -91,7 +97,7 @@ public class JwtTokenUtils {
      * @param token
      * @return
      */
-    public static String getUserRole(String token){
+    public String getUserRole(String token){
         return (String) getTokenBody(token).get(ROLE_CLAIMS);
     }
 
@@ -102,7 +108,7 @@ public class JwtTokenUtils {
      * @param token
      * @return
      */
-    public static boolean isExpiration(String token) {
+    public boolean isExpiration(String token) {
         try {
             return getTokenBody(token).getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
@@ -116,34 +122,34 @@ public class JwtTokenUtils {
      * @param token
      * @return
      */
-    private static Claims getTokenBody(String token){
+    private Claims getTokenBody(String token){
         return Jwts.parser()
                 .setSigningKey(SECRET)
                 .parseClaimsJws(token)
                 .getBody();
     }
 
-    public static String getTokenHeader() {
+    public String getTokenHeader() {
         return TOKEN_HEADER;
     }
 
-    public static String getTokenPrefix() {
+    public String getTokenPrefix() {
         return TOKEN_PREFIX;
     }
 
-    public static String getSECRET() {
+    public String getSECRET() {
         return SECRET;
     }
 
-    public static String getISS() {
+    public String getISS() {
         return ISS;
     }
 
-    public static String getRoleClaims() {
+    public String getRoleClaims() {
         return ROLE_CLAIMS;
     }
 
-    public static long getEXPIRATION() {
+    public long getEXPIRATION() {
         return EXPIRATION;
     }
 
