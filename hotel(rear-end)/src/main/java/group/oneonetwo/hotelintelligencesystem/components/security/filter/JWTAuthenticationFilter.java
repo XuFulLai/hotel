@@ -50,6 +50,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private IUserService userService;
 
+    private JwtTokenUtils jwtTokenUtils;
+
 //    private RedisUtil redisUtil;
 
     private MenuServiceImpl menuService;
@@ -127,6 +129,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         menuService = ac.getBean(MenuServiceImpl.class);
         userService = ac.getBean(UserServiceImpl.class);
         deptService = ac.getBean(DeptServiceImpl.class);
+        jwtTokenUtils = ac.getBean(JwtTokenUtils.class);
 
         JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
         logger.info("jwtUser:" + jwtUser.toString());
@@ -137,7 +140,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             role = authority.getAuthority();
         }
 
-        String token = JwtTokenUtils.createToken(jwtUser.getId(), role);
+        String token = jwtTokenUtils.createToken(jwtUser.getId(), role);
 
         Map<String,Object> map = new HashMap<>();
         UserVO userVO = userService.selectOneByIdReturnVO(jwtUser.getId());
@@ -156,8 +159,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // 但是这里创建的token只是单纯的token
         // 按照jwt的规定，最后请求的时候应该是 `Bearer token`
         // 往请求头中写入token,并返回信息(token,username,role)
-        response.setHeader("token", JwtTokenUtils.TOKEN_PREFIX + " " + token);
-        map.put("token",JwtTokenUtils.TOKEN_PREFIX + " " + token);
+        response.setHeader("token", jwtTokenUtils.TOKEN_PREFIX + " " + token);
+        map.put("token",jwtTokenUtils.TOKEN_PREFIX + " " + token);
 //        map.put("role",JwtTokenUtils.getUserRole(token));
         map.put("menuList",menuTree);
         Gson gson = new Gson();
