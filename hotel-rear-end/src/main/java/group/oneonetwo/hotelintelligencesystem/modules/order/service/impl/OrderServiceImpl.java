@@ -241,9 +241,10 @@ public class OrderServiceImpl implements IOrderService {
         roomVO.setOrderId(id);
         roomService.cancelRoom(roomVO);
         OrderVO orderVO = new OrderVO();
-        orderVO.setStatus("2");
+        orderVO.setStatus(OrderEnums.STATUS_CLOSE.getCode().toString());
         orderVO.setId(id);
         OrderPO save = save(orderVO);
+        walletService.editBalance(BalanceHandleMode.REDUCE.getCode(), Double.valueOf(orderVO.getLastPay()));
         return "取消订单成功,退款" + save.getLastPay() + "元将在0-3个工作日内原路退还。";
     }
 
