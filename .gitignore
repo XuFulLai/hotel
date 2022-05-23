@@ -4,3 +4,7 @@ node_modules/
 .project
 unpackage/
 .DS_Store
+
+application.yml
+/hotel-rear-end/src/main/resources/application.yml
+/hotel-rear-end/src/main/resources/application.yml

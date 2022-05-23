@@ -130,5 +130,6 @@ public class WalletServiceImpl implements WalletService{
             default:
                 throw new CommonException("非法操作");
         }
+        WalletPO save = save(walletPO);
     }
 }

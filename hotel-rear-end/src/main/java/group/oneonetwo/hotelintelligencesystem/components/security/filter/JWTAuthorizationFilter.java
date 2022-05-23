@@ -31,6 +31,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
 
 //    RedisUtil redisUtil;
+    JwtTokenUtils jwtTokenUtils;
 
     Logger logger = LoggerFactory.getLogger(Object.class);
 
@@ -42,18 +43,18 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
-//        //获取容器
-//        ServletContext context = request.getServletContext();
-//        ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(context);
-//        redisUtil = ac.getBean(RedisUtil.class);
+        //获取容器
+        ServletContext context = request.getServletContext();
+        ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(context);
+        jwtTokenUtils = ac.getBean(JwtTokenUtils.class);
         String tokenHeader = null;
         if ("/wsServer".equals(request.getRequestURI())) {
             tokenHeader = "Bearer " + request.getParameter("Authentication");
         } else {
-            tokenHeader = request.getHeader(JwtTokenUtils.TOKEN_HEADER);
+            tokenHeader = request.getHeader(jwtTokenUtils.TOKEN_HEADER);
         }
         // 如果请求头中没有Authorization信息或token前缀不符合则直接放行了
-        if (tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtils.TOKEN_PREFIX)) {
+        if (tokenHeader == null || !tokenHeader.startsWith(jwtTokenUtils.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
@@ -77,16 +78,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     // 这里从token中获取用户信息并新建一个token
     private UsernamePasswordAuthenticationToken getAuthentication(String tokenHeader) throws TokenIsExpiredException {
-        String token = tokenHeader.replace(JwtTokenUtils.TOKEN_PREFIX, "").substring(1);
+        String token = tokenHeader.replace(jwtTokenUtils.TOKEN_PREFIX, "").substring(1);
         //检查是否redis中存在传过来的token值,若不存在则过期
 //        boolean expiration = redisUtil.hasKey(tokenHeader);
-        boolean expiration = JwtTokenUtils.isExpiration(token);
+        boolean expiration = jwtTokenUtils.isExpiration(token);
         if (Boolean.TRUE.equals(expiration)) {
             throw new TokenIsExpiredException("token过期,请重新登录");
         } else {
             //获取token中的信息,并进行把用户角色告诉security进行鉴权操作
-            String username = JwtTokenUtils.getUsername(token);
-            String role = JwtTokenUtils.getUserRole(token);
+            String username = jwtTokenUtils.getUsername(token);
+            String role = jwtTokenUtils.getUserRole(token);
             if (username != null) {
 //                //刷新token时间
 //                redisUtil.setKeyExpire(tokenHeader,1800000L);

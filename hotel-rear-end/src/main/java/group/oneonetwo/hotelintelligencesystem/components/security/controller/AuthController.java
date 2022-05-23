@@ -35,6 +35,9 @@ import java.util.UUID;
 public class AuthController {
 
     @Autowired
+    private JwtTokenUtils jwtTokenUtils;
+
+    @Autowired
     private IUserService userService;
 
     @Autowired
@@ -103,17 +106,17 @@ public class AuthController {
                 map.put("status",status);
                 if ("2".equals(status)) {
                     String[] tokens = fullToken.split(" ");
-                    if (!JwtTokenUtils.TOKEN_PREFIX.equals(tokens[0])) {
+                    if (!jwtTokenUtils.TOKEN_PREFIX.equals(tokens[0])) {
                         return Reply.failed("500","非法token");
                     }
                     String token = tokens[1];
                     map.put("token",fullToken);
                     logger.info(token);
                     logger.info("Full Token:" + fullToken);
-                    String uid = JwtTokenUtils.getUsername(token);
+                    String uid = jwtTokenUtils.getUsername(token);
                     UserVO userVO = userService.selectOneByIdReturnVO(uid);
                     MenuDeptVO vo = new MenuDeptVO();
-                    vo.setRole(JwtTokenUtils.getUserRole(token));
+                    vo.setRole(jwtTokenUtils.getUserRole(token));
                     vo.setDeptId(userVO.getDept());
                     List<MenuVO> menuTree = menuService.getMenuTreeByDeptIdAndRole(vo);
                     DeptVO deptVO = deptService.selectOneByIdReturnVO(userVO.getDept());
