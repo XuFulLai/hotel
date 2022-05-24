@@ -113,13 +113,13 @@
 						</view>
 					</view>
 				</view>
-				
-					<view class="custom_info">
-						<input class="uni-input"  placeholder="输入姓名" />
-						<input class="uni-input" type="number" placeholder="联系方式" />
-					</view>
+
+				<view class="custom_info">
+					<input class="uni-input" placeholder="输入姓名" />
+					<input class="uni-input" type="number" placeholder="联系方式" />
+				</view>
 			</view>
-				<u-line color="#4d4d4d" margin="15px"></u-line>
+			<u-line color="#4d4d4d" margin="15px"></u-line>
 			<view class="about">
 				<h6>退款规则</h6><br>
 				预订成功后15分钟内可免费取消<br>
@@ -144,11 +144,23 @@
 				<view class="wrap-header">
 					<view class="wrap-header-item">输入支付密码</view>
 				</view>
+				<view class="last_pay">
+					<p>实付金额：</p>
+					<h6>￥</h6>{{lastPay}}
+				</view>
+				<!-- 选择支付方式 -->
+				<!-- <view class="pay_way">
+					<u-collapse @change="change1" @close="close" @open="open" align='center'>
+						<u-collapse-item title="我的钱包" name="Docs guide">
+							<text>我的钱包</text>
+						</u-collapse-item>
+					</u-collapse>
+				</view> -->
 				<view>
 					<view class="input-wrap" style="font-size: 42rpx;">
 						<!-- 页面显示  如果想要加密形式 给此input加上 password="true" 属性-->
 						<input class="input1" type="number" v-for="(item, index) in input_len" @tap="onInput"
-						 password="true" :key="index" disabled
+							password="true" :key="index" disabled
 							:value="input_val.length >= index + 1 ? input_val[index] : ''" />
 					</view>
 					<!-- 实际监听 -->
@@ -157,7 +169,7 @@
 				</view>
 			</view>
 		</u-popup>
-		
+
 		<u-modal :show="showNotify" @confirm="enterConfirm" ref="uModal" :asyncClose="true" title="密码错误,请重新输入"
 			confirmText='重试'>
 			<view class="slot-icon">
@@ -183,8 +195,8 @@
 		},
 		data() {
 			return {
-				image:"https://images-new-cdn.123rf.com.cn/450wm/dit26978/dit269781708/dit26978170800228.jpg",
-				showNotify:false,
+				image: "https://images-new-cdn.123rf.com.cn/450wm/dit26978/dit269781708/dit26978170800228.jpg",
+				showNotify: false,
 				input_len: 6, // 密码长度
 				input_val: '', // 密码的值
 				isFocus: false,
@@ -202,7 +214,8 @@
 				hotelId: '',
 				flag: false, // 支付弹窗
 				hotelBadge: '',
-				orderId:'',
+				orderId: '',
+				lastPay: '',
 			}
 		},
 		onReachBottom() {
@@ -224,23 +237,23 @@
 				this.input_val = ''
 				this.onInput()
 			},
-			preview(url){
+			preview(url) {
 				let imgsArray = [];
-					imgsArray[0] = this.image;
-					uni.previewImage({
-						current: 0,
-						urls: imgsArray
-					});
+				imgsArray[0] = this.image;
+				uni.previewImage({
+					current: 0,
+					urls: imgsArray
+				});
 			},
-			enterConfirm(){
-				this.showNotify =false	
+			enterConfirm() {
+				this.showNotify = false
 			},
 			open1() {
 				this.flag = true;
 			},
 			close1() {
 				this.flag = false
-				this.input_val =''
+				this.input_val = ''
 			},
 			onInput() {
 				this.isFocus = true;
@@ -294,6 +307,7 @@
 					this.flag = true;
 					this.onInput()
 					this.orderId = res.data.data.id
+					this.lastPay = res.data.data.lastPay
 				}
 			},
 			// 支付订单
@@ -306,8 +320,8 @@
 						'Authorization': db.get('token')
 					},
 					data: {
-						 "walletPwd":pwd,
-						 "orderId":this.orderId,
+						"walletPwd": pwd,
+						"orderId": this.orderId,
 					}
 
 				})
@@ -316,13 +330,13 @@
 					this.flag = false;
 					this.orderClose()
 					uni.showToast({
-						title:'支付成功',
-						icon:'success'
+						title: '支付成功',
+						icon: 'success'
 					})
-				}else{
+				} else {
 					this.showNotify = true
 				}
-					this.input_val = ''
+				this.input_val = ''
 			},
 			// 显示订单详情
 			showOrder(index) {
@@ -368,20 +382,39 @@
 </script>
 
 <style lang="scss">
-	.custom_info{
+	.custom_info {
 		margin-top: 25rpx;
-			width: 700rpx;
-			input{
-				margin-top: 15rpx;
-			    border-radius: 15px;
-				background-color: #aaaaaa;
-				padding: 25rpx;
-			}
+		width: 700rpx;
+
+		input {
+			margin-top: 15rpx;
+			border-radius: 15px;
+			background-color: #aaaaaa;
+			padding: 25rpx;
+		}
 	}
+
 	.wrap {
 		padding: 30rpx;
 		height: 400rpx;
 		width: 650rpx;
+
+		.last_pay {
+			margin-right: 140rpx;
+			align-items: flex-end;
+			justify-content: center;
+			display: flex;
+			margin-top: -40px;
+			font-size: 40px;
+			font-weight: 800;
+
+			p {
+				font-size: 14px;
+				font-weight: 600;
+				color: #9b9ba5;
+			}
+		}
+
 		// padding: 0 30rpx;
 	}
 
@@ -510,6 +543,7 @@
 			background-color: #0484d3;
 			padding: 30rpx;
 			color: #FFFFFF;
+
 			.order_info {
 				font-size: 22px;
 			}
