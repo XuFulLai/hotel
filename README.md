@@ -46,7 +46,7 @@
 
    - dept表:
      - role列的值用作鉴权，系统设计为admin（管理员）、hotel_admin（酒店管理员）和hotel_member（酒店员工）。若要自定义，需同步修改后端代码。
-2. 二维码登录相关
+2. 粗体二维码登录相关
    - 使用轮询方式访问redis（可改为websocket推送），使用UUID的方式生成码作为redis的key，对应的value为0时为未扫描，1为已扫描，2为确认登录
 3. xxxx
 
@@ -61,13 +61,13 @@
 
 #### **前端（客户端）：**
 
-- **fuxiao_lee (925194376@qq.com)（main）**
+- ** fuxiao_lee (925194376@qq.com)（main）**
 - tomato-simon (1499602163@qq.com)（Secondary main）
 - lingyu1412 (9770826+lingyu1412@user.noreply.gitee.com)
 
 #### **APP端（客户端）**
 
-- ** houttuynia（327849132@qq.com）（main）**
+-  **houttuynia（327849132@qq.com）（main）** 
 - tomato-simon (1499602163@qq.com)（part of Scan-code-login）
 
 
