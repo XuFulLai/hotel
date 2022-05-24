@@ -1,4 +1,6 @@
-# 特殊原因将停更大概2个月,下一次更新将是大版本更新,推出《酒店智慧系统2.0》，敬请期待。期间大家仍然可以watch，star，fork三连哟，以便有新版本第一时间获知！
+> 代码优先更新于GitHub，可以的话可以移步到GitHub进行三连操作，谢谢！GitHub仓库地址：[酒店管理系统](https://github.com/Tomato-Simon/hotel-sales-management-integrated-system) https://github.com/Tomato-Simon/hotel-sales-management-integrated-system
+
+# 特殊原因将停更大概至8月,下一次更新将是大版本更新,推出《酒店智慧系统2.0》，敬请期待。期间大家仍然可以watch，star，fork三连哟，以便有新版本第一时间获知！
 
 # HotelIntelligenceSystem
 
@@ -62,6 +64,12 @@
 - **fuxiao_lee (925194376@qq.com)（main）**
 - tomato-simon (1499602163@qq.com)（Secondary main）
 - lingyu1412 (9770826+lingyu1412@user.noreply.gitee.com)
+
+#### **APP端（客户端）**
+
+- ** houttuynia（327849132@qq.com）（main）**
+- tomato-simon (1499602163@qq.com)（part of Scan-code-login）
+
 
 
 
