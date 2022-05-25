@@ -203,55 +203,55 @@ textarea {
     margin: 0;
 }
 .mt-5 {
-    margin-top: 5px;
+    margin-top: 0.5rem;
 }
 .mr-5 {
-    margin-right: 5px;
+    margin-right: 0.5rem;
 }
 .mb-5 {
-    margin-bottom: 5px;
+    margin-bottom: 0.5rem;
 }
 .ml-5 {
-    margin-left: 5px;
+    margin-left: 0.5rem;
 }
 .pt-5 {
-    padding-top: 5px;
+    padding-top: 0.5rem;
 }
 .pl-5 {
-    padding-left: 5px;
+    padding-left: 0.5rem;
 }
 .pb-5 {
-    padding-bottom: 5px;
+    padding-bottom: 0.5rem;
 }
 .pr-5 {
-    padding-right: 5px;
+    padding-right: 0.5rem;
 }
 .mt-10 {
-    margin-top: 10px;
+    margin-top: 1rem;
 }
 .mr-10 {
-    margin-right: 10px;
+    margin-right: 1rem;
 }
 .mb-10 {
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
 }
 .mb-15 {
-    margin-bottom: 15px;
+    margin-bottom: 1.5rem;
 }
 .ml-10 {
-    margin-left: 10px;
+    margin-left: 1rem;
 }
 .pt-10 {
-    padding-top: 10px;
+    padding-top: 1rem;
 }
 .pl-10 {
-    padding-left: 10px;
+    padding-left: 1rem;
 }
 .pb-10 {
-    padding-bottom: 10px;
+    padding-bottom: 1rem;
 }
 .pr-10 {
-    padding-right: 10px;
+    padding-right: 1rem;
 }
 /* 间距样式 End */
 
@@ -270,6 +270,33 @@ textarea {
     width: 100%;
 }
 /* 宽度样式 End */
+
+/* 媒体查询 Start */
+/* @media screen and (min-width: 0px) and (max-width: 768px) { */
+@media screen and (max-width: 768px) {
+    html {
+        font-size: 6px!important;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+    html {
+        font-size: 8px!important;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1440px) {
+    html {
+        font-size: 10px!important;
+    }    
+}
+
+@media screen and (min-width: 1441px) {
+    html {
+        font-size: 12px!important;
+    }    
+}
+/* 媒体查询 End */
 
 
 /* Other Start */

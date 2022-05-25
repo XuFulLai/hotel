@@ -512,13 +512,17 @@ export default {
 
 .hotel-list li {
   display: flex;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
+  margin-bottom: 3rem;
 }
 
 .hotel-list li .li-l {
-  width: 370px;
+  /* width: 370px;
   height: 423px;
-  margin: 0px 30px;
+  margin: 0px 30px; */
+  width: 37rem;
+  height: 42.3rem;
+  margin: 0 3rem;  
 }
 
 .hotel-list li .li-l img {
@@ -527,40 +531,53 @@ export default {
 }
 
 .hotel-list li .li-r {
-  width: 360px;
-  margin: 0px 30px;
+  /* width: 360px;
+  margin: 0px 30px; */
+  width: 36rem;
+  margin: 0 3rem;
   position: relative;
 }
 
 .hotel-list li .li-r h4 {
-  font-size: 36px;
-  margin-bottom: 15px;
+  /* font-size: 36px;
+  margin-bottom: 15px; */
+  font-size: 3rem;
+  margin-bottom: 1.5rem;  
   font-weight: 400;
 }
 
 .hotel-list li .li-r h6 {
-  font-size: 14px;
-  margin-bottom: 28px;
+  /* font-size: 18px;
+  margin-bottom: 28px; */
+  font-size: 1.8rem;
+  margin-bottom: 2.8rem;
   font-weight: 400;
 }
 
 .hotel-list li .li-r div {
-  font-size: 15px;
-  color: #898989;
+  /* font-size: 15px;
   margin-bottom: 20px;
+  max-height: 206px; */
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  max-height: 20.6rem;  
+  color: #898989;
   overflow: auto;
-  max-height: 206px;
 }
 
 .hotel-list li .li-r button {
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 118px;
+  /* width: 118px;
   height: 38px;
   line-height: 38px;
+  font-size: 16px;   */
+  width: 11.8rem;
+  height: 3.8rem;
+  line-height: 3.8rem;
+  font-size: 1.6rem;
   background: #E1BD85;
-  font-size: 12px;
   color: #FFFFFF;
   border-radius: 5px;
   border: none;

@@ -65,32 +65,76 @@
         display: flex;
         align-items: center;
         /* justify-content: space-between; */
-        height: 50px;
+        /* height: 50px; */
+        height: 5rem;
         border-bottom: 1px solid #ccc;
     }
     .inp p{
-        min-width: 70px;
+        /* min-width: 70px; */
+        min-width: 7rem;
         white-space: nowrap;
-        margin-right: 10px;
+        /* margin-right: 10px; */
+        margin-right: 1rem;
     }
 
     .inp input {
-        width: 260px;
-        height: 30px;
+        /* width: 260px;
+        height: 30px; */
+        width: 26rem;
+        height: 3rem;        
         outline: none;
         border: none;
         color: #ccc;
-        font-size: 16px;
+        font-size: 1.6rem;
     }
 
     .login-r button {
-        width: 300px;
-        height: 35px;
+        /* width: 300px;
+        height: 35px; */
+        width: 30rem;
+        height: 3.5rem;        
         background-color: #4f93fe;
         color: #fff;
-        border-radius: 50px;
+        /* border-radius: 50px; */
+        border-radius: 5rem;
         border: none;
-        margin-top: 20px;
+        /* margin-top: 20px; */
+        margin-top: 2rem;
         cursor: pointer;
+        font-size: 1.6rem;
+
     }
+
+    /* 媒体查询 Start */
+    @media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */
+        .inp {
+            border-bottom: none;
+            height: 8.5rem;
+            margin-bottom: 1rem;
+        }
+        .inp>p {
+            display: none;
+        }
+        .inp input {
+            border: 1px #ccc solid;
+            height: 6rem;
+            border-radius: 2rem;
+            padding: 0.5rem 0.8rem;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .login-r button {
+            width: 35rem;
+            height: 5.5rem;
+            font-size: 1.8rem;
+            margin-top: 4rem;
+        }
+        .login-r button {
+            outline: none;           
+        }        
+    }
+
+    /* @media screen and (min-width: 768px) and (max-width: 992px) {} */
+
+    /* 媒体查询 End */
 </style>

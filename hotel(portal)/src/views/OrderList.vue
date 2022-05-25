@@ -18,8 +18,8 @@
             <img :src="require(`../assets/images/status_${item.status}.png`)" alt="">
             <div>
               <!-- <h3 class="font-22">{{ statusTextList[item.status] }}</h3> -->
-              <h3 class="font-22">{{ item.status | statusFilter }}</h3>
-              <p class="font-16">{{ item.counts }}</p>
+              <h3 class="font-20">{{ item.status | statusFilter }}</h3>
+              <p class="font-18">{{ item.counts }}</p>
             </div>
           </div>
 
@@ -654,7 +654,7 @@ export default {
   /* margin: 20px auto 0px auto;
   width: 80vw; */
 
-  padding: 30px 15%;
+  padding: 30px 12%;
   background-color: #ecf5ff;
 }
 
@@ -663,28 +663,37 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: white;
-  border-radius: 15px;
   flex: 1;
+  /* border-radius: 15px;  
   height: 120px;
   margin: 0px 10px;
-  padding: 0px 20px;
+  padding: 0px 20px; */
+  border-radius: 1.5rem;  
+  height: 12rem;
+  margin: 0 0.8rem;
+  padding: 0 1.5rem;  
 }
 
 .order-status > img {
-  width: 60px;
+  /* width: 60px;
   height: 60px;
-  margin-right: 22px;
+  margin-right: 22px; */
+  width: 5.5rem;
+  height: 5.5rem;
+  margin-right: 1.6rem;  
 }
 
 .order-status > div {
   display: flex;
   flex-direction: column;
-  height: 60px;
+  /* height: 60px; */
+  height: 6rem;
   justify-content: space-between;
 }
 
 .order-list {
-  margin: 20px 10px
+  /* margin: 20px 10px; */
+  margin: 20px 0.8rem;
 }
 
 .order-list li {

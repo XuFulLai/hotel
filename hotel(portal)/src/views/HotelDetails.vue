@@ -16,7 +16,7 @@
           {{ hotelDetails.name }}
         </div>
 
-        <div class="hotel-detail">
+        <div ref="hotelDetail" class="hotel-detail">
           <div class="detail-left">
             <div class="detail-detail">
               <div class="flex flex-row" v-if="hotelDetails.badge || hotelDetails.allowIsolation">
@@ -95,7 +95,7 @@
                       </div>
                       <div class="comment-user-pic">
                         <el-image
-                            style="width: 100px; height: 100px"
+                            style="width: 10rem; height: 10rem"
                             :src="url"
                             :preview-src-list="srcList">
                         </el-image>
@@ -117,7 +117,7 @@
                 <div class="d-flex flex-row flex-wrap">
                   <div @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts">
                     <div class="discounts-title flex flex-row justify-content-between" :class="[i.isGot?'active':'', isGot?'active':'']">
-                      <p style="margin-left: 6px;font-size: 14px;font-weight: 700">{{ i.name }}</p>
+                      <p style="margin-left: 0.6rem;font-size: 1.4rem;font-weight: 700">{{ i.name }}</p>
                       <el-tooltip placement="right" style="margin: 4px">
                         <div slot="content">{{ i.description }}</div>
                         <el-button
@@ -192,11 +192,11 @@
           </div>
           <div class="detail-right">
             <div class="detail-right-price" id="detailRight"
-                 :style="isFixed ? 'position:fixed;top:90px;width: 440px;' : ''">
+                 :style="isFixed ? `position:fixed;top:90px;width:${dynamicWidth}px` : ''">
               <div class="book-box">
 
                 <el-switch
-                    style="display: block;margin: 20px 10px;"
+                    style="display: block;margin: 2rem 1rem;"
                     v-model="switchType"
                     active-color="#13ce66"
                     inactive-color="#ff4949"
@@ -228,7 +228,7 @@
                         end-placeholder="结束日期"
                         :picker-options="pickerOptions">
                     </el-date-picker>
-                    <p v-if="bookDay" style="margin: 2px">共{{ bookDay }}晚</p>
+                    <p v-if="bookDay" style="margin: 2px;white-space: nowrap;">共{{ bookDay }}晚</p>
                   </div>
                   <div class="book-room">
                     <el-select v-model="currentRoomType" :placeholder="$t('hotelList.selectRoom')">
@@ -263,7 +263,7 @@
                       </el-select>
                     </div>
                     <div>
-                      <el-button @click="confirmOrderHandle" type="primary" style="width: 100%;margin: 10px 0">预订</el-button>
+                      <el-button @click="confirmOrderHandle" type="primary" style="width: 100%;margin: 1rem 0">预订</el-button>
                     </div>
                   </div>
                 </div>
@@ -512,6 +512,8 @@ export default {
   },
   data() {
     return {
+      screenWidth: document.body.clientWidth,
+      dynamicWidth: '',
       colors: ['#99A9BF', '#F7BA2A', '#ff7300'],
       hotelAvgScore: 0,
       form: {},
@@ -719,6 +721,8 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      this.dynamicWidth = this.$refs.hotelDetail.offsetWidth
+      this.dynamicWidth = this.dynamicWidth * 0.35 - 0
       //获取对象相对于版面或由 offsetTop 属性指定的父坐标的计算顶端位置
       this.offsetTop = document.querySelector('#detailRight').offsetTop;
     })
@@ -1133,19 +1137,23 @@ export default {
 }
 
 .big-box {
-  margin: 0 auto;
+  /* margin: 0 auto; */
   /*border: 1px solid red;*/
-  width: 1200px;
+  /* width: 1200px; */
+  /* width: 120rem; */
+  padding: 0 4rem;
 
 }
 
 .hotel-title {
-  font-size: 30px;
+  /* font-size: 30px; */
+  font-size: 3rem;
   color: #252626;
   font-family: inherit;
   font-weight: 600;
   line-height: 1.1;
-  margin: 30px 0;
+  /* margin: 30px 0; */
+  margin: 3rem 0;
 }
 
 .hotel-detail {
@@ -1158,7 +1166,7 @@ export default {
 .detail-left {
   left: 0;
   flex: 1;
-  max-width: 60%;
+  max-width: 62%;
   overflow: hidden;
   /*border: 1px solid blueviolet;*/
 }
@@ -1168,7 +1176,10 @@ export default {
   /*position:fixed;*/
   /*right: 0;*/
   /*top:100%;*/
-  width: 440px;
+  /* width: 440px; */
+  width: 35%;
+  min-width: 252px;
+  max-width: 44rem;
   /*border: 1px solid saddlebrown;*/
 }
 
@@ -1177,16 +1188,20 @@ export default {
   position: relative;
   background-color: #fff;
   overflow: hidden;
-  padding: 10px;
+  /* padding: 10px; */
+  padding: 1rem;
   box-shadow: 0 12px 5px -10px rgba(0, 0, 0, 0.1), 0 0 4px 0 rgba(0, 0, 0, 0.1);
 
 }
 
 .sub-title {
   display: block;
-  font-size: 24px;
-  margin-block-start: 1.6em;
-  margin-block-end: 1em;
+  /* font-size: 24px; */
+  font-size: 2.4rem;
+  /* margin-block-start: 1.6em;
+  margin-block-end: 1em; */
+  margin-block-start: 1.6rem;
+  margin-block-end: 1rem;  
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   font-weight: bold;
@@ -1209,14 +1224,16 @@ h3.sub-title .en {
   display: flex;
   /* justify-content: space-between; */
   align-items: center;
-  padding: 12px 10px;
+  /* padding: 12px 10px; */
+  padding: 1.2rem 1rem;
+  font-size: 1.8rem;
   line-height: 2;
   /*position: relative;*/
   background-color: #fff;
   overflow: hidden;
   overflow-x: hidden;
   overflow-y: hidden;
-  margin-bottom: 30px;
+  margin-bottom: 3rem;
   box-shadow: 0 12px 5px -10px rgba(0, 0, 0, 0.1), 0 0 4px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -1246,20 +1263,21 @@ h3.sub-title .en {
   position: relative;
   background-color: #fff;
   overflow: hidden;
-  padding-top: 8px;
-  padding-bottom: 12px;
+  /* padding-top: 8px;
+  padding-bottom: 12px; */
   width: 100%;
-  padding: 8px;
+  /* padding: 8px; */
+  padding: 0.8rem;
   box-shadow: 0 12px 5px -10px rgba(0, 0, 0, 0.1), 0 0 4px 0 rgba(0, 0, 0, 0.1);
 
 }
 
 .book-date {
-  margin: 10px;
+  margin: 1rem;
 }
 
 .book-room {
-  margin: 10px;
+  margin: 1rem;
 }
 
 .room-detail {
@@ -1269,30 +1287,43 @@ h3.sub-title .en {
 }
 
 .detail-introduce {
-  line-height: 26px;
+  /* line-height: 26px;
   margin: 0px 6px 8px 6px;
-  font-size: 14px;
+  font-size: 14px; */
+  line-height: 2.8rem;
+  margin: 0 0.6rem 0.8rem 0.6rem;
+  font-size: 1.6rem;  
 }
+
+
 
 .location {
   color: #0af;
-  font-size: 40px;
+  /* margin: 6px 12px;
+  font-size: 40px; */
+  margin: 0.6rem 1.2rem;
+  font-size: 4rem;  
   cursor: pointer;
-  margin: 6px 12px;
 }
 
 .address-detail {
   width: 50%;
-  font-size: 16px;
+  /* font-size: 16px;
   line-height: 30px;
-  padding: 6px;
+  padding: 6px; */
+  font-size: 1.6rem;
+  line-height: 3rem;
+  padding: 0.6rem;  
 }
 
 .badge {
-  margin: 2px 6px;
+  /* margin: 2px 6px;
+  padding: 6px 8px; */
+  margin: 0.2rem 0.6rem;
+  padding: 0.6rem 0.8rem;  
   border-radius: 6px;
   background: #4f93fe;
-  padding: 6px 8px;
+  font-size: 1.6rem;
   color: #fff !important;
 }
 
@@ -1302,9 +1333,14 @@ h3.sub-title .en {
 
 .discounts-box {
   /*border: 1px solid red;*/
-  width: 220px;
+  /* width: 220px;
   height: 110px;
-  margin: 10px;
+  margin: 10px; */
+  /* width: 22rem;
+  height: 11rem; */
+  width: 30%;
+  height: 110px;
+  margin: 0.8rem;  
   box-shadow: 0 12px 5px -10px rgba(0, 0, 0, 0.1), 0 0 4px 0 rgba(0, 0, 0, 0.1);
   cursor: pointer;
 
@@ -1344,18 +1380,20 @@ h3.sub-title .en {
 }
 
 .discounts-body-top {
-  margin: 10px 4px;
+  margin: 1rem 0.4rem;
 }
 
 .discounts-body-price {
   color: #ff4d6a;
-  font-size: 26px;
+  /* font-size: 26px; */
+  font-size: 2.6rem;
   font-weight: 800;
   line-height: 30px;
 }
 
 .discounts-body-bottom {
   color: #999;
+  font-size: 1.4rem;
   margin-top: -6px;
   margin-left: 6px;
 }
@@ -1443,7 +1481,8 @@ h3.sub-title .en {
 }
 
 .comment-box {
-  margin: 16px;
+  /* margin: 16px; */
+  margin: 1.6rem;
   width: 100%;
 }
 
@@ -1456,10 +1495,14 @@ h3.sub-title .en {
   background: #00aaff;
   width: 50px;
   height: 50px;
-  font-size: 20px;
+  /* font-size: 20px;
+  margin-right: 6px; */
+  /* width: 5rem;
+  height: 5rem; */
+  font-size: 2rem;
+  margin-right: 0.6rem;  
   font-weight: 800;
   color: #fff;
-  margin-right: 6px;
 }
 
 .comment-user-box-right {
@@ -1474,5 +1517,31 @@ h3.sub-title .en {
 .comment-user-roomType {
   color: #999;
 }
+
+/* 媒体查询 Start */
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .big-box {
+    padding: 0 2rem;
+  }
+  .detail-introduce {
+    line-height: 3.2rem; 
+  }
+  .discounts-body-bottom {
+    margin-top: 0;
+    margin-left: 0;
+  }  
+  .discounts-box {
+    width: 31.5%;
+    margin: 0.5rem  
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1440px) {
+  .big-box {
+    padding: 0 3rem;
+  }
+
+}
+/* 媒体查询 End */
 
 </style>

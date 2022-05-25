@@ -21,5 +21,6 @@
         text-align: center;
         background-color: #f5f7fa;
         border-top: 1px solid #edeef0;
+        font-size: 14px;
     }
 </style>

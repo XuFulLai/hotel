@@ -63,8 +63,8 @@
     }
 
     .nav-content li {
-        font-size: 18px;
-        margin: 0 30px;
+        font-size: 1.8rem;
+        margin: 0 2.8rem;
         height: 100%;
         display: flex;
         align-items: center;

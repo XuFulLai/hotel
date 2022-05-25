@@ -10,7 +10,7 @@
 
             <div class="login-r">
                 <h3>{{  $t('login.title') }}</h3>
-                <p class="mt-5">{{  $t('login.text') }}</p>
+                <p class="mt-5 font-16">{{  $t('login.text') }}</p>
 
                 <ul class="login-list d-flex align-items-center">
                     <li @click="skip('signIn')" :class="status==0?'active':''">{{  $t('login.login') }}</li>
@@ -105,21 +105,27 @@
     }
 
     .login-center {
-        width: 700px;
-        height: 300px;
+        /* width: 700px;
+        height: 300px; */
+        width: 70rem;
+        height: 30rem;
         position: relative;
         background-color: #fff;
         box-shadow: 0px 0px 40px -10px #000;
-        border-radius: 20px;
-        padding: 60px 50px;
+        /* border-radius: 20px;
+        padding: 60px 50px; */
+        border-radius: 2rem;
+        padding: 6rem 5rem;        
         display: flex;
         z-index: 9;
         justify-content: space-between;
     }
 
     .login-l img {
-        width: 300px;
-        height: 300px;
+        /* width: 300px;
+        height: 300px; */
+        width: 30rem;
+        height: 30rem;        
         opacity: 1;
     }
 
@@ -127,13 +133,16 @@
         width: 100%;
     }
     .login-r {
-        min-width: 370px;
+        /* min-width: 370px; */
+        min-width: 3.7rem;
     }
 
     .login-r h3 {
-        font-size: 25px;
+        /* font-size: 25px; */
+        font-size: 2.5rem;
         font-weight: normal;
-        margin-top: 10px;
+        /* margin-top: 10px; */
+        margin-top: 1rem;
     }
 
     .login-r p {
@@ -143,35 +152,45 @@
     .inp {
         display: flex;
         align-items: center;
-        height: 50px;
+        /* height: 50px; */
+        height: 5rem;
         border-bottom: 1px solid #ccc;
     }
 
     .inp input {
-        width: 300px;
-        height: 30px;
+        /* width: 300px;
+        height: 30px; */
+        width: 30rem;
+        height: 3rem;        
         outline: none;
         border: none;
         color: #ccc;
-        font-size: 16px;
+        font-size: 1.6rem;
     }
 
     .login-r button {
-        width: 300px;
-        height: 35px;
+        /* width: 300px;
+        height: 35px; */
+        width: 30rem;
+        height: 3.5rem;        
         background-color: #4f93fe;
         color: #fff;
-        border-radius: 50px;
+        /* border-radius: 50px; */
+        border-radius: 5rem;
         border: none;
-        margin-top: 50px;
+        /* margin-top: 50px; */
+        margin-top: 5rem;
         cursor: pointer;
     }
 
     .login-list {}
     .login-list li{
-        padding: 8px;
+        /* padding: 8px;
         font-size: 18px;
-        border-bottom: 4px solid transparent;
+        border-bottom: 4px solid transparent; */
+        padding: 0.8rem;
+        font-size: 1.8rem;
+        border-bottom: 0.4rem solid transparent;        
         cursor: pointer;
     }
     .login-list li.active{
@@ -183,12 +202,72 @@
 
     .lang-switch {
         position: absolute;
-        right: 20px;
-        top: 15px;
+        /* right: 20px;
+        top: 15px; */
+        right: 2rem;
+        top: 1.5rem;        
         display: flex;
         align-items: center;
     }
     .lang-switch span {
         margin: 0 2px;
     }
+
+    /* 媒体查询 Start */
+    /* @media screen and (min-width: 0px) and (max-width: 767px) { */
+    @media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */
+        /* .bg {
+            height: 700px;
+        } */
+        .bg>img {
+            display: none;
+        }
+        .login-center {
+            /* display: flex; */
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            justify-content: normal;
+            padding: 3rem 2.5rem;
+            border-radius: 0px;
+        }
+        .login-l {
+            height: 40%;
+        }
+        .login-l img {
+            width: 100%;
+            height: 100%;
+            position: static;
+        }
+        .login-r {
+            padding: 4rem 5rem;
+            width: 100%;
+            min-height: 45%;
+            text-align: center;
+            box-shadow: 0px 0px 15px -10px #000;
+            border-radius: 2rem;
+            margin-top: -4rem;
+            box-sizing: border-box;
+            background-color: white;            
+        }
+        .login-r>h3 {
+            font-size: 3.8rem;
+        }
+        .login-r>p {
+            font-size: 2.8rem!important;
+        }
+        .login-list li {
+            font-size: 2.8rem;
+        }
+        .lang-switch {
+            top: 5rem;
+            right: 4rem;
+        }
+    }
+
+    /* @media screen and (min-width: 768px) and (max-width: 992px) {} */
+
+    /* 媒体查询 End */
+
 </style>

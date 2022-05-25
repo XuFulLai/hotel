@@ -63,9 +63,18 @@
                 <p>{{ item.status | isolationStatusFilter }}</p>
                 <div>
                   <el-button
-
+                    style="
+                      width: 10rem;
+                      height: 4rem;
+                      padding: 0;
+                      font-size: 1.6rem;"
                     @click="getCheckRecords(item.id)">检测记录</el-button>
                   <el-button
+                    style="
+                      width: 10rem;
+                      height: 4rem;
+                      padding: 0;
+                      font-size: 1.6rem;"                  
                     v-if="item.status == 0"
                     type="primary"
                     @click="applyHandle">物质申请</el-button>
@@ -929,7 +938,7 @@ export default {
   /* margin: 20px auto 0px auto;
   width: 80vw; */
 
-  padding: 30px 15%;
+  padding: 30px 12%;
   background-color: #ecf5ff;
 }
 
@@ -938,11 +947,15 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: white;
-  border-radius: 15px;
+  /* border-radius: 15px; */
+  border-radius: 1.5rem;
   flex: 1;
-  height: 120px;
-  margin: 0px 10px;
-  padding: 0px 20px;
+  /* height: 120px; */
+  height: 12rem;
+  /* margin: 0px 10px;
+  padding: 0px 20px; */
+  margin: 0 1rem;
+  padding: 0 2rem;  
 }
 
 .order-status > img {
@@ -954,17 +967,21 @@ export default {
 .order-status > div {
   display: flex;
   flex-direction: column;
-  height: 60px;
+  /* height: 60px; */
+  height: 6rem;
   justify-content: space-between;
 }
 
 .order-list {
-  margin: 20px 10px;
+  /* margin: 20px 10px; */
+  margin: 20px 1rem;
 }
 
 .order-list li {
-  padding: 15px 20px;
-  margin-bottom: 10px;
+  /* padding: 15px 20px;
+  margin-bottom: 10px; */
+  padding: 1.5rem 2rem;
+  margin-bottom: 1rem;
   background-color: white;
   border-radius: 15px;
   flex: 1;
