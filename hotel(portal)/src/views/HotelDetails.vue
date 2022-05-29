@@ -66,6 +66,8 @@
                     </div>
                   </div>
                   <el-divider content-position="left">用户评价</el-divider>
+
+                  <!-- 酒店评论list 静态 -->
                   <div class="comment-user-box flex flex-row">
                     <div class="comment-user-box-left">
                       <el-avatar :size="50" :src="circleUrl"></el-avatar>
@@ -101,7 +103,7 @@
                         </el-image>
                       </div>
                     </div>
-                  </div>
+                  </div>                  
 
                 </div>
               </div>
@@ -114,8 +116,8 @@
               </h3>
 
               <div class="detail-content flex flex-row flex-wrap" style="margin: 0;padding: 0">
-                <div class="d-flex flex-row flex-wrap">
-                  <div @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts">
+                <div class="w-percent-100 d-flex flex-wrap">
+                  <div @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts.slice(0, 3)">
                     <div class="discounts-title flex flex-row justify-content-between" :class="[i.isGot?'active':'', isGot?'active':'']">
                       <p style="margin-left: 0.6rem;font-size: 1.4rem;font-weight: 700">{{ i.name }}</p>
                       <el-tooltip placement="right" style="margin: 4px">
@@ -127,7 +129,7 @@
                     </div>
                     <div style="border-top: 1px dotted #999;"></div>
                     <div class="discounts-body flex flex-column" :class="[i.isGot?'active':'', isGot?'active':'']">
-                      <div class="discounts-body-top flex flex-row align-items-end">
+                      <div class="discounts-body-top flex flex-row align-items-center">
                         <div class="discounts-body-price">
                           {{ i.discountsType == 0 ? '￥' + i.discounts : i.discounts * 10 + '折' }}
                         </div>
@@ -142,13 +144,44 @@
                       <div class="discounts-body-bottom">
                         有效期到 {{ dateTimeFormat(i.validityTime) }}
                       </div>
-
                     </div>
-                  </div>                  
-                
+                  </div>
                 </div>
-                <div class="d-flex align-items-center">
-                  <el-button type="success">展开按钮</el-button>
+                <transition name="draw">
+                  <div :style="{'--couponHeight':couponHeight,}" class="coupon-box d-flex flex-row flex-wrap" v-show="coupon">
+                    <div @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts.slice(3,hotelDiscounts.length)">
+                      <div class="discounts-title flex flex-row justify-content-between" :class="[i.isGot?'active':'', isGot?'active':'']">
+                        <p style="margin-left: 0.6rem;font-size: 1.4rem;font-weight: 700">{{ i.name }}</p>
+                        <el-tooltip placement="right" style="margin: 4px">
+                          <div slot="content">{{ i.description }}</div>
+                          <el-button
+                              style="border-radius: 50%;padding: 2px 8px;margin-left: 10px;font-weight: 800;color: #999">!
+                          </el-button>
+                        </el-tooltip>
+                      </div>
+                      <div style="border-top: 1px dotted #999;"></div>
+                      <div class="discounts-body flex flex-column" :class="[i.isGot?'active':'', isGot?'active':'']">
+                        <div class="discounts-body-top flex flex-row align-items-center">
+                          <div class="discounts-body-price">
+                            {{ i.discountsType == 0 ? '￥' + i.discounts : i.discounts * 10 + '折' }}
+                          </div>
+                          <div class="discounts-body-condition" v-if="i.effectType == 0">
+                            {{ '[满' + i.effectCondition + '天可用]' }}
+                          </div>
+                          <div class="discounts-body-condition" v-if="i.effectType == 1">
+                            {{ '[满' + i.effectCondition + '元可用]' }}
+                          </div>
+                          <div class="discounts-body-condition" v-if="i.effectType == 2">[无门槛使用]</div>
+                        </div>
+                        <div class="discounts-body-bottom">
+                          有效期到 {{ dateTimeFormat(i.validityTime) }}
+                        </div>
+                      </div>
+                    </div>                                         
+                  </div>
+                </transition>
+                <div style="margin: 1rem auto" class="d-flex align-items-center">
+                  <el-button v-if="hotelDiscounts.length > 3" @click="coupon = !coupon" type="primary">{{ coupon ? '收起':'展开' }}</el-button>
                 </div>
               </div>
             </div>
@@ -512,7 +545,10 @@ export default {
   },
   data() {
     return {
-      screenWidth: document.body.clientWidth,
+      hotelCommentsList: [],
+      hotelCommentsTotal: 0,
+      couponHeight: '',
+      coupon: false,
       dynamicWidth: '',
       colors: ['#99A9BF', '#F7BA2A', '#ff7300'],
       hotelAvgScore: 0,
@@ -720,8 +756,14 @@ export default {
     }
   },
   mounted() {
+    const that = this
+    window.onresize = () => {
+        return (() => {
+            that.dynamicWidth = ( that.$refs.hotelDetail.offsetWidth ) * 0.35 - 0 
+        })()
+    }    
     this.$nextTick(() => {
-      this.dynamicWidth = this.$refs.hotelDetail.offsetWidth
+      this.dynamicWidth = this.$refs.hotelDetail.offsetWidth - 17
       this.dynamicWidth = this.dynamicWidth * 0.35 - 0
       //获取对象相对于版面或由 offsetTop 属性指定的父坐标的计算顶端位置
       this.offsetTop = document.querySelector('#detailRight').offsetTop;
@@ -734,8 +776,28 @@ export default {
     this.getCollectionStatus()
     this.getHotelDiscountList()
     this.getHotelAvgScore()
+    this.getCommentsList()
   },
   methods: {
+    // 获取酒店评价
+    getCommentsList() {
+      const data = {
+        page: {
+          page: 1,
+          size: 5
+        }
+      }
+      post('/api/orderComment/page',data)
+        .then( res => {
+          console.log('酒店评论数据：',res);
+          this.hotelCommentsList = res.data.data.records          
+          this.hotelCommentsTotal = res.data.data.total          
+        })
+        .catch( err => {
+          console.error(err);
+        })
+    },
+
     getHotelAvgScore() {
       get(`/api/orderComment/score/${this.hotelId}`).then(res => {
         if (res.data.code == 200) {
@@ -816,6 +878,7 @@ export default {
     },
 
     gotCoupon(id) {
+      console.log('id:',id);
       let data = {
         discountsId: id
       }
@@ -841,6 +904,7 @@ export default {
         console.log(res.data);
         if (res.data.code == 200) {
           this.hotelDiscounts = res.data.data
+          this.couponHeight = Math.ceil((this.hotelDiscounts.length - 3) / 3) * 126 + 'px'
         }
       })
     },
@@ -929,9 +993,11 @@ export default {
     },
 
     handleScroll() {
-      let scrollTop =
-          document.documentElement.scrollTop || document.body.scrollTop;
+      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      // console.log(scrollTop);
+      // console.log(this.offsetTop * 1.15);
       this.isFixed = scrollTop > this.offsetTop * 1.15 ? true : false;
+      // this.isFixed = scrollTop >= 200 ? true : false;
       // console.log(this.offsetTop)
       // console.log(this.isFixed)
       // console.log(scrollTop);
@@ -1088,6 +1154,24 @@ export default {
 </script>
 
 <style scoped>
+.discounts-body-condition {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.coupon-box {
+  height: var(--couponHeight)
+}
+.draw-enter-active {
+    transition: all 0.6s ease;
+}
+.draw-leave-active {
+  transition: all 0.6s ease;
+}
+.draw-enter, .draw-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  height: 0;
+}
+
 
 /* 定义滚动条样式 */
 ::-webkit-scrollbar {
@@ -1179,7 +1263,7 @@ export default {
   /* width: 440px; */
   width: 35%;
   min-width: 252px;
-  max-width: 44rem;
+  /* max-width: 44rem; */
   /*border: 1px solid saddlebrown;*/
 }
 
@@ -1222,7 +1306,6 @@ h3.sub-title .en {
 
 .detail-content {
   display: flex;
-  /* justify-content: space-between; */
   align-items: center;
   /* padding: 12px 10px; */
   padding: 1.2rem 1rem;
@@ -1338,9 +1421,9 @@ h3.sub-title .en {
   margin: 10px; */
   /* width: 22rem;
   height: 11rem; */
-  width: 30%;
+  width: 31.3%;
   height: 110px;
-  margin: 0.8rem;  
+  margin: 0.8rem 1%;
   box-shadow: 0 12px 5px -10px rgba(0, 0, 0, 0.1), 0 0 4px 0 rgba(0, 0, 0, 0.1);
   cursor: pointer;
 
@@ -1385,8 +1468,9 @@ h3.sub-title .en {
 
 .discounts-body-price {
   color: #ff4d6a;
-  /* font-size: 26px; */
-  font-size: 2.6rem;
+  /* font-size: 24px; */
+  font-size: 2.4rem;
+  margin-right: 0.5rem;
   font-weight: 800;
   line-height: 30px;
 }
@@ -1539,6 +1623,12 @@ h3.sub-title .en {
 @media screen and (min-width: 992px) and (max-width: 1440px) {
   .big-box {
     padding: 0 3rem;
+  }
+
+}
+@media screen and (min-width: 1441px) {
+  .discounts-box {
+    height: 11rem;
   }
 
 }
