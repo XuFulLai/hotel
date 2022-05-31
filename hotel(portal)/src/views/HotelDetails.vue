@@ -180,8 +180,10 @@
                     </div>                                         
                   </div>
                 </transition>
-                <div style="margin: 1rem auto" class="d-flex align-items-center">
-                  <el-button v-if="hotelDiscounts.length > 3" @click="coupon = !coupon" type="primary">{{ coupon ? '收起':'展开' }}</el-button>
+                <div class="d-flex align-items-center expand-collapse cursor" @click="coupon = !coupon">
+                  <div style="margin: 0.8rem auto" v-if="hotelDiscounts.length > 3" >
+                    <i :class="coupon ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ coupon ? '收起':'展开' }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1172,6 +1174,14 @@ export default {
   height: 0;
 }
 
+.expand-collapse {
+  width: 100%;
+  border-top: 1px solid rgba(206, 203, 203, 0.5);
+  color: #aaaaaa;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: #fff;
+}
 
 /* 定义滚动条样式 */
 ::-webkit-scrollbar {
