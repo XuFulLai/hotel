@@ -182,4 +182,35 @@
         border: 0;
     }
 
+    /* 媒体查询 Start */
+    @media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */
+        .reserve-box {
+            margin-bottom: 7rem;
+        }
+        .room-center {
+            width: 100%;
+            padding: 1rem;
+            margin: 1rem 2rem;
+            height: 45rem;
+        }
+        .room-center .room-left {
+            display: none;
+        }
+        .room-center .room-right {
+            width: 100%;
+        }
+        .room-rh-content {
+            padding: 3rem;
+        }        
+        .room-rh-content h1 {
+            text-align: center;
+        }        
+        .room-rh-content button {
+            height: 6rem;
+        }
+
+
+    }
+
+    /* 媒体查询 End */
 </style>

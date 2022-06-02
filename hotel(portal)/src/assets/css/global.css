@@ -157,6 +157,9 @@ textarea {
 .font-22 {
     font-size: 2.2rem !important;
 }
+.font-24 {
+    font-size: 2.4rem !important;
+}
 .font-26 {
     font-size: 2.6rem !important;
 }
@@ -187,6 +190,9 @@ textarea {
 }
 .color-d {
     color: #dddddd !important;
+}
+.color-70d{
+    color: #70d83c !important;
 }
 .color-red {
     color: red!important;
@@ -260,6 +266,12 @@ textarea {
 .w-50 {
     width: 50px;
 }
+.w-60 {
+    width: 60px;
+}
+.w-80 {
+    width: 80px;
+}
 .w-100 {
     width: 100px;
 }
@@ -277,6 +289,9 @@ textarea {
     html {
         font-size: 6px!important;
     }
+    /* .app-detect-record {
+        display: block!important;
+    } */
 }
 
 @media screen and (min-width: 768px) and (max-width: 992px) {
@@ -306,5 +321,17 @@ textarea {
 .room-type-radio .el-radio__label {
     display: inline-block;
     width: 120px;
+}
+
+
+.app-detect-record, .app-material-apply { /* 正常情况下隐藏 */
+    /* display: none; */
+    height: 70%!important;
+    overflow: auto;
+}
+.app-material-apply .el-drawer__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 /* Other End */

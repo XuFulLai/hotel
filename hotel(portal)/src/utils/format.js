@@ -1,5 +1,4 @@
-export function dateTimeFormat(value) {
-    // console.log(value);
+export function dateTimeFormat(value,format) {
     const dateTime = new Date(value) // Date实例
 
     // console.log(dateTime);
@@ -12,7 +11,12 @@ export function dateTimeFormat(value) {
     const ss = fillPrefix(dateTime.getSeconds()) // 获取当前秒数，并判断是否需要补零
     // 返回格式化之后的当前时间
     // return `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss}`
-    return `${YYYY}-${MM}-${DD} ${hh}:${mm}`
+    // return `${YYYY}-${MM}-${DD} ${hh}:${mm}`
+    if (format == 'ymd') {
+        return `${YYYY}-${MM}-${DD}`
+    } else {
+        return `${YYYY}-${MM}-${DD} ${hh}:${mm}`
+    }
 }
 
 // 补零函数

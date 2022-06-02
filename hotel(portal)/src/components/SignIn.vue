@@ -22,8 +22,8 @@
         name: "SignIn",
         data(){
             return {
-                username: '',
-                password: '',
+                username: 'lee',
+                password: '123',
             }
         },
         mounted(){

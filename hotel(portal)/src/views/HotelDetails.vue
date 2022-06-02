@@ -64,36 +64,30 @@
                         </el-rate>
                       </div>
                     </div>
+                    <p class="font-18 color-6">共 {{ hotelCommentsTotal }} 条评论</p>
                   </div>
                   <el-divider content-position="left">用户评价</el-divider>
-
-                  <!-- 酒店评论list 静态 -->
-                  <div class="comment-user-box flex flex-row">
+                
+                  <div ref="commentUserBox" v-for="i in hotelCommentsList.slice(0, 1)" class="comment-user-box flex flex-row">
                     <div class="comment-user-box-left">
-                      <el-avatar :size="50" :src="circleUrl"></el-avatar>
+                      <el-avatar :size="circleUrlSize" :src="circleUrl"></el-avatar>
                     </div>
                     <div class="comment-user-box-right flex flex-column">
                       <div class="comment-user-nickname-date flex flex-row justify-content-between">
-                        <div class="comment-user-nickname">
-                          得闲一齐饮茶
-                        </div>
-                        <div class="comment-user-date">
-                          发布于 2022-5-18 21:50:30
-                        </div>
+                        <div class="comment-user-nickname">{{ i.createBy}}</div>
+                        <div class="comment-user-date">发布于 {{ i.createTime | dateTimeFormat('ymd') }}</div>
                       </div>
-                      <div class="comment-user-roomType">
-                        单人房
-                      </div>
+                      <div class="comment-user-roomType">{{ i.roomType }}</div>
                       <div class="comment-user-score">
                         <el-rate
-                            v-model="4.7"
+                            v-model="i.score"
                             :colors="colors"
                             disabled
                             show-score>
                         </el-rate>
                       </div>
                       <div class="comment-user-content">
-                        不错不错,下次继续来!!!
+                        {{ i.content }}
                       </div>
                       <div class="comment-user-pic">
                         <el-image
@@ -103,7 +97,67 @@
                         </el-image>
                       </div>
                     </div>
-                  </div>                  
+                  </div>
+
+
+                <transition name="comment">
+                  <div class="comment-list-box" :style="{'--commentHeight':commentHeight,}" v-show="comment">
+                    <div v-for="i in hotelCommentsList.slice(1,hotelCommentsList.length)" class="comment-user-box flex flex-row">
+                      <div class="comment-user-box-left">
+                        <el-avatar :size="circleUrlSize" :src="circleUrl"></el-avatar>
+                      </div>
+                      <div class="comment-user-box-right flex flex-column">
+                        <div class="comment-user-nickname-date flex flex-row justify-content-between">
+                          <div class="comment-user-nickname">{{ i.createBy}}</div>
+                          <div class="comment-user-date">发布于 {{ i.createTime | dateTimeFormat('ymd') }}</div>
+                        </div>
+                        <div class="comment-user-roomType">{{ i.roomType }}</div>
+                        <div class="comment-user-score">
+                          <el-rate
+                              v-model="i.score"
+                              :colors="colors"
+                              disabled
+                              show-score>
+                          </el-rate>
+                        </div>
+                        <div class="comment-user-content">
+                          {{ i.content }}
+                        </div>
+                        <div class="comment-user-pic">
+                          <el-image
+                              style="width: 10rem; height: 10rem"
+                              :src="url"
+                              :preview-src-list="srcList">
+                          </el-image>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 分页器 -->
+                    <el-pagination
+                      class="d-flex align-items-center justify-content-center"
+                      :small="smallPagination"
+                      background
+                      :page-size="5"
+                      :pager-count="5"
+                      @current-change="handleCurrentChange"
+                      @prev-click="prevPage"
+                      @next-click="nextPage"
+                      layout="prev, pager, next"
+                      :total="hotelCommentsTotal"
+                    >
+                    </el-pagination>
+
+                  </div>
+
+                </transition>
+
+                <div style="margin: 1rem auto" class="d-flex align-items-center">
+                  <!-- <el-button v-if="hotelCommentsList.length > 1" @click="comment = !comment" type="primary">{{ comment ? '收起':'展开' }}</el-button> -->
+                  <el-button v-if="hotelCommentsList.length > 1" @click="commentBtn" type="primary">{{ comment ? '收起':'展开' }}</el-button>
+                </div>                  
+
+
 
                 </div>
               </div>
@@ -116,8 +170,8 @@
               </h3>
 
               <div class="detail-content flex flex-row flex-wrap" style="margin: 0;padding: 0">
-                <div class="w-percent-100 d-flex flex-wrap">
-                  <div @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts.slice(0, 3)">
+                <div ref="couponBoxHeight" class="w-percent-100 d-flex flex-wrap">
+                  <div ref="couponHeight" @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts.slice(0, 3)">
                     <div class="discounts-title flex flex-row justify-content-between" :class="[i.isGot?'active':'', isGot?'active':'']">
                       <p style="margin-left: 0.6rem;font-size: 1.4rem;font-weight: 700">{{ i.name }}</p>
                       <el-tooltip placement="right" style="margin: 4px">
@@ -142,7 +196,7 @@
                         <div class="discounts-body-condition" v-if="i.effectType == 2">[无门槛使用]</div>
                       </div>
                       <div class="discounts-body-bottom">
-                        有效期到 {{ dateTimeFormat(i.validityTime) }}
+                        有效期到 {{ i.validityTime | dateTimeFormat }}
                       </div>
                     </div>
                   </div>
@@ -174,14 +228,16 @@
                           <div class="discounts-body-condition" v-if="i.effectType == 2">[无门槛使用]</div>
                         </div>
                         <div class="discounts-body-bottom">
-                          有效期到 {{ dateTimeFormat(i.validityTime) }}
+                          有效期到 {{ i.validityTime | dateTimeFormat }}
                         </div>
                       </div>
                     </div>                                         
                   </div>
                 </transition>
-                <div style="margin: 1rem auto" class="d-flex align-items-center">
-                  <el-button v-if="hotelDiscounts.length > 3" @click="coupon = !coupon" type="primary">{{ coupon ? '收起':'展开' }}</el-button>
+                <div class="d-flex align-items-center expand-collapse cursor" @click="coupon = !coupon">
+                  <div style="margin: 0.8rem auto" v-if="hotelDiscounts.length > 3" >
+                    <i :class="coupon ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ coupon ? '收起':'展开' }}
+                  </div>                  
                 </div>
               </div>
             </div>
@@ -397,6 +453,232 @@
               </div>
             </div>
           </div>
+
+
+          <div class="app-booking-btn">
+            <el-button style="box-shadow: 0px 0px 40px -10px #000;" class="w-percent-100" @click="appBooking = true" type="primary">预订</el-button>
+          </div>
+
+          <van-popup v-model="appBooking" position="bottom" :style="{ height: '75%',boxSizing: 'border-box' }">
+            
+            <el-switch      
+              style="display: block;padding: 16px;"
+              v-model="appSwitchType"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-text="正常预定"
+              inactive-text="自申报">
+            </el-switch>
+
+            <!-- app 预定 -->
+            <div v-show="appSwitchType" class="app-booking-main">
+              <!-- 表单主体 -->
+              <div class="app-booking-form">
+
+                <!-- 选择开始时间 Start -->
+                <van-field
+                  v-model="appDateStart"
+                  label="开始时间"
+                  :placeholder="'请选择'"
+                  input-align="right"
+                  readonly
+                  right-icon="arrow"
+                  @click="showAppDateStart = true" />
+
+                <van-popup v-model="showAppDateStart" position="bottom">
+                  <van-datetime-picker
+                    v-model="startCurrentDate"
+                    :min-date="minDate"
+                    @cancel="startCancelDate"
+                    @confirm="startConfirmDate"
+                    type="date"
+                  />
+                </van-popup>
+                <!-- 选择开始时间 End -->
+
+                <!-- 选择结束时间 Start -->
+                <van-field
+                  v-model="appDateEnd"
+                  label="结束时间"
+                  :placeholder="'请选择'"
+                  input-align="right"
+                  readonly
+                  right-icon="arrow"
+                  @click="showAppDateEnd = true" />
+
+                <van-popup v-model="showAppDateEnd" position="bottom">
+                  <van-datetime-picker
+                    v-model="endCurrentDate"
+                    :min-date="minDate"
+                    @cancel="endCancelDate"
+                    @confirm="endConfirmDate"
+                    type="date"
+                  />
+                </van-popup>
+                <!-- 选择结束时间 End -->
+
+                <!-- 选择房型 Start -->
+                <van-field
+                  v-model="appCurrentRoomType"
+                  label="选择房型"
+                  :placeholder="'请选择'"
+                  input-align="right"
+                  readonly
+                  right-icon="arrow"
+                  @click="showRoomType = true" />
+
+                <van-popup v-model="showRoomType" position="bottom">
+                  <van-picker
+                    show-toolbar
+                    :columns="roomTypeList"
+                    value-key="name"
+                    @confirm="roomTypeConfirm"
+                    @cancel="roomTypeCancel"
+                  />
+                </van-popup>
+                <!-- 选择房型 End -->
+
+                <!-- 选择省份 Start -->
+                <van-field
+                  v-model="appCurrentProvince"
+                  label="选择省份"
+                  :placeholder="'请选择'"
+                  input-align="right"
+                  readonly
+                  right-icon="arrow"
+                  @click="showProvince = true" />
+
+                <van-popup v-model="showProvince" position="bottom">
+                  <van-picker
+                    show-toolbar
+                    :columns="options"
+                    value-key="label"
+                    @confirm="provinceConfirm"
+                    @cancel="provinceCancel"
+                  />
+                </van-popup>
+                <!-- 选择省份 End -->
+
+
+              </div>
+              
+              <!-- 按钮 -->
+              <div class="mb-15 text-center">
+                <el-button style="width:60%" @click="confirmOrderHandle" type="primary">确 定</el-button>                
+              </div>
+
+            </div>
+
+            <!-- app 自申报 -->
+            <div v-show="appSwitchType == false" class="app-booking-main">
+              <!-- 表单主体 -->
+              <div class="app-booking-form">
+
+                <van-field v-model="userName" label="姓名" />
+                <van-field v-model="userId" label="身份证" />
+                <van-field v-model="phoneNum" type="tel" label="手机号" />               
+                <van-field v-model="userEmail" label="邮箱" />
+
+                <!-- 入住时间 Start -->
+                <van-field
+                  v-model="appDate"
+                  label="入住时间"
+                  :placeholder="'请选择'"
+                  input-align="right"
+                  readonly
+                  right-icon="arrow"
+                  @click="showAppDate = true" />
+
+                <van-popup v-model="showAppDate" position="bottom">
+                  <van-datetime-picker
+                    v-model="currentDate"
+                    :min-date="minDate"
+                    @cancel="cancelDate"
+                    @confirm="confirmDate"
+                    type="date"
+                  />
+                </van-popup>
+                <!-- 入住时间 End -->
+
+
+                <!-- 申报类型 Start -->
+                <van-field
+                  
+                  v-model="appSituation"
+                  label="选择类型:"
+                  :placeholder="'请选择'"
+                  input-align="right"
+                  readonly
+                  right-icon="arrow"
+                  @click="showSituation = true" />
+
+                <van-popup v-model="showSituation" position="bottom">
+                  <van-picker
+                    show-toolbar
+                    :columns="situationOptions"
+                    value-key="label"
+                    @confirm="situationConfirm"
+                    @cancel="situationCancel"
+                  />
+                </van-popup>
+                <!-- 申报类型 End -->
+
+                <!-- 选择房型 Start -->
+                <van-field
+                  v-show="situation == 2 || situation == 3"
+                  v-model="appCurrentRoomType1"
+                  label="选择房型"
+                  :placeholder="'请选择'"
+                  input-align="right"
+                  readonly
+                  right-icon="arrow"
+                  @click="showAppRoomType = true" />
+
+                <van-popup v-model="showAppRoomType" position="bottom">
+                  <van-picker
+                    show-toolbar
+                    :columns="isolateRoomTypeList"
+                    value-key="name"
+                    @confirm="appRoomTypeConfirm"
+                    @cancel="appRoomTypeCancel"
+                  />
+                </van-popup>
+                <!-- 选择房型 End -->                
+
+                <!-- 选择省份 Start -->
+                <van-field
+                  v-model="appCurrentProvince1"
+                  label="选择省份"
+                  :placeholder="'请选择'"
+                  input-align="right"
+                  readonly
+                  right-icon="arrow"
+                  @click="showProvince1 = true" />
+
+                <van-popup v-model="showProvince1" position="bottom">
+                  <van-picker
+                    show-toolbar
+                    :columns="addressData"
+                    value-key="label"
+                    @confirm="provinceConfirm1"
+                    @cancel="provinceCancel1"
+                  />
+                </van-popup>
+                <!-- 选择省份 End -->                
+
+
+              </div>
+              
+              <!-- 按钮 -->
+              <div class="mb-15 text-center">
+                <el-button style="width:60%" type="primary" @click="submit">确 定</el-button>                
+              </div>
+
+            </div>            
+
+
+          </van-popup>
+
         </div>
 
       </div>
@@ -440,7 +722,7 @@
                       </el-tooltip>
                     </div>
                     <div class="choose-discount-date">
-                      有效期至 {{ dateTimeFormat(i.validityTime) }}
+                      有效期至 {{ i.validityTime | dateTimeFormat}}
                     </div>
                   </div>
                   <div style="border-left: 1px dashed #999;height: 100%"></div>
@@ -465,7 +747,7 @@
                       </el-tooltip>
                     </div>
                     <div class="choose-discount-date">
-                      有效期至 {{ dateTimeFormat(i.validityTime) }}
+                      有效期至 {{ i.validityTime | dateTimeFormat }}
                     </div>
                   </div>
                   <div style="border-left: 1px dashed #999;height: 100%"></div>
@@ -534,21 +816,54 @@
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer.vue';
 import {formDataPost, get, post} from "../utils/request";
-import {dateTimeFormat} from "../utils/format";
 import {CodeToText, provinceAndCityData} from 'element-china-area-data'
+import { Popup, DatetimePicker, Picker, Field  } from 'vant';
+import 'vant/lib/index.css';
 
 export default {
   name: "HotelDetails",
   components: {
     TopNav,
-    Footer
+    Footer,
+    [Popup.name]: Popup,
+    [DatetimePicker.name]: DatetimePicker,
+    [Picker.name]: Picker,
+    [Field.name]: Field,
   },
   data() {
     return {
+      showAppRoomType: false,
+      appCurrentRoomType1: '',
+      appSituation: '',
+      showSituation: false,
+      appDate: '',
+      showAppDate: false,
+      currentDate: new Date(),
+      appCurrentProvince: '',
+      appCurrentProvince1: '',
+      showProvince: false,
+      showProvince1: false,
+      showRoomType: false,
+      appDateEnd: '',
+      showAppDateEnd: false,
+      endCurrentDate: new Date(),
+
+      appDateStart: '',
+      showAppDateStart: false,
+      startCurrentDate: new Date(),   
+      
+      minDate: new Date(),
+
+      appSwitchType: true,
+      appBooking: false,
+      smallPagination: false,
+      circleUrlSize: 50,
       hotelCommentsList: [],
       hotelCommentsTotal: 0,
       couponHeight: '',
       coupon: false,
+      commentHeight: '',
+      comment: false,
       dynamicWidth: '',
       colors: ['#99A9BF', '#F7BA2A', '#ff7300'],
       hotelAvgScore: 0,
@@ -603,13 +918,15 @@ export default {
       isolateRoomType: '',
       isolateFee: '',
       roomTypeMap: {},
+      appCurrentRoomType: '',
       currentRoomType: '',
-      dateValue: '',
+      dateValue: [],
       bookDay: 0,
       maxFee: 0,
       minFee: 0,
       totalFee: 0,
       provinceVal: '',
+      pageNum: 0,
       options: [
         {
           value: this.$t('hotelList.beijing'),
@@ -757,10 +1074,23 @@ export default {
   },
   mounted() {
     const that = this
+    if (window.document.body.clientWidth < 768) {
+      this.circleUrlSize = 40
+      this.smallPagination = true
+    } else {
+      this.smallPagination = false
+      this.circleUrlSize = 50
+    }
     window.onresize = () => {
-        return (() => {
-            that.dynamicWidth = ( that.$refs.hotelDetail.offsetWidth ) * 0.35 - 0 
-        })()
+      return (() => {
+          if (window.document.body.clientWidth < 768) {
+            this.circleUrlSize = 40
+          } else {
+            this.smallPagination = false
+            this.circleUrlSize = 50
+          }
+          that.dynamicWidth = ( that.$refs.hotelDetail.offsetWidth ) * 0.35 - 0 
+      })()
     }    
     this.$nextTick(() => {
       this.dynamicWidth = this.$refs.hotelDetail.offsetWidth - 17
@@ -779,23 +1109,71 @@ export default {
     this.getCommentsList()
   },
   methods: {
+    // 评论展开按钮
+    commentBtn() {
+      this.comment = !this.comment
+      this.commentHeight = this.$refs.commentUserBox[0].clientHeight * (this.hotelCommentsList.length - 1) + 55 + 'px'
+    },
     // 获取酒店评价
     getCommentsList() {
       const data = {
+          page: {
+              page: 1,
+              size: 5
+              
+          },
+      }
+      this.commentsListRequest(data)
+    },
+    //选择页码
+    handleCurrentChange(num) {
+      const data = {
         page: {
-          page: 1,
+          page: num,
           size: 5
         }
       }
+      this.commentsListRequest(data)
+    },
+
+    //上一页
+    prevPage(num) {
+      const data = {
+        page: {
+          page: num,
+          size: 5
+        }
+      }
+      this.commentsListRequest(data)
+    },
+
+    //下一页
+    nextPage(num) {
+      const data = {
+        page: {
+          page: num,
+          size: 5
+        }
+      }
+      this.commentsListRequest(data)
+    },    
+
+    commentsListRequest(data) {
       post('/api/orderComment/page',data)
         .then( res => {
-          console.log('酒店评论数据：',res);
-          this.hotelCommentsList = res.data.data.records          
-          this.hotelCommentsTotal = res.data.data.total          
+          if (res.data.code == 200) {
+            console.log('酒店评论数据：',res);
+            this.hotelCommentsList = res.data.data.records
+            this.hotelCommentsTotal = res.data.data.total
+            if (this.$refs.commentUserBox[0].clientHeight) {              
+              this.commentHeight = this.$refs.commentUserBox[0].clientHeight * (this.hotelCommentsList.length - 1) + 35 + 'px'          
+            }
+          }
         })
         .catch( err => {
           console.error(err);
-        })
+        })      
+
     },
 
     getHotelAvgScore() {
@@ -895,18 +1273,22 @@ export default {
       })
     },
 
-    dateTimeFormat(val) {
-      return dateTimeFormat(val)
-    },
-
     getHotelDiscountList() {
       get("/api/discounts/list/personal/" + this.hotelId).then(res => {
         console.log(res.data);
         if (res.data.code == 200) {
           this.hotelDiscounts = res.data.data
-          this.couponHeight = Math.ceil((this.hotelDiscounts.length - 3) / 3) * 126 + 'px'
         }
       })
+    },
+    // 优惠券展开点击事件
+    couponClick(){
+      this.coupon = !this.coupon
+      if (window.document.body.clientWidth < 768) {
+        this.couponHeight = (this.hotelDiscounts.length - 3) * (this.$refs.couponHeight[0].clientHeight + 24) + 'px'
+      } else {
+        this.couponHeight = Math.ceil((this.hotelDiscounts.length - 3) / 3) * this.$refs.couponBoxHeight.clientHeight + 'px'
+      }
     },
 
     getCollectionStatus() {
@@ -935,9 +1317,15 @@ export default {
     },
     // 提交审核按钮
     submit() {
+      let leaveDate
+      if (this.date) {
+        leaveDate = new Date(Date.parse(this.date) + 1209600000) // 14天之后的时间
+      } else {
+        leaveDate = new Date(Date.parse(this.appDate) + 1209600000) // 14天之后的时间
+      }
       const data = {
-        checkInTime: this.date,
-        checkOutTime: new Date(Date.parse(this.date) + 1209600000), // 14天之后的时间
+        checkInTime: this.date || new Date(this.appDate),
+        checkOutTime: leaveDate,
         type: this.situation,
         name: this.userName,
         idCard: this.userId,
@@ -949,7 +1337,7 @@ export default {
         roomType: this.isolateRoomType
 
       }
-      console.log(data);
+      console.log('data:',data);
       post('/api/review/check', data)
           .then(res => {
             console.log(res);
@@ -996,8 +1384,8 @@ export default {
       let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       // console.log(scrollTop);
       // console.log(this.offsetTop * 1.15);
-      this.isFixed = scrollTop > this.offsetTop * 1.15 ? true : false;
-      // this.isFixed = scrollTop >= 200 ? true : false;
+      // this.isFixed = scrollTop > this.offsetTop * 1.15 ? true : false;
+      this.isFixed = scrollTop >= 200 ? true : false;
       // console.log(this.offsetTop)
       // console.log(this.isFixed)
       // console.log(scrollTop);
@@ -1044,6 +1432,7 @@ export default {
             console.log(res);
             //this.dialogVisible = true
             this.roomTypeList = res.data.data
+            this.roomTypeColumns=[{ values: Object.keys(this.roomTypeList) }, { values: cities['name'] }]
             var map = {};
             let min = 0;
             let max = 0;
@@ -1146,7 +1535,122 @@ export default {
         that.hotelDetails = res.data.data;
         console.log(that.hotelDetails)
       })
+    },
+
+    // 移动端选择开始日期取消函数
+    startCancelDate() {
+      this.showAppDateStart = false
+    },
+
+    // 移动端选择开始日期确定函数
+    startConfirmDate(value) {
+      this.appDateStart = this.formatter(value)
+      this.dateValue[0] = this.formatter(value)
+      this.startCancelDate()
+    },
+
+    // 移动端选择结束日期取消函数
+    endCancelDate() {
+      this.showAppDateEnd = false
+    },
+
+    // 移动端选择结束日期确定函数
+    endConfirmDate(value) {
+      this.appDateEnd = this.formatter(value)
+      this.dateValue[1] = this.formatter(value)
+      this.endCancelDate()
+    },    
+
+    // 移动端选择房间取消函数
+    roomTypeCancel() {
+      this.showRoomType = false
+    },
+
+    // 移动端选择房间确定函数
+    roomTypeConfirm(value, index) {
+      console.log(value);
+      this.appCurrentRoomType = value.name
+      // this.currentRoomType = value.id
+      this.roomTypeCancel()
+    },
+
+    // 移动端选择省份取消函数
+    provinceCancel() {
+      this.showProvince = false
+    },
+
+    // 移动端选择省份确定函数
+    provinceConfirm(value, index) {
+      console.log(value);
+      this.appCurrentProvince = value.label
+      this.provinceVal = value.value
+      this.provinceCancel()
+    },    
+
+    // 移动端选择入住时间取消函数
+    cancelDate() {
+      this.showAppDate = false
+    },
+
+    // 移动端选择入住时间确定函数
+    confirmDate(value, index) {
+      console.log(value);
+      this.appDate = this.formatter(value)
+      this.cancelDate()
+    },
+
+    // 移动端选择省份取消函数
+    provinceCancel1() {
+      this.showProvince1 = false
+    },
+
+    // 移动端选择省份确定函数
+    provinceConfirm1(value, index) {
+      console.log(value);
+      this.area[0] = value[0]
+      this.area[1] = value[1]
+      this.appCurrentProvince1 = value[0] + ' / ' + value[1]
+      this.provinceCancel1()
+    },      
+
+    // 移动端选择申报类型取消函数
+    situationCancel() {
+      this.showSituation = false
+    },
+
+    // 移动端选择申报类型确定函数
+    situationConfirm(value, index) {
+      console.log(value);
+      this.appSituation = value.label
+      this.situation = value.value
+      this.situationCancel()
+    },    
+
+    // 移动端自申报选择房间取消函数
+    appRoomTypeCancel() {
+      this.showAppRoomType = false
+    },    
+
+    // 移动端自申报选择房间确定函数
+    appRoomTypeConfirm(value) {
+      console.log(value);
+      this.appCurrentRoomType1 = value.name
+      this.isolateRoomType = value.id
+      this.appRoomTypeCancel()
+    },
+
+    // 格式化函数
+    formatter(value){
+      const dateTime = new Date(value) // Date实例
+      const YYYY = dateTime.getFullYear() // 获取当前年份
+      const MM = dateTime.getMonth() + 1 // 获取当前月份
+      const DD = dateTime.getDate() // 获取当前天数
+
+      // 返回格式化之后的当前时间
+      return `${YYYY}-${MM}-${DD}`
+    
     }
+
   }
 }
 
@@ -1154,23 +1658,42 @@ export default {
 </script>
 
 <style scoped>
+.app-booking-btn {
+  display: none;
+}
 .discounts-body-condition {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* 动画 Start */
 .coupon-box {
   height: var(--couponHeight)
 }
-.draw-enter-active {
+.draw-enter-active, .draw-leave-active {
     transition: all 0.6s ease;
-}
-.draw-leave-active {
-  transition: all 0.6s ease;
 }
 .draw-enter, .draw-leave-to /* .fade-leave-active below version 2.1.8 */ {
   height: 0;
 }
+.expand-collapse {
+  width: 100%;
+  border-top: 1px solid rgba(206, 203, 203, 0.5);
+  color: #aaaaaa;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: #fff;
+}
+.comment-list-box {
+  height: var(--commentHeight)
+}
+.comment-enter-active, .comment-leave-active {
+    transition: all 0.6s ease;
+}
+.comment-enter, .comment-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  height: 0;
+}
+/* 动画 End */
 
 
 /* 定义滚动条样式 */
@@ -1468,8 +1991,8 @@ h3.sub-title .en {
 
 .discounts-body-price {
   color: #ff4d6a;
-  /* font-size: 24px; */
-  font-size: 2.4rem;
+  /* font-size: 22px; */
+  font-size: 2.2rem;
   margin-right: 0.5rem;
   font-weight: 800;
   line-height: 30px;
@@ -1566,12 +2089,15 @@ h3.sub-title .en {
 
 .comment-box {
   /* margin: 16px; */
-  margin: 1.6rem;
+  padding: 1.6rem;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .comment-total-box {
-
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .comment-total-score-ball {
@@ -1603,6 +2129,58 @@ h3.sub-title .en {
 }
 
 /* 媒体查询 Start */
+@media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */
+  .hotel-list-bg {
+    height: 120px;
+  }
+  .hotel-list-bg img {
+    height: 120px;
+  }
+  .big-box {
+    padding: 0 2rem;
+  }
+  .detail-left {
+    max-width: 100%;
+  }
+  .comment-total-score-ball {
+    width: 40px;
+    height: 40px;
+  }
+  .detail-right {
+    display: none;
+  }
+  .discounts-box {
+    width: 100%;
+    margin: 2rem 5rem;
+  }
+  .comment-user-nickname {
+    width: calc(100% - 100px);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .comment-user-box-right {
+    width: calc(100% - 50px);
+  }    
+  .app-booking-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    bottom: 30px;
+    width: 100%;
+    padding: 0 5rem;
+    box-sizing: border-box;
+  }
+  .app-booking-main {
+    height: calc(100% - 52px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;    
+  }
+}
+
 @media screen and (min-width: 768px) and (max-width: 992px) {
   .big-box {
     padding: 0 2rem;

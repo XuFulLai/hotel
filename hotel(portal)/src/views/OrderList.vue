@@ -34,7 +34,7 @@
               <a v-if="item.status == 4 && !item.commentId" class="color-red cursor"
                  @click="writeComment(item)">{{ $t('orderList.writeComment') }}</a>
             </div>
-            <div class="d-flex align-items-center justify-content-between font-16 color-6">
+            <div class="order-details d-flex align-items-center justify-content-between font-16 color-6">
               <div>
                 <p class="mb-10">{{ $t('orderList.hotelName') }}{{ item.hotelName }}</p>
                 <!-- <p class="mb-10">订单ID：{{ item.id }}</p> -->
@@ -50,8 +50,10 @@
           </li>
         </ul>
 
-        <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center">
+        <div v-if="pageNum > 10" class="order-pagination d-flex align-items-center justify-content-center">
           <el-pagination
+              :small="smallPagination"
+              :pager-count="5"
               background
               @current-change="handleCurrentChange"
               @prev-click="prevPage"
@@ -166,6 +168,7 @@ export default {
   },
   data() {
     return {
+      smallPagination: false,
       applyVisible: false,
       writeCommentVisible: false,
       orderList: [],
@@ -342,6 +345,18 @@ export default {
   mounted() {
     this.getOrderList()
     this.getStatus()
+    if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+      this.smallPagination = true
+    } else {
+      this.smallPagination = false
+    }    
+    window.onresize = () => {
+      if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+        this.smallPagination = true
+      } else {
+        this.smallPagination = false
+      }
+    }    
   },
   methods: {
 
@@ -725,4 +740,45 @@ export default {
   display: block;
   margin-bottom: 8px;
 }
+
+@media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */ 
+  .hotel-list-bg {
+    height: 120px;
+  }
+  .hotel-list-bg img {
+    height: 120px;
+  }
+  .order-list-main {
+    height: calc(100vh - 120px);
+  }
+  .order-list-content>div.justify-content-between {
+    flex-wrap: wrap;
+  }
+  .order-list-content {
+    padding: 10px 3%;
+  }
+  .order-status {
+    margin: 1rem 2%;
+    padding: 0px 0.5rem;
+    width: 43%;
+    flex: inherit;  
+  }  
+  .order-list {
+    margin-top: 10px;
+  }
+  .order-list li {
+    padding: 10px 15px;
+    border-radius: 8px;
+  }
+  .order-details {
+    flex-direction: column;
+    align-items: start;
+  }
+  .order-details>div {
+    margin-bottom: 1rem;
+  }
+}
+
+
+
 </style>
