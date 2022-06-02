@@ -13,7 +13,7 @@
 
       <div class="record-list-content">
 
-        <div class="d-flex align-items-center justify-content-between">
+        <div class="record-list-content-option d-flex align-items-center justify-content-between">
 
           <div
             :class="isIsolation ? 'active' : ''"
@@ -86,7 +86,7 @@
                     {{ $t("orderList.hotelName") }}{{ item.hotelName }}
                   </p>
                   <p class="mb-10">隔离ID：{{ item.id }}</p>
-                  <p class="mb-10">
+                  <p class="isolation-time mb-10">
                     <span class="mr-10">隔离开始时间：{{ item.checkInTime | dateTimeFormat }}</span>
                     <span>隔离结束时间：{{ item.checkOutTime | dateTimeFormat }}</span>
                   </p>
@@ -102,9 +102,13 @@
             </li>
           </ul>
 
-          <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center">
+          <div v-show="pageNum > 5" class="isolation-pagination d-flex align-items-center justify-content-center">
             <el-pagination
+                :small="smallPagination"
                 background
+                :current-page.sync="currentPage1"
+                :page-size="5"
+                :pager-count="5"
                 @current-change="isolationCurrent"
                 @prev-click="isolationPrev"
                 @next-click="isolationNext"
@@ -126,11 +130,11 @@
               <div class="d-flex align-items-center justify-content-between font-16 color-6">
                 <div>
                   <p class="mb-10">申报人姓名：{{ item.name }}</p>
-                  <p class="mb-10">申报人身份证号码：{{ item.idCard }}</p>
-                  <p class="mb-10">申报人电话：{{ item.phone }}</p>
+                  <p class="mb-10">身份证号码：{{ item.idCard }}</p>
+                  <p class="mb-10">电话：{{ item.phone }}</p>
                   <p class="mb-10">申报ID：{{ item.id }}</p>
                   <p class="mb-10">来源地：{{ item.province }}{{ item.city }}</p>
-                  <p class="mb-10">
+                  <p class="isolation-time mb-10">
                     <span class="mr-10">隔离开始时间：{{ item.checkInTime | dateTimeFormat }}</span>
                     <span>隔离结束时间：{{ item.checkOutTime | dateTimeFormat }}</span>
                   </p>
@@ -140,9 +144,13 @@
             </li>
           </ul>
 
-          <div v-if="reviewListNum > 5" class="d-flex align-items-center justify-content-center">
+          <div v-show="reviewListNum > 5" class="apply-pagination d-flex align-items-center justify-content-center">
             <el-pagination
+                :small="smallPagination"
                 background
+                :current-page.sync="currentPage2"                
+                :page-size="5"
+                :pager-count="5"
                 @current-change="reviewCurrent"
                 @prev-click="reviewPrev"
                 @next-click="reviewNext"
@@ -173,9 +181,13 @@
             </li>
           </ul>
 
-          <div v-if="applyListNum > 5" class="d-flex align-items-center justify-content-center">
+          <div v-show="applyListNum > 5" class="material-pagination d-flex align-items-center justify-content-center">
             <el-pagination
+                :small="smallPagination"
                 background
+                :current-page.sync="currentPage3"                
+                :page-size="5"
+                :pager-count="5"
                 @current-change="applyCurrent"
                 @prev-click="applyPrev"
                 @next-click="applyNext"
@@ -196,6 +208,7 @@
 
       <!-- 检测记录dialog -->
       <el-dialog
+          class="web-detect-record"
           title="检测记录"
           :visible.sync="checkVisible"
           width="570px">
@@ -229,9 +242,35 @@
         </el-table>
       </el-dialog>
 
+      <!-- 检测记录dialog 移动端 -->
+      <el-drawer
+        title="检测记录"
+        custom-class="app-detect-record"
+        :visible.sync="checkVisibleApp"
+        direction="btt">
+        <ul class="app-detect-record-list">
+          <li v-for="i in ownTestData">
+            <div class="d-flex justify-content-between font-24 mb-15">
+              <p>检测时间</p>
+              <p>{{ i.checkTime | dateTimeFormat }}</p>
+            </div>
+            <div class="d-flex justify-content-between font-24 mb-15">
+              <p>检测类型</p>
+              <p>{{ i.checkType==0?"体温":"核酸" }}</p>
+            </div>            
+            <div class="d-flex justify-content-between font-24 mb-15">
+              <p>检测结果</p>
+              <p class="color-70d" v-if="i.checkRes==0">阴性</p>
+              <p class="color-red" v-if="i.checkRes==1">阳性</p>
+            </div>            
+          </li>
+        </ul>                                                    
+      </el-drawer>      
+
       <!-- 物资申请dialog -->
       <el-dialog
           title="物质申请"
+          class="web-material-apply"
           :visible.sync="applyVisible"
           width="570px">
         <div class="d-flex align-items-center mb-15">
@@ -290,6 +329,66 @@
 
       </el-dialog>      
 
+      <!-- 检测记录dialog 移动端 -->
+      <el-drawer
+        title="物资申请"
+        custom-class="app-material-apply"
+        :visible.sync="applyVisibleApp"
+        direction="btt">
+        <ul class="material-apply-list">
+          <li class="d-flex align-items-center mb-10">
+            <p class="w-80 text-left font-24">申请物资:</p>
+            <el-input
+                style="width: calc(100% - 80px)"
+                placeholder="请输入物质名称"
+                v-model="applyForm.applyThing"
+                clearable>
+            </el-input>            
+          </li>
+          <li class="d-flex align-items-center mb-10">
+            <p class="w-80 text-left font-24">申请数量:</p>
+            <el-input
+                style="width: calc(100% - 80px)"
+                placeholder="请输入申请数量"
+                v-model="applyForm.applyNum"
+                clearable>
+            </el-input>            
+          </li>
+          <li class="d-flex align-items-center mb-10">
+            <p class="w-80 text-left font-24">申请单位:</p>
+            <el-input
+                style="width: calc(100% - 80px)"
+                placeholder="请输入物质单位"
+                v-model="applyForm.thingUnit"
+                clearable>
+            </el-input>            
+          </li>
+          <li class="d-flex align-items-center mb-10">
+            <p class="w-80 text-left font-24">紧急程度:</p>
+            <el-select
+                style="width: calc(100% - 80px)"
+                placeholder="请选择紧急程度"
+                v-model="applyForm.emergencyLevel">
+              <el-option v-for="item in emergencyLevelOptions" :label="item.label" :value="item.value"></el-option>
+            </el-select>            
+          </li>
+          <li class="d-flex align-items-center mb-10">
+            <p class="w-80 text-left font-24">申请备注:</p>
+            <el-input
+                style="width: calc(100% - 80px)"
+                type="textarea"
+                placeholder="请输入备注"
+                v-model="applyForm.applyRemark"
+                maxlength="70"
+                show-word-limit>
+            </el-input>         
+          </li>          
+        </ul>
+        <div class="d-flex align-items-end justify-content-center mt-10 mb-15">
+          <el-button type="primary" @click="confirmApply">确 定</el-button>
+        </div>
+      </el-drawer>         
+
     </div>
   </div>
 </template>
@@ -307,8 +406,14 @@ export default {
   },
   data() {
     return {
+      currentPage1: 1,
+      currentPage2: 1,
+      currentPage3: 1,
+      smallPagination: false,
       checkVisible: false,
+      checkVisibleApp: false,
       applyVisible: false,
+      applyVisibleApp: false,
       // orderList: [],
       isolationList: [],
       testOptions: [
@@ -335,6 +440,7 @@ export default {
       pageNum: 0,
       isolationNum: 0,
       reviewListNum: 0,
+      reviewList: [],
       isReview: [],
       // pageNum: 0,
       statusList: [],
@@ -514,6 +620,18 @@ export default {
     this.getIsolationRecords()
     this.getApplyRecords()
     this.getRevieList()
+    if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+      this.smallPagination = true
+    } else {
+      this.smallPagination = false
+    }    
+    window.onresize = () => {
+      if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+        this.smallPagination = true
+      } else {
+        this.smallPagination = false
+      }
+    }    
   },
   methods: {
     // 隔离记录 Start
@@ -523,6 +641,7 @@ export default {
       if (val) {
         this.isApply = false;
         this.isReview = false;
+        this.currentPage1 = 1;
         this.getIsolationRecords();
       }
     },
@@ -531,7 +650,7 @@ export default {
       let data = {
         page: {
           page: 1,
-          size: 10,
+          size: 5,
         },
       };
       this.isolationRecordsRequest(data);
@@ -554,7 +673,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.isolationRecordsRequest(data)
@@ -565,7 +684,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.isolationRecordsRequest(data)
@@ -576,7 +695,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.isolationRecordsRequest(data)
@@ -588,14 +707,18 @@ export default {
         uId: id,
         page: {
           page: 1,
-          size: 10,
+          size: 5,
         },
       };
       post("api/checkRecords/ownPage", data)
         .then((res) => {
           console.log(res);
           this.ownTestData = res.data.data.records
-          this.checkVisible = true
+          if (window.document.body.clientWidth >= 768) {
+            this.checkVisible = true
+          } else {
+            this.checkVisibleApp = true
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -604,7 +727,11 @@ export default {
 
     // 物资申请函数，打开弹出框
     applyHandle() {
-      this.applyVisible = true;
+      if (window.document.body.clientWidth >= 768) {
+        this.applyVisible = true;
+      } else {
+        this.applyVisibleApp = true
+      }
       this.applyForm = {
         applyThing: "",
         applyNum: 0,
@@ -624,7 +751,11 @@ export default {
             title: "成功",
             message: "申请成功",
           });
-          this.applyVisible = false;
+          if (window.document.body.clientWidth >= 768) {
+            this.applyVisible = false;
+          } else {
+            this.applyVisibleApp = false
+          }
         } else {
           this.$message({
             message: res.data.msg,
@@ -642,7 +773,8 @@ export default {
       if (val) {
         this.isIsolation = false;
         this.isApply = false;
-        this.getApplyRecords();
+        this.currentPage2 = 1;
+        this.getRevieList();
       }
     },
 
@@ -651,7 +783,7 @@ export default {
       const data = {
         page: {
           page: 1,
-          size: 10,
+          size: 5,
         }
       }
       this.revieListRequest(data)
@@ -673,7 +805,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.revieListRequest(data)
@@ -684,7 +816,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.revieListRequest(data)
@@ -695,7 +827,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.revieListRequest(data)
@@ -710,6 +842,7 @@ export default {
       if (val) {
         this.isIsolation = false;
         this.isReview = false;
+        this.currentPage3 = 1
         this.getApplyRecords();
       }
     },
@@ -719,7 +852,7 @@ export default {
       const data = {
         page: {
           page: 1,
-          size: 10,
+          size: 5,
         }
       }
       this.ApplyRecordsRequest(data)
@@ -727,7 +860,7 @@ export default {
     ApplyRecordsRequest(data) {
       post("api/materialsApply/page", data)
         .then( res => {
-          this.applyList = res.data.data.records;
+          this.applyList = res.data.data.records;      
           this.applyListNum = res.data.data.total;
         })
     },
@@ -736,7 +869,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.ApplyRecordsRequest(data)
@@ -747,7 +880,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.ApplyRecordsRequest(data)
@@ -758,7 +891,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.ApplyRecordsRequest(data)
@@ -996,5 +1129,73 @@ export default {
 .active {
   border: 1px solid #d2d2d3;
   background: #f5f7fa;
+}
+
+/* 媒体查询 */
+@media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */
+  .hotel-list-bg {
+    height: 120px;
+  }
+  .hotel-list-bg img {
+    height: 120px;
+  }
+  .record-list-main {
+    height: calc(100vh - 120px);
+  }
+  .record-list-content {
+    padding: 10px 3%;
+  }
+  .record-list-content-option {
+    flex-direction: column;
+    align-items: start;
+  }
+  .order-status {
+    width: 100%;
+    margin: 0 0 1rem 0;
+    box-sizing: border-box;
+    flex: initial;
+  }
+  .order-list {
+    margin: 10px 0;
+  }
+  .isolation-time>span{
+    display: block;
+  }
+  .order-list li {
+    border-radius: 10px;
+  }
+  /* .isolation-pagination {
+    display: none;
+  }
+  .apply-pagination {
+    display: none;
+  }
+  .material-pagination {
+    display: none;
+  } */
+  .app-detect-record-list {
+    padding: 0 2rem;
+    overflow: auto;
+  }
+  .app-detect-record-list li {
+    border-bottom: 1px solid #999;
+    margin-bottom: 1.5rem;
+  }
+  .material-apply-list {
+    padding: 0 2rem;
+    overflow: auto;
+  }
+
+
+  /* .web-detect-record { 正常情况下没隐藏，缩小到<768px则隐藏 
+    display: none;
+  } */
+  /* .web-material-apply {
+    display: none;
+  }
+  .app-detect-record {
+    display: block;
+  } */
+
 }
 </style>

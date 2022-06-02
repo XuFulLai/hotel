@@ -15,14 +15,16 @@
         <!--  酒店列表-->
         <div class="hotel-list-content">
           <ul class="hotel-list">
-            <li v-for="(item,index) in hotelList">
+            <li @click="clickFlag && hotelDetails(index,item.id)" v-for="(item,index) in hotelList">
               <div class="li-l">
                 <img :src=item.cover alt="">
               </div>
               <div class="li-r">
-                <h4>{{ item.name }}</h4>
-                <h6>{{ item.address }}</h6>
-                <div class="flex flex-row" v-if="item.badge">
+                <div>
+                  <h4>{{ item.name }}</h4>
+                  <h6>{{ item.address }}</h6>
+                </div>
+                <div class="flex flex-row mb-10 flex-wrap" v-if="item.badge">
                   <div style="background: #F56C6C" class="badge" v-if="form.allowIsolation">
                     隔离酒店
                   </div>
@@ -30,17 +32,19 @@
                     {{ i }}
                   </div>
                 </div>
-                <div v-html="item.introduce"></div>
+                <div class="hotel-introduce-box" v-html="item.introduce"></div>
                 <button @click="hotelDetails(index,item.id)">{{ $t('hotelList.confirm') }}</button>
               </div>
             </li>
           </ul>
         </div>
 
-        <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center mb-30">
+        <div v-if="pageNum > 5" class="hotel-pagination d-flex align-items-center justify-content-center mb-30">
           <el-pagination
+              :small="smallPagination"
               background
               :page-size="5"
+              :pager-count="5"
               @current-change="handleCurrentChange"
               @prev-click="prevPage"
               @next-click="nextPage"
@@ -152,7 +156,9 @@ export default {
   },
   data() {
     return {
+      clickFlag: false,
       provinceVal: '',
+      smallPagination: false,
       options: [
         {
           value: this.$t('hotelList.beijing'),
@@ -289,6 +295,22 @@ export default {
   },
   mounted() {
     this.getHotelList()
+    if (window.document.body.clientWidth < 768) {
+      this.smallPagination = true
+      this.clickFlag = true
+    } else {
+      this.smallPagination = false
+      this.clickFlag = false
+    }    
+    window.onresize = () => {
+      if (window.document.body.clientWidth < 768) { 
+        this.smallPagination = true
+        this.clickFlag = true
+      } else {
+        this.smallPagination = false
+        this.clickFlag = false
+      }
+    }
   },
   methods: {
     //获取酒店列表
@@ -554,7 +576,7 @@ export default {
   font-weight: 400;
 }
 
-.hotel-list li .li-r div {
+.hotel-list li .li-r .hotel-introduce-box {
   /* font-size: 15px;
   margin-bottom: 20px;
   max-height: 206px; */
@@ -604,6 +626,69 @@ export default {
 }
 .badge:last-child {
   margin-right: 0px;
+}
+
+@media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */
+  .hotel-list-bg {
+    height: 120px;
+  }
+  .hotel-list-bg img {
+    height: 120px;
+  }
+  .hotel-list-main {
+    height: calc(100vh - 120px);
+  }
+  .hotel-list {
+    padding: 0 1rem;
+    width: 100%;
+  }
+  .hotel-list li {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .hotel-list li .li-l {
+    width: 95px;
+    height: 120px;
+    margin: 0 2rem 0 0;
+  }
+  .hotel-list li .li-r {
+    width: calc(100% - 107px);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .hotel-list li .li-r h4 {
+    max-height: 48px;
+    overflow: hidden;
+  }
+  .hotel-list li .li-r h6 {
+    max-height: 32px;
+    overflow: hidden;    
+  }  
+  .hotel-list li .li-r button {
+    display: none;
+  }
+  .hotel-introduce-box {
+    display: none;
+  }
+  .hotel-list li .li-r div {
+    margin-bottom: 0;
+  }
+  .hotel-list li:nth-child(even) .li-l {
+    order: 0;
+  }
+  .badge {
+    margin: 4px 4px 4px 0;
+    padding: 3px 4px;
+  }  
+
+  /* 隐藏翻页器 */
+  .hotel-pagination {
+    /* display: none; */
+  }
 }
 
 

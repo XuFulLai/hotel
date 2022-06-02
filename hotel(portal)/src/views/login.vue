@@ -308,6 +308,9 @@
         /* .bg {
             height: 700px;
         } */
+        .cursor {
+            display: none;
+        }
         .bg>img {
             display: none;
         }
