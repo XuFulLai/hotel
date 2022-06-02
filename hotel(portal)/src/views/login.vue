@@ -10,14 +10,30 @@
 
             <div class="login-r">
                 <h3>{{  $t('login.title') }}</h3>
-                <p class="mt-5 font-16">{{  $t('login.text') }}</p>
+              <div class="flex flex-row align-items-end">
+                <p class="mt-5 font-16 mr-10">{{  $t('login.text') }}</p>
+                <div class="ml-10 cursor" v-if="!qrShow" @click="QRCode(true)"><i class="el-icon-full-screen mr-5" style="font-size: 2rem"></i>二维码登录</div>
+                <div class="ml-10 cursor" v-if="qrShow" @click="QRCode(false)"><i class="el-icon-postcard mr-5" style="font-size: 2rem"></i>账号密码登录</div>
+              </div>
+              <div class="qr mt-10" v-if="qrShow">
+                <p style="font-size: 16px;color: #666666" v-if="confirmShow"><i style="color: #67C23A" class="el-icon-success"></i>&nbsp已扫描成功,请在手机上按确认登录</p>
+                <vue-qr :logo-src="logoSrc"
+                        :size="180"
+                        :margin="0"
+                        :auto-color="true"
+                        :dot-scale="1"
+                        :text="code"
+                        v-if="!confirmShow"
+                />
+              </div>
 
-                <ul class="login-list d-flex align-items-center">
+
+                <ul class="login-list d-flex align-items-center" v-if="!qrShow">
                     <li @click="skip('signIn')" :class="status==0?'active':''">{{  $t('login.login') }}</li>
                     <li @click="skip('register')" :class="status==1?'active':''">{{  $t('login.register') }}</li>
                 </ul>
 
-                <router-view></router-view>
+                <router-view  v-if="!qrShow"></router-view>
             </div>
 
             <div class="lang-switch">
@@ -41,15 +57,22 @@
     import {get, post} from "../utils/request";
     import SignIn from "../components/SignIn"
     import Register from "../components/Register"
+    import VueQr from 'vue-qr';
 
     export default {
         name: "login",
         components: {
             SignIn,
-            Register
+            Register,
+          VueQr
         },
         data() {
             return {
+              logoSrc: '',
+              code: '25760875-7b97-4594-996f-fd2a041257dc',
+              qrShow: false,
+              confirmShow: false,
+              interval: undefined,
                 status: 0,
                 username: 'lee',
                 password: '123',
@@ -61,6 +84,58 @@
             localStorage.removeItem('userId')
         },
         methods: {
+          QRCode(flag) {
+            this.qrShow = !this.qrShow;
+            this.confirmShow = false
+            let that = this
+            if (flag) {
+              get('/open/auth/qrCode/1?code=' + null).then(res => {
+                console.log("qrcode",res)
+                this.code = res.data.data
+              })
+
+              this.interval = setInterval(this.getQrCodeStatus, 3000)
+            } else {
+              console.log("clearInterval", this.interval)
+              clearInterval(this.interval);
+              console.log("before", this.interval)
+
+            }
+          },
+
+          getQrCodeStatus() {
+            get('/open/auth/qrCode/2?code=' + this.code).then(res => {
+              console.log("res.data.status====",res.data.data)
+              switch (res.data.data.status) {
+                case "0":
+                  break;
+                case "1":
+                  this.confirmShow = true
+                  break;
+                case "2":
+                  clearInterval(this.interval);
+                  console.log('qrCode登录信息:', res);
+                  //判断返回的数据是否存在token和用户id
+                  if (res.data.data.token && res.data.data.userInfo.id) {
+                    // 将token及用户id存放到Vuex中
+                    this.$store.commit('SAVE_TOKEN', res.data.data.token)
+                    this.$store.commit('SAVE_USER_ID', res.data.data.userInfo.id)
+                    //将导航菜单存到localStorage
+                    localStorage.setItem('menuList', JSON.stringify(res.data.data.menuList))
+                    //路由跳转
+                    this.$router.push({
+                      path: '/index'
+                    })
+
+                  } else {
+                    console.log('token或用户id不存在，登录失败');
+
+                  }
+                  break
+              }
+            })
+          },
+
             //路由
             skip(val){
                 if (val == 'signIn') {
@@ -211,6 +286,20 @@
     }
     .lang-switch span {
         margin: 0 2px;
+    }
+
+    .qr {
+      width: 100%;
+      height: 200px;
+
+    }
+
+    .qr img {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto;
+      opacity: 0.7;
+
     }
 
     /* 媒体查询 Start */

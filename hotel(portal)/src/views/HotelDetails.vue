@@ -170,6 +170,7 @@
               </h3>
 
               <div class="detail-content flex flex-row flex-wrap" style="margin: 0;padding: 0">
+                
                 <div ref="couponBoxHeight" class="w-percent-100 d-flex flex-wrap">
                   <div ref="couponHeight" @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts.slice(0, 3)">
                     <div class="discounts-title flex flex-row justify-content-between" :class="[i.isGot?'active':'', isGot?'active':'']">
@@ -234,11 +235,13 @@
                     </div>                                         
                   </div>
                 </transition>
+
                 <div class="d-flex align-items-center expand-collapse cursor" @click="coupon = !coupon">
                   <div style="margin: 0.8rem auto" v-if="hotelDiscounts.length > 3" >
                     <i :class="coupon ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ coupon ? '收起':'展开' }}
                   </div>                  
                 </div>
+
               </div>
             </div>
 
@@ -1695,6 +1698,14 @@ export default {
 }
 /* 动画 End */
 
+.expand-collapse {
+  width: 100%;
+  border-top: 1px solid rgba(206, 203, 203, 0.5);
+  color: #aaaaaa;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: #fff;
+}
 
 /* 定义滚动条样式 */
 ::-webkit-scrollbar {
