@@ -334,4 +334,7 @@ textarea {
     flex-direction: column;
     justify-content: space-between;
 }
+.confirm-order-dialog .el-dialog, .wallet-dialog .el-dialog {
+    max-width: 460px;
+}
 /* Other End */

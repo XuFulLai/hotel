@@ -92,8 +92,7 @@
                       <div class="comment-user-pic">
                         <el-image
                             style="width: 10rem; height: 10rem"
-                            :src="url"
-                            :preview-src-list="srcList">
+                            :src="url">
                         </el-image>
                       </div>
                     </div>
@@ -126,8 +125,7 @@
                         <div class="comment-user-pic">
                           <el-image
                               style="width: 10rem; height: 10rem"
-                              :src="url"
-                              :preview-src-list="srcList">
+                              :src="url">
                           </el-image>
                         </div>
                       </div>
@@ -152,10 +150,11 @@
 
                 </transition>
 
-                <div style="margin: 1rem auto" class="d-flex align-items-center">
-                  <!-- <el-button v-if="hotelCommentsList.length > 1" @click="comment = !comment" type="primary">{{ comment ? '收起':'展开' }}</el-button> -->
-                  <el-button v-if="hotelCommentsList.length > 1" @click="commentBtn" type="primary">{{ comment ? '收起':'展开' }}</el-button>
-                </div>                  
+                <div class="d-flex align-items-center expand-collapse cursor" @click="commentBtn">
+                  <div style="margin: 0.8rem auto" v-if="hotelCommentsList.length > 1" >
+                    <i :class="comment ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ comment ? '收起':'展开' }}
+                  </div>                  
+                </div>  
 
 
 
@@ -236,7 +235,7 @@
                   </div>
                 </transition>
 
-                <div class="d-flex align-items-center expand-collapse cursor" @click="coupon = !coupon">
+                <div class="d-flex align-items-center expand-collapse cursor" @click="couponClick">
                   <div style="margin: 0.8rem auto" v-if="hotelDiscounts.length > 3" >
                     <i :class="coupon ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ coupon ? '收起':'展开' }}
                   </div>                  
@@ -310,6 +309,7 @@
                     </span>
                     <!--                  <small class="text-weak">/晚</small>-->
                   </span>
+                  <p class="font-18" v-if="bookDay" style="margin: 0.8rem;white-space: nowrap;">共{{ bookDay }}晚</p>
                   <div class="book-date flex flex-row align-items-center">
                     <el-date-picker
                         v-model="dateValue"
@@ -320,10 +320,10 @@
                         end-placeholder="结束日期"
                         :picker-options="pickerOptions">
                     </el-date-picker>
-                    <p v-if="bookDay" style="margin: 2px;white-space: nowrap;">共{{ bookDay }}晚</p>
+                    <!-- <p v-if="bookDay" style="margin: 2px;white-space: nowrap;">共{{ bookDay }}晚</p> -->
                   </div>
                   <div class="book-room">
-                    <el-select v-model="currentRoomType" :placeholder="$t('hotelList.selectRoom')">
+                    <el-select style="width: 100%" v-model="currentRoomType" :placeholder="$t('hotelList.selectRoom')">
                       <el-option
                           v-for="item in roomTypeList"
                           :label="item.name"
@@ -346,8 +346,8 @@
                         }}</i>
                     </div>
                     <div class="mt-10">
-                      <el-select v-model="provinceVal" :placeholder="$t('hotelList.province')">
-                        <el-option
+                      <el-select style="width: 100%" v-model="provinceVal" :placeholder="$t('hotelList.province')">
+                        <el-option                          
                             v-for="item in options"
                             :label="item.label"
                             :value="item.value">
@@ -688,10 +688,12 @@
       <Footer></Footer>
 
     </div>
+
     <el-dialog
         title="确认订单"
         :visible.sync="confirmOrderVisible"
-        width="460px"
+        width="95%"
+        class="confirm-order-dialog"
         >
       <div class="order-box flex flex-column">
         <div class="order-hotel-detail-box flex flex-row">
@@ -794,9 +796,10 @@
     </el-dialog>
 
     <el-dialog
+        class="wallet-dialog"
         title="请输入钱包密码"
         :visible.sync="payVisible"
-        width="460px"
+        width="95%"
         center
     >
       <div class="flex flex-column pay-box align-items-center">
@@ -835,6 +838,10 @@ export default {
   },
   data() {
     return {
+      circleUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+      url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+
+
       showAppRoomType: false,
       appCurrentRoomType1: '',
       appSituation: '',
@@ -1168,9 +1175,9 @@ export default {
             console.log('酒店评论数据：',res);
             this.hotelCommentsList = res.data.data.records
             this.hotelCommentsTotal = res.data.data.total
-            if (this.$refs.commentUserBox[0].clientHeight) {              
-              this.commentHeight = this.$refs.commentUserBox[0].clientHeight * (this.hotelCommentsList.length - 1) + 35 + 'px'          
-            }
+            // if (this.$refs.commentUserBox[0].clientHeight) {              
+            //   this.commentHeight = this.$refs.commentUserBox[0].clientHeight * (this.hotelCommentsList.length - 1) + 35 + 'px'          
+            // }
           }
         })
         .catch( err => {
@@ -1287,7 +1294,7 @@ export default {
     // 优惠券展开点击事件
     couponClick(){
       this.coupon = !this.coupon
-      if (window.document.body.clientWidth < 768) {
+      if (window.document.body.clientWidth < 751) {
         this.couponHeight = (this.hotelDiscounts.length - 3) * (this.$refs.couponHeight[0].clientHeight + 24) + 'px'
       } else {
         this.couponHeight = Math.ceil((this.hotelDiscounts.length - 3) / 3) * this.$refs.couponBoxHeight.clientHeight + 'px'
@@ -1370,7 +1377,9 @@ export default {
     },
     updateFee() {
       this.countTime()
-      this.totalFee = this.bookDay * this.roomTypeMap[this.currentRoomType].fee
+      if (this.currentRoomType) {
+        this.totalFee = this.bookDay * this.roomTypeMap[this.currentRoomType].fee        
+      }
     },
     isolateFeeF() {
       // this.countTime()
@@ -1434,8 +1443,7 @@ export default {
           .then(res => {
             console.log(res);
             //this.dialogVisible = true
-            this.roomTypeList = res.data.data
-            this.roomTypeColumns=[{ values: Object.keys(this.roomTypeList) }, { values: cities['name'] }]
+            this.roomTypeList = res.data.data              
             var map = {};
             let min = 0;
             let max = 0;
@@ -1454,7 +1462,7 @@ export default {
             console.log(this.maxFee)
           })
           .catch(err => {
-            console.log(err);
+            console.error(err);
           })
     },
     pay() {
@@ -1494,7 +1502,7 @@ export default {
         estimatedCheckIn: this.dateValue[0],
         estimatedCheckOut: this.dateValue[1],
         province: this.provinceVal,
-        discount: this.map2String(this.confirmOrderData.useDiscountMap)
+        discount: this.map2String(this.confirmOrderData.useDiscountMap) || (this.confirmOrderData.totalFee - this.confirmOrderData.discountFee)
       }
       // console.log("data=========", data)
       post('/api/order/create', data)
@@ -1573,7 +1581,7 @@ export default {
     roomTypeConfirm(value, index) {
       console.log(value);
       this.appCurrentRoomType = value.name
-      // this.currentRoomType = value.id
+      this.currentRoomType = value.id
       this.roomTypeCancel()
     },
 
@@ -1646,12 +1654,17 @@ export default {
     formatter(value){
       const dateTime = new Date(value) // Date实例
       const YYYY = dateTime.getFullYear() // 获取当前年份
-      const MM = dateTime.getMonth() + 1 // 获取当前月份
-      const DD = dateTime.getDate() // 获取当前天数
+      const MM = this.fillPrefix(dateTime.getMonth() + 1) // 获取当前月份
+      const DD = this.fillPrefix(dateTime.getDate()) // 获取当前天数
 
       // 返回格式化之后的当前时间
       return `${YYYY}-${MM}-${DD}`
     
+    },
+
+    // 补零函数
+    fillPrefix(val) {
+      return val > 9 ? val : `0${val}` // 个位数时间进行补零操作
     }
 
   }
@@ -1890,11 +1903,11 @@ h3.sub-title .en {
 }
 
 .book-date {
-  margin: 1rem;
+  margin: 0.8rem;
 }
 
 .book-room {
-  margin: 1rem;
+  margin: 0.8rem;
 }
 
 .room-detail {
@@ -2100,7 +2113,7 @@ h3.sub-title .en {
 
 .comment-box {
   /* margin: 16px; */
-  padding: 1.6rem;
+  padding: 1.6rem 1.6rem 0 1.6rem;
   width: 100%;
   box-sizing: border-box;
 }
