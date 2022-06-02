@@ -87,6 +87,7 @@ export default {
     orderList: {
         orderId: '订单ID：',
         cancelOrder: '取消订单',
+        goPayOrder:'去支付',
         writeComment: '去评论',
         hotelName: '酒店名称：',
         roomType: '房间类型：',
