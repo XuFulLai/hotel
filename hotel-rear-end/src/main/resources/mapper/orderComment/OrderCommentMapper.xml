@@ -39,8 +39,8 @@
     </select>
 
     <select id="getPage" resultType="group.oneonetwo.hotelintelligencesystem.modules.orderComment.model.vo.OrderCommentVO">
-        SELECT oc.*,o.room_type roomType ,u.heads header, u.nickname name  from order_comment oc
-        left join orders  o on  oc.id=o.customer_id
+        SELECT oc.*,o.room_type roomType ,u.heads header, u.nickname , u.username   from order_comment oc
+        left join orders  o on  oc.id=o.comment_id
         left join user u on o.customer_id=u.id
         <where>
             <if test="vo.hotelId != null and vo.hotelId != ''">
