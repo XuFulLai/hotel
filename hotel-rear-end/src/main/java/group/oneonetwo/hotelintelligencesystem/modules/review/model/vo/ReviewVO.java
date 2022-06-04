@@ -23,15 +23,15 @@ public class ReviewVO implements Serializable {
      * 申报名称
      */
     @ApiModelProperty("用户id")
-    private String uId;
+    private String uid;
 
 
-    public String getuId() {
-        return uId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setuId(String uId) {
-        this.uId = uId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     @ApiModelProperty("申报名称")

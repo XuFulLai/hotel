@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
+ *
  * @TableName review
  */
 @TableName(value ="review")
@@ -20,14 +20,14 @@ public class ReviewPO implements Serializable {
 
 
     @TableField("u_id")
-    private String uId;
+    private String uid;
 
-    public String getuId() {
-        return uId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setuId(String uId) {
-        this.uId = uId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     /**

@@ -443,7 +443,6 @@ export default {
       isolationNum: 0,
       reviewListNum: 0,
       reviewList: [],
-      isReview: [],
       // pageNum: 0,
       statusList: [],
       isIsolation: true,
@@ -642,7 +641,7 @@ export default {
   mounted() {
     this.getIsolationRecords()
     this.getApplyRecords()
-    this.getRevieList()
+    this.getReviewList()
     if (window.document.body.clientWidth < 768) { /*  滚动条17px */
       this.smallPagination = true
     } else {
@@ -797,22 +796,22 @@ export default {
         this.isIsolation = false;
         this.isApply = false;
         this.currentPage2 = 1;
-        this.getRevieList();
+        this.getReviewList();
       }
     },
 
     // 列表获取函数
-    getRevieList() {
+    getReviewList() {
       const data = {
         page: {
           page: 1,
           size: 5,
         }
       }
-      this.revieListRequest(data)
+      this.reviewListRequest(data)
     },
     // 列表请求函数
-    revieListRequest(data) {
+    reviewListRequest(data) {
       post('/api/review/my',data)
         .then( res => {
           console.log(res);
@@ -831,7 +830,7 @@ export default {
           size: 5
         }
       }
-      this.revieListRequest(data)
+      this.reviewListRequest(data)
     },
 
     //上一页
@@ -842,7 +841,7 @@ export default {
           size: 5
         }
       }
-      this.revieListRequest(data)
+      this.reviewListRequest(data)
     },
 
     //下一页
@@ -853,7 +852,7 @@ export default {
           size: 5
         }
       }
-      this.revieListRequest(data)
+      this.reviewListRequest(data)
     }, 
 
     // 自申报记录 End

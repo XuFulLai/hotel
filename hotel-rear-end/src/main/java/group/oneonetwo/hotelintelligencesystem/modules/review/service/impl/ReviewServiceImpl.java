@@ -129,17 +129,17 @@ public class ReviewServiceImpl implements ReviewService{
     //id
     @Override
     public void getCheck(ReviewVO reviewVO) {
-        reviewVO.setuId(authUtils.getUid());
+        reviewVO.setUid(authUtils.getUid());
         if(reviewVO.getType()==0 || reviewVO.getType()==1){
             add(reviewVO);
         }else {
 
-            if(userService.selectOneById(reviewVO.getuId())==null){
+            if(userService.selectOneById(reviewVO.getUid())==null){
                 throw new CommonException(501,"账户未注册");
             }
             RoomTypePO roomTypePO = roomTypeServeice.selectOneById(reviewVO.getRoomType());
             Integer isolationFee = roomTypePO.getIsolationFee();
-            WalletPO walletPO = walletService.getWalletPOByUid(reviewVO.getuId());
+            WalletPO walletPO = walletService.getWalletPOByUid(reviewVO.getUid());
 
             double balances=0;
             balances=walletPO.getBalance()-isolationFee*14;
@@ -166,7 +166,7 @@ public class ReviewServiceImpl implements ReviewService{
             ReviewPO reviewPO = selectOneById(reviewVO.getId());
             if(reviewPO.getType()==2 || reviewPO.getType()==3){
                 RoomTypePO roomTypePO = roomTypeServeice.selectOneById(reviewPO.getRoomType());
-                WalletPO walletPO = walletService.getWalletPOByUid(reviewPO.getuId());
+                WalletPO walletPO = walletService.getWalletPOByUid(reviewPO.getUid());
                 walletPO.setBalance(walletPO.getBalance()+roomTypePO.getIsolationFee());
                 walletService.save(walletPO);
             }
@@ -184,7 +184,7 @@ public class ReviewServiceImpl implements ReviewService{
         RoomVO roomVO = roomService.isolationCheckIn(reviewVO.getHotelId(), reviewVO.getRoomType(), null);
         IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
         isolationInfoVO.setName(reviewPO.getName());
-        isolationInfoVO.setuId(reviewPO.getuId());
+        isolationInfoVO.setuId(reviewPO.getUid());
         isolationInfoVO.setIdCard(reviewPO.getIdCard());
         isolationInfoVO.setType(reviewPO.getType());
         isolationInfoVO.setPhone(reviewPO.getPhone());
@@ -218,7 +218,7 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public Page<ReviewVO> my(ReviewVO reviewVO) {
         String uid = authUtils.getUid();
-        reviewVO.setuId(uid);
+        reviewVO.setUid(uid);
         Page<ReviewVO> page = this.getPage(reviewVO);
         return page;
     }

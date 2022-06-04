@@ -25,7 +25,7 @@
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
             <result property="totalFee" column="total_fee" jdbcType="INTEGER"/>
-            <result property="uId" column="u_id" jdbcType="VARCHAR"/>
+            <result property="uid" column="u_id" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -44,9 +44,9 @@
         <if test="vo.beginTime != null and vo.beginTime != '' and vo.endTime != null and vo.endTime != ''">
             and review.check_in_time between #{vo.beginTime} and #{vo.endTime} or review.check_out_time between #{vo.beginTime} and #{vo.endTime}
         </if>
-            <if test="vo.province != null and vo.province != ''">
-                and  review.province like concat('%', #{vo.province}, '%') or  review.city like concat('%', #{vo.province}, '%')
-            </if>
+        <if test="vo.province != null and vo.province != ''">
+            and  review.province like concat('%', #{vo.province}, '%') or  review.city like concat('%', #{vo.province}, '%')
+        </if>
 
         <if test="vo.remark != null and vo.remark != ''">
             and  review.remark = #{vo.remark}
@@ -54,8 +54,8 @@
         <if test="vo.reviewStatus != null and vo.reviewStatus != ''">
             and  review.review_status = #{vo.reviewStatus}
         </if>
-        <if test="vo.uId == null and vo.uId == ''">
-            and  review.u_id = #{vo.uId}
+        <if test="vo.uid != null and vo.uid != ''">
+            and review.u_id = #{vo.uid}
         </if>
             and review.is_deleted = 0
         </where>

@@ -11,7 +11,7 @@
 
       <div class="big-box">
 <!--        <el-button @click="confirmOrder"></el-button>-->
-        <!--        <p>酒店id：{{ hotelDetails.hotleId }}</p>-->
+        <!--        <p>酒店id：{{ hotelDetails.hotelId }}</p>-->
         <div class="hotel-title">
           {{ hotelDetails.name }}
         </div>
@@ -38,7 +38,7 @@
                   <i class="el-icon-map-location location" @click="toMap()"></i>
                 </div>
               </div>
-              <el-divider content-position="left">{{ $t('hotleDetails.hotelIntroduction') }}</el-divider>
+              <el-divider content-position="left">{{ $t('hotelDetails.hotelIntroduction') }}</el-divider>
               <div class="detail-introduce" v-html="hotelDetails.introduce"></div>
             </div>
 
@@ -64,9 +64,9 @@
                         </el-rate>
                       </div>
                     </div>
-                    <p class="font-18 color-6">{{ $t('hotleDetails.comment1') }} {{ hotelCommentsTotal }} {{ $t('hotleDetails.comment2') }}</p>
+                    <p class="font-18 color-6">{{ $t('hotelDetails.comment1') }} {{ hotelCommentsTotal }} {{ $t('hotelDetails.comment2') }}</p>
                   </div>
-                  <el-divider content-position="left">{{ $t('hotleDetails.userEvaluation') }}</el-divider>
+                  <el-divider content-position="left">{{ $t('hotelDetails.userEvaluation') }}</el-divider>
                 
                   <div ref="commentUserBox" v-for="i in hotelCommentsList.slice(0, 1)" class="comment-user-box flex flex-row">
                     <div class="comment-user-box-left">
@@ -152,7 +152,7 @@
 
                 <div class="d-flex align-items-center expand-collapse cursor" @click="commentBtn">
                   <div style="margin: 0.8rem auto" v-if="hotelCommentsList.length > 1" >
-                    <i :class="comment ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ comment ? $t('hotleDetails.stow'):$t('hotleDetails.open') }}
+                    <i :class="comment ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ comment ? $t('hotelDetails.stow'):$t('hotelDetails.open') }}
                   </div>                  
                 </div>  
 
@@ -237,7 +237,7 @@
 
                 <div class="d-flex align-items-center expand-collapse cursor" @click="couponClick">
                   <div style="margin: 0.8rem auto" v-if="hotelDiscounts.length > 3" >
-                    <i :class="coupon ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ coupon ? $t('hotleDetails.stow'):$t('hotleDetails.open') }}
+                    <i :class="coupon ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ coupon ? $t('hotelDetails.stow'):$t('hotelDetails.open') }}
                   </div>                  
                 </div>
 
@@ -291,8 +291,8 @@
                     v-model="switchType"
                     active-color="#13ce66"
                     inactive-color="#ff4949"
-                    :active-text="$t('hotleDetails.reserve')"
-                    :inactive-text="$t('hotleDetails.declare')">
+                    :active-text="$t('hotelDetails.reserve')"
+                    :inactive-text="$t('hotelDetails.declare')">
                 </el-switch>
 
                 <!-- 正常预定模块 -->
@@ -316,8 +316,8 @@
                         type="daterange"
                         value-format="yyyy-MM-dd"
                         range-separator="-"
-                        :start-placeholder="$t('hotleDetails.startDate')"
-                        :end-placeholder="$t('hotleDetails.endDate')"
+                        :start-placeholder="$t('hotelDetails.startDate')"
+                        :end-placeholder="$t('hotelDetails.endDate')"
                         :picker-options="pickerOptions">
                     </el-date-picker>
                     <!-- <p v-if="bookDay" style="margin: 2px;white-space: nowrap;">共{{ bookDay }}晚</p> -->
@@ -355,7 +355,7 @@
                       </el-select>
                     </div>
                     <div>
-                      <el-button @click="confirmOrderHandle" type="primary" style="width: 100%;margin: 1rem 0">{{ $t('hotleDetails.reserveBtn') }}</el-button>
+                      <el-button @click="confirmOrderHandle" type="primary" style="width: 100%;margin: 1rem 0">{{ $t('hotelDetails.reserveBtn') }}</el-button>
                     </div>
                   </div>
                 </div>
@@ -380,13 +380,13 @@
                     <el-date-picker
                         v-model="date"
                         type="date"
-                        :placeholder="$t('hotleDetails.checkDate')"
+                        :placeholder="$t('hotelDetails.checkDate')"
                         :picker-options="pickerOptions">
                     </el-date-picker>
                   </div>
 
                   <!-- 申报类型 -->
-                  <el-select class="mb-10" v-model="situation" :placeholder="$t('hotleDetails.type')">
+                  <el-select class="mb-10" v-model="situation" :placeholder="$t('hotelDetails.type')">
                     <el-option
                         v-for="item in situationOptions"
                         :key="item.value"
@@ -407,13 +407,13 @@
                     </el-option>
                   </el-select>
 
-                  <el-input class="mb-10" v-model="userName" :placeholder="$t('hotleDetails.name')"></el-input>
+                  <el-input class="mb-10" v-model="userName" :placeholder="$t('hotelDetails.name')"></el-input>
 
-                  <el-input class="mb-10" v-model="userId" :placeholder="$t('hotleDetails.idNum')"></el-input>
+                  <el-input class="mb-10" v-model="userId" :placeholder="$t('hotelDetails.idNum')"></el-input>
 
-                  <el-input class="mb-10" v-model="phoneNum" :placeholder="$t('hotleDetails.tel')"></el-input>
+                  <el-input class="mb-10" v-model="phoneNum" :placeholder="$t('hotelDetails.tel')"></el-input>
 
-                  <el-input class="mb-10" v-model="userEmail" :placeholder="$t('hotleDetails.email')"></el-input>
+                  <el-input class="mb-10" v-model="userEmail" :placeholder="$t('hotelDetails.email')"></el-input>
 
                   <!-- 陪同人员 start -->
                   <!-- <div class="mb-10">
@@ -446,9 +446,9 @@
                     ></el-cascader>
                   </div>
 
-                  <p class="mb-10 font-16"><i class="el-icon-warning-outline mr-5"></i>{{ $t('hotleDetails.tips') }}</p>
+                  <p class="mb-10 font-16"><i class="el-icon-warning-outline mr-5"></i>{{ $t('hotelDetails.tips') }}</p>
 
-                  <el-button class="w-percent-100" @click="submit" type="primary">{{ $t('hotleDetails.submitBtn') }}</el-button>
+                  <el-button class="w-percent-100" @click="submit" type="primary">{{ $t('hotelDetails.submitBtn') }}</el-button>
 
 
                 </div>
@@ -459,7 +459,7 @@
 
 
           <div class="app-booking-btn">
-            <el-button style="box-shadow: 0px 0px 40px -10px #000;" class="w-percent-100" @click="appBooking = true" type="primary">{{ $t('hotleDetails.reserveBtn') }}</el-button>
+            <el-button style="box-shadow: 0px 0px 40px -10px #000;" class="w-percent-100" @click="appBooking = true" type="primary">{{ $t('hotelDetails.reserveBtn') }}</el-button>
           </div>
 
           <van-popup v-model="appBooking" position="bottom" :style="{ height: '75%',boxSizing: 'border-box' }">
@@ -469,8 +469,8 @@
               v-model="appSwitchType"
               active-color="#13ce66"
               inactive-color="#ff4949"
-              :active-text="$t('hotleDetails.reserve')"
-              :inactive-text="$t('hotleDetails.declare')">
+              :active-text="$t('hotelDetails.reserve')"
+              :inactive-text="$t('hotelDetails.declare')">
             </el-switch>
 
             <!-- app 预定 -->
