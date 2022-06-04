@@ -24,6 +24,9 @@ public class MaterialsApplyVO implements Serializable {
     /**
      * 申请人类型
      */
+    @ApiModelProperty("hotelId")
+    private String hotelId;
+
     @ApiModelProperty("申请人类型")
     private Integer uType;
 
@@ -87,6 +90,15 @@ public class MaterialsApplyVO implements Serializable {
      */
     @ApiModelProperty("创建时间")
     private Date createTime;
+
+
+    public String getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(String hotelId) {
+        this.hotelId = hotelId;
+    }
 
     /**
      * 更新人

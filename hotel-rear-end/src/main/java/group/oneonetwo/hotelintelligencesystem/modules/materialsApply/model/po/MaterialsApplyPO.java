@@ -56,6 +56,10 @@ public class MaterialsApplyPO implements Serializable {
     /**
      * 申请备注
      */
+    @TableField("hotel_id")
+    private String hotelId;
+
+
     @TableField("apply_remarks")
     private String applyRemarks;
 
@@ -101,6 +105,14 @@ public class MaterialsApplyPO implements Serializable {
     @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
+
+    public String getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(String hotelId) {
+        this.hotelId = hotelId;
+    }
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
