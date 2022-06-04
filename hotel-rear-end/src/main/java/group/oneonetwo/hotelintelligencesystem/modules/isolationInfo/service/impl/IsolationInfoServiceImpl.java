@@ -168,7 +168,7 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
     @Override
     public IsolationInfoPO selectOneByRoomId(String roomId) {
         QueryWrapper<IsolationInfoPO> wrapper = new QueryWrapper<>();
-        wrapper.eq("room_id",roomId);
+        wrapper.eq("room_id",roomId).eq("status",0);
         IsolationInfoPO isolationInfoPO = isolationInfoMapper.selectOne(wrapper);
         return isolationInfoPO;
     }

@@ -27,6 +27,11 @@ public interface IsolationInfoService{
 
     List<IsolationInfoVO> getAllList(IsolationInfoVO isolationInfoVO);
 
+    /**
+     * 获取某个房间正在隔离的人员信息
+     * @param roomId
+     * @return
+     */
     IsolationInfoPO selectOneByRoomId(String roomId);
 
     Page<IsolationInfoVO> getOwnPage(IsolationInfoVO isolationInfoVO);
