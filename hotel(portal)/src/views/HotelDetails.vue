@@ -1186,8 +1186,8 @@ export default {
         page: {
           page: 1,
           size: 5
-
         },
+        hotelId: this.hotelId
       }
       this.commentsListRequest(data)
     },
@@ -1197,7 +1197,8 @@ export default {
         page: {
           page: num,
           size: 5
-        }
+        },
+        hotelId: this.hotelId
       }
       this.commentsListRequest(data)
     },
@@ -1208,7 +1209,8 @@ export default {
         page: {
           page: num,
           size: 5
-        }
+        },
+        hotelId: this.hotelId
       }
       this.commentsListRequest(data)
     },
@@ -1219,7 +1221,8 @@ export default {
         page: {
           page: num,
           size: 5
-        }
+        },
+        hotelId: this.hotelId
       }
       this.commentsListRequest(data)
     },
