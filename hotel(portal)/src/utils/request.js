@@ -42,6 +42,7 @@ instance.interceptors.request.use(
  */
 instance.interceptors.response.use(
     function (res) {
+        const data = res.data
         //特殊情况处理
         switch (data.code) {
             case "4011":
@@ -58,6 +59,8 @@ instance.interceptors.response.use(
                     title: "提示信息",
                     message: data.msg,
                 });
+                break;
+            default:
                 break;
         }
         return res
@@ -80,6 +83,8 @@ instance.interceptors.response.use(
                     title: "提示信息",
                     message: data.msg,
                 });
+                break;
+            default:
                 break;
         }
         return Promise.reject(err)

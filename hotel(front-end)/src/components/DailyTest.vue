@@ -15,6 +15,14 @@
         </el-date-picker>
       </div>
       <div class="block search">
+        <p>用户ID：</p>
+        <el-input v-model="searchParams.uid" placeholder="请输入用户ID"></el-input>
+      </div>
+      <div class="block search">
+        <p>被检人姓名：</p>
+        <el-input v-model="searchParams.name" placeholder="请输入被检人姓名"></el-input>
+      </div>
+      <div class="block search">
         <p>检测结果：</p>
         <el-select v-model="searchParams.result" placeholder="请选择">
           <el-option
@@ -236,6 +244,8 @@ export default {
         idCard: undefined
       },
       searchParams: { // 筛选框数据
+        uid: '',
+        name: '',
         dateRange: '',
         beginTime: '',
         endTime: '',
@@ -244,12 +254,12 @@ export default {
       testData: [], // 列表数据
       resultOptions: [
         {
-          value: 0,
-          label: '阴性'
+          value: 1,
+          label: '正常'
         },
         {
-          value: 1,
-          label: '阳性'
+          value: 2,
+          label: '异常'
         }
       ],
       testOptions: [
@@ -312,6 +322,8 @@ export default {
           page: 1,
           size: 10
         },
+        uid: this.searchParams.uid,
+        name: this.searchParams.name,
         checkRes: this.searchParams.result,
         beginTime: this.searchParams.beginTime,
         endTime: this.searchParams.endTime,
@@ -326,6 +338,8 @@ export default {
           page: num,
           size: 10
         },
+        uid: this.searchParams.uid,
+        name: this.searchParams.name,
         checkRes: this.searchParams.result,
         beginTime: this.searchParams.beginTime,
         endTime: this.searchParams.endTime,
@@ -340,6 +354,8 @@ export default {
           page: num,
           size: 10
         },
+        uid: this.searchParams.uid,
+        name: this.searchParams.name,
         checkRes: this.searchParams.result,
         beginTime: this.searchParams.beginTime,
         endTime: this.searchParams.endTime,
@@ -354,6 +370,8 @@ export default {
           page: num,
           size: 10
         },
+        uid: this.searchParams.uid,
+        name: this.searchParams.name,
         checkRes: this.searchParams.result,
         beginTime: this.searchParams.beginTime,
         endTime: this.searchParams.endTime,
@@ -377,6 +395,8 @@ export default {
     // 重置函数
     reset() {
       this.searchParams = {
+        name: '',
+        uid: '',
         dateRange: '',
         beginTime: '',
         endTime: '',

@@ -42,6 +42,7 @@ instance.interceptors.request.use(
  */
 instance.interceptors.response.use(
     function (res) {
+        const data = res.data
         //特殊情况处理
         switch (data.code) {
             case "4011":
