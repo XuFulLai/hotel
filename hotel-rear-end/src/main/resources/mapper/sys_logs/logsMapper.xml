@@ -56,7 +56,7 @@
             </if>
             and sl.is_deleted = 0
         </where>
-        order by sl.create_time,sl.id
+        order by sl.create_time desc,sl.id desc
 
     </select>
 
@@ -97,7 +97,7 @@
             </if>
             and sl.is_deleted = 0
         </where>
-        order by sl.create_time,sl.id
+        order by sl.create_time desc ,sl.id desc
 
     </select>
 

@@ -805,7 +805,7 @@
       <div class="flex flex-column pay-box align-items-center">
         <div>当前支付金额</div>
         <div class="pay-box-price"><span style="font-size: 26px">￥</span>{{ payForm.lastPay }}</div>
-        <el-input placeholder="请输入密码" v-model="payForm.pwd" show-password></el-input>
+        <el-input placeholder="请输入密码" v-model="payForm.walletPwd" show-password></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="pay">确 定</el-button>

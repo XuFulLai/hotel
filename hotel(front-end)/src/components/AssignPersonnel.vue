@@ -101,17 +101,17 @@
                     </el-option>
                 </el-select>
             </div>             
-            <div class="d-flex align-items-center mb-15">
-                <p class="w-120 text-left font-16">人员状态:</p>
-                <el-select style="width:350px;" v-model="form.status" placeholder="请选择">
-                    <el-option
-                        v-for="item in statusOptions"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                    </el-option>
-                </el-select>                
-            </div>     
+<!--            <div class="d-flex align-items-center mb-15">-->
+<!--                <p class="w-120 text-left font-16">人员状态:</p>-->
+<!--                <el-select style="width:350px;" v-model="form.status" placeholder="请选择">-->
+<!--                    <el-option-->
+<!--                        v-for="item in statusOptions"-->
+<!--                        :key="item.value"-->
+<!--                        :label="item.label"-->
+<!--                        :value="item.value">-->
+<!--                    </el-option>-->
+<!--                </el-select>                -->
+<!--            </div>     -->
             <div class="d-flex align-items-center mb-15">
                 <p class="w-120 text-left font-16">人员省份:</p>
                 <el-cascader

@@ -31,6 +31,10 @@
               <p>{{ item.status | statusFilter }}</p>
               <a v-if="item.status == 1" class="color-red cursor"
                  @click="cancelOrder(item.id)">{{ $t('orderList.cancelOrder') }}</a>
+<!--              //////-->
+              <a v-if="item.status == 0" class="color-red cursor"
+                 @click="goPayOrder(item.id,item.lastPay)">{{ $t('orderList.goPayOrder') }}</a>
+
               <a v-if="item.status == 4 && !item.commentId" class="color-red cursor"
                  @click="writeComment(item)">{{ $t('orderList.writeComment') }}</a>
             </div>
@@ -152,11 +156,28 @@
 
     </el-dialog>
 
+    <el-dialog
+        title="请输入钱包密码"
+        :visible.sync="payVisible"
+        width="460px"
+        center
+    >
+      <div class="flex flex-column pay-box align-items-center">
+        <div>当前支付金额</div>
+        <div class="pay-box-price"><span style="font-size: 26px">￥</span>{{ payForm.lastPay }}</div>
+        <el-input placeholder="请输入密码" v-model="payForm.walletPwd" show-password></el-input>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="pay">确 定</el-button>
+      </span>
+
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import {get, post} from "../utils/request";
+import {formDataPost, get, post} from "../utils/request";
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer.vue';
 
@@ -168,6 +189,12 @@ export default {
   },
   data() {
     return {
+      payVisible:false,
+      payForm: {
+        orderId: undefined,
+        lastPay: undefined,
+        walletPwd: undefined
+      },
       smallPagination: false,
       applyVisible: false,
       writeCommentVisible: false,
@@ -514,7 +541,41 @@ export default {
           .catch(err => {
             console.log(err);
           })
-    }
+    },
+    goPayOrder(id,pay) {
+      this.payVisible=true;
+      this.payForm.lastPay=pay;
+      this.payForm.orderId=id;
+    },
+    pay() {
+      let data = {
+        orderId: this.payForm.orderId,
+        walletPwd: this.payForm.walletPwd
+      }
+      formDataPost("/api/order/payOrder",data).then(res => {
+        if (res.data.code == 200) {
+          this.$message({
+            message: this.$t('hotelList.success'),
+            type: 'success'
+          });
+          this.payVisible = false
+          this.confirmOrderVisible = false
+          this.payForm = {
+            orderId: undefined,
+            lastPay: undefined,
+            walletPwd: undefined
+          }
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: 'warning',
+            duration: 4000
+          });
+        }
+
+      })
+    },
+
   }
 }
 </script>
