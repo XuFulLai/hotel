@@ -13,7 +13,7 @@
 
       <div class="record-list-content">
 
-        <div class="d-flex align-items-center justify-content-between">
+        <div class="record-list-content-option d-flex align-items-center justify-content-between">
 
           <div
             :class="isIsolation ? 'active' : ''"
@@ -21,7 +21,7 @@
             @click="isolationRecordsHandle(!isIsolation)">
 
             <div>
-              <h3 class="font-22">隔离记录</h3>
+              <h3 class="font-22">{{ $t('recordList.isolateRecords') }}</h3>
               <p class="font-16">{{ isolationNum}}</p>
             </div>
 
@@ -34,7 +34,7 @@
 
             <div>
               <!-- <h3 class="font-22">自申报记录</h3> -->
-              <h3 class="font-22">隔离入住申请记录</h3>
+              <h3 class="font-22">{{ $t('recordList.isolateRequestRecords') }}</h3>
               <p class="font-16">{{ reviewListNum }}</p>
             </div>
 
@@ -46,7 +46,7 @@
             @click="applyRecordsHandle(!isApply)">
 
             <div>
-              <h3 class="font-22">物资申请记录</h3>
+              <h3 class="font-22">{{ $t('recordList.materialRequestRecords') }}</h3>
               <p class="font-16">{{ applyListNum }}</p>
             </div>
 
@@ -64,37 +64,39 @@
                 <div>
                   <el-button
                     style="
-                      width: 10rem;
+                      min-width: 14rem;
+                      
                       height: 4rem;
-                      padding: 0;
+                      padding: 0 1rem;
                       font-size: 1.6rem;"
-                    @click="getCheckRecords(item.id)">检测记录</el-button>
+                    @click="getCheckRecords(item.id)">{{ $t('recordList.detectRecords') }}</el-button>
                   <el-button
                     style="
-                      width: 10rem;
+                      min-width: 14rem;
+                      
                       height: 4rem;
-                      padding: 0;
+                      padding: 0 1rem;
                       font-size: 1.6rem;"                  
                     v-if="item.status == 0"
                     type="primary"
-                    @click="applyHandle">物质申请</el-button>
+                    @click="applyHandle">{{ $t('recordList.materialRequest') }}</el-button>
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-between font-16 color-6">
                 <div>
                   <p class="mb-10">
-                    {{ $t("orderList.hotelName") }}{{ item.hotelName }}
+                    {{ $t("orderList.hotelName") }} {{ item.hotelName }}
                   </p>
-                  <p class="mb-10">隔离ID：{{ item.id }}</p>
-                  <p class="mb-10">
-                    <span class="mr-10">隔离开始时间：{{ item.checkInTime | dateTimeFormat }}</span>
-                    <span>隔离结束时间：{{ item.checkOutTime | dateTimeFormat }}</span>
+                  <p class="mb-10">{{ $t("recordList.isolateID") }} {{ item.id }}</p>
+                  <p class="isolation-time mb-10">
+                    <span class="mr-10">{{ $t("recordList.isolateStartTime") }} {{ item.checkInTime | dateTimeFormat }}</span>
+                    <span>{{ $t("recordList.isolateEndTime") }} {{ item.checkOutTime | dateTimeFormat }}</span>
                   </p>
-                  <p class="mb-10">来源地：{{ item.province }}{{ item.city }}</p>
+                  <p class="mb-10">{{ $t("recordList.source") }} {{ item.province }}{{ item.city }}</p>
                   <div class="d-flex align-items-center">
-                    <p>{{ $t("orderList.roomType") }}{{ item.roomTypeName | roomNameFormat }}</p>
+                    <p>{{ $t("orderList.roomType") }} {{ item.roomTypeName | roomNameFormat }}</p>
                     <p class="ml-10 mr-10" style="color: #e0e0e0">|</p>
-                    <p>{{ $t("isolationList.roomName") }}{{ item.roomName }}</p>
+                    <p>{{ $t("isolationList.roomName") }} {{ item.roomName }}</p>
                   </div>
                 </div>
                 <p v-if="item.pay">{{ $t("orderList.spend") }}￥{{ item.pay }}</p>
@@ -102,9 +104,13 @@
             </li>
           </ul>
 
-          <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center">
+          <div v-show="pageNum > 5" class="isolation-pagination d-flex align-items-center justify-content-center">
             <el-pagination
+                :small="smallPagination"
                 background
+                :current-page.sync="currentPage1"
+                :page-size="5"
+                :pager-count="5"
                 @current-change="isolationCurrent"
                 @prev-click="isolationPrev"
                 @next-click="isolationNext"
@@ -125,24 +131,28 @@
               </div>
               <div class="d-flex align-items-center justify-content-between font-16 color-6">
                 <div>
-                  <p class="mb-10">申报人姓名：{{ item.name }}</p>
-                  <p class="mb-10">申报人身份证号码：{{ item.idCard }}</p>
-                  <p class="mb-10">申报人电话：{{ item.phone }}</p>
-                  <p class="mb-10">申报ID：{{ item.id }}</p>
-                  <p class="mb-10">来源地：{{ item.province }}{{ item.city }}</p>
-                  <p class="mb-10">
-                    <span class="mr-10">隔离开始时间：{{ item.checkInTime | dateTimeFormat }}</span>
-                    <span>隔离结束时间：{{ item.checkOutTime | dateTimeFormat }}</span>
+                  <p class="mb-10">{{ $t('recordList.applicantName') }} {{ item.name }}</p>
+                  <p class="mb-10">{{ $t('recordList.idNum') }} {{ item.idCard }}</p>
+                  <p class="mb-10">{{ $t('recordList.tel') }} {{ item.phone }}</p>
+                  <p class="mb-10">{{ $t('recordList.declareID') }} {{ item.id }}</p>
+                  <p class="mb-10">{{ $t('recordList.source') }} {{ item.province }}{{ item.city }}</p>
+                  <p class="isolation-time mb-10">
+                    <span class="mr-10">{{ $t('recordList.isolateStartTime') }} {{ item.checkInTime | dateTimeFormat }}</span>
+                    <span>{{ $t('recordList.isolateEndTime') }} {{ item.checkOutTime | dateTimeFormat }}</span>
                   </p>
-                  <p v-if="item.reviewStatus == 2" style="color: red;" class="mb-10">拒绝理由：{{ item.remark }}</p>
+                  <p v-if="item.reviewStatus == 2" style="color: red;" class="mb-10">{{ $t('recordList.refuse') }} {{ item.remark }}</p>
                 </div>
               </div>
             </li>
           </ul>
 
-          <div v-if="reviewListNum > 5" class="d-flex align-items-center justify-content-center">
+          <div v-show="reviewListNum > 5" class="apply-pagination d-flex align-items-center justify-content-center">
             <el-pagination
+                :small="smallPagination"
                 background
+                :current-page.sync="currentPage2"                
+                :page-size="5"
+                :pager-count="5"
                 @current-change="reviewCurrent"
                 @prev-click="reviewPrev"
                 @next-click="reviewNext"
@@ -162,20 +172,24 @@
               </div>
               <div class="d-flex align-items-center justify-content-between font-16 color-6">
                 <div>
-                  <p class="mb-10">申请物品：{{ item.applyThing }}</p>
-                  <p class="mb-10">申请数量：{{ "" + item.applyNum + item.thingUnit }}</p>
-                  <p class="mb-10">申请ID：{{ item.id }}</p>
-                  <p class="mb-10">申请说明：{{ item.applyRemark }}</p>
-                  <p style="color: red" v-if="item.reviewRemarks" class="mb-10">审核说明：{{ item.reviewRemarks }}</p>
+                  <p class="mb-10">{{ $t('recordList.appliedItems') }} {{ item.applyThing }}</p>
+                  <p class="mb-10">{{ $t('recordList.appliedNum') }} {{ "" + item.applyNum + item.thingUnit }}</p>
+                  <p class="mb-10">{{ $t('recordList.appliedID') }} {{ item.id }}</p>
+                  <p class="mb-10">{{ $t('recordList.appliedInstructions') }} {{ item.applyRemark }}</p>
+                  <p style="color: red" v-if="item.reviewRemarks" class="mb-10">{{ $t('recordList.auditInstructions') }} {{ item.reviewRemarks }}</p>
                 </div>
                 <p v-if="item.pay">{{ $t("orderList.spend") }}￥{{ item.pay }}</p>
               </div>
             </li>
           </ul>
 
-          <div v-if="applyListNum > 5" class="d-flex align-items-center justify-content-center">
+          <div v-show="applyListNum > 5" class="material-pagination d-flex align-items-center justify-content-center">
             <el-pagination
+                :small="smallPagination"
                 background
+                :current-page.sync="currentPage3"
+                :page-size="5"
+                :pager-count="5"
                 @current-change="applyCurrent"
                 @prev-click="applyPrev"
                 @next-click="applyNext"
@@ -196,87 +210,114 @@
 
       <!-- 检测记录dialog -->
       <el-dialog
-          title="检测记录"
+          class="web-detect-record"
+          :title="$t('recordList.detectRecords')"
           :visible.sync="checkVisible"
           width="570px">
         <el-table :data="ownTestData">
           <el-table-column
             property="checkTime"
-            label="检测时间"
+            :label="$t('recordList.detectionTime')"
             :formatter="eTableDateTime"
             align="center"
             width="250px">
           </el-table-column>
           <el-table-column
             property="checkType"
-            label="检测类型"
+            :label="$t('recordList.detectionType')"
             align="center">
             <template slot-scope="scope">
-                <el-tag v-if="scope.row.checkType==0" type="danger">体温</el-tag>
-                <el-tag v-if="scope.row.checkType==1" >核酸</el-tag>
+                <el-tag v-if="scope.row.checkType==0" type="danger">{{ $t('recordList.temperature') }}</el-tag>
+                <el-tag v-if="scope.row.checkType==1" >{{ $t('recordList.nucleicAcidDetection') }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column 
             property="checkRes"
-            label="检测结果"
+            :label="$t('recordList.DetectionResults')"
             align="center">
             <template slot-scope="scope">
-                <el-tag v-if="scope.row.checkRes==0">阴性</el-tag>
-                <el-tag v-else-if="scope.row.checkRes==1" type="danger">阳性</el-tag>
+                <el-tag v-if="scope.row.checkRes==0">{{ $t('recordList.negative') }}</el-tag>
+                <el-tag v-else-if="scope.row.checkRes==1" type="danger">{{ $t('recordList.positive') }}</el-tag>
                 <el-tag v-else type="danger">{{ scope.row.checkRes }}°</el-tag>
             </template>           
           </el-table-column>
         </el-table>
       </el-dialog>
 
+      <!-- 检测记录dialog 移动端 -->
+      <el-drawer
+        :title="$t('recordList.detectRecords')"
+        custom-class="app-detect-record"
+        :visible.sync="checkVisibleApp"
+        direction="btt">
+        <ul class="app-detect-record-list">
+          <li v-for="i in ownTestData">
+            <div class="d-flex justify-content-between font-24 mb-15">
+              <p>{{ $t('recordList.detectionTime') }}</p>
+              <p>{{ i.checkTime | dateTimeFormat }}</p>
+            </div>
+            <div class="d-flex justify-content-between font-24 mb-15">
+              <p>{{ $t('recordList.detectionType') }}</p>
+              <p>{{ i.checkType==0?$t('recordList.temperature'):$t('recordList.nucleicAcidDetection') }}</p>
+            </div>            
+            <div class="d-flex justify-content-between font-24 mb-15">
+              <p>{{ $t('recordList.DetectionResults') }}</p>
+              <p class="color-70d" v-if="i.checkRes==0">{{ $t('recordList.negative') }}</p>
+              <p class="color-red" v-if="i.checkRes==1">{{ $t('recordList.positive') }}</p>
+            </div>            
+          </li>
+        </ul>                                                    
+      </el-drawer>      
+
       <!-- 物资申请dialog -->
       <el-dialog
-          title="物质申请"
+          :title="$t('recordList.materialApplication')"
+          class="web-material-apply"
           :visible.sync="applyVisible"
           width="570px">
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请物资:</p>
+          <p class="w-100 text-left">{{ $t('recordList.applyMaterial') }}</p>
           <el-input
               style="width: 350px;"
-              placeholder="请输入物质名称"
+              :placeholder="$t('common.inputTips')"
               v-model="applyForm.applyThing"
               clearable>
           </el-input>
         </div>
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请数量:</p>
+          <p class="w-100 text-left">{{ $t('recordList.appliedNum') }}</p>
           <el-input-number
               v-model="applyForm.applyNum"
               :precision="2"
               :step="0.1"
               :max="10"
               style="width: 350px;"
-              placeholder="请输入申请数量"
+              :placeholder="$t('common.inputTips')"
               clearable
           ></el-input-number>
 
         </div>
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请单位:</p>
+          <p class="w-100 text-left">{{ $t('recordList.applyUnit') }}</p>
           <el-input
               style="width: 350px;"
-              placeholder="请输入物质单位"
+              :placeholder="$t('common.inputTips')"
               v-model="applyForm.thingUnit"
               clearable>
           </el-input>
         </div>
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">紧急程度:</p>
-          <el-select style="width: 350px;" v-model="applyForm.emergencyLevel" placeholder="请选择紧急程度">
-            <el-option v-for="item in emergencyLevelOptions" :label="item.label" :value="item.value"></el-option>
+          <p class="w-100 text-left">{{ $t('recordList.Urgency') }}</p>
+          <el-select style="width: 350px;" v-model="applyForm.emergencyLevel" :placeholder="$t('common.inputTips')">
+            <el-option v-for="item in emergencyLevelOptions" :label="item.label | urgency" :value="item.value"></el-option>
           </el-select>
         </div>
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请备注:</p>
+          <p class="w-100 text-left">{{ $t('recordList.applyRemarks') }}</p>
           <el-input
               style="width: 350px;"
               type="textarea"
-              placeholder="请输入备注"
+              :placeholder="$t('common.inputTips')"
               v-model="applyForm.applyRemark"
               maxlength="70"
               show-word-limit
@@ -284,11 +325,71 @@
           </el-input>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="applyVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirmApply">确 定</el-button>
+          <el-button @click="applyVisible = false">{{ $t('common.cancel') }}</el-button>
+          <el-button type="primary" @click="confirmApply">{{ $t('common.confirm') }}</el-button>
         </span>
 
       </el-dialog>      
+
+      <!-- 物资申请dialog 移动端 -->
+      <el-drawer
+        :title="$t('recordList.materialApplication')"
+        custom-class="app-material-apply"
+        :visible.sync="applyVisibleApp"
+        direction="btt">
+        <ul class="material-apply-list">
+          <li class="d-flex align-items-center mb-10">
+            <p class="w-80 text-left font-24">{{ $t('recordList.applyMaterial') }}</p>
+            <el-input
+                style="width: calc(100% - 80px)"
+                :placeholder="$t('common.inputTips')"
+                v-model="applyForm.applyThing"
+                clearable>
+            </el-input>            
+          </li>
+          <li class="d-flex align-items-center mb-10">
+            <p class="w-80 text-left font-24">{{ $t('recordList.appliedNum') }}</p>
+            <el-input
+                style="width: calc(100% - 80px)"
+                :placeholder="$t('common.inputTips')"
+                v-model="applyForm.applyNum"
+                clearable>
+            </el-input>            
+          </li>
+          <li class="d-flex align-items-center mb-10">
+            <p class="w-80 text-left font-24">{{ $t('recordList.applyUnit') }}</p>
+            <el-input
+                style="width: calc(100% - 80px)"
+                :placeholder="$t('common.inputTips')"
+                v-model="applyForm.thingUnit"
+                clearable>
+            </el-input>            
+          </li>
+          <li class="d-flex align-items-center mb-10">
+            <p class="w-80 text-left font-24">{{ $t('recordList.Urgency') }}</p>
+            <el-select
+                style="width: calc(100% - 80px)"
+                :placeholder="$t('common.inputTips')"
+                v-model="applyForm.emergencyLevel">
+              <el-option v-for="item in emergencyLevelOptions" :label="item.label | urgency" :value="item.value"></el-option>
+            </el-select>            
+          </li>
+          <li class="d-flex align-items-center mb-10">
+            <p class="w-80 text-left font-24">{{ $t('recordList.applyRemarks') }}</p>
+            <el-input
+                style="width: calc(100% - 80px)"
+                type="textarea"
+                :placeholder="$t('common.inputTips')"
+                v-model="applyForm.applyRemark"
+                maxlength="70"
+                show-word-limit>
+            </el-input>         
+          </li>          
+        </ul>
+        <div class="d-flex align-items-end justify-content-center mt-10 mb-15">
+          <el-button type="primary" @click="confirmApply">{{ $t('common.confirm') }}</el-button>
+        </div>
+      </el-drawer>         
 
     </div>
   </div>
@@ -307,8 +408,14 @@ export default {
   },
   data() {
     return {
+      currentPage1: 1,
+      currentPage2: 1,
+      currentPage3: 1,
+      smallPagination: false,
       checkVisible: false,
+      checkVisibleApp: false,
       applyVisible: false,
+      applyVisibleApp: false,
       // orderList: [],
       isolationList: [],
       testOptions: [
@@ -335,6 +442,7 @@ export default {
       pageNum: 0,
       isolationNum: 0,
       reviewListNum: 0,
+      reviewList: [],
       isReview: [],
       // pageNum: 0,
       statusList: [],
@@ -491,7 +599,7 @@ export default {
     },
     roomNameFormat(val) {
       const lang = localStorage.getItem("lang");
-      if (lang == "zh") {
+      if (lang == "zh"  || lang == null) {
         return val;
       } else if (lang == "en") {
         if (val == "单人房") {
@@ -509,11 +617,44 @@ export default {
         }
       }
     },
+    urgency(value){
+      const lang = localStorage.getItem("lang");
+      if (lang == "zh"  || lang == null) {
+        return value
+      } else if (lang == "en") {
+        switch (value) {
+          case "不紧急":
+            value = "Not urgent";
+            break;
+          case "普通紧急":
+            value = "Urgent";
+            break;
+          case "非常紧急":
+            value = "Very urgent";
+            break;
+          default:
+            break;
+        }
+        return value;        
+      }
+    }
   },
   mounted() {
     this.getIsolationRecords()
     this.getApplyRecords()
     this.getRevieList()
+    if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+      this.smallPagination = true
+    } else {
+      this.smallPagination = false
+    }    
+    window.onresize = () => {
+      if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+        this.smallPagination = true
+      } else {
+        this.smallPagination = false
+      }
+    }    
   },
   methods: {
     // 隔离记录 Start
@@ -523,6 +664,7 @@ export default {
       if (val) {
         this.isApply = false;
         this.isReview = false;
+        this.currentPage1 = 1;
         this.getIsolationRecords();
       }
     },
@@ -531,7 +673,7 @@ export default {
       let data = {
         page: {
           page: 1,
-          size: 10,
+          size: 5,
         },
       };
       this.isolationRecordsRequest(data);
@@ -554,7 +696,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.isolationRecordsRequest(data)
@@ -565,7 +707,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.isolationRecordsRequest(data)
@@ -576,7 +718,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.isolationRecordsRequest(data)
@@ -588,14 +730,18 @@ export default {
         uId: id,
         page: {
           page: 1,
-          size: 10,
+          size: 5,
         },
       };
       post("api/checkRecords/ownPage", data)
         .then((res) => {
           console.log(res);
           this.ownTestData = res.data.data.records
-          this.checkVisible = true
+          if (window.document.body.clientWidth >= 768) {
+            this.checkVisible = true
+          } else {
+            this.checkVisibleApp = true
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -604,7 +750,11 @@ export default {
 
     // 物资申请函数，打开弹出框
     applyHandle() {
-      this.applyVisible = true;
+      if (window.document.body.clientWidth >= 768) {
+        this.applyVisible = true;
+      } else {
+        this.applyVisibleApp = true
+      }
       this.applyForm = {
         applyThing: "",
         applyNum: 0,
@@ -624,7 +774,11 @@ export default {
             title: "成功",
             message: "申请成功",
           });
-          this.applyVisible = false;
+          if (window.document.body.clientWidth >= 768) {
+            this.applyVisible = false;
+          } else {
+            this.applyVisibleApp = false
+          }
         } else {
           this.$message({
             message: res.data.msg,
@@ -642,7 +796,8 @@ export default {
       if (val) {
         this.isIsolation = false;
         this.isApply = false;
-        this.getApplyRecords();
+        this.currentPage2 = 1;
+        this.getRevieList();
       }
     },
 
@@ -651,7 +806,7 @@ export default {
       const data = {
         page: {
           page: 1,
-          size: 10,
+          size: 5,
         }
       }
       this.revieListRequest(data)
@@ -673,7 +828,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.revieListRequest(data)
@@ -684,7 +839,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.revieListRequest(data)
@@ -695,7 +850,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.revieListRequest(data)
@@ -710,6 +865,7 @@ export default {
       if (val) {
         this.isIsolation = false;
         this.isReview = false;
+        this.currentPage3 = 1
         this.getApplyRecords();
       }
     },
@@ -719,7 +875,7 @@ export default {
       const data = {
         page: {
           page: 1,
-          size: 10,
+          size: 5,
         }
       }
       this.ApplyRecordsRequest(data)
@@ -727,7 +883,7 @@ export default {
     ApplyRecordsRequest(data) {
       post("api/materialsApply/page", data)
         .then( res => {
-          this.applyList = res.data.data.records;
+          this.applyList = res.data.data.records;      
           this.applyListNum = res.data.data.total;
         })
     },
@@ -736,7 +892,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.ApplyRecordsRequest(data)
@@ -747,7 +903,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.ApplyRecordsRequest(data)
@@ -758,7 +914,7 @@ export default {
       let data = {
         page: {
           page: num,
-          size: 10
+          size: 5
         }
       }
       this.ApplyRecordsRequest(data)
@@ -996,5 +1152,73 @@ export default {
 .active {
   border: 1px solid #d2d2d3;
   background: #f5f7fa;
+}
+
+/* 媒体查询 */
+@media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */
+  .hotel-list-bg {
+    height: 120px;
+  }
+  .hotel-list-bg img {
+    height: 120px;
+  }
+  .record-list-main {
+    height: calc(100vh - 120px);
+  }
+  .record-list-content {
+    padding: 10px 3%;
+  }
+  .record-list-content-option {
+    flex-direction: column;
+    align-items: start;
+  }
+  .order-status {
+    width: 100%;
+    margin: 0 0 1rem 0;
+    box-sizing: border-box;
+    flex: initial;
+  }
+  .order-list {
+    margin: 10px 0;
+  }
+  .isolation-time>span{
+    display: block;
+  }
+  .order-list li {
+    border-radius: 10px;
+  }
+  /* .isolation-pagination {
+    display: none;
+  }
+  .apply-pagination {
+    display: none;
+  }
+  .material-pagination {
+    display: none;
+  } */
+  .app-detect-record-list {
+    padding: 0 2rem;
+    overflow: auto;
+  }
+  .app-detect-record-list li {
+    border-bottom: 1px solid #999;
+    margin-bottom: 1.5rem;
+  }
+  .material-apply-list {
+    padding: 0 2rem;
+    overflow: auto;
+  }
+
+
+  /* .web-detect-record { 正常情况下没隐藏，缩小到<768px则隐藏 
+    display: none;
+  } */
+  /* .web-material-apply {
+    display: none;
+  }
+  .app-detect-record {
+    display: block;
+  } */
+
 }
 </style>

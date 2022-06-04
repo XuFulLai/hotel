@@ -15,22 +15,24 @@
         <!--  酒店列表-->
         <div class="hotel-list-content">
           <ul class="hotel-list">
-            <li v-for="(item,index) in hotelList">
+            <li @click="clickFlag && hotelDetails(index,item.id)" v-for="(item,index) in hotelList">
               <div class="li-l">
                 <img :src=item.cover alt="">
               </div>
               <div class="li-r">
-                <h4>{{ item.name }}</h4>
-                <h6>{{ item.address }}</h6>
-                <div class="flex flex-row" v-if="item.badge">
+                <div>
+                  <h4>{{ item.name }}</h4>
+                  <h6>{{ item.address }}</h6>
+                </div>
+                <div class="flex flex-row mb-10 flex-wrap" v-if="item.badge">
                   <div style="background: #F56C6C" class="badge" v-if="form.allowIsolation">
-                    隔离酒店
+                    {{ $t('hotelList.isolatedHotel') }}
                   </div>
                   <div class="badge" v-for="i in item.badge.split(',')">
-                    {{ i }}
+                    {{ i | hotelBadge }}
                   </div>
                 </div>
-                <div v-html="item.introduce"></div>
+                <div class="hotel-introduce-box"  v-html="item.introduce"></div>
                 <button @click="hotelDetails(index,item.id)">{{ $t('hotelList.confirm') }}</button>
               </div>
             </li>
@@ -39,8 +41,10 @@
 
         <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center mb-30">
           <el-pagination
+              :small="smallPagination"
               background
               :page-size="5"
+              :pager-count="5"
               @current-change="handleCurrentChange"
               @prev-click="prevPage"
               @next-click="nextPage"
@@ -148,11 +152,31 @@ export default {
           return val
         }
       }
-    }
+    },
+    hotelBadge(value) {
+      const lang = localStorage.getItem("lang");
+      if (lang == "zh" || lang == null) {
+        if (value == '年度最受欢迎酒店') {
+          
+        } else if (value == '五星级酒店') {
+          
+        }
+        return value;
+      } else if (lang == "en") {
+        if (value == '年度最受欢迎酒店') {
+          value = 'The most popular Hotel';
+        } else if (value == '五星级酒店') {
+          value = 'Five-star Hotel';
+        }     
+        return value   
+      }
+    },      
   },
   data() {
     return {
+      clickFlag: false,
       provinceVal: '',
+      smallPagination: false,
       options: [
         {
           value: this.$t('hotelList.beijing'),
@@ -289,6 +313,22 @@ export default {
   },
   mounted() {
     this.getHotelList()
+    if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+      this.smallPagination = true
+      this.clickFlag = true
+    } else {
+      this.smallPagination = false
+      this.clickFlag = false
+    }    
+    window.onresize = () => {
+      if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+        this.smallPagination = true
+        this.clickFlag = true
+      } else {
+        this.smallPagination = false
+        this.clickFlag = false
+      }
+    }    
   },
   methods: {
     //获取酒店列表
@@ -506,13 +546,17 @@ export default {
 
 .hotel-list li {
   display: flex;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
+  margin-bottom: 3rem;
 }
 
 .hotel-list li .li-l {
-  width: 370px;
+  /* width: 370px;
   height: 423px;
-  margin: 0px 30px;
+  margin: 0px 30px; */
+  width: 37rem;
+  height: 42.3rem;
+  margin: 0 3rem;  
 }
 
 .hotel-list li .li-l img {
@@ -521,40 +565,54 @@ export default {
 }
 
 .hotel-list li .li-r {
-  width: 360px;
-  margin: 0px 30px;
+  /* width: 360px;
+  margin: 0px 30px; */
+  width: 36rem;
+  margin: 0 3rem;
   position: relative;
 }
 
 .hotel-list li .li-r h4 {
-  font-size: 36px;
-  margin-bottom: 15px;
+  /* font-size: 36px;
+  margin-bottom: 15px; */
+  font-size: 3rem;
+  margin-bottom: 1.5rem;  
   font-weight: 400;
 }
 
 .hotel-list li .li-r h6 {
-  font-size: 14px;
-  margin-bottom: 28px;
+  /* font-size: 18px;
+  margin-bottom: 28px; */
+  font-size: 1.8rem;
+  margin-bottom: 2.8rem;
   font-weight: 400;
+
 }
 
-.hotel-list li .li-r div {
-  font-size: 15px;
-  color: #898989;
+.hotel-list li .li-r .hotel-introduce-box {
+  /* font-size: 15px;
   margin-bottom: 20px;
+  max-height: 206px; */
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  max-height: 20.6rem;  
+  color: #898989;
   overflow: auto;
-  max-height: 206px;
 }
 
 .hotel-list li .li-r button {
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 118px;
+  /* width: 118px;
   height: 38px;
   line-height: 38px;
+  font-size: 16px;   */
+  width: 11.8rem;
+  height: 3.8rem;
+  line-height: 3.8rem;
+  font-size: 1.6rem;
   background: #E1BD85;
-  font-size: 12px;
   color: #FFFFFF;
   border-radius: 5px;
   border: none;
@@ -582,6 +640,69 @@ export default {
 .badge:last-child {
   margin-right: 0px;
 }
+
+@media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */
+  .hotel-list-bg {
+    height: 120px;
+  }
+  .hotel-list-bg img {
+    height: 120px;
+  }
+  .hotel-list-main {
+    height: calc(100vh - 120px);
+  }
+  .hotel-list {
+    padding: 0 1rem;
+  }
+  .hotel-list li {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .hotel-list li .li-l {
+    width: 95px;
+    height: 120px;
+    margin: 0 2rem 0 0;
+  }
+  .hotel-list li .li-r {
+    width: calc(100% - 107px);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .hotel-list li .li-r h4 {
+    max-height: 48px;
+    overflow: hidden;
+  }
+  .hotel-list li .li-r h6 {
+    max-height: 32px;
+    overflow: hidden;    
+  }
+  .hotel-list li .li-r button {
+    display: none;
+  }
+  .hotel-introduce-box {
+    display: none;
+  }
+  .hotel-list li .li-r div {
+    margin-bottom: 0;
+  }
+  .hotel-list li:nth-child(even) .li-l {
+    order: 0;
+  }
+  .badge {
+    margin: 4px 4px 4px 0;
+    padding: 3px 4px;
+  }  
+
+  /* 隐藏翻页器 */
+  .hotel-pagination {
+    display: none;
+  }
+}
+
 
 
 </style>

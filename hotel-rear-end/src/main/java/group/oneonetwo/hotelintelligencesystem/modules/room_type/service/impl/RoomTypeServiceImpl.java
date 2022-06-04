@@ -107,10 +107,17 @@ public class RoomTypeServiceImpl implements IRoomTypeServeice {
     @Override
     public Page<RoomTypeVO> getPage(RoomTypeVO roomTypeVO){
         QueryWrapper<RoomTypePO> wrapper=new QueryWrapper<>();
-        wrapper.eq("hotel_id",authUtils.getUserHotelId());
-        Page<RoomTypePO> page=new Page<>(roomTypeVO.getPage().getPage(),roomTypeVO.getPage().getSize());
-        Page<RoomTypePO> poiPage=(Page<RoomTypePO>) roomTypeMapper.selectPage(page,wrapper);
-        return ConvertUtils.transferPage(poiPage,RoomTypeVO.class);
+        if(authUtils.getUserHotelId().equals("0")){
+            Page<RoomTypePO> page=new Page<>(roomTypeVO.getPage().getPage(),roomTypeVO.getPage().getSize());
+            Page<RoomTypePO> poiPage=(Page<RoomTypePO>) roomTypeMapper.selectPage(page,wrapper);
+            return ConvertUtils.transferPage(poiPage,RoomTypeVO.class);
+        }else {
+            wrapper.eq("hotel_id",authUtils.getUserHotelId());
+            Page<RoomTypePO> page=new Page<>(roomTypeVO.getPage().getPage(),roomTypeVO.getPage().getSize());
+            Page<RoomTypePO> poiPage=(Page<RoomTypePO>) roomTypeMapper.selectPage(page,wrapper);
+            return ConvertUtils.transferPage(poiPage,RoomTypeVO.class);
+        }
+
     }
 
     @Override

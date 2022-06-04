@@ -31,10 +31,14 @@
               <p>{{ item.status | statusFilter }}</p>
               <a v-if="item.status == 1" class="color-red cursor"
                  @click="cancelOrder(item.id)">{{ $t('orderList.cancelOrder') }}</a>
+<!--              //////-->
+              <a v-if="item.status == 0" class="color-red cursor"
+                 @click="goPayOrder(item.id,item.lastPay)">{{ $t('orderList.goPayOrder') }}</a>
+
               <a v-if="item.status == 4 && !item.commentId" class="color-red cursor"
                  @click="writeComment(item)">{{ $t('orderList.writeComment') }}</a>
             </div>
-            <div class="d-flex align-items-center justify-content-between font-16 color-6">
+            <div class="order-details d-flex align-items-center justify-content-between font-16 color-6">
               <div>
                 <p class="mb-10">{{ $t('orderList.hotelName') }}{{ item.hotelName }}</p>
                 <!-- <p class="mb-10">订单ID：{{ item.id }}</p> -->
@@ -50,8 +54,10 @@
           </li>
         </ul>
 
-        <div v-if="pageNum > 5" class="d-flex align-items-center justify-content-center">
+        <div v-if="pageNum > 10" class="order-pagination d-flex align-items-center justify-content-center">
           <el-pagination
+              :small="smallPagination"
+              :pager-count="5"
               background
               @current-change="handleCurrentChange"
               @prev-click="prevPage"
@@ -150,11 +156,28 @@
 
     </el-dialog>
 
+    <el-dialog
+        title="请输入钱包密码"
+        :visible.sync="payVisible"
+        width="460px"
+        center
+    >
+      <div class="flex flex-column pay-box align-items-center">
+        <div>当前支付金额</div>
+        <div class="pay-box-price"><span style="font-size: 26px">￥</span>{{ payForm.lastPay }}</div>
+        <el-input placeholder="请输入密码" v-model="payForm.walletPwd" show-password></el-input>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="pay">确 定</el-button>
+      </span>
+
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import {get, post} from "../utils/request";
+import {formDataPost, get, post} from "../utils/request";
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer.vue';
 
@@ -166,6 +189,13 @@ export default {
   },
   data() {
     return {
+      payVisible:false,
+      payForm: {
+        orderId: undefined,
+        lastPay: undefined,
+        walletPwd: undefined
+      },
+      smallPagination: false,
       applyVisible: false,
       writeCommentVisible: false,
       orderList: [],
@@ -342,6 +372,18 @@ export default {
   mounted() {
     this.getOrderList()
     this.getStatus()
+    if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+      this.smallPagination = true
+    } else {
+      this.smallPagination = false
+    }    
+    window.onresize = () => {
+      if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+        this.smallPagination = true
+      } else {
+        this.smallPagination = false
+      }
+    }    
   },
   methods: {
 
@@ -499,7 +541,41 @@ export default {
           .catch(err => {
             console.log(err);
           })
-    }
+    },
+    goPayOrder(id,pay) {
+      this.payVisible=true;
+      this.payForm.lastPay=pay;
+      this.payForm.orderId=id;
+    },
+    pay() {
+      let data = {
+        orderId: this.payForm.orderId,
+        walletPwd: this.payForm.walletPwd
+      }
+      formDataPost("/api/order/payOrder",data).then(res => {
+        if (res.data.code == 200) {
+          this.$message({
+            message: this.$t('hotelList.success'),
+            type: 'success'
+          });
+          this.payVisible = false
+          this.confirmOrderVisible = false
+          this.payForm = {
+            orderId: undefined,
+            lastPay: undefined,
+            walletPwd: undefined
+          }
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: 'warning',
+            duration: 4000
+          });
+        }
+
+      })
+    },
+
   }
 }
 </script>
@@ -725,4 +801,45 @@ export default {
   display: block;
   margin-bottom: 8px;
 }
+
+@media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */ 
+  .hotel-list-bg {
+    height: 120px;
+  }
+  .hotel-list-bg img {
+    height: 120px;
+  }
+  .order-list-main {
+    height: calc(100vh - 120px);
+  }
+  .order-list-content>div.justify-content-between {
+    flex-wrap: wrap;
+  }
+  .order-list-content {
+    padding: 10px 3%;
+  }
+  .order-status {
+    margin: 1rem 2%;
+    padding: 0px 0.5rem;
+    width: 43%;
+    flex: inherit;  
+  }  
+  .order-list {
+    margin-top: 10px;
+  }
+  .order-list li {
+    padding: 10px 15px;
+    border-radius: 8px;
+  }
+  .order-details {
+    flex-direction: column;
+    align-items: start;
+  }
+  .order-details>div {
+    margin-bottom: 1rem;
+  }
+}
+
+
+
 </style>
