@@ -26,10 +26,10 @@
                 </div>
                 <div class="flex flex-row mb-10 flex-wrap" v-if="item.badge">
                   <div style="background: #F56C6C" class="badge" v-if="form.allowIsolation">
-                    隔离酒店
+                    {{ $t('hotelList.isolatedHotel') }}
                   </div>
                   <div class="badge" v-for="i in item.badge.split(',')">
-                    {{ i }}
+                    {{ i | hotelBadge }}
                   </div>
                 </div>
                 <div class="hotel-introduce-box" v-html="item.introduce"></div>
@@ -152,7 +152,25 @@ export default {
           return val
         }
       }
-    }
+    },
+    hotelBadge(value) {
+      const lang = localStorage.getItem("lang");
+      if (lang == "zh" || lang == null) {
+        if (value == '年度最受欢迎酒店') {
+          
+        } else if (value == '五星级酒店') {
+          
+        }
+        return value;
+      } else if (lang == "en") {
+        if (value == '年度最受欢迎酒店') {
+          value = 'The most popular Hotel';
+        } else if (value == '五星级酒店') {
+          value = 'Five-star Hotel';
+        }     
+        return value   
+      }
+    },    
   },
   data() {
     return {

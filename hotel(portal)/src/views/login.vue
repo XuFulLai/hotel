@@ -12,11 +12,11 @@
                 <h3>{{  $t('login.title') }}</h3>
               <div class="flex flex-row align-items-end">
                 <p class="mt-5 font-16 mr-10">{{  $t('login.text') }}</p>
-                <div class="ml-10 cursor" v-if="!qrShow" @click="QRCode(true)"><i class="el-icon-full-screen mr-5" style="font-size: 2rem"></i>二维码登录</div>
-                <div class="ml-10 cursor" v-if="qrShow" @click="QRCode(false)"><i class="el-icon-postcard mr-5" style="font-size: 2rem"></i>账号密码登录</div>
+                <div class="ml-10 cursor" v-if="!qrShow" @click="QRCode(true)"><i class="el-icon-full-screen mr-5" style="font-size: 2rem"></i>{{ $t('login.qrCode') }}</div>
+                <div class="ml-10 cursor" v-if="qrShow" @click="QRCode(false)"><i class="el-icon-postcard mr-5" style="font-size: 2rem"></i>{{ $t('login.accountSignIn') }}</div>
               </div>
               <div class="qr mt-10" v-if="qrShow">
-                <p style="font-size: 16px;color: #666666" v-if="confirmShow"><i style="color: #67C23A" class="el-icon-success"></i>&nbsp已扫描成功,请在手机上按确认登录</p>
+                <p style="font-size: 16px;color: #666666" v-if="confirmShow"><i style="color: #67C23A" class="el-icon-success"></i> {{ $t('login.scanSuccess') }}</p>
                 <vue-qr :logo-src="logoSrc"
                         :size="180"
                         :margin="0"

@@ -21,7 +21,7 @@
             @click="isolationRecordsHandle(!isIsolation)">
 
             <div>
-              <h3 class="font-22">隔离记录</h3>
+              <h3 class="font-22">{{ $t('recordList.isolateRecords') }}</h3>
               <p class="font-16">{{ isolationNum}}</p>
             </div>
 
@@ -34,7 +34,7 @@
 
             <div>
               <!-- <h3 class="font-22">自申报记录</h3> -->
-              <h3 class="font-22">隔离入住申请记录</h3>
+              <h3 class="font-22">{{ $t('recordList.isolateRequestRecords') }}</h3>
               <p class="font-16">{{ reviewListNum }}</p>
             </div>
 
@@ -46,7 +46,7 @@
             @click="applyRecordsHandle(!isApply)">
 
             <div>
-              <h3 class="font-22">物资申请记录</h3>
+              <h3 class="font-22">{{ $t('recordList.materialRequestRecords') }}</h3>
               <p class="font-16">{{ applyListNum }}</p>
             </div>
 
@@ -64,37 +64,39 @@
                 <div>
                   <el-button
                     style="
-                      width: 10rem;
+                      min-width: 14rem;
+                      
                       height: 4rem;
-                      padding: 0;
+                      padding: 0 1rem;
                       font-size: 1.6rem;"
-                    @click="getCheckRecords(item.id)">检测记录</el-button>
+                    @click="getCheckRecords(item.id)">{{ $t('recordList.detectRecords') }}</el-button>
                   <el-button
                     style="
-                      width: 10rem;
+                      min-width: 14rem;
+                      
                       height: 4rem;
-                      padding: 0;
+                      padding: 0 1rem;
                       font-size: 1.6rem;"                  
                     v-if="item.status == 0"
                     type="primary"
-                    @click="applyHandle">物质申请</el-button>
+                    @click="applyHandle">{{ $t('recordList.materialRequest') }}</el-button>
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-between font-16 color-6">
                 <div>
                   <p class="mb-10">
-                    {{ $t("orderList.hotelName") }}{{ item.hotelName }}
+                    {{ $t("orderList.hotelName") }} {{ item.hotelName }}
                   </p>
-                  <p class="mb-10">隔离ID：{{ item.id }}</p>
+                  <p class="mb-10">{{ $t("recordList.isolateID") }} {{ item.id }}</p>
                   <p class="isolation-time mb-10">
-                    <span class="mr-10">隔离开始时间：{{ item.checkInTime | dateTimeFormat }}</span>
-                    <span>隔离结束时间：{{ item.checkOutTime | dateTimeFormat }}</span>
+                    <span class="mr-10">{{ $t("recordList.isolateStartTime") }} {{ item.checkInTime | dateTimeFormat }}</span>
+                    <span>{{ $t("recordList.isolateEndTime") }} {{ item.checkOutTime | dateTimeFormat }}</span>
                   </p>
-                  <p class="mb-10">来源地：{{ item.province }}{{ item.city }}</p>
+                  <p class="mb-10">{{ $t("recordList.source") }} {{ item.province }}{{ item.city }}</p>
                   <div class="d-flex align-items-center">
-                    <p>{{ $t("orderList.roomType") }}{{ item.roomTypeName | roomNameFormat }}</p>
+                    <p>{{ $t("orderList.roomType") }} {{ item.roomTypeName | roomNameFormat }}</p>
                     <p class="ml-10 mr-10" style="color: #e0e0e0">|</p>
-                    <p>{{ $t("isolationList.roomName") }}{{ item.roomName }}</p>
+                    <p>{{ $t("isolationList.roomName") }} {{ item.roomName }}</p>
                   </div>
                 </div>
                 <p v-if="item.pay">{{ $t("orderList.spend") }}￥{{ item.pay }}</p>
@@ -129,16 +131,16 @@
               </div>
               <div class="d-flex align-items-center justify-content-between font-16 color-6">
                 <div>
-                  <p class="mb-10">申报人姓名：{{ item.name }}</p>
-                  <p class="mb-10">身份证号码：{{ item.idCard }}</p>
-                  <p class="mb-10">电话：{{ item.phone }}</p>
-                  <p class="mb-10">申报ID：{{ item.id }}</p>
-                  <p class="mb-10">来源地：{{ item.province }}{{ item.city }}</p>
+                  <p class="mb-10">{{ $t('recordList.applicantName') }} {{ item.name }}</p>
+                  <p class="mb-10">{{ $t('recordList.idNum') }} {{ item.idCard }}</p>
+                  <p class="mb-10">{{ $t('recordList.tel') }} {{ item.phone }}</p>
+                  <p class="mb-10">{{ $t('recordList.declareID') }} {{ item.id }}</p>
+                  <p class="mb-10">{{ $t('recordList.source') }} {{ item.province }}{{ item.city }}</p>
                   <p class="isolation-time mb-10">
-                    <span class="mr-10">隔离开始时间：{{ item.checkInTime | dateTimeFormat }}</span>
-                    <span>隔离结束时间：{{ item.checkOutTime | dateTimeFormat }}</span>
+                    <span class="mr-10">{{ $t('recordList.isolateStartTime') }} {{ item.checkInTime | dateTimeFormat }}</span>
+                    <span>{{ $t('recordList.isolateEndTime') }} {{ item.checkOutTime | dateTimeFormat }}</span>
                   </p>
-                  <p v-if="item.reviewStatus == 2" style="color: red;" class="mb-10">拒绝理由：{{ item.remark }}</p>
+                  <p v-if="item.reviewStatus == 2" style="color: red;" class="mb-10">{{ $t('recordList.refuse') }} {{ item.remark }}</p>
                 </div>
               </div>
             </li>
@@ -170,11 +172,11 @@
               </div>
               <div class="d-flex align-items-center justify-content-between font-16 color-6">
                 <div>
-                  <p class="mb-10">申请物品：{{ item.applyThing }}</p>
-                  <p class="mb-10">申请数量：{{ "" + item.applyNum + item.thingUnit }}</p>
-                  <p class="mb-10">申请ID：{{ item.id }}</p>
-                  <p class="mb-10">申请说明：{{ item.applyRemark }}</p>
-                  <p style="color: red" v-if="item.reviewRemarks" class="mb-10">审核说明：{{ item.reviewRemarks }}</p>
+                  <p class="mb-10">{{ $t('recordList.appliedItems') }} {{ item.applyThing }}</p>
+                  <p class="mb-10">{{ $t('recordList.appliedNum') }} {{ "" + item.applyNum + item.thingUnit }}</p>
+                  <p class="mb-10">{{ $t('recordList.appliedID') }} {{ item.id }}</p>
+                  <p class="mb-10">{{ $t('recordList.appliedInstructions') }} {{ item.applyRemark }}</p>
+                  <p style="color: red" v-if="item.reviewRemarks" class="mb-10">{{ $t('recordList.auditInstructions') }} {{ item.reviewRemarks }}</p>
                 </div>
                 <p v-if="item.pay">{{ $t("orderList.spend") }}￥{{ item.pay }}</p>
               </div>
@@ -185,7 +187,7 @@
             <el-pagination
                 :small="smallPagination"
                 background
-                :current-page.sync="currentPage3"                
+                :current-page.sync="currentPage3"
                 :page-size="5"
                 :pager-count="5"
                 @current-change="applyCurrent"
@@ -209,33 +211,33 @@
       <!-- 检测记录dialog -->
       <el-dialog
           class="web-detect-record"
-          title="检测记录"
+          :title="$t('recordList.detectRecords')"
           :visible.sync="checkVisible"
           width="570px">
         <el-table :data="ownTestData">
           <el-table-column
             property="checkTime"
-            label="检测时间"
+            :label="$t('recordList.detectionTime')"
             :formatter="eTableDateTime"
             align="center"
             width="250px">
           </el-table-column>
           <el-table-column
             property="checkType"
-            label="检测类型"
+            :label="$t('recordList.detectionType')"
             align="center">
             <template slot-scope="scope">
-                <el-tag v-if="scope.row.checkType==0" type="danger">体温</el-tag>
-                <el-tag v-if="scope.row.checkType==1" >核酸</el-tag>
+                <el-tag v-if="scope.row.checkType==0" type="danger">{{ $t('recordList.temperature') }}</el-tag>
+                <el-tag v-if="scope.row.checkType==1" >{{ $t('recordList.nucleicAcidDetection') }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column 
             property="checkRes"
-            label="检测结果"
+            :label="$t('recordList.DetectionResults')"
             align="center">
             <template slot-scope="scope">
-                <el-tag v-if="scope.row.checkRes==0">阴性</el-tag>
-                <el-tag v-else-if="scope.row.checkRes==1" type="danger">阳性</el-tag>
+                <el-tag v-if="scope.row.checkRes==0">{{ $t('recordList.negative') }}</el-tag>
+                <el-tag v-else-if="scope.row.checkRes==1" type="danger">{{ $t('recordList.positive') }}</el-tag>
                 <el-tag v-else type="danger">{{ scope.row.checkRes }}°</el-tag>
             </template>           
           </el-table-column>
@@ -244,24 +246,24 @@
 
       <!-- 检测记录dialog 移动端 -->
       <el-drawer
-        title="检测记录"
+        :title="$t('recordList.detectRecords')"
         custom-class="app-detect-record"
         :visible.sync="checkVisibleApp"
         direction="btt">
         <ul class="app-detect-record-list">
           <li v-for="i in ownTestData">
             <div class="d-flex justify-content-between font-24 mb-15">
-              <p>检测时间</p>
+              <p>{{ $t('recordList.detectionTime') }}</p>
               <p>{{ i.checkTime | dateTimeFormat }}</p>
             </div>
             <div class="d-flex justify-content-between font-24 mb-15">
-              <p>检测类型</p>
-              <p>{{ i.checkType==0?"体温":"核酸" }}</p>
+              <p>{{ $t('recordList.detectionType') }}</p>
+              <p>{{ i.checkType==0?$t('recordList.temperature'):$t('recordList.nucleicAcidDetection') }}</p>
             </div>            
             <div class="d-flex justify-content-between font-24 mb-15">
-              <p>检测结果</p>
-              <p class="color-70d" v-if="i.checkRes==0">阴性</p>
-              <p class="color-red" v-if="i.checkRes==1">阳性</p>
+              <p>{{ $t('recordList.DetectionResults') }}</p>
+              <p class="color-70d" v-if="i.checkRes==0">{{ $t('recordList.negative') }}</p>
+              <p class="color-red" v-if="i.checkRes==1">{{ $t('recordList.positive') }}</p>
             </div>            
           </li>
         </ul>                                                    
@@ -269,53 +271,53 @@
 
       <!-- 物资申请dialog -->
       <el-dialog
-          title="物质申请"
+          :title="$t('recordList.materialApplication')"
           class="web-material-apply"
           :visible.sync="applyVisible"
           width="570px">
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请物资:</p>
+          <p class="w-100 text-left">{{ $t('recordList.applyMaterial') }}</p>
           <el-input
               style="width: 350px;"
-              placeholder="请输入物质名称"
+              :placeholder="$t('common.inputTips')"
               v-model="applyForm.applyThing"
               clearable>
           </el-input>
         </div>
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请数量:</p>
+          <p class="w-100 text-left">{{ $t('recordList.appliedNum') }}</p>
           <el-input-number
               v-model="applyForm.applyNum"
               :precision="2"
               :step="0.1"
               :max="10"
               style="width: 350px;"
-              placeholder="请输入申请数量"
+              :placeholder="$t('common.inputTips')"
               clearable
           ></el-input-number>
 
         </div>
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请单位:</p>
+          <p class="w-100 text-left">{{ $t('recordList.applyUnit') }}</p>
           <el-input
               style="width: 350px;"
-              placeholder="请输入物质单位"
+              :placeholder="$t('common.inputTips')"
               v-model="applyForm.thingUnit"
               clearable>
           </el-input>
         </div>
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">紧急程度:</p>
-          <el-select style="width: 350px;" v-model="applyForm.emergencyLevel" placeholder="请选择紧急程度">
-            <el-option v-for="item in emergencyLevelOptions" :label="item.label" :value="item.value"></el-option>
+          <p class="w-100 text-left">{{ $t('recordList.Urgency') }}</p>
+          <el-select style="width: 350px;" v-model="applyForm.emergencyLevel" :placeholder="$t('common.inputTips')">
+            <el-option v-for="item in emergencyLevelOptions" :label="item.label | urgency" :value="item.value"></el-option>
           </el-select>
         </div>
         <div class="d-flex align-items-center mb-15">
-          <p class="w-100 text-left">申请备注:</p>
+          <p class="w-100 text-left">{{ $t('recordList.applyRemarks') }}</p>
           <el-input
               style="width: 350px;"
               type="textarea"
-              placeholder="请输入备注"
+              :placeholder="$t('common.inputTips')"
               v-model="applyForm.applyRemark"
               maxlength="70"
               show-word-limit
@@ -323,61 +325,61 @@
           </el-input>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="applyVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirmApply">确 定</el-button>
+          <el-button @click="applyVisible = false">{{ $t('common.cancel') }}</el-button>
+          <el-button type="primary" @click="confirmApply">{{ $t('common.confirm') }}</el-button>
         </span>
 
       </el-dialog>      
 
-      <!-- 检测记录dialog 移动端 -->
+      <!-- 物资申请dialog 移动端 -->
       <el-drawer
-        title="物资申请"
+        :title="$t('recordList.materialApplication')"
         custom-class="app-material-apply"
         :visible.sync="applyVisibleApp"
         direction="btt">
         <ul class="material-apply-list">
           <li class="d-flex align-items-center mb-10">
-            <p class="w-80 text-left font-24">申请物资:</p>
+            <p class="w-80 text-left font-24">{{ $t('recordList.applyMaterial') }}</p>
             <el-input
                 style="width: calc(100% - 80px)"
-                placeholder="请输入物质名称"
+                :placeholder="$t('common.inputTips')"
                 v-model="applyForm.applyThing"
                 clearable>
             </el-input>            
           </li>
           <li class="d-flex align-items-center mb-10">
-            <p class="w-80 text-left font-24">申请数量:</p>
+            <p class="w-80 text-left font-24">{{ $t('recordList.appliedNum') }}</p>
             <el-input
                 style="width: calc(100% - 80px)"
-                placeholder="请输入申请数量"
+                :placeholder="$t('common.inputTips')"
                 v-model="applyForm.applyNum"
                 clearable>
             </el-input>            
           </li>
           <li class="d-flex align-items-center mb-10">
-            <p class="w-80 text-left font-24">申请单位:</p>
+            <p class="w-80 text-left font-24">{{ $t('recordList.applyUnit') }}</p>
             <el-input
                 style="width: calc(100% - 80px)"
-                placeholder="请输入物质单位"
+                :placeholder="$t('common.inputTips')"
                 v-model="applyForm.thingUnit"
                 clearable>
             </el-input>            
           </li>
           <li class="d-flex align-items-center mb-10">
-            <p class="w-80 text-left font-24">紧急程度:</p>
+            <p class="w-80 text-left font-24">{{ $t('recordList.Urgency') }}</p>
             <el-select
                 style="width: calc(100% - 80px)"
-                placeholder="请选择紧急程度"
+                :placeholder="$t('common.inputTips')"
                 v-model="applyForm.emergencyLevel">
-              <el-option v-for="item in emergencyLevelOptions" :label="item.label" :value="item.value"></el-option>
+              <el-option v-for="item in emergencyLevelOptions" :label="item.label | urgency" :value="item.value"></el-option>
             </el-select>            
           </li>
           <li class="d-flex align-items-center mb-10">
-            <p class="w-80 text-left font-24">申请备注:</p>
+            <p class="w-80 text-left font-24">{{ $t('recordList.applyRemarks') }}</p>
             <el-input
                 style="width: calc(100% - 80px)"
                 type="textarea"
-                placeholder="请输入备注"
+                :placeholder="$t('common.inputTips')"
                 v-model="applyForm.applyRemark"
                 maxlength="70"
                 show-word-limit>
@@ -385,7 +387,7 @@
           </li>          
         </ul>
         <div class="d-flex align-items-end justify-content-center mt-10 mb-15">
-          <el-button type="primary" @click="confirmApply">确 定</el-button>
+          <el-button type="primary" @click="confirmApply">{{ $t('common.confirm') }}</el-button>
         </div>
       </el-drawer>         
 
@@ -597,7 +599,7 @@ export default {
     },
     roomNameFormat(val) {
       const lang = localStorage.getItem("lang");
-      if (lang == "zh") {
+      if (lang == "zh"  || lang == null) {
         return val;
       } else if (lang == "en") {
         if (val == "单人房") {
@@ -615,6 +617,27 @@ export default {
         }
       }
     },
+    urgency(value){
+      const lang = localStorage.getItem("lang");
+      if (lang == "zh"  || lang == null) {
+        return value
+      } else if (lang == "en") {
+        switch (value) {
+          case "不紧急":
+            value = "Not urgent";
+            break;
+          case "普通紧急":
+            value = "Urgent";
+            break;
+          case "非常紧急":
+            value = "Very urgent";
+            break;
+          default:
+            break;
+        }
+        return value;        
+      }
+    }
   },
   mounted() {
     this.getIsolationRecords()

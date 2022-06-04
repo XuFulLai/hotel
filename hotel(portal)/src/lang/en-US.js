@@ -1,6 +1,11 @@
 export default {
     common: {
-        success: 'Success！'
+        success: 'Success！',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        passwordTips: 'Please enter your password',
+        inputTips: 'Please enter',
+        selectTips: 'Please select'
     },
     login: {
         title: 'Hotel Management System',
@@ -16,6 +21,9 @@ export default {
         passwordError: 'Passwords does not match!',
         success: 'success!',
 
+        qrCode: 'QRcode Sign In',
+        accountSignIn: 'Account Sign In',
+        scanSuccess: 'Success,Please confirm the login on your phone',
 
         confirm: 'Login',
         forgetpwd: 'Forget Password',
@@ -32,12 +40,13 @@ export default {
     },
     nav: {
         index: 'Index',
-        list: 'Hotel list',
+        list: 'Hotel List',
         collection: 'My Collection',
-        order: 'My order',
-        record: 'My record',
-        wallet: 'My wallet',
+        order: 'My Order',
+        record: 'My Record',
+        wallet: 'My Wallet',
         logOut: 'Log out',
+        menu: 'Menu'
     },
     hotelList: {
         title: 'Hotel List',
@@ -52,6 +61,7 @@ export default {
         dialogConfirm: 'Confirm',
         select: 'Select',
         success: 'success!',
+        isolatedHotel: 'Isolated Hotel',
 
         beijing: 'Beijing',
         shanghai: 'Shanghai',
@@ -88,6 +98,29 @@ export default {
         xianggang: 'Hong Kong',
         aomen: 'Macao',
     },
+    hotleDetails: {
+        hotelIntroduction: 'Hotel Introduction',
+        userEvaluation: 'User Evaluation',
+        comment1: '',
+        comment2: 'Comments',        
+        open: 'Open',
+        stow: 'Stow',
+        reserve: 'Reserve',
+        reserveBtn: 'Reserve',
+        declare: 'Declare',
+        startDate: 'Start Date',
+        endDate: 'End Date',
+
+        checkDate: 'Check in time',
+        type: 'type',
+        name: 'name',
+        idNum: 'ID Number',
+        tel: 'Tel',
+        email: 'email',
+        tips: 'Need to submit 48 hours in advance',
+        submitBtn: 'Submit',
+        
+    },    
     isolationList: {
         roomName: 'Room:'
     },
@@ -108,6 +141,40 @@ export default {
         status3: 'Checked in',
         status4: 'Completed',
     },
+    recordList: {
+        isolateRecords: 'Isolate Records',
+        isolateRequestRecords: 'Isolate Request Records',
+        materialRequestRecords: 'Material Request Records',
+        isolateID: 'Isolate ID:',
+        isolateStartTime: 'Isolate StartTime:',
+        isolateEndTime: 'Isolate EndTime:',
+        source: 'Source:',
+        detectRecords: 'Detect Records',
+        materialRequest: 'Material Request',
+        applicantName: 'Applicant Name:',
+        idNum: 'ID Number:',
+        tel: 'Tel:',
+        declareID: 'declareID:',
+        refuse: 'Reasons for Rejection:',
+        appliedItems: 'Applied Items:',
+        appliedNum: 'Number:',
+        appliedID: 'Applied ID:',
+        appliedInstructions: 'Application Instructions:',
+        auditInstructions: 'Audit Instructions:',
+        detectionTime: 'Detection Time',
+        detectionType: 'Detection Type',
+        DetectionResults: 'Detection Results',
+        temperature: 'Temperature',
+        nucleicAcidDetection: 'Nucleic acid detection',
+        positive: 'Positive',
+        negative: 'Negative',
+
+        materialApplication: 'Material Application',
+        applyMaterial: 'Apply Material:',
+        applyUnit: 'Apply unit:',
+        applyRemarks: 'Apply Remarks:',
+        Urgency: 'Urgency:',
+    },    
 
 
 
@@ -176,5 +243,13 @@ export default {
     },
     test: {
         tips: 'Select Date'
-    }
+    },
+    wallet: {
+        myWallet: 'My Wallet',
+        tips: "Users who don't have a wallet will automatically create an account",
+        myBalance: 'My Balance',
+        topUp: 'Top Up',
+        withdraw: 'Withdraw',
+    }    
+
 }

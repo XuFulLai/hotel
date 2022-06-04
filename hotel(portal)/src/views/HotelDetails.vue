@@ -21,10 +21,10 @@
             <div class="detail-detail">
               <div class="flex flex-row" v-if="hotelDetails.badge || hotelDetails.allowIsolation">
                 <div style="background: #F56C6C" class="badge" v-if="hotelDetails.allowIsolation">
-                  隔离酒店
+                  {{ $t('hotelList.isolatedHotel') }}
                 </div>
                 <div v-if="hotelDetails.badge" class="badge" v-for="i in hotelDetails.badge.split(',')">
-                  {{ i }}
+                  {{ i | hotelBadge}}
                 </div>
               </div>
               <div class="flex flex-row flex-n-wrap">
@@ -38,7 +38,7 @@
                   <i class="el-icon-map-location location" @click="toMap()"></i>
                 </div>
               </div>
-              <el-divider content-position="left">酒店介绍</el-divider>
+              <el-divider content-position="left">{{ $t('hotleDetails.hotelIntroduction') }}</el-divider>
               <div class="detail-introduce" v-html="hotelDetails.introduce"></div>
             </div>
 
@@ -64,9 +64,9 @@
                         </el-rate>
                       </div>
                     </div>
-                    <p class="font-18 color-6">共 {{ hotelCommentsTotal }} 条评论</p>
+                    <p class="font-18 color-6">{{ $t('hotleDetails.comment1') }} {{ hotelCommentsTotal }} {{ $t('hotleDetails.comment2') }}</p>
                   </div>
-                  <el-divider content-position="left">用户评价</el-divider>
+                  <el-divider content-position="left">{{ $t('hotleDetails.userEvaluation') }}</el-divider>
                 
                   <div ref="commentUserBox" v-for="i in hotelCommentsList.slice(0, 1)" class="comment-user-box flex flex-row">
                     <div class="comment-user-box-left">
@@ -75,7 +75,7 @@
                     <div class="comment-user-box-right flex flex-column">
                       <div class="comment-user-nickname-date flex flex-row justify-content-between">
                         <div class="comment-user-nickname">{{ i.createBy}}</div>
-                        <div class="comment-user-date">发布于 {{ i.createTime | dateTimeFormat('ymd') }}</div>
+                        <div class="comment-user-date"> {{ i.createTime | dateTimeFormat('ymd') }}</div>
                       </div>
                       <div class="comment-user-roomType">{{ i.roomType }}</div>
                       <div class="comment-user-score">
@@ -108,7 +108,7 @@
                       <div class="comment-user-box-right flex flex-column">
                         <div class="comment-user-nickname-date flex flex-row justify-content-between">
                           <div class="comment-user-nickname">{{ i.createBy}}</div>
-                          <div class="comment-user-date">发布于 {{ i.createTime | dateTimeFormat('ymd') }}</div>
+                          <div class="comment-user-date"> {{ i.createTime | dateTimeFormat('ymd') }}</div>
                         </div>
                         <div class="comment-user-roomType">{{ i.roomType }}</div>
                         <div class="comment-user-score">
@@ -152,7 +152,7 @@
 
                 <div class="d-flex align-items-center expand-collapse cursor" @click="commentBtn">
                   <div style="margin: 0.8rem auto" v-if="hotelCommentsList.length > 1" >
-                    <i :class="comment ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ comment ? '收起':'展开' }}
+                    <i :class="comment ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ comment ? $t('hotleDetails.stow'):$t('hotleDetails.open') }}
                   </div>                  
                 </div>  
 
@@ -237,7 +237,7 @@
 
                 <div class="d-flex align-items-center expand-collapse cursor" @click="couponClick">
                   <div style="margin: 0.8rem auto" v-if="hotelDiscounts.length > 3" >
-                    <i :class="coupon ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ coupon ? '收起':'展开' }}
+                    <i :class="coupon ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{ coupon ? $t('hotleDetails.stow'):$t('hotleDetails.open') }}
                   </div>                  
                 </div>
 
@@ -291,8 +291,8 @@
                     v-model="switchType"
                     active-color="#13ce66"
                     inactive-color="#ff4949"
-                    active-text="正常预定"
-                    inactive-text="自申报">
+                    :active-text="$t('hotleDetails.reserve')"
+                    :inactive-text="$t('hotleDetails.declare')">
                 </el-switch>
 
                 <!-- 正常预定模块 -->
@@ -315,9 +315,9 @@
                         v-model="dateValue"
                         type="daterange"
                         value-format="yyyy-MM-dd"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
+                        range-separator="-"
+                        :start-placeholder="$t('hotleDetails.startDate')"
+                        :end-placeholder="$t('hotleDetails.endDate')"
                         :picker-options="pickerOptions">
                     </el-date-picker>
                     <!-- <p v-if="bookDay" style="margin: 2px;white-space: nowrap;">共{{ bookDay }}晚</p> -->
@@ -355,7 +355,7 @@
                       </el-select>
                     </div>
                     <div>
-                      <el-button @click="confirmOrderHandle" type="primary" style="width: 100%;margin: 1rem 0">预订</el-button>
+                      <el-button @click="confirmOrderHandle" type="primary" style="width: 100%;margin: 1rem 0">{{ $t('hotleDetails.reserveBtn') }}</el-button>
                     </div>
                   </div>
                 </div>
@@ -380,13 +380,13 @@
                     <el-date-picker
                         v-model="date"
                         type="date"
-                        placeholder="入住时间"
+                        :placeholder="$t('hotleDetails.checkDate')"
                         :picker-options="pickerOptions">
                     </el-date-picker>
                   </div>
 
                   <!-- 申报类型 -->
-                  <el-select class="mb-10" v-model="situation" placeholder="申报类型">
+                  <el-select class="mb-10" v-model="situation" :placeholder="$t('hotleDetails.type')">
                     <el-option
                         v-for="item in situationOptions"
                         :key="item.value"
@@ -407,13 +407,13 @@
                     </el-option>
                   </el-select>
 
-                  <el-input class="mb-10" v-model="userName" placeholder="姓名"></el-input>
+                  <el-input class="mb-10" v-model="userName" :placeholder="$t('hotleDetails.name')"></el-input>
 
-                  <el-input class="mb-10" v-model="userId" placeholder="身份证"></el-input>
+                  <el-input class="mb-10" v-model="userId" :placeholder="$t('hotleDetails.idNum')"></el-input>
 
-                  <el-input class="mb-10" v-model="phoneNum" placeholder="手机号"></el-input>
+                  <el-input class="mb-10" v-model="phoneNum" :placeholder="$t('hotleDetails.tel')"></el-input>
 
-                  <el-input class="mb-10" v-model="userEmail" placeholder="邮箱"></el-input>
+                  <el-input class="mb-10" v-model="userEmail" :placeholder="$t('hotleDetails.email')"></el-input>
 
                   <!-- 陪同人员 start -->
                   <!-- <div class="mb-10">
@@ -446,9 +446,9 @@
                     ></el-cascader>
                   </div>
 
-                  <p class="mb-10 font-16"><i class="el-icon-warning-outline mr-5"></i>自行申报需提前48小时申报。</p>
+                  <p class="mb-10 font-16"><i class="el-icon-warning-outline mr-5"></i>{{ $t('hotleDetails.tips') }}</p>
 
-                  <el-button class="w-percent-100" @click="submit" type="primary">提交申报</el-button>
+                  <el-button class="w-percent-100" @click="submit" type="primary">{{ $t('hotleDetails.submitBtn') }}</el-button>
 
 
                 </div>
@@ -459,7 +459,7 @@
 
 
           <div class="app-booking-btn">
-            <el-button style="box-shadow: 0px 0px 40px -10px #000;" class="w-percent-100" @click="appBooking = true" type="primary">预订</el-button>
+            <el-button style="box-shadow: 0px 0px 40px -10px #000;" class="w-percent-100" @click="appBooking = true" type="primary">{{ $t('hotleDetails.reserveBtn') }}</el-button>
           </div>
 
           <van-popup v-model="appBooking" position="bottom" :style="{ height: '75%',boxSizing: 'border-box' }">
@@ -469,8 +469,8 @@
               v-model="appSwitchType"
               active-color="#13ce66"
               inactive-color="#ff4949"
-              active-text="正常预定"
-              inactive-text="自申报">
+              :active-text="$t('hotleDetails.reserve')"
+              :inactive-text="$t('hotleDetails.declare')">
             </el-switch>
 
             <!-- app 预定 -->
@@ -482,7 +482,7 @@
                 <van-field
                   v-model="appDateStart"
                   label="开始时间"
-                  :placeholder="'请选择'"
+                  :placeholder="$t('common.selectTips')"
                   input-align="right"
                   readonly
                   right-icon="arrow"
@@ -503,7 +503,7 @@
                 <van-field
                   v-model="appDateEnd"
                   label="结束时间"
-                  :placeholder="'请选择'"
+                  :placeholder="$t('common.selectTips')"
                   input-align="right"
                   readonly
                   right-icon="arrow"
@@ -524,7 +524,7 @@
                 <van-field
                   v-model="appCurrentRoomType"
                   label="选择房型"
-                  :placeholder="'请选择'"
+                  :placeholder="$t('common.selectTips')"
                   input-align="right"
                   readonly
                   right-icon="arrow"
@@ -545,7 +545,7 @@
                 <van-field
                   v-model="appCurrentProvince"
                   label="选择省份"
-                  :placeholder="'请选择'"
+                  :placeholder="$t('common.selectTips')"
                   input-align="right"
                   readonly
                   right-icon="arrow"
@@ -567,7 +567,7 @@
               
               <!-- 按钮 -->
               <div class="mb-15 text-center">
-                <el-button style="width:60%" @click="confirmOrderHandle" type="primary">确 定</el-button>                
+                <el-button style="width:60%" @click="confirmOrderHandle" type="primary">{{ $t('common.confirm') }}</el-button>                
               </div>
 
             </div>
@@ -586,7 +586,7 @@
                 <van-field
                   v-model="appDate"
                   label="入住时间"
-                  :placeholder="'请选择'"
+                  :placeholder="$t('common.selectTips')"
                   input-align="right"
                   readonly
                   right-icon="arrow"
@@ -609,7 +609,7 @@
                   
                   v-model="appSituation"
                   label="选择类型:"
-                  :placeholder="'请选择'"
+                  :placeholder="$t('common.selectTips')"
                   input-align="right"
                   readonly
                   right-icon="arrow"
@@ -631,7 +631,7 @@
                   v-show="situation == 2 || situation == 3"
                   v-model="appCurrentRoomType1"
                   label="选择房型"
-                  :placeholder="'请选择'"
+                  :placeholder="$t('common.selectTips')"
                   input-align="right"
                   readonly
                   right-icon="arrow"
@@ -652,7 +652,7 @@
                 <van-field
                   v-model="appCurrentProvince1"
                   label="选择省份"
-                  :placeholder="'请选择'"
+                  :placeholder="$t('common.selectTips')"
                   input-align="right"
                   readonly
                   right-icon="arrow"
@@ -674,7 +674,7 @@
               
               <!-- 按钮 -->
               <div class="mb-15 text-center">
-                <el-button style="width:60%" type="primary" @click="submit">确 定</el-button>                
+                <el-button style="width:60%" type="primary" @click="submit">{{ $t('common.confirm') }}</el-button>                
               </div>
 
             </div>            
@@ -1050,6 +1050,26 @@ export default {
       }
 
     }
+  },
+  filters: {
+    hotelBadge(value) {
+      const lang = localStorage.getItem("lang");
+      if (lang == "zh" || lang == null) {
+        if (value == '年度最受欢迎酒店') {
+          
+        } else if (value == '五星级酒店') {
+          
+        }
+        return value;
+      } else if (lang == "en") {
+        if (value == '年度最受欢迎酒店') {
+          value = 'The most popular Hotel';
+        } else if (value == '五星级酒店') {
+          value = 'Five-star Hotel';
+        }     
+        return value   
+      }
+    },       
   },
   watch: {
     "dateValue"(val, oldVal) {//普通的watch监听

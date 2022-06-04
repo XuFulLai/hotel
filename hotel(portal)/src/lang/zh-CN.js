@@ -1,6 +1,10 @@
 export default {
     common: {
-        success: '成功！'
+        success: '成功！',
+        confirm: '确认',
+        cancel: '取消',
+        passwordTips: '请输入密码',
+        inputTips: '请输入'
     },
     login: {
         title: '防疫酒店管控系统',
@@ -15,6 +19,10 @@ export default {
         passwordAgainTips: '请再次输入密码',
         passwordError: '两次密码输入不一致',
         success: '注册成功！',
+
+        qrCode: '二维码登录',
+        accountSignIn: '账号密码登录',
+        scanSuccess: '已扫描成功,请在手机上按确认登录'
 
     },
     index: {
@@ -31,6 +39,7 @@ export default {
         record: '我的记录',
         wallet: '我的钱包',
         logOut: '注销',
+        menu: '目录'
     },
     hotelList: {
         title: '酒店列表',
@@ -45,6 +54,7 @@ export default {
         dialogConfirm: '确 定',
         select: '请选择',
         success: '预定成功！',
+        isolatedHotel: '隔离酒店',
 
         beijing: '北京市',
         shanghai: '上海市',
@@ -81,6 +91,28 @@ export default {
         xianggang: '香港',
         aomen: '澳门',
     },
+    hotleDetails: {
+        hotelIntroduction: '酒店介绍',
+        userEvaluation: '用户评价',
+        comment1: '共',
+        comment2: '条评论',
+        open: '展开',
+        stow: '收起',
+        reserve: '正常预定',
+        reserveBtn: '预定',
+        declare: '自申报',
+        startDate: '开始日期',
+        endDate: '结束日期', 
+
+        checkDate: '入住时间',
+        type: '申报类型',
+        name: '姓名',
+        idNum: '身份证号码',
+        tel: '电话',
+        email: '电子邮箱',
+        tips: '自行申报需提前48小时申报。',
+        submitBtn: '提交申报',
+    },
     isolationList: {
       roomName: '入住房间：'
     },
@@ -100,6 +132,40 @@ export default {
         status2: '已关闭',
         status3: '已入住',
         status4: '已完成',
+    },
+    recordList: {
+        isolateRecords: '隔离记录',
+        isolateRequestRecords: '隔离入住申请记录',
+        materialRequestRecords: '物资申请记录',
+        isolateID: '隔离ID：',
+        isolateStartTime: '隔离开始时间：',
+        isolateEndTime: '隔离结束时间：',
+        source: '来源地：',
+        detectRecords: '检测记录',
+        materialRequest: '物资申请',
+        applicantName: '申报人姓名：',
+        idNum: '身份证号码：',
+        tel: '电话：',
+        declareID: '申报ID：',
+        refuse: '拒绝理由：',
+        appliedItems: '申请物品：',
+        appliedNum: '申请数量：',
+        appliedID: '申请ID：',
+        appliedInstructions: '申请说明：',
+        auditInstructions: '审核说明：',
+        detectionTime: '检测时间',
+        detectionType: '检测类型',
+        DetectionResults: '检测结果',
+        temperature: '体温',
+        nucleicAcidDetection: '核酸',
+        positive: '阳性',
+        negative: '阴性',        
+
+        materialApplication: '物资申请',
+        applyMaterial: '申请物资：:',
+        applyUnit: '申请单位：',
+        applyRemarks: '申请备注：',
+        Urgency: '紧急程度：',
     },
 
 
@@ -169,5 +235,12 @@ export default {
     },
     test: {
       tips: '选择日期11'
+    },
+    wallet: {
+        myWallet: '我的钱包',
+        tips: '未开通钱包的用户将自动创建账户',
+        myBalance: '我的零钱',
+        topUp: '充值',
+        withdraw: '提现',
     }
 }

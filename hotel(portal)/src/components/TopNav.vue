@@ -19,6 +19,7 @@
                 </ul>
             </div>
             <i @click="drawer = true" class="el-icon-menu menu-icon"></i>
+            <p class="app-menu-title font-26">{{ $t('nav.menu') }}</p>
             <el-drawer
                 :visible.sync="drawer"
                 direction="ltr"
@@ -92,7 +93,7 @@
 
     .nav-content li {
         font-size: 1.8rem;
-        margin: 0 2.8rem;
+        margin: 0 2.5rem;
         height: 100%;
         display: flex;
         align-items: center;
@@ -127,6 +128,9 @@
         display: none;
     }
     .drawer-list {
+        display: none;
+    }
+    .app-menu-title {
         display: none;
     }
 
@@ -167,6 +171,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        .app-menu-title {
+            display: inline-block;
         }
         /* .nav-content ul {
             width: 100%;

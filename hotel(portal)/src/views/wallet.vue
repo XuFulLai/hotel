@@ -11,22 +11,22 @@
     <div class="big-box">
 
       <div class="verify-box flex flex-column ">
-        <h1 style="margin: 3rem auto;font-size:3.2rem">我的钱包</h1>
+        <h1 style="margin: 3rem auto;font-size:3.2rem">{{ $t('wallet.myWallet') }}</h1>
 
         <div v-if="!walletInfo" class="verify-box-inner flex flex-column align-items-center justify-content-center">
-          <p style="color: #999;font-size:2rem"><i class="el-icon-warning"> 未开通钱包的用户将自动创建账户</i></p>
+          <p style="color: #999;font-size:2rem"><i class="el-icon-warning"> {{ $t('wallet.tips') }}</i></p>
           <br>
-          <el-input class="mb-15 font-18" placeholder="请输入密码" v-model="pwd" show-password></el-input>
+          <el-input class="mb-15 font-18" :placeholder="$t('common.passwordTips')" v-model="pwd" show-password></el-input>
 
-          <el-button class="mt-10" type="primary" @click="verifyAccount">确认</el-button>
+          <el-button class="mt-10" type="primary" @click="verifyAccount">{{ $t('common.confirm') }}</el-button>
 
         </div>
         <div class="wallet-box flex flex-column align-items-center justify-content-center" v-else>
           <i class="el-icon-money" style="color: orange;font-size: 5rem;margin: 2rem"></i>
-          <p style="margin: 2.6rem 1rem -0.8rem 1rem;font-size: 1.6rem">我的零钱</p>
+          <p style="margin: 2.6rem 1rem -0.8rem 1rem;font-size: 1.6rem">{{ $t('wallet.myBalance') }}</p>
           <p class="price">￥{{ walletInfo.balance }}</p>
-          <el-button class="wallet-button" type="success">充值</el-button>
-          <el-button class="wallet-button" type="info" plain>提现</el-button>
+          <el-button class="wallet-button" type="success">{{ $t('wallet.topUp') }}</el-button>
+          <el-button class="wallet-button" type="info" plain>{{ $t('wallet.withdraw') }}</el-button>
 
         </div>
       </div>
@@ -289,6 +289,8 @@ export default {
 
 .verify-box-inner {
   margin:auto;
+  text-align: center;
+  padding: 3rem;
   /*border: 1px solid red;*/
 
 }
