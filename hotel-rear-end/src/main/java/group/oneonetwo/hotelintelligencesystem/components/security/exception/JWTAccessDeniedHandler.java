@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.components.security.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import group.oneonetwo.hotelintelligencesystem.enums.ResultCode;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class JWTAccessDeniedHandler implements AccessDeniedHandler {
         httpServletResponse.setContentType("application/json; charset=utf-8");
         httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
 //        String reason = Reply.failed(String.valueOf(204),"无权访问",null).toString();
-        logger.error("code:204,具体原因:" + e.getMessage());
-        httpServletResponse.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed(String.valueOf(204),"无权访问",null)));
+        logger.error("code:{},msg:{},具体原因:{}",ResultCode.USER_NO_ACCESS.getCode(),ResultCode.USER_NO_ACCESS.getMsg(),e.getMessage());
+        httpServletResponse.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed(ResultCode.USER_NO_ACCESS.getCode(),ResultCode.USER_NO_ACCESS.getMsg(),null)));
     }
 }

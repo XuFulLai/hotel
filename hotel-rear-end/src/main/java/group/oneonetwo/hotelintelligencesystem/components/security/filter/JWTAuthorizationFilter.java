@@ -4,6 +4,7 @@ package group.oneonetwo.hotelintelligencesystem.components.security.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import group.oneonetwo.hotelintelligencesystem.components.security.exception.TokenIsExpiredException;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.JwtTokenUtils;
+import group.oneonetwo.hotelintelligencesystem.enums.ResultCode;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             response.setContentType("application/json; charset=utf-8");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 //            String reason = Reply.failed("1040",e.getMessage(),null).toString();
-            response.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed("1040", e.getMessage(), null)));
+            response.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed(ResultCode.TOKEN_EXPIRED.getCode(), e.getMessage(), null)));
             response.getWriter().flush();
             return;
         }

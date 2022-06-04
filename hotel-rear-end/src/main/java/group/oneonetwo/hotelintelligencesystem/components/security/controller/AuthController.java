@@ -3,6 +3,7 @@ package group.oneonetwo.hotelintelligencesystem.components.security.controller;
 import group.oneonetwo.hotelintelligencesystem.components.security.entity.BaseUser;
 import group.oneonetwo.hotelintelligencesystem.components.security.entity.ScanVO;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.JwtTokenUtils;
+import group.oneonetwo.hotelintelligencesystem.enums.ResultCode;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
 import group.oneonetwo.hotelintelligencesystem.modules.menu.model.vo.MenuVO;
@@ -107,7 +108,7 @@ public class AuthController {
                 if ("2".equals(status)) {
                     String[] tokens = fullToken.split(" ");
                     if (!jwtTokenUtils.TOKEN_PREFIX.equals(tokens[0])) {
-                        return Reply.failed("500","非法token");
+                        return Reply.failed(ResultCode.ILLEGAL_TOKEN.getCode(),ResultCode.ILLEGAL_TOKEN.getMsg());
                     }
                     String token = tokens[1];
                     map.put("token",fullToken);
@@ -149,14 +150,14 @@ public class AuthController {
                     redisUtil.set(scanVO.getQrCode(),"1");
                     return Reply.success();
                 }
-                return Reply.failed("500","二维码已过期",null);
+                return Reply.failed("二维码已过期");
             case "2":
                 if (redisUtil.hasKey(scanVO.getQrCode())) {
                     String res = "2-" + scanVO.getToken();
                     redisUtil.set(scanVO.getQrCode(),res);
                     return Reply.success();
                 }
-                return Reply.failed("500","二维码已过期",null);
+                return Reply.failed("二维码已过期");
             default:
                 return Reply.failed("错误的类型码");
         }

@@ -6,6 +6,7 @@ import group.oneonetwo.hotelintelligencesystem.components.security.dto.LoginUser
 import group.oneonetwo.hotelintelligencesystem.components.security.entity.BaseUser;
 import group.oneonetwo.hotelintelligencesystem.components.security.entity.JwtUser;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.JwtTokenUtils;
+import group.oneonetwo.hotelintelligencesystem.enums.ResultCode;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.model.vo.DeptVO;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.IDeptService;
 import group.oneonetwo.hotelintelligencesystem.modules.dept.service.impl.DeptServiceImpl;
@@ -94,7 +95,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 response.setContentType("application/json; charset=utf-8");
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 //                String reason = Reply.failed("202","用户名或密码错误",null).toString();
-                response.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed("202","用户名或密码错误",null)));
+                response.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed(ResultCode.USERNAME_PWD_ERROR.getCode(),ResultCode.USERNAME_PWD_ERROR.getMsg(),null)));
                 response.getWriter().flush();
             }catch (Exception ex){
                 logger.error(e.toString() + " : " + e.getMessage());
@@ -164,7 +165,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 //        map.put("role",JwtTokenUtils.getUserRole(token));
         map.put("menuList",menuTree);
         Gson gson = new Gson();
-        response.getWriter().write(Reply.success("login success!",gson.toJson(map)).toString());
+        response.getWriter().write(Reply.success(ResultCode.USER_LOGIN_SUCCESS.getMsg(),gson.toJson(map)).toString());
 
     }
 
@@ -179,6 +180,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      */
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        response.getWriter().write(Reply.failed("102",failed.getMessage(),null).toString());
+        response.getWriter().write(Reply.failed(ResultCode.FAILED.getCode(),failed.getMessage(),null).toString());
     }
 }
