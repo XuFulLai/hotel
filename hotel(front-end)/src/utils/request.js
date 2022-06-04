@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Notification } from 'element-ui'
+import router from '@/router'
 
 //创建axios实例
 const instance = axios.create({
@@ -50,9 +51,7 @@ instance.interceptors.response.use(
             case "4014":
             case "4015":
             case "4016":
-                this.$router.push({
-                    name: 'login'
-                })
+                router.push('../login')
             case "4010":
             case "4012":
                 Notification.error({
@@ -72,9 +71,7 @@ instance.interceptors.response.use(
             case "4014":
             case "4015":
             case "4016":
-                this.$router.push({
-                    name: 'login'
-                })
+                router.push('../login')
             case "4010":
             case "4012":
                 Notification.error({
