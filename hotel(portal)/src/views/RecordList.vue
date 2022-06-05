@@ -79,7 +79,7 @@
                       font-size: 1.6rem;"                  
                     v-if="item.status == 0"
                     type="primary"
-                    @click="applyHandle">{{ $t('recordList.materialRequest') }}</el-button>
+                    @click="applyHandle(item.id)">{{ $t('recordList.materialRequest') }}</el-button>
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-between font-16 color-6">
@@ -748,7 +748,7 @@ export default {
     },
 
     // 物资申请函数，打开弹出框
-    applyHandle() {
+    applyHandle(id) {
       if (window.document.body.clientWidth >= 768) {
         this.applyVisible = true;
       } else {
@@ -761,6 +761,7 @@ export default {
         emergencyLevel: "",
         applyRemark: "",
         uType: 1,
+        isolationId:id
       };
     },    
 
