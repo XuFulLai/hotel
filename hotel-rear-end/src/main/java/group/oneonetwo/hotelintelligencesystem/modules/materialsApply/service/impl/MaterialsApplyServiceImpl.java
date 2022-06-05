@@ -51,7 +51,19 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
 
     @Override
     public MaterialsApplyVO apply(MaterialsApplyVO materialsApplyVO) {
-        materialsApplyVO.setUid(authUtils.getUid());
+//        materialsApplyVO.setUid(authUtils.getUid());
+        if(!"".equals(materialsApplyVO.getIsolationId())){
+            materialsApplyVO.setuType(0);
+        }else {
+            if(authUtils.getRole().equals("anti-epidemic")){
+                materialsApplyVO.setuType(2);
+            }else if(authUtils.getRole().equals("hotel_admin")){
+                materialsApplyVO.setuType(1);
+            }
+            else {
+                throw new CommonException("该用户为未知的role");
+            }
+        }
         return add(materialsApplyVO);
     }
 
