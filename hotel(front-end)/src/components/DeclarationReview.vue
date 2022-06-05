@@ -25,7 +25,8 @@
         stripe
         border
         :data="reviewData"
-        style="width: 100%">
+        class="global-table"
+        style="width: 100%;overflow: auto;">
       <el-table-column
           align="center"
           prop="name"

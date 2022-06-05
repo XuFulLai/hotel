@@ -52,8 +52,8 @@
     <el-table
         stripe
         border
-        class="global-table"
         :data="orderData"
+        class="global-table"
         style="width: 100%;overflow: auto;">
       <el-table-column
           align="center"
