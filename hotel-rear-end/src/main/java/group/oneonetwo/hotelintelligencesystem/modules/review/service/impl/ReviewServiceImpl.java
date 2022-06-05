@@ -195,7 +195,7 @@ public class ReviewServiceImpl implements ReviewService{
         isolationInfoVO.setCheckInTime(reviewPO.getCheckInTime());
         isolationInfoVO.setCheckOutTime(reviewPO.getCheckOutTime());
         isolationInfoVO.setRoomId(roomVO.getId());
-        isolationInfoVO.setRoomName(reviewPO.getName());
+        isolationInfoVO.setRoomName(roomVO.getName());
         isolationInfoVO.setProvince(reviewPO.getProvince());
         isolationInfoVO.setCity(reviewPO.getCity());
         isolationInfoVO.setStatus(0);
