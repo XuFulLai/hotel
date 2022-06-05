@@ -313,7 +313,7 @@ export default {
   },
   mounted() {
     this.getHotelList()
-    if (window.document.body.clientWidth < 768) {
+    if (window.innerWidth < 768) {
       this.smallPagination = true
       this.clickFlag = true
     } else {
@@ -321,7 +321,7 @@ export default {
       this.clickFlag = false
     }    
     window.onresize = () => {
-      if (window.document.body.clientWidth < 768) { 
+      if (window.innerWidth < 768) { 
         this.smallPagination = true
         this.clickFlag = true
       } else {
