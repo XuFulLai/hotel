@@ -44,6 +44,7 @@
                             // 将token及用户id存放到Vuex中
                             this.$store.commit('SAVE_TOKEN',res.data.data.token)
                             this.$store.commit('SAVE_USER_ID',res.data.data.userInfo.id)
+                            localStorage.setItem('avatar',res.data.data.userInfo.heads)
                             //路由跳转
                             this.$router.push({
                                 name: 'index',
