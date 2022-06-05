@@ -290,4 +290,16 @@ textarea {
 .order-cost .el-message__content>p{
     margin-bottom: 10px!important;
 }
+
+.global-table .el-table__cell {
+    padding: 5px 0;
+}
+.global-table .cell {
+    height: 50px;
+    line-height: 50px;
+    overflow: hidden;
+}
+.first-column .cell{
+    line-height: 25px;
+}
 /* Other End */

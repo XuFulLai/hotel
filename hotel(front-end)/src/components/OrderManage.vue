@@ -52,10 +52,12 @@
     <el-table
         stripe
         border
+        class="global-table"
         :data="orderData"
-        style="width: 100%">
+        style="width: 100%;overflow: auto;">
       <el-table-column
           align="center"
+          class-name="first-column"
           prop="hotelName"
           label="酒店名">
       </el-table-column>

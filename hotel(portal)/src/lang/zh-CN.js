@@ -4,7 +4,8 @@ export default {
         confirm: '确认',
         cancel: '取消',
         passwordTips: '请输入密码',
-        inputTips: '请输入'
+        inputTips: '请输入',
+        selectTips: '请选择'
     },
     login: {
         title: '防疫酒店管控系统',

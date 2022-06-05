@@ -46,10 +46,9 @@
           prop="emergencyLevel"
           label="紧急程度">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.emergencyLevel==0" type="danger">紧急</el-tag>
-          <el-tag v-if="scope.row.emergencyLevel==1" type="warning">应隔离人员</el-tag>
-          <el-tag v-if="scope.row.emergencyLevel==2" type="info">入境人员</el-tag>
-          <el-tag v-if="scope.row.emergencyLevel==3">中高风险地区人员</el-tag>
+          <el-tag v-if="scope.row.emergencyLevel==0" type="success">不紧急</el-tag>
+          <el-tag v-if="scope.row.emergencyLevel==1" type="warning">普通紧急</el-tag>
+          <el-tag v-if="scope.row.emergencyLevel==2" type="danger">非常紧急</el-tag>
         </template>
       </el-table-column>
       <el-table-column

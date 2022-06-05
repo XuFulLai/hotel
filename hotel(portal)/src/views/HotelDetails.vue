@@ -69,7 +69,7 @@
                   </div>
                   <el-divider content-position="left">{{ $t('hotelDetails.userEvaluation') }}</el-divider>
 
-                  <div ref="commentUserBox" v-for="i in hotelCommentsList.slice(0, 1)"
+                  <div ref="commentUserBox" v-for="i in hotelCommentsList"
                        class="comment-user-box flex flex-row" style="margin-top: 0px;padding-top: 0px;border-top: 0px">
                     <div class="comment-user-box-left">
                       <el-avatar :size="circleUrlSize" :src="i.header"></el-avatar>
@@ -104,8 +104,23 @@
                     </div>
                   </div>
 
+                  <!-- 分页器 -->
+                  <el-pagination
+                      class="d-flex align-items-center justify-content-center"
+                      :small="smallPagination"
+                      background
+                      :page-size="2"
+                      :pager-count="5"
+                      @current-change="handleCurrentChange"
+                      @prev-click="prevPage"
+                      @next-click="nextPage"
+                      layout="prev, pager, next"
+                      :total="hotelCommentsTotal"
+                  >
+                  </el-pagination>                  
 
-                  <transition name="comment">
+
+                  <!-- <transition name="comment">
                     <div class="comment-list-box" :style="{'--commentHeight':commentHeight,}" v-show="comment">
                       <div v-for="i in hotelCommentsList.slice(1,hotelCommentsList.length)"
                            class="comment-user-box flex flex-row">
@@ -140,8 +155,7 @@
                           </div>
                         </div>
                       </div>
-
-                      <!-- 分页器 -->
+              
                       <el-pagination
                           class="d-flex align-items-center justify-content-center"
                           :small="smallPagination"
@@ -158,15 +172,15 @@
 
                     </div>
 
-                  </transition>
+                  </transition> -->
 
-                  <div class="d-flex align-items-center expand-collapse cursor" @click="commentBtn">
+                  <!-- <div class="d-flex align-items-center expand-collapse cursor" @click="commentBtn">
                     <div style="margin: 0.8rem auto" v-if="hotelCommentsList.length > 1">
                       <i :class="comment ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"/>&nbsp;{{
                         comment ? $t('hotelDetails.stow') : $t('hotelDetails.open')
                       }}
                     </div>
-                  </div>
+                  </div> -->
 
 
                 </div>
@@ -184,8 +198,7 @@
                 <div ref="couponBoxHeight" class="w-percent-100 d-flex flex-wrap">
                   <div ref="couponHeight" @click="gotCoupon(i.id)" class="discounts-box"
                        v-for="i in hotelDiscounts.slice(0, 3)">
-                    <div class="discounts-title flex flex-row justify-content-between"
-                         :class="[i.isGot?'active':'', isGot?'active':'']">
+                    <div class="discounts-title flex flex-row justify-content-between" :class="i.isGot?'active':''">
                       <p style="margin-left: 0.6rem;font-size: 1.4rem;font-weight: 700">{{ i.name }}</p>
                       <el-tooltip placement="right" style="margin: 4px">
                         <div slot="content">{{ i.description }}</div>
@@ -195,7 +208,7 @@
                       </el-tooltip>
                     </div>
                     <div style="border-top: 1px dotted #999;"></div>
-                    <div class="discounts-body flex flex-column" :class="[i.isGot?'active':'', isGot?'active':'']">
+                    <div class="discounts-body flex flex-column" :class="i.isGot?'active':''">
                       <div class="discounts-body-top flex flex-row align-items-center">
                         <div class="discounts-body-price">
                           {{ i.discountsType == 0 ? '￥' + i.discounts : i.discounts * 10 + '折' }}
@@ -215,12 +228,11 @@
                   </div>
                 </div>
                 <transition name="draw">
-                  <div :style="{'--couponHeight':couponHeight,}" class="coupon-box d-flex flex-row flex-wrap"
-                       v-show="coupon">
-                    <div @click="gotCoupon(i.id)" class="discounts-box"
-                         v-for="i in hotelDiscounts.slice(3,hotelDiscounts.length)">
-                      <div class="discounts-title flex flex-row justify-content-between"
-                           :class="[i.isGot?'active':'', isGot?'active':'']">
+
+
+                  <div :style="{'--couponHeight':couponHeight,}" class="coupon-box d-flex flex-row flex-wrap w-percent-100" v-show="coupon">
+                    <div @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts.slice(3,hotelDiscounts.length)">
+                      <div class="discounts-title flex flex-row justify-content-between" :class="i.isGot?'active':''">
                         <p style="margin-left: 0.6rem;font-size: 1.4rem;font-weight: 700">{{ i.name }}</p>
                         <el-tooltip placement="right" style="margin: 4px">
                           <div slot="content">{{ i.description }}</div>
@@ -231,7 +243,8 @@
                         </el-tooltip>
                       </div>
                       <div style="border-top: 1px dotted #999;"></div>
-                      <div class="discounts-body flex flex-column" :class="[i.isGot?'active':'', isGot?'active':'']">
+                      <!-- <div class="discounts-body flex flex-column" :class="[i.isGot?'active':'', isGot.id?'active':'']"> -->
+                      <div class="discounts-body flex flex-column" :class="i.isGot?'active':''">
                         <div class="discounts-body-top flex flex-row align-items-center">
                           <div class="discounts-body-price">
                             {{ i.discountsType == 0 ? '￥' + i.discounts : i.discounts * 10 + '折' }}
@@ -925,7 +938,7 @@ export default {
       addressData: provinceAndCityData,
       area: [],
       situation: '',
-      isGot: false,
+      isGot: {},
       situationOptions: [{
         value: 0,
         label: '密接'
@@ -1176,16 +1189,16 @@ export default {
   },
   methods: {
     // 评论展开按钮
-    commentBtn() {
-      this.comment = !this.comment
-      this.commentHeight = this.$refs.commentUserBox[0].clientHeight * (this.hotelCommentsList.length - 1) + 55 + 'px'
-    },
+    // commentBtn() {
+    //   this.comment = !this.comment
+    //   this.commentHeight = this.$refs.commentUserBox[0].clientHeight * (this.hotelCommentsList.length - 1) + 55 + 'px'
+    // },
     // 获取酒店评价
     getCommentsList() {
       const data = {
         page: {
           page: 1,
-          size: 5
+          size: 2
         },
         hotelId: this.hotelId
       }
@@ -1196,7 +1209,7 @@ export default {
       const data = {
         page: {
           page: num,
-          size: 5
+          size: 2
         },
         hotelId: this.hotelId
       }
@@ -1208,7 +1221,7 @@ export default {
       const data = {
         page: {
           page: num,
-          size: 5
+          size: 2
         },
         hotelId: this.hotelId
       }
@@ -1220,7 +1233,7 @@ export default {
       const data = {
         page: {
           page: num,
-          size: 5
+          size: 2
         },
         hotelId: this.hotelId
       }
@@ -1228,21 +1241,20 @@ export default {
     },
 
     commentsListRequest(data) {
-      post('/api/orderComment/page', data)
-          .then(res => {
-            if (res.data.code == 200) {
-              console.log('酒店评论数据：', res);
-              this.hotelCommentsList = res.data.data.records
-              this.hotelCommentsTotal = res.data.data.total
-              // if (this.$refs.commentUserBox[0].clientHeight) {
-              //   this.commentHeight = this.$refs.commentUserBox[0].clientHeight * (this.hotelCommentsList.length - 1) + 35 + 'px'
-              // }
-            }
-          })
-          .catch(err => {
-            console.error(err);
-          })
-
+      post('/api/orderComment/page',data)
+        .then( res => {
+          if (res.data.code == 200) {
+            console.log(res.data.data);
+            this.hotelCommentsList = res.data.data.records
+            this.hotelCommentsTotal = res.data.data.total
+            // if (this.$refs.commentUserBox) {        
+            //   this.commentHeight = this.$refs.commentUserBox[0].clientHeight * (this.hotelCommentsList.length - 1) + 55 + 'px'          
+            // }
+          }
+        })
+        .catch( err => {
+          console.error(err);
+        })
     },
 
     getHotelAvgScore() {
@@ -1335,7 +1347,7 @@ export default {
             message: this.$t('common.success'),
             type: 'success'
           });
-          this.isGot = true
+          this.getHotelDiscountList()
         } else {
           this.$message.error(res.data.msg);
         }
@@ -1766,9 +1778,9 @@ export default {
   background: #fff;
 }
 
-.comment-list-box {
+/* .comment-list-box {
   height: var(--commentHeight)
-}
+} */
 
 .comment-enter-active, .comment-leave-active {
   transition: all 0.6s ease;
@@ -2184,7 +2196,8 @@ h3.sub-title .en {
 
 .comment-box {
   /* margin: 16px; */
-  padding: 1.6rem 1.6rem 0 1.6rem;
+  /* padding: 1.6rem 1.6rem 0 1.6rem; */
+  padding: 1.6rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -2214,6 +2227,7 @@ h3.sub-title .en {
   border-top: 1px solid #f1f1f1;
   padding-top: 1.2rem;
   margin-top: 0.6rem;
+  margin-bottom: 10px;
 }
 
 .comment-user-box-right {
@@ -2313,20 +2327,47 @@ h3.sub-title .en {
   }
 }
 
-@media screen and (min-width: 992px) and (max-width: 1440px) {
+@media screen and (min-width: 992px) and (max-width: 1240px) {
   .big-box {
-    padding: 0 3rem;
+    padding: 0 4.5%;
   }
-
 }
 
-@media screen and (min-width: 1441px) {
+@media screen and (min-width: 1240px) and (max-width: 1440px) {
+  .big-box {
+    padding: 0 10%;
+  }
+}
+
+@media screen and (min-width: 1441px) and (max-width: 1680px) {
+  .big-box {
+    padding: 0 15%;
+  }
+  .detail-introduce {
+    font-size: 1.4rem;
+  }  
+  .detail-content {
+    font-size: 1.6rem;
+  }
   .discounts-box {
     height: 11rem;
   }
-
 }
 
+@media screen and (min-width: 1680px) {
+  .big-box {
+    padding: 0 18%;
+  }
+  .detail-introduce {
+    font-size: 1.4rem;
+  }  
+  .detail-content {
+    font-size: 1.6rem;
+  }
+  .discounts-box {
+    height: 11rem;
+  }  
+}
 /* 媒体查询 End */
 
 </style>
