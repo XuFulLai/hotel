@@ -202,9 +202,10 @@
                   </div>
                 </div>
                 <transition name="draw">
-                  <div :style="{'--couponHeight':couponHeight,}" class="coupon-box d-flex flex-row flex-wrap" v-show="coupon">
+                  <div :style="{'--couponHeight':couponHeight,}" class="coupon-box d-flex flex-row flex-wrap w-percent-100" v-show="coupon">
                     <div @click="gotCoupon(i.id)" class="discounts-box" v-for="i in hotelDiscounts.slice(3,hotelDiscounts.length)">
-                      <div class="discounts-title flex flex-row justify-content-between" :class="[i.isGot?'active':'', isGot?'active':'']">
+                      <!-- <div class="discounts-title flex flex-row justify-content-between" :class="[i.isGot?'active':'', isGot.id?'active':'']"> -->
+                      <div class="discounts-title flex flex-row justify-content-between" :class="i.isGot?'active':''">
                         <p style="margin-left: 0.6rem;font-size: 1.4rem;font-weight: 700">{{ i.name }}</p>
                         <el-tooltip placement="right" style="margin: 4px">
                           <div slot="content">{{ i.description }}</div>
@@ -214,7 +215,8 @@
                         </el-tooltip>
                       </div>
                       <div style="border-top: 1px dotted #999;"></div>
-                      <div class="discounts-body flex flex-column" :class="[i.isGot?'active':'', isGot?'active':'']">
+                      <!-- <div class="discounts-body flex flex-column" :class="[i.isGot?'active':'', isGot.id?'active':'']"> -->
+                      <div class="discounts-body flex flex-column" :class="i.isGot?'active':''">
                         <div class="discounts-body-top flex flex-row align-items-center">
                           <div class="discounts-body-price">
                             {{ i.discountsType == 0 ? '￥' + i.discounts : i.discounts * 10 + '折' }}
@@ -889,7 +891,7 @@ export default {
       addressData: provinceAndCityData,
       area: [],
       situation: '',
-      isGot: false,
+      isGot: {},
       situationOptions: [{
         value: 0,
         label: '密接'
@@ -1192,12 +1194,11 @@ export default {
       post('/api/orderComment/page',data)
         .then( res => {
           if (res.data.code == 200) {
-            console.log('酒店评论数据：',res);
             this.hotelCommentsList = res.data.data.records
             this.hotelCommentsTotal = res.data.data.total
-            // if (this.$refs.commentUserBox[0].clientHeight) {              
-            //   this.commentHeight = this.$refs.commentUserBox[0].clientHeight * (this.hotelCommentsList.length - 1) + 35 + 'px'          
-            // }
+            if (this.$refs.commentUserBox) {        
+              this.commentHeight = this.$refs.commentUserBox[0].clientHeight * (this.hotelCommentsList.length - 1) + 55 + 'px'          
+            }
           }
         })
         .catch( err => {
@@ -1296,7 +1297,7 @@ export default {
             message: this.$t('common.success'),
             type: 'success'
           });
-          this.isGot = true
+          this.getHotelDiscountList()
         } else {
           this.$message.error(res.data.msg);
         }
@@ -2242,17 +2243,46 @@ h3.sub-title .en {
   }
 }
 
-@media screen and (min-width: 992px) and (max-width: 1440px) {
+@media screen and (min-width: 992px) and (max-width: 1240px) {
   .big-box {
-    padding: 0 3rem;
+    padding: 0 4.5%;
   }
 
 }
-@media screen and (min-width: 1441px) {
+@media screen and (min-width: 1240px) and (max-width: 1440px) {
+  .big-box {
+    padding: 0 10%;
+  }
+
+}
+@media screen and (min-width: 1441px) and (max-width: 1680px) {
+  .big-box {
+    padding: 0 15%;
+  }
+  .detail-introduce {
+    font-size: 1.4rem;
+  }  
+  .detail-content {
+    font-size: 1.6rem;
+  }
   .discounts-box {
     height: 11rem;
   }
 
+}
+@media screen and (min-width: 1680px) {
+  .big-box {
+    padding: 0 18%;
+  }
+  .detail-introduce {
+    font-size: 1.4rem;
+  }  
+  .detail-content {
+    font-size: 1.6rem;
+  }
+  .discounts-box {
+    height: 11rem;
+  }  
 }
 /* 媒体查询 End */
 
