@@ -17,7 +17,7 @@
                 </div>
                 <div class="inp">
                     <p style="margin: 0;">密码：</p>
-                    <input v-model="password" type="password" placeholder="请输入密码">
+                    <input @keyup.enter="login" v-model="password" type="password" placeholder="请输入密码">
                 </div>
 
                 <button @click="login">登录</button>
