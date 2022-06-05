@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.handler;
 
 import group.oneonetwo.hotelintelligencesystem.components.security.exception.TokenIsExpiredException;
+import group.oneonetwo.hotelintelligencesystem.enums.ResultCode;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.impl.LogsService;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
@@ -44,7 +45,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public Reply runtimeExceptionHandler(RuntimeException ex) {
-        return resultFormat(1001, ex);
+        return resultFormat(ResultCode.RUNTIME_EX.getCode(), ex);
     }
 
     /**
@@ -56,7 +57,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NullPointerException.class)
     public Reply nullPointerExceptionHandler(NullPointerException ex) {
         log.error("NullPointerException : ");
-        return resultFormat(1002, ex);
+        return resultFormat(ResultCode.NULL_POINT_EX.getCode(), ex);
     }
 
     /**
@@ -67,7 +68,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ClassCastException.class)
     public Reply classCastExceptionHandler(ClassCastException ex) {
-        return resultFormat(1003, ex);
+        return resultFormat(ResultCode.CONVERT_EX.getCode(), ex);
     }
 
     /**
@@ -78,7 +79,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(IOException.class)
     public Reply ioExceptionHandler(IOException ex) {
-        return resultFormat(1004, ex);
+        return resultFormat(ResultCode.IO_EX.getCode(), ex);
     }
 
     /**
@@ -89,7 +90,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NoSuchMethodException.class)
     public Reply noSuchMethodExceptionHandler(NoSuchMethodException ex) {
-        return resultFormat(1005, ex);
+        return resultFormat(ResultCode.UNKNOWN_FUN_EX.getCode(), ex);
     }
 
     /**
@@ -100,7 +101,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(IndexOutOfBoundsException.class)
     public Reply indexOutOfBoundsExceptionHandler(IndexOutOfBoundsException ex) {
-        return resultFormat(1006, ex);
+        return resultFormat(ResultCode.ARR_OUT_OF_BOUND_EX.getCode(), ex);
     }
 
     /**
@@ -112,7 +113,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({HttpMessageNotReadableException.class})
     public Reply requestNotReadable(HttpMessageNotReadableException ex) {
         log.error("400 error -- requestNotReadable : ");
-        return resultFormat(1007, ex);
+        return resultFormat(ResultCode.HTTP_MSG_CANNOT_READ_EX.getCode(), ex);
     }
 
     /**
@@ -124,7 +125,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({TypeMismatchException.class})
     public Reply requestTypeMismatch(TypeMismatchException ex) {
         log.error("400 error -- TypeMismatchException : ");
-        return resultFormat(1008, ex);
+        return resultFormat(ResultCode.TYPE_NOT_MATCH_EX.getCode(), ex);
     }
 
     /**
@@ -136,7 +137,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({MissingServletRequestParameterException.class})
     public Reply requestMissingServletRequest(MissingServletRequestParameterException ex) {
         log.error("400 error -- MissingServletRequest : ");
-        return resultFormat(1009, ex);
+        return resultFormat(ResultCode.SERVLET_PARAMETER_MISS_EX.getCode(), ex);
     }
 
     /**
@@ -147,7 +148,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
     public Reply request405(HttpRequestMethodNotSupportedException ex) {
-        return resultFormat(1010, ex);
+        return resultFormat(ResultCode.HTTP_405_EX.getCode(), ex);
     }
 
     /**
@@ -159,7 +160,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({HttpMediaTypeNotAcceptableException.class})
     public Reply request406(HttpMediaTypeNotAcceptableException ex) {
         log.error("406 error : ");
-        return resultFormat(1011, ex);
+        return resultFormat(ResultCode.HTTP_406_EX.getCode(), ex);
     }
 
     /**
@@ -171,7 +172,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ConversionNotSupportedException.class, HttpMessageNotWritableException.class})
     public Reply server500(RuntimeException ex) {
         log.error("500 error : ");
-        return resultFormat(1012, ex);
+        return resultFormat(ResultCode.HTTP_500_EX.getCode(), ex);
     }
 
     /**
@@ -182,7 +183,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({StackOverflowError.class})
     public Reply requestStackOverflow(StackOverflowError ex) {
-        return resultFormat(1013, ex);
+        return resultFormat(ResultCode.STACK_OVERFLOW_EX.getCode(), ex);
     }
 
     /**
@@ -193,7 +194,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({ArithmeticException.class})
     public Reply arithmeticException(ArithmeticException ex){
-        return resultFormat(1014, ex);
+        return resultFormat(ResultCode.DIVISOR_CANNOT_BE_ZERO_EX.getCode(), ex);
     }
 
     /**
@@ -204,7 +205,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({NotFoundException.class})
     public Reply notFindException(NotFoundException ex){
-        return resultFormat(1015,ex);
+        return resultFormat(ResultCode.HTTP_404_EX.getCode(), ex);
     }
 
 
@@ -216,7 +217,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({Exception.class})
     public Reply exception(Exception ex) {
-        return resultFormat(1016, ex);
+        return resultFormat(ResultCode.OTHER_EX.getCode(), ex);
     }
 
     /**
@@ -227,7 +228,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({TokenIsExpiredException.class})
     public Reply tokenExpired(TokenIsExpiredException ex){
-        return resultFormat(1040,ex);
+        return resultFormat(ResultCode.TOKEN_EXPIRED.getCode(), ex);
     }
 
     /**
@@ -237,7 +238,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({CommonException.class})
     public Reply commonException(CommonException ex) {
-        return resultFormat(ex.getCode(),ex);
+        return resultFormat(ex.getCode().toString(),ex);
     }
 
     /**
@@ -248,7 +249,7 @@ public class GlobalExceptionHandler {
      * @param <T>
      * @return
      */
-    private <T extends Throwable> Reply resultFormat(Integer code, T ex) {
+    private <T extends Throwable> Reply resultFormat(String code, T ex) {
         ex.printStackTrace();
         log.error(String.format(LOG_EXCEPTION_FORMAT, code, ex.getMessage()));
         logsService.createLog(ex.getLocalizedMessage(),ex.toString(),3,0);

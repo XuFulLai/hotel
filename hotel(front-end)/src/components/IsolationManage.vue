@@ -253,15 +253,21 @@
               :picker-options="pickerOptions">
           </el-date-picker>
         </div>
+<!--        <div class="d-flex align-items-center mb-15">-->
+<!--          <p class="w-100 text-left">酒店:</p>-->
+<!--          <el-input-->
+<!--              style="width: 350px;"-->
+<!--              placeholder="请输入酒店"-->
+<!--              v-model="form.hotel"-->
+<!--              :disabled="true"-->
+<!--              clearable>-->
+<!--          </el-input>-->
+<!--        </div>-->
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">酒店:</p>
-          <el-input
-              style="width: 350px;"
-              placeholder="请输入酒店"
-              v-model="form.hotelName"
-              :disabled="true"
-              clearable>
-          </el-input>
+          <el-select style="width: 350px;" v-model="form.hotelId" placeholder="请选择" disabled>
+            <el-option v-for="item in hotelOptions" :label="item.name" :value="item.id"></el-option>
+          </el-select>
         </div>
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">房间名:</p>
@@ -527,7 +533,10 @@ export default {
 
     },
     changeRoom() {
-      let data = this.changeForm
+      let data = {
+        newRoomId: this.changeForm.roomId,
+        currentRoomId: this.form.roomId
+      }
       formDataPost("api/room/changeRoom",data).then(res => {
         if (res.data.code === "200") {
           this.getOneInfo(this.form.id)

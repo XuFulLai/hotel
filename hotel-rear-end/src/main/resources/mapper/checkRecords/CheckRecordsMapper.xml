@@ -32,7 +32,10 @@
     </insert>
 
     <select id="getPages" resultType="group.oneonetwo.hotelintelligencesystem.modules.checkRecords.model.vo.CheckRecordsVO">
-        select ch.*,iss.id_card idCard,iss.`name` name from check_records ch left join isolation_info iss on ch.u_id=iss.id
+        select ch.*,iss.id_card idCard,iss.`name` name
+        from check_records ch
+        left join isolation_info iss
+        on ch.u_id=iss.id
         <where>
             <if test="vo.beginTime != null and vo.beginTime != '' and vo.endTime != null and vo.endTime != ''">
                 and ch.check_time between #{vo.beginTime} and #{vo.endTime}
@@ -41,10 +44,18 @@
                 and ch.check_type = #{vo.checkType}
             </if>
             <if test="vo.checkRes != null and vo.checkRes != ''">
-                and ch.check_res = #{vo.checkRes}
+               <if test="vo.checkRes == '1.0' or vo.checkRes == 1.0">
+                   and ((ch.check_type = 0 and ch.check_res &lt; 37.3) or (check_type = 1 and ch.check_res = 0.0))
+               </if>
+               <if test="vo.checkRes == '2.0' or vo.checkRes == 2.0">
+                   and (ch.check_res &gt;= 37.3 or ch.check_res = 1.0)
+               </if>
             </if>
             <if test="vo.uId != null and vo.uId != ''">
                 and ch.u_id = #{vo.uId}
+            </if>
+            <if test="vo.name != null and vo.name != ''">
+                and iss.name like concat('%',#{vo.name},'%')
             </if>
             and ch.is_deleted = 0
         </where>

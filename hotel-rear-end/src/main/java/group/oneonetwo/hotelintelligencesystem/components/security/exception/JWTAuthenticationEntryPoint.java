@@ -1,6 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.components.security.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import group.oneonetwo.hotelintelligencesystem.enums.ResultCode;
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +24,13 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
-                         AuthenticationException authException) throws IOException, ServletException {
+                         AuthenticationException e) throws IOException, ServletException {
 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 //        String reason = Reply.failed(String.valueOf(201),"用户未登录",null).toString();
-        logger.error("code:201,具体原因:" + authException.getMessage());
-        response.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed(String.valueOf(201),"用户未登录",null)));
+        logger.error("code:{},msg:{},具体原因:{}", ResultCode.NO_LOGIN.getCode(),ResultCode.NO_LOGIN.getMsg(),e.getMessage());
+        response.getWriter().write(new ObjectMapper().writeValueAsString(Reply.failed(ResultCode.NO_LOGIN.getCode(),ResultCode.NO_LOGIN.getMsg(),null)));
     }
 }

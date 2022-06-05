@@ -77,7 +77,25 @@ public class OrderCommentVO implements Serializable {
 
     private  String roomType;
 
-    private String name;
+    private String nickname;
+
+    private String username;
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getHeader() {
         return header;
@@ -95,13 +113,6 @@ public class OrderCommentVO implements Serializable {
         this.roomType = roomType;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     /**
      *

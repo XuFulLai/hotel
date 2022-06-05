@@ -98,7 +98,7 @@ export default {
         xianggang: 'Hong Kong',
         aomen: 'Macao',
     },
-    hotleDetails: {
+    hotelDetails: {
         hotelIntroduction: 'Hotel Introduction',
         userEvaluation: 'User Evaluation',
         comment1: '',

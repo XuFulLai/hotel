@@ -92,7 +92,7 @@ export default {
         xianggang: '香港',
         aomen: '澳门',
     },
-    hotleDetails: {
+    hotelDetails: {
         hotelIntroduction: '酒店介绍',
         userEvaluation: '用户评价',
         comment1: '共',
