@@ -82,6 +82,7 @@
             //页面挂载完毕清除token和用户id
             localStorage.removeItem('Token')
             localStorage.removeItem('userId')
+            localStorage.removeItem('avatar')
         },
         methods: {
           QRCode(flag) {
@@ -120,8 +121,9 @@
                     // 将token及用户id存放到Vuex中
                     this.$store.commit('SAVE_TOKEN', res.data.data.token)
                     this.$store.commit('SAVE_USER_ID', res.data.data.userInfo.id)
-                    //将导航菜单存到localStorage
-                    localStorage.setItem('menuList', JSON.stringify(res.data.data.menuList))
+                    localStorage.setItem('avatar',res.data.data.userInfo.heads)
+                    // //将导航菜单存到localStorage
+                    // localStorage.setItem('menuList', JSON.stringify(res.data.data.menuList))
                     //路由跳转
                     this.$router.push({
                       path: '/index'
