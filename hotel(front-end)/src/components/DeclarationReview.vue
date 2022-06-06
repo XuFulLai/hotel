@@ -25,7 +25,8 @@
         stripe
         border
         :data="reviewData"
-        style="width: 100%">
+        class="global-table"
+        style="width: 100%;overflow: auto;">
       <el-table-column
           align="center"
           prop="name"
@@ -371,7 +372,7 @@ export default {
     // 上一条
     prev() {
       this.currentIndex--
-      const row = this.reviewData[this.currentIndex]
+      let row = this.reviewData[this.currentIndex]
       console.log(row);
       if (row) {
         this.form = row

@@ -157,9 +157,10 @@
     </el-dialog>
 
     <el-dialog
+        class="wallet-dialog"
         title="请输入钱包密码"
         :visible.sync="payVisible"
-        width="460px"
+        width="95%"
         center
     >
       <div class="flex flex-column pay-box align-items-center">
@@ -372,13 +373,13 @@ export default {
   mounted() {
     this.getOrderList()
     this.getStatus()
-    if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+    if (window.innerWidth < 768) {
       this.smallPagination = true
     } else {
       this.smallPagination = false
     }    
     window.onresize = () => {
-      if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+      if (window.innerWidth < 768) {
         this.smallPagination = true
       } else {
         this.smallPagination = false

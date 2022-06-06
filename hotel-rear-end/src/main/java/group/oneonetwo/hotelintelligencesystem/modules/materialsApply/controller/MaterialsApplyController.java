@@ -35,6 +35,13 @@ public class MaterialsApplyController {
         return Reply.success(maintainableService.getPage(materialsApplyVO));
     }
 
+    @PostMapping("reviewPage")
+    public Reply<Page<MaterialsApplyVO>> getReviewPage(@RequestBody MaterialsApplyVO materialsApplyVO) {
+        return Reply.success(maintainableService.getReviewPage(materialsApplyVO));
+    }
+
+
+
     @PostMapping("add")
     @ApiOperation("物资增加")
     public Reply<MaterialsApplyVO> add(@RequestBody MaterialsApplyVO materialsApplyVO){

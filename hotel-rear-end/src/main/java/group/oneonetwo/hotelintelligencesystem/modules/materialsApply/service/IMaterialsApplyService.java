@@ -32,4 +32,5 @@ public interface IMaterialsApplyService {
     void review(MaterialsApplyVO materialsApplyVO);
 
 
+    Page<MaterialsApplyVO> getReviewPage(MaterialsApplyVO materialsApplyVO);
 }

@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height: 100vh;">
+  <div ref="walletBox" style="min-height: 100vh;">
 
     <!-- 导航栏 -->
     <top-nav></top-nav>
@@ -56,6 +56,11 @@ export default {
   },
   filters: {},
   mounted() {
+    if (window.innerWidth < 768) {
+        this.$refs.walletBox.style.height = `${window.innerHeight}px`
+    } else {
+        this.$refs.walletBox.style.height = `100vh`
+    }    
 
   },
   methods: {
@@ -315,7 +320,7 @@ export default {
     height: 120px;
   }
   .big-box {
-    height: calc(100vh - 120px);
+    height: calc(100% - 120px);
     align-items: center;
     justify-content: center;
   }

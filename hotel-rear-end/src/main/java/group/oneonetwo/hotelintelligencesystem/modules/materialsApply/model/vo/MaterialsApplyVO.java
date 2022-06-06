@@ -33,8 +33,6 @@ public class MaterialsApplyVO implements Serializable {
     /**
      * 申请人
      */
-    @ApiModelProperty("申请人")
-    private String uid;
 
     /**
      * 申请物品
@@ -119,6 +117,17 @@ public class MaterialsApplyVO implements Serializable {
     private Integer isDeleted;
 
 
+    @ApiModelProperty("隔离id")
+    private String isolationId;
+
+    public String getIsolationId() {
+        return isolationId;
+    }
+
+    public void setIsolationId(String isolationId) {
+        this.isolationId = isolationId;
+    }
+
     private Page page;
 
     public Page getPage() {
@@ -145,13 +154,6 @@ public class MaterialsApplyVO implements Serializable {
         this.uType = uType;
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
 
     public String getApplyThing() {
         return applyThing;

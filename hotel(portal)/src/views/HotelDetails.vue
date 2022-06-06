@@ -1377,7 +1377,7 @@ export default {
     // 优惠券展开点击事件
     couponClick() {
       this.coupon = !this.coupon
-      if (window.document.body.clientWidth < 751) {
+      if (window.innerWidth < 768) {
         this.couponHeight = (this.hotelDiscounts.length - 3) * (this.$refs.couponHeight[0].clientHeight + 24) + 'px'
       } else {
         this.couponHeight = Math.ceil((this.hotelDiscounts.length - 3) / 3) * this.$refs.couponBoxHeight.clientHeight + 'px'

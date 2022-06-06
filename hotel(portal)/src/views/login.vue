@@ -1,6 +1,6 @@
 <template>
 
-    <div class="bg">
+    <div ref="bg" class="bg">
         <img src="../assets/images/bg.jpg" alt="">
         <div class="login-center">
 
@@ -83,6 +83,13 @@
             localStorage.removeItem('Token')
             localStorage.removeItem('userId')
             localStorage.removeItem('avatar')
+
+            if (window.innerWidth < 768) {
+                this.$refs.bg.style.height = `${window.innerHeight}px`
+            } else {
+                this.$refs.bg.style.height = `100vh`
+            }
+
         },
         methods: {
           QRCode(flag) {

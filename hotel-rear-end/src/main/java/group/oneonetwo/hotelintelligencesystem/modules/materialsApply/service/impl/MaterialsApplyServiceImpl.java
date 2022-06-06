@@ -7,6 +7,8 @@ import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.po.DiscountsPO;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.vo.DiscountsVO;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.dao.IsolationInfoMapper;
+import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.po.IsolationInfoPO;
 import group.oneonetwo.hotelintelligencesystem.modules.materialsApply.dao.MaterialsApplyMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.po.MaterialsApplyPO;
 import group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.vo.MaterialsApplyVO;
@@ -32,6 +34,9 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
     MaterialsApplyMapper materialsApplyMapper;
 
     @Autowired
+    IsolationInfoMapper isolationInfoMapper;
+
+    @Autowired
     AuthUtils authUtils;
 
     @Override
@@ -51,16 +56,29 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
 
     @Override
     public MaterialsApplyVO apply(MaterialsApplyVO materialsApplyVO) {
-        materialsApplyVO.setUid(authUtils.getUid());
+//        materialsApplyVO.setUid(authUtils.getUid());
+
+        if(materialsApplyVO.getIsolationId()!=null){
+            materialsApplyVO.setuType(0);
+            IsolationInfoPO isolationInfoPO = isolationInfoMapper.selectById(materialsApplyVO.getIsolationId());
+            materialsApplyVO.setHotelId(isolationInfoPO.getHotelId());
+        }else {
+            if(authUtils.getRole().equals("anti-epidemic")){
+                materialsApplyVO.setuType(2);
+            }else if(authUtils.getRole().equals("hotel_admin")){
+                materialsApplyVO.setuType(1);
+            }
+            else {
+                throw new CommonException("该用户为未知的role");
+            }
+        }
         return add(materialsApplyVO);
     }
 
     @Override
     public Page<MaterialsApplyVO> getPage(MaterialsApplyVO materialsApplyVO) {
         QueryWrapper<MaterialsApplyPO> wrapper=new QueryWrapper<>();
-        if(!"admin".equals(authUtils.getRole())){
-            wrapper.eq("uid",authUtils.getUid());
-        }
+        wrapper.eq("create_by",authUtils.getUid());
         Page<MaterialsApplyPO> page = new Page<>(materialsApplyVO.getPage().getPage(),materialsApplyVO.getPage().getSize());
         Page<MaterialsApplyPO> poiPage= (Page<MaterialsApplyPO>) materialsApplyMapper.selectPage(page,wrapper);
         return ConvertUtils.transferPage(poiPage, MaterialsApplyVO.class);
@@ -120,7 +138,7 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
     @Override
     public void review(MaterialsApplyVO materialsApplyVO) {
         if(materialsApplyVO.getReviewStatus()==2){
-            if(materialsApplyVO.getReviewRemarks()==null){
+            if("".equals(materialsApplyVO.getReviewRemarks())){
                 throw new  CommonException("请填写拒绝的理由");
             }
             MaterialsApplyVO materialsApplyVO1 = selectOneByIdReturnVO(materialsApplyVO.getId());
@@ -131,8 +149,25 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
         }
         MaterialsApplyVO materialsApplyVO1 = selectOneByIdReturnVO(materialsApplyVO.getId());
         materialsApplyVO1.setReviewStatus(1);
-        MaterialsApplyVO save = save(materialsApplyVO1);
+        if("".equals(materialsApplyVO.getReviewRemarks())){
+            materialsApplyVO1.setReviewRemarks(materialsApplyVO.getReviewRemarks());
+        }
+        save(materialsApplyVO1);
+    }
 
+    @Override
+    public Page<MaterialsApplyVO> getReviewPage(MaterialsApplyVO materialsApplyVO) {
+        QueryWrapper<MaterialsApplyPO> wrapper=new QueryWrapper<>();
+        if("admin".equals(authUtils.getRole())){
+            wrapper.eq("u_type",1).or().eq("u_type",2);
+        }else if("hotel_admin".equals(authUtils.getRole())){
+            wrapper.eq("hotel_id", authUtils.getUserHotelId());
+        }else {
+            throw  new CommonException("该角色无权调用getReviewPage");
+        }
+        Page<MaterialsApplyPO> page = new Page<>(materialsApplyVO.getPage().getPage(),materialsApplyVO.getPage().getSize());
+        Page<MaterialsApplyPO> poiPage= (Page<MaterialsApplyPO>) materialsApplyMapper.selectPage(page,wrapper);
+        return ConvertUtils.transferPage(poiPage, MaterialsApplyVO.class);
     }
 
 

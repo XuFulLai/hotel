@@ -7,7 +7,7 @@
     <resultMap id="BaseResultMap" type="group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.po.MaterialsApplyPO">
             <id property="id" column="id" jdbcType="VARCHAR"/>
             <result property="uType" column="u_type" jdbcType="INTEGER"/>
-            <result property="uid" column="uid" jdbcType="VARCHAR"/>
+            <result property="isolationId" column="isolation_id" jdbcType="VARCHAR"/>
             <result property="applyThing" column="apply_thing" jdbcType="VARCHAR"/>
             <result property="applyNum" column="apply_num" jdbcType="DOUBLE"/>
             <result property="thingUnit" column="thing_unit" jdbcType="VARCHAR"/>
@@ -24,10 +24,10 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,u_type,uid,
+        id,u_type,isolation_id,
         apply_thing,apply_num,thing_unit,
         emergency_level,apply_remarks,review_status,
         review_remarks,create_by,create_time,
-        update_by,update_time,is_deleted
+        update_by,update_time,is_deleted,hotel_id
     </sql>
 </mapper>

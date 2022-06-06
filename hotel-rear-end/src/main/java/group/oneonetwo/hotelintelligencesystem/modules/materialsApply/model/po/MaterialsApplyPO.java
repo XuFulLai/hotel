@@ -23,15 +23,6 @@ public class MaterialsApplyPO implements Serializable {
     @TableField("u_type")
     private Integer uType;
 
-    /**
-     * 申请人
-     */
-    @TableField("uid")
-    private String uid;
-
-    /**
-     * 申请物品
-     */
     @TableField("apply_thing")
     private String applyThing;
 
@@ -69,6 +60,18 @@ public class MaterialsApplyPO implements Serializable {
     @TableField("review_status")
     private Integer reviewStatus;
 
+
+    @TableField("isolation_id")
+    private  String isolationId;
+
+    public String getIsolationId() {
+        return isolationId;
+    }
+
+    public void setIsolationId(String isolationId) {
+        this.isolationId = isolationId;
+    }
+
     /**
      * 审核备注
      */
@@ -98,6 +101,7 @@ public class MaterialsApplyPO implements Serializable {
      */
     @TableField(value = "update_time",fill = FieldFill.UPDATE)
     private Date updateTime;
+
 
     /**
      * 是否删除
@@ -133,13 +137,6 @@ public class MaterialsApplyPO implements Serializable {
         this.uType = uType;
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
 
     public String getApplyThing() {
         return applyThing;

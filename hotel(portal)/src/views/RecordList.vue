@@ -79,7 +79,7 @@
                       font-size: 1.6rem;"                  
                     v-if="item.status == 0"
                     type="primary"
-                    @click="applyHandle">{{ $t('recordList.materialRequest') }}</el-button>
+                    @click="applyHandle(item.id)">{{ $t('recordList.materialRequest') }}</el-button>
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-between font-16 color-6">
@@ -642,13 +642,13 @@ export default {
     this.getIsolationRecords()
     this.getApplyRecords()
     this.getReviewList()
-    if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+    if (window.innerWidth < 768) { /*  滚动条17px */
       this.smallPagination = true
     } else {
       this.smallPagination = false
     }    
     window.onresize = () => {
-      if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+      if (window.innerWidth < 768) { /*  滚动条17px */
         this.smallPagination = true
       } else {
         this.smallPagination = false
@@ -736,7 +736,7 @@ export default {
         .then((res) => {
           console.log(res);
           this.ownTestData = res.data.data.records
-          if (window.document.body.clientWidth >= 768) {
+          if (window.innerWidth >= 768) {
             this.checkVisible = true
           } else {
             this.checkVisibleApp = true
@@ -748,8 +748,8 @@ export default {
     },
 
     // 物资申请函数，打开弹出框
-    applyHandle() {
-      if (window.document.body.clientWidth >= 768) {
+    applyHandle(id) {
+      if (window.innerWidth >= 768) {
         this.applyVisible = true;
       } else {
         this.applyVisibleApp = true
@@ -761,6 +761,7 @@ export default {
         emergencyLevel: "",
         applyRemark: "",
         uType: 1,
+        isolationId:id
       };
     },    
 
@@ -773,7 +774,7 @@ export default {
             title: "成功",
             message: "申请成功",
           });
-          if (window.document.body.clientWidth >= 768) {
+          if (window.innerWidth >= 768) {
             this.applyVisible = false;
           } else {
             this.applyVisibleApp = false

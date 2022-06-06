@@ -25,7 +25,8 @@
         stripe
         border
         :data="materialData"
-        style="width: 100%">
+        class="global-table"
+        style="width: 100%;overflow: auto;">
       <el-table-column
           align="center"
           prop="applyThing"
@@ -178,6 +179,7 @@
     </span>
     </el-dialog>
 
+
   </div>
 
 </template>
@@ -235,7 +237,7 @@ export default {
 
     // 列表获取函数
     materialListRequest(data) {
-      post('/api/materialsApply/page', data)
+      post('/api/materialsApply/reviewPage', data)
           .then(res => {
             console.log(res);
             this.materialData = res.data.data.records
