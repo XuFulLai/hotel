@@ -20,7 +20,7 @@ import DeclarationReview from "../components/DeclarationReview";
 import AssignPersonnel from "../components/AssignPersonnel";
 import MaterialReview from "../components/MaterialReview";
 import MaterialApplication from "../components/MaterialApplication";
-
+import HotelMaterialInfo from "../components/HotelMaterialInfo";
 
 Vue.use(VueRouter)
 
@@ -103,6 +103,11 @@ const routes = [
                 path: 'isolationManage',
                 name: 'isolationManage',
                 component: IsolationManage
+            },
+            {
+                path: 'hotelMaterialInfo',
+                name: 'hotelMaterialInfo',
+                component: HotelMaterialInfo
             },
             {
                 path: 'dailyTest',
