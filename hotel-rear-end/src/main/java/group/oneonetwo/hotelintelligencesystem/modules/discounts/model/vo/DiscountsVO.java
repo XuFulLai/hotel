@@ -26,7 +26,7 @@ public class DiscountsVO implements Serializable {
     private Integer type;
 
     @ApiModelProperty("折扣幅度")
-    private String discounts;
+    private Double discounts;
 
     @ApiModelProperty("折扣方式(0:立减;1:折扣)")
     private Integer discountsType;
@@ -166,11 +166,11 @@ public class DiscountsVO implements Serializable {
         this.type = type;
     }
 
-    public String getDiscounts() {
+    public Double getDiscounts() {
         return discounts;
     }
 
-    public void setDiscounts(String discounts) {
+    public void setDiscounts(Double discounts) {
         this.discounts = discounts;
     }
 

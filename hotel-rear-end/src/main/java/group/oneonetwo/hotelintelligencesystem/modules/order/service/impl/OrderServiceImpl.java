@@ -3,9 +3,11 @@ package group.oneonetwo.hotelintelligencesystem.modules.order.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.enums.BalanceHandleMode;
+import group.oneonetwo.hotelintelligencesystem.enums.DiscountEnums;
 import group.oneonetwo.hotelintelligencesystem.enums.OrderEnums;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
+import group.oneonetwo.hotelintelligencesystem.modules.discountUser.service.IDiscountUserService;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscountsService;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.service.IHotelService;
@@ -57,6 +59,9 @@ public class OrderServiceImpl implements IOrderService {
 
     @Autowired
     WalletService walletService;
+
+    @Autowired
+    IDiscountUserService discountUserService;
 
     @Override
     public OrderPO add(OrderVO orderVO){
@@ -222,9 +227,8 @@ public class OrderServiceImpl implements IOrderService {
             throw new CommonException("找不到对应的房间类型");
         }
         orderVO.setHotelId(roomTypeVO.getHotelId());
-
         //计算价钱
-        int[] pays = discountsService.countPay(orderVO.getDays(), roomTypeVO.getFee(),orderVO.getDiscount());
+        double[] pays = discountsService.countPay(orderVO.getDays(), roomTypeVO.getFee(),orderVO.getDiscount());
         orderVO.setPay(String.valueOf(pays[0]));
         orderVO.setLastPay(String.valueOf(pays[1]));
 
@@ -244,7 +248,9 @@ public class OrderServiceImpl implements IOrderService {
         orderVO.setStatus(OrderEnums.STATUS_CLOSE.getCode().toString());
         orderVO.setId(id);
         OrderPO save = save(orderVO);
+        //退款和优惠券
         walletService.editBalance(BalanceHandleMode.REDUCE.getCode(), Double.valueOf(orderVO.getLastPay()));
+        discountUserService.changeDiscountStatus(save.getDiscount(), DiscountEnums.DISCOUNT_USER_UNUSED.getCode());
         return "取消订单成功,退款" + save.getLastPay() + "元将在0-3个工作日内原路退还。";
     }
 

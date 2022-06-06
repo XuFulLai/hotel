@@ -15,6 +15,10 @@ public interface IDiscountUserService {
 
     DiscountUserVO add(DiscountUserVO discountUserVO);
 
+    /**
+     * 我的未过期未使用的优惠券
+     * @return
+     */
     List<DiscountUserAndDiscountsVO> getMyDiscount();
 
     void gotCoupon(String discountsId);
@@ -22,4 +26,6 @@ public interface IDiscountUserService {
     boolean isGotThisCoupon(String uid, String discountsId);
 
     boolean isUsed(String uid, String discountsId);
+
+    void changeDiscountStatus(String discount, int status);
 }

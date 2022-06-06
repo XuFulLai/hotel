@@ -23,7 +23,7 @@ public class DiscountsPO implements Serializable {
     private Integer type;
 
     @TableField("discounts")
-    private String discounts;
+    private Double discounts;
 
     @TableField("discounts_type")
     private Integer discountsType;
@@ -142,11 +142,11 @@ public class DiscountsPO implements Serializable {
         this.type = type;
     }
 
-    public String getDiscounts() {
+    public Double getDiscounts() {
         return discounts;
     }
 
-    public void setDiscounts(String discounts) {
+    public void setDiscounts(Double discounts) {
         this.discounts = discounts;
     }
 
