@@ -114,7 +114,7 @@
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">折扣类型:</p>
           <div>
-            <el-radio v-model="form.type" label="0">酒店折扣</el-radio>
+<!--            <el-radio v-model="form.type" label="0">酒店折扣</el-radio>-->
             <el-radio v-model="form.type" label="1">酒店内个人折扣</el-radio>
 <!--            <el-radio v-model="form.type" label="2">折扣</el-radio>-->
           </div>

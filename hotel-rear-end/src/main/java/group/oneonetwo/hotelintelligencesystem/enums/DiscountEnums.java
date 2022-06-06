@@ -15,11 +15,14 @@ public enum DiscountEnums {
     EFFECT_TYPE_ALL(2),
     //discounts_type
     DISCOUNTS_TYPE_REDUCTION(0),
-    DISCOUNTS_TYPE_DISCOUNT(0),
+    DISCOUNTS_TYPE_DISCOUNT(1),
     //exclusive_type
     EXCLUSIVE_TYPE_NONE(0),
     EXCLUSIVE_TYPE_ALL(1),
-    EXCLUSIVE_TYPE_RANGE(2)
+    EXCLUSIVE_TYPE_RANGE(2),
+    //discount_user.is_used
+    DISCOUNT_USER_UNUSED(0),
+    DISCOUNT_USER_USED(1)
     ;
 
     private Integer code;

@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author 文
+ */
 @Api(tags = "房间类型相关接口")
 @RestController
 @RequestMapping("api/roomType")

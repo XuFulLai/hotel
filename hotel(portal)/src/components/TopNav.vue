@@ -124,6 +124,15 @@
               clearable>
           </el-input>
         </div>
+        <div class="d-flex align-items-center mb-15">
+          <p class="w-100">邮箱:</p>
+          <el-input
+              style="width: 350px;"
+              placeholder="请输入电子邮箱"
+              v-model="userInfo.email"
+              clearable>
+          </el-input>
+        </div>
         <div class="d-flex align-items-center">
           <p class="w-100">密码:</p>
           <el-input
@@ -158,7 +167,8 @@ export default {
       avatar: '',
       editPersonalInfoVisible: false,
       userInfo: {},
-      requestImg: ''
+      requestImg: '',
+      avatarUrl: ''
     }
   },
   mounted() {
@@ -232,7 +242,6 @@ export default {
     },
     //改变用户信息
     changeUserInfo() {
-      this.userInfo.heads = this.requestImg
       console.log("change",this.userInfo)
       let userData = this.userInfo
       post('/api/user/modify', userData)

@@ -986,6 +986,7 @@ export default {
       totalFee: 0,
       provinceVal: '',
       pageNum: 0,
+      userInfo: {},
       options: [
         {
           value: this.$t('hotelList.beijing'),
@@ -1121,6 +1122,16 @@ export default {
     },
   },
   watch: {
+    "switchType"(val, oldVal) {
+      // console.log(val)
+      if(!val) {
+        this.phoneNum = this.userInfo.phone
+        this.userEmail = this.userInfo.email
+        console.log(this.userInfo)
+      }
+
+
+    },
     "dateValue"(val, oldVal) {//普通的watch监听
       // console.log("a: "+val, oldVal);
       this.bookDay = 0
@@ -1186,6 +1197,7 @@ export default {
     this.getHotelDiscountList()
     this.getHotelAvgScore()
     this.getCommentsList()
+    this.getUserInfo()
   },
   methods: {
     // 评论展开按钮
@@ -1563,6 +1575,18 @@ export default {
         }
 
       })
+    },
+    //根据id获取用户信息
+    getUserInfo() {
+      let id = localStorage.getItem('userId')
+      get('/api/user/get/' + id)
+          .then(res => {
+            this.userInfo = res.data.data
+            this.userInfo.password = ''
+          })
+          .catch(err => {
+            console.log(err);
+          })
     },
 
     confirm() {

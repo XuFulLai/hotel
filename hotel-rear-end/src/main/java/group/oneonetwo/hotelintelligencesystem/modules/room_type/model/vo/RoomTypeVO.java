@@ -59,7 +59,7 @@ public class RoomTypeVO implements Serializable {
     private String cover;
 
     @ApiModelProperty("费用")
-    private Integer fee;
+    private Double fee;
 
     @ApiModelProperty("排序")
     private Integer sort;
@@ -210,11 +210,11 @@ public class RoomTypeVO implements Serializable {
         this.cover = cover;
     }
 
-    public Integer getFee() {
+    public Double getFee() {
         return fee;
     }
 
-    public void setFee(Integer fee) {
+    public void setFee(Double fee) {
         this.fee = fee;
     }
 

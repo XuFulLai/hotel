@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
 import group.oneonetwo.hotelintelligencesystem.enums.DiscountEnums;
+import group.oneonetwo.hotelintelligencesystem.enums.ResultCode;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.discountUser.mapper.DiscountUserMapper;
@@ -16,6 +17,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.discounts.service.IDiscou
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.po.HotelPO;
 import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.sys_logs.service.ILogsService;
+import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,5 +106,37 @@ public class DiscountUserServiceImpl implements IDiscountUserService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 更改优惠券状态
+     * @param discount
+     * @param status 需要更改后的状态
+     */
+    @Override
+    public void changeDiscountStatus(String discount, int status) {
+        if (!WStringUtils.isBlank(discount)) {
+            String[] split = discount.split(",");
+            QueryWrapper<DiscountUserPO> wrapper = new QueryWrapper<>();
+            wrapper.eq("uid",authUtils.getUid());
+            for (String s : split) {
+                wrapper.eq("d_id",s);
+                List<DiscountUserPO> po = discountUserMapper.selectList(wrapper);
+                if (DiscountEnums.DISCOUNT_USER_UNUSED.getCode().equals(status)) {
+                    //返还优惠券
+                    if (!po.isEmpty()) {
+                        po.get(0).setIsUsed(status);
+                    }
+                }else {
+                    //使用优惠券
+                    if (!po.isEmpty()) {
+                        po.get(0).setIsUsed(status);
+                    }else {
+                        throw new CommonException(Integer.valueOf(ResultCode.NO_DATA.getCode()),"优惠券不存在");
+                    }
+                }
+                discountUserMapper.updateById(po.get(0));
+            }
+        }
     }
 }
