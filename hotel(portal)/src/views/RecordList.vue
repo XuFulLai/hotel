@@ -642,13 +642,13 @@ export default {
     this.getIsolationRecords()
     this.getApplyRecords()
     this.getReviewList()
-    if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+    if (window.innerWidth < 768) { /*  滚动条17px */
       this.smallPagination = true
     } else {
       this.smallPagination = false
     }    
     window.onresize = () => {
-      if (window.document.body.clientWidth < 768) { /*  滚动条17px */
+      if (window.innerWidth < 768) { /*  滚动条17px */
         this.smallPagination = true
       } else {
         this.smallPagination = false
@@ -736,7 +736,7 @@ export default {
         .then((res) => {
           console.log(res);
           this.ownTestData = res.data.data.records
-          if (window.document.body.clientWidth >= 768) {
+          if (window.innerWidth >= 768) {
             this.checkVisible = true
           } else {
             this.checkVisibleApp = true
@@ -749,7 +749,7 @@ export default {
 
     // 物资申请函数，打开弹出框
     applyHandle(id) {
-      if (window.document.body.clientWidth >= 768) {
+      if (window.innerWidth >= 768) {
         this.applyVisible = true;
       } else {
         this.applyVisibleApp = true
@@ -774,7 +774,7 @@ export default {
             title: "成功",
             message: "申请成功",
           });
-          if (window.document.body.clientWidth >= 768) {
+          if (window.innerWidth >= 768) {
             this.applyVisible = false;
           } else {
             this.applyVisibleApp = false
