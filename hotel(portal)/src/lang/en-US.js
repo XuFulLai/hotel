@@ -134,7 +134,7 @@ export default {
     },
     orderList: {
         orderId: 'OrderID:',
-        goPayOrder:'go pay order',
+        goPayOrder:'Go to pay',
         cancelOrder: 'Cancel the order',
         writeComment: 'Write comment',
         hotelName: 'Hotel name:',

@@ -248,10 +248,11 @@ public class OrderServiceImpl implements IOrderService {
         orderVO.setStatus(OrderEnums.STATUS_CLOSE.getCode().toString());
         orderVO.setId(id);
         OrderPO save = save(orderVO);
+        OrderPO thisOrder = orderMapper.selectById(save.getId());
         //退款和优惠券
-        walletService.editBalance(BalanceHandleMode.REDUCE.getCode(), Double.valueOf(orderVO.getLastPay()));
-        discountUserService.changeDiscountStatus(save.getDiscount(), DiscountEnums.DISCOUNT_USER_UNUSED.getCode());
-        return "取消订单成功,退款" + save.getLastPay() + "元将在0-3个工作日内原路退还。";
+        walletService.editBalance(BalanceHandleMode.ADD.getCode(), Double.valueOf(thisOrder.getLastPay()));
+        discountUserService.changeDiscountStatus(thisOrder.getDiscount(), DiscountEnums.DISCOUNT_USER_UNUSED.getCode());
+        return "取消订单成功,退款" + thisOrder.getLastPay() + "元将在0-3个工作日内原路退还。";
     }
 
     @Override

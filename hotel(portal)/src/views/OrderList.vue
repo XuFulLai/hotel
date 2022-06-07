@@ -566,6 +566,7 @@ export default {
             lastPay: undefined,
             walletPwd: undefined
           }
+          this.$router.go(0)
         } else {
           this.$message({
             message: res.data.msg,
@@ -801,6 +802,15 @@ export default {
 .demonstration {
   display: block;
   margin-bottom: 8px;
+}
+
+.pay-box-price {
+  font-size: 56px;
+  font-weight: 700;
+  color: #ff4d6a;
+  width: 100%;
+  text-align: center;
+  margin: 10px 0 30px 0;
 }
 
 @media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */ 
