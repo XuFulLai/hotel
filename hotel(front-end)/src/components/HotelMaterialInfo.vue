@@ -36,7 +36,7 @@
       </el-button-group>
     </div>
     <div class="d-flex justify-content-end" style="padding: 10px;">
-      <el-button type="primary" style="width: 100px;" @click="openFormDialog('add')">添加</el-button>
+      <el-button type="danger" style="width: 100px;" @click="openFormDialog('add')">添加</el-button>
     </div>
 
     <!-- 表格 -->
