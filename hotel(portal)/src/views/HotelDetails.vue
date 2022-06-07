@@ -520,7 +520,7 @@
                 <!-- 选择开始时间 Start -->
                 <van-field
                     v-model="appDateStart"
-                    label="开始时间"
+                    :label="$t('hotelDetails.startDate')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -541,7 +541,7 @@
                 <!-- 选择结束时间 Start -->
                 <van-field
                     v-model="appDateEnd"
-                    label="结束时间"
+                    :label="$t('hotelDetails.endDate')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -562,7 +562,7 @@
                 <!-- 选择房型 Start -->
                 <van-field
                     v-model="appCurrentRoomType"
-                    label="选择房型"
+                    :label="$t('hotelList.selectRoom')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -583,7 +583,7 @@
                 <!-- 选择省份 Start -->
                 <van-field
                     v-model="appCurrentProvince"
-                    label="选择省份"
+                    :label="$t('hotelList.province')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -619,15 +619,15 @@
               <!-- 表单主体 -->
               <div class="app-booking-form">
 
-                <van-field v-model="userName" label="姓名"/>
-                <van-field v-model="userId" label="身份证"/>
-                <van-field v-model="phoneNum" type="tel" label="手机号"/>
-                <van-field v-model="userEmail" label="邮箱"/>
+                <van-field v-model="userName" :label="$t('hotelDetails.name')"/>
+                <van-field v-model="userId" :label="$t('hotelDetails.idNum')"/>
+                <van-field v-model="phoneNum" type="tel" :label="$t('hotelDetails.tel')"/>
+                <van-field v-model="userEmail" :label="$t('hotelDetails.email')"/>
 
                 <!-- 入住时间 Start -->
                 <van-field
                     v-model="appDate"
-                    label="入住时间"
+                    :label="$t('hotelDetails.checkDate')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -650,7 +650,7 @@
                 <van-field
 
                     v-model="appSituation"
-                    label="选择类型:"
+                    :label="$t('hotelDetails.type')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -672,7 +672,7 @@
                 <van-field
                     v-show="situation == 2 || situation == 3"
                     v-model="appCurrentRoomType1"
-                    label="选择房型"
+                    :label="$t('hotelList.selectRoom')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -693,7 +693,7 @@
                 <!-- 选择省份 Start -->
                 <van-field
                     v-model="appCurrentProvince1"
-                    label="选择省份"
+                    :label="$t('hotelList.province')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -732,7 +732,7 @@
     </div>
 
     <el-dialog
-        title="确认订单"
+        :title="$t('hotelDetails.confirmOrder')"
         :visible.sync="confirmOrderVisible"
         width="95%"
         class="confirm-order-dialog"
@@ -784,7 +784,7 @@
               </div>
             </el-collapse-item>
 
-            <el-collapse-item v-if="confirmOrderData.personalDiscountList.length != 0" title="个人优惠券" name="1">
+            <el-collapse-item v-if="confirmOrderData.personalDiscountList.length != 0" :title="$t('hotelDetails.coupon')" name="1">
               <div class="choose-hotel-discount">
                 <div class="choose-discount-box flex flex-row cursor" v-for="i in confirmOrderData.personalDiscountList"
                      @click="addUseDiscount(i)">
@@ -820,11 +820,11 @@
         </div>
         <div class="order-count">
           <div class="order-count-item">
-            <div>房间单价</div>
+            <div>{{ $t('hotelDetails.unitPrice') }}</div>
             <div>￥{{ this.confirmOrderData.totalFee / bookDay }}</div>
           </div>
           <div class="order-count-item">
-            <div>订单总价</div>
+            <div>{{ $t('hotelDetails.price') }}</div>
             <div>￥{{ this.confirmOrderData.totalFee }}</div>
           </div>
           <div class="order-count-item" v-for="i in discountVisibleList">
@@ -832,32 +832,32 @@
             <div>-￥{{ i.price }}</div>
           </div>
           <div class="order-count-item" style="font-size: 18px;color: black">
-            <div>预计实付款</div>
+            <div>{{ $t('hotelDetails.spend') }}</div>
             <div style="color: #ff4d6a;">￥{{ this.confirmOrderData.totalFee - this.confirmOrderData.discountFee }}</div>
           </div>
         </div>
       </div>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="confirmOrderVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirm">确 定</el-button>
+        <el-button @click="confirmOrderVisible = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="confirm">{{ $t('common.confirm') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
         class="wallet-dialog"
-        title="请输入钱包密码"
+        :title="$t('hotelDetails.payTitle')"
         :visible.sync="payVisible"
         width="95%"
         center
     >
       <div class="flex flex-column pay-box align-items-center">
-        <div>当前支付金额</div>
+        <div>{{ $t('hotelDetails.payment') }}</div>
         <div class="pay-box-price"><span style="font-size: 26px">￥</span>{{ payForm.lastPay }}</div>
-        <el-input placeholder="请输入密码" v-model="payForm.walletPwd" show-password></el-input>
+        <el-input :placeholder="$t('login.passwordTips')" v-model="payForm.walletPwd" show-password></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="pay">确 定</el-button>
+        <el-button type="primary" @click="pay">{{ $t('common.confirm') }}</el-button>
       </span>
 
     </el-dialog>
@@ -1591,7 +1591,7 @@ export default {
 
               //初始化表单
               this.currentRoomType = undefined
-              this.dateValue = ''
+              this.dateValue = []
               this.provinceVal = ''
               console.log("订单id：", res.data.data.id)
             } else {
