@@ -182,7 +182,6 @@ export default {
       localStorage.setItem('lang', value)
       this.$i18n.locale = value
       this.$router.go(0)
-
     },
     editPersonalInfo() {
       this.getUserInfo()

@@ -23,7 +23,7 @@
                 <div style="background: #F56C6C" class="badge" v-if="hotelDetails.allowIsolation">
                   {{ $t('hotelList.isolatedHotel') }}
                 </div>
-                <div v-if="hotelDetails.badge" class="badge" v-for="i in hotelDetails.badge.split(',')">
+                <div v-if="hotelDetails.badge" class="badge" v-for="i in hotelBadgeList">
                   {{ i | hotelBadge }}
                 </div>
               </div>
@@ -786,10 +786,10 @@
 
             <el-collapse-item v-if="confirmOrderData.personalDiscountList.length != 0" :title="$t('hotelDetails.coupon')" name="1">
               <div class="choose-hotel-discount">
-                <div class="choose-discount-box flex flex-row cursor" v-for="i in confirmOrderData.personalDiscountList"
-                     @click="addUseDiscount(i)">
-                  <div :class="confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : ''"
-                       class="choose-discount-left flex flex-row justify-content-between align-items-end" >
+                <!-- 获取list -->
+                <div :class="[i.canUse ? '': 'disable-selected',confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : '']" :title="i.cantUseReason" class="choose-discount-box flex flex-row cursor" v-for="i in confirmOrderData.personalDiscountList"
+                     @click="i.canUse && addUseDiscount(i)">
+                  <div class="choose-discount-left flex flex-row justify-content-between align-items-end" >
                     <div class="choose-discount-name">
                       {{ i.name }}
                       <el-tooltip placement="right" style="margin: 4px 4px 4px 0px;">
@@ -804,8 +804,9 @@
                     </div>
                   </div>
                   <div style="border-left: 1px dashed #999;height: 100%"></div>
-                  <div :class="confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : ''"
-                       class="choose-discount-right flex align-items-center justify-content-center">
+                  <!-- <div :class="confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : ''"
+                       class="choose-discount-right flex align-items-center justify-content-center"> -->
+                  <div class="choose-discount-right flex align-items-center justify-content-center">                       
                     {{ i.discountsType == 0 ? i.discounts + '元' : i.discounts * 10 + '折' }}
                   </div>
                 </div>
@@ -891,6 +892,7 @@ export default {
       url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
 
 
+      hotelBadgeList: [],
       showAppRoomType: false,
       appCurrentRoomType1: '',
       appSituation: '',
@@ -1189,7 +1191,7 @@ export default {
       this.offsetTop = document.querySelector('#detailRight').offsetTop;
     })
     window.addEventListener("scroll", this.handleScroll, true);
-    this.hotelId = this.$route.params.hotelId
+    this.hotelId = this.$route.params.hotelId || localStorage.getItem('currentHotelId')
     this.getHotelDetails()
     this.getRoomType();
     this.getIsolateRoomTypeList()
@@ -1639,7 +1641,10 @@ export default {
       // console.log(id)
       get("/api/hotel/get/" + this.hotelId).then(res => {
         that.hotelDetails = res.data.data;
-        console.log(that.hotelDetails)
+        console.log('酒店详细数据:',res.data.data);
+        if (res.data.data.badge) {
+          that.hotelBadgeList = res.data.data.badge.split(',')          
+        }
       })
     },
 
@@ -2178,8 +2183,44 @@ h3.sub-title .en {
 }
 
 .choose-discount-chosen {
-  background: #d9d9d9;
+  position: relative;
   text-decoration: line-through;
+  /* color: #4ABE84; */
+  border-radius:0;
+  border:2px solid rgba(74,190,132,1);
+}
+.choose-discount-chosen:before {
+  content: '';
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  border: 17px solid #4ABE84;
+  border-top-color: transparent;
+  border-left-color: transparent;
+}
+.choose-discount-chosen:after {
+  content: '';
+  width: 5px;
+  height: 12px;
+  position: absolute;
+  right: 4px;
+  bottom: 6px;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  transform: rotate(45deg);
+}
+
+.disable-selected {
+  cursor: no-drop;
+  text-decoration: none;
+  border: none;
+}
+.disable-selected:after, .disable-selected:before {
+  content: none;
+}
+.disable-selected>.choose-discount-left, .disable-selected>.choose-discount-right {
+  background: #d9d9d9;
 }
 
 .choose-discount-name {
