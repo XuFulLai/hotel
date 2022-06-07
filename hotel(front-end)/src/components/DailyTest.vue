@@ -57,6 +57,7 @@
     <el-table
         stripe
         border
+        :data="testData"
         class="global-table"
         style="width: 100%;overflow: auto;">
       <el-table-column
