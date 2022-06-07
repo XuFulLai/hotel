@@ -421,6 +421,7 @@ export default {
           hotelId: id
         }
       })
+      localStorage.setItem('currentHotelId',id)
     },
 
     confirm() {

@@ -113,6 +113,15 @@ export default {
         email: '电子邮箱',
         tips: '自行申报需提前48小时申报。',
         submitBtn: '提交申报',
+
+        unitPrice: '房间单价',
+        price: '订单总价',
+        spend: '预计实付款',
+        confirmOrder: '确认订单',
+        coupon: '个人优惠券',
+
+        payTitle: '请输入钱包密码',
+        payment: '当前支付金额'
     },
     isolationList: {
       roomName: '入住房间：'

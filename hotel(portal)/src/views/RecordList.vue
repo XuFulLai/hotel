@@ -20,8 +20,10 @@
             class="order-status cursor"
             @click="isolationRecordsHandle(!isIsolation)">
 
+            <img :src="require(`../assets/images/record1.png`)" alt="">
+
             <div>
-              <h3 class="font-22">{{ $t('recordList.isolateRecords') }}</h3>
+              <h3 class="font-18">{{ $t('recordList.isolateRecords') }}</h3>
               <p class="font-16">{{ isolationNum}}</p>
             </div>
 
@@ -32,9 +34,11 @@
             class="order-status cursor"
             @click="reviewRecordsHandle(!isReview)">
 
+            <img :src="require(`../assets/images/record5.png`)" alt="">
+
             <div>
               <!-- <h3 class="font-22">自申报记录</h3> -->
-              <h3 class="font-22">{{ $t('recordList.isolateRequestRecords') }}</h3>
+              <h3 class="font-18">{{ $t('recordList.isolateRequestRecords') }}</h3>
               <p class="font-16">{{ reviewListNum }}</p>
             </div>
 
@@ -45,8 +49,10 @@
             class="order-status cursor"
             @click="applyRecordsHandle(!isApply)">
 
+            <img :src="require(`../assets/images/material.png`)" alt="">
+
             <div>
-              <h3 class="font-22">{{ $t('recordList.materialRequestRecords') }}</h3>
+              <h3 class="font-18">{{ $t('recordList.materialRequestRecords') }}</h3>
               <p class="font-16">{{ applyListNum }}</p>
             </div>
 
@@ -883,6 +889,7 @@ export default {
     ApplyRecordsRequest(data) {
       post("api/materialsApply/page", data)
         .then( res => {
+          console.log(res);
           this.applyList = res.data.data.records;      
           this.applyListNum = res.data.data.total;
         })
@@ -1111,13 +1118,13 @@ export default {
   /* margin: 0px 10px;
   padding: 0px 20px; */
   margin: 0 1rem;
-  padding: 0 2rem;  
+  padding: 0 0.5rem;  
 }
 
 .order-status > img {
-  width: 60px;
-  height: 60px;
-  margin-right: 22px;
+  width: 5rem;
+  height: 5rem;
+  margin-right: 1.6rem;  
 }
 
 .order-status > div {
@@ -1177,6 +1184,8 @@ export default {
     margin: 0 0 1rem 0;
     box-sizing: border-box;
     flex: initial;
+    justify-content: flex-start;
+    padding-left: 20%;
   }
   .order-list {
     margin: 10px 0;

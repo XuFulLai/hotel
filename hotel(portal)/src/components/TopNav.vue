@@ -35,7 +35,10 @@
           </li>
         </ul>
       </div>
-      <i @click="drawer = true" class="el-icon-menu menu-icon"></i>
+      <!-- <i @click="drawer = true" class="el-icon-menu menu-icon"></i> -->
+      <div class="menu-icon" @click="drawer = true">
+        <img :src="require(`../assets/images/menu2.png`)" alt="">
+      </div>
       <p class="app-menu-title font-26">{{ $t('nav.menu') }}</p>
       <el-drawer
           :visible.sync="drawer"
@@ -70,7 +73,7 @@
             <span class="ml-5 mr-5">/</span>
             <el-link type="primary" @click="langSwitch('en')">En</el-link>
           </li>
-          <li class="cursor" @click="editPersonalInfo">
+          <li class="cursor">
             <el-avatar size="large" :src="avatar" fit="cover"></el-avatar>
           </li>
         </ul>
@@ -179,7 +182,6 @@ export default {
       localStorage.setItem('lang', value)
       this.$i18n.locale = value
       this.$router.go(0)
-
     },
     editPersonalInfo() {
       this.getUserInfo()
@@ -299,7 +301,7 @@ export default {
 
 .nav-content li {
   font-size: 1.8rem;
-  margin: 0 2.5rem;
+  margin: 0 1.8rem;
   height: 100%;
   display: flex;
   align-items: center;
@@ -372,6 +374,12 @@ export default {
     display: flex;
     font-size: 35px;
     margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .menu-icon > img {
+    width: 38px;
+    height: 38px;
   }
 
   .drawer-list {
@@ -402,6 +410,10 @@ export default {
 
   .app-menu-title {
     display: inline-block;
+  }
+  .cursor {
+    text-align: center;
+    padding: 5px 0;
   }
 
   /* .nav-content ul {

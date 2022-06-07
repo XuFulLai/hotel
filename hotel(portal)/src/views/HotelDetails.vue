@@ -28,7 +28,7 @@
                 <div style="background: #F56C6C" class="badge" v-if="hotelDetails.allowIsolation">
                   {{ $t('hotelList.isolatedHotel') }}
                 </div>
-                <div v-if="hotelDetails.badge" class="badge" v-for="i in hotelDetails.badge.split(',')">
+                <div v-if="hotelDetails.badge" class="badge" v-for="i in hotelBadgeList">
                   {{ i | hotelBadge }}
                 </div>
               </div>
@@ -525,7 +525,7 @@
                 <!-- 选择开始时间 Start -->
                 <van-field
                     v-model="appDateStart"
-                    label="开始时间"
+                    :label="$t('hotelDetails.startDate')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -546,7 +546,7 @@
                 <!-- 选择结束时间 Start -->
                 <van-field
                     v-model="appDateEnd"
-                    label="结束时间"
+                    :label="$t('hotelDetails.endDate')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -567,7 +567,7 @@
                 <!-- 选择房型 Start -->
                 <van-field
                     v-model="appCurrentRoomType"
-                    label="选择房型"
+                    :label="$t('hotelList.selectRoom')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -588,7 +588,7 @@
                 <!-- 选择省份 Start -->
                 <van-field
                     v-model="appCurrentProvince"
-                    label="选择省份"
+                    :label="$t('hotelList.province')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -624,15 +624,15 @@
               <!-- 表单主体 -->
               <div class="app-booking-form">
 
-                <van-field v-model="userName" label="姓名"/>
-                <van-field v-model="userId" label="身份证"/>
-                <van-field v-model="phoneNum" type="tel" label="手机号"/>
-                <van-field v-model="userEmail" label="邮箱"/>
+                <van-field v-model="userName" :label="$t('hotelDetails.name')"/>
+                <van-field v-model="userId" :label="$t('hotelDetails.idNum')"/>
+                <van-field v-model="phoneNum" type="tel" :label="$t('hotelDetails.tel')"/>
+                <van-field v-model="userEmail" :label="$t('hotelDetails.email')"/>
 
                 <!-- 入住时间 Start -->
                 <van-field
                     v-model="appDate"
-                    label="入住时间"
+                    :label="$t('hotelDetails.checkDate')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -655,7 +655,7 @@
                 <van-field
 
                     v-model="appSituation"
-                    label="选择类型:"
+                    :label="$t('hotelDetails.type')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -677,7 +677,7 @@
                 <van-field
                     v-show="situation == 2 || situation == 3"
                     v-model="appCurrentRoomType1"
-                    label="选择房型"
+                    :label="$t('hotelList.selectRoom')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -698,7 +698,7 @@
                 <!-- 选择省份 Start -->
                 <van-field
                     v-model="appCurrentProvince1"
-                    label="选择省份"
+                    :label="$t('hotelList.province')"
                     :placeholder="$t('common.selectTips')"
                     input-align="right"
                     readonly
@@ -737,7 +737,7 @@
     </div>
 
     <el-dialog
-        title="确认订单"
+        :title="$t('hotelDetails.confirmOrder')"
         :visible.sync="confirmOrderVisible"
         width="95%"
         class="confirm-order-dialog"
@@ -789,12 +789,12 @@
               </div>
             </el-collapse-item>
 
-            <el-collapse-item v-if="confirmOrderData.personalDiscountList.length != 0" title="个人优惠券" name="1">
+            <el-collapse-item v-if="confirmOrderData.personalDiscountList.length != 0" :title="$t('hotelDetails.coupon')" name="1">
               <div class="choose-hotel-discount">
-                <div class="choose-discount-box flex flex-row cursor" v-for="i in confirmOrderData.personalDiscountList"
-                     @click="addUseDiscount(i)">
-                  <div :class="confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : ''"
-                       class="choose-discount-left flex flex-row justify-content-between align-items-end" >
+                <!-- 获取list -->
+                <div :class="[i.canUse ? '': 'disable-selected',confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : '']" :title="i.cantUseReason" class="choose-discount-box flex flex-row cursor" v-for="i in confirmOrderData.personalDiscountList"
+                     @click="i.canUse && addUseDiscount(i)">
+                  <div class="choose-discount-left flex flex-row justify-content-between align-items-end" >
                     <div class="choose-discount-name">
                       {{ i.name }}
                       <el-tooltip placement="right" style="margin: 4px 4px 4px 0px;">
@@ -809,8 +809,9 @@
                     </div>
                   </div>
                   <div style="border-left: 1px dashed #999;height: 100%"></div>
-                  <div :class="confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : ''"
-                       class="choose-discount-right flex align-items-center justify-content-center">
+                  <!-- <div :class="confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : ''"
+                       class="choose-discount-right flex align-items-center justify-content-center"> -->
+                  <div class="choose-discount-right flex align-items-center justify-content-center">                       
                     {{ i.discountsType == 0 ? i.discounts + '元' : i.discounts * 10 + '折' }}
                   </div>
                 </div>
@@ -825,11 +826,11 @@
         </div>
         <div class="order-count">
           <div class="order-count-item">
-            <div>房间单价</div>
+            <div>{{ $t('hotelDetails.unitPrice') }}</div>
             <div>￥{{ this.confirmOrderData.totalFee / bookDay }}</div>
           </div>
           <div class="order-count-item">
-            <div>订单总价</div>
+            <div>{{ $t('hotelDetails.price') }}</div>
             <div>￥{{ this.confirmOrderData.totalFee }}</div>
           </div>
           <div class="order-count-item" v-for="i in discountVisibleList">
@@ -837,32 +838,32 @@
             <div>-￥{{ i.price }}</div>
           </div>
           <div class="order-count-item" style="font-size: 18px;color: black">
-            <div>预计实付款</div>
+            <div>{{ $t('hotelDetails.spend') }}</div>
             <div style="color: #ff4d6a;">￥{{ this.confirmOrderData.totalFee - this.confirmOrderData.discountFee }}</div>
           </div>
         </div>
       </div>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="confirmOrderVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirm">确 定</el-button>
+        <el-button @click="confirmOrderVisible = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="confirm">{{ $t('common.confirm') }}</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
         class="wallet-dialog"
-        title="请输入钱包密码"
+        :title="$t('hotelDetails.payTitle')"
         :visible.sync="payVisible"
         width="95%"
         center
     >
       <div class="flex flex-column pay-box align-items-center">
-        <div>当前支付金额</div>
+        <div>{{ $t('hotelDetails.payment') }}</div>
         <div class="pay-box-price"><span style="font-size: 26px">￥</span>{{ payForm.lastPay }}</div>
-        <el-input placeholder="请输入密码" v-model="payForm.walletPwd" show-password></el-input>
+        <el-input :placeholder="$t('login.passwordTips')" v-model="payForm.walletPwd" show-password></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="pay">确 定</el-button>
+        <el-button type="primary" @click="pay">{{ $t('common.confirm') }}</el-button>
       </span>
 
     </el-dialog>
@@ -896,6 +897,7 @@ export default {
       url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
 
 
+      hotelBadgeList: [],
       showAppRoomType: false,
       appCurrentRoomType1: '',
       appSituation: '',
@@ -1194,7 +1196,7 @@ export default {
       this.offsetTop = document.querySelector('#detailRight').offsetTop;
     })
     window.addEventListener("scroll", this.handleScroll, true);
-    this.hotelId = this.$route.params.hotelId
+    this.hotelId = this.$route.params.hotelId || localStorage.getItem('currentHotelId')
     this.getHotelDetails()
     this.getRoomType();
     this.getIsolateRoomTypeList()
@@ -1620,7 +1622,7 @@ export default {
 
               //初始化表单
               this.currentRoomType = undefined
-              this.dateValue = ''
+              this.dateValue = []
               this.provinceVal = ''
               console.log("订单id：", res.data.data.id)
             } else {
@@ -1644,7 +1646,10 @@ export default {
       // console.log(id)
       get("/api/hotel/get/" + this.hotelId).then(res => {
         that.hotelDetails = res.data.data;
-        console.log(that.hotelDetails)
+        console.log('酒店详细数据:',res.data.data);
+        if (res.data.data.badge) {
+          that.hotelBadgeList = res.data.data.badge.split(',')          
+        }
       })
     },
 
@@ -2183,8 +2188,44 @@ h3.sub-title .en {
 }
 
 .choose-discount-chosen {
-  background: #d9d9d9;
+  position: relative;
   text-decoration: line-through;
+  /* color: #4ABE84; */
+  border-radius:0;
+  border:2px solid rgba(74,190,132,1);
+}
+.choose-discount-chosen:before {
+  content: '';
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  border: 17px solid #4ABE84;
+  border-top-color: transparent;
+  border-left-color: transparent;
+}
+.choose-discount-chosen:after {
+  content: '';
+  width: 5px;
+  height: 12px;
+  position: absolute;
+  right: 4px;
+  bottom: 6px;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  transform: rotate(45deg);
+}
+
+.disable-selected {
+  cursor: no-drop;
+  text-decoration: none;
+  border: none;
+}
+.disable-selected:after, .disable-selected:before {
+  content: none;
+}
+.disable-selected>.choose-discount-left, .disable-selected>.choose-discount-right {
+  background: #d9d9d9;
 }
 
 .choose-discount-name {
