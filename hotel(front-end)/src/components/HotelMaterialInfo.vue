@@ -493,6 +493,7 @@ export default {
           .then(res => {
             console.log(res);
             this.dialogVisible = false;
+            this.$router.go(0);
           })
           .catch(err => {
             console.error(err);

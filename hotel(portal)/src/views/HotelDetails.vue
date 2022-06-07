@@ -19,7 +19,12 @@
         <div ref="hotelDetail" class="hotel-detail">
           <div class="detail-left">
             <div class="detail-detail">
-              <div class="flex flex-row" v-if="hotelDetails.badge || hotelDetails.allowIsolation">
+              <div class="flex flex-row" v-if="!hotelDetails.badge && hotelDetails.allowIsolation">
+                <div style="background: #F56C6C" class="badge" v-if="hotelDetails.allowIsolation">
+                  {{ $t('hotelList.isolatedHotel') }}
+                </div>
+              </div>
+              <div class="flex flex-row" v-if="hotelDetails.badge">
                 <div style="background: #F56C6C" class="badge" v-if="hotelDetails.allowIsolation">
                   {{ $t('hotelList.isolatedHotel') }}
                 </div>

@@ -24,11 +24,16 @@
                   <h4>{{ item.name }}</h4>
                   <h6>{{ item.address }}</h6>
                 </div>
-                <div class="flex flex-row mb-10 flex-wrap" v-if="item.badge">
-                  <div style="background: #F56C6C" class="badge" v-if="form.allowIsolation">
+                <div class="flex flex-row mb-10 flex-wrap" v-if="!item.badge && item.allowIsolation">
+                  <div style="background: #F56C6C" class="badge" v-if="item.allowIsolation">
                     {{ $t('hotelList.isolatedHotel') }}
                   </div>
-                  <div class="badge" v-for="i in item.badge.split(',')">
+                </div>
+                <div class="flex flex-row mb-10 flex-wrap" v-if="item.badge">
+                  <div style="background: #F56C6C" class="badge" v-if="item.allowIsolation">
+                    {{ $t('hotelList.isolatedHotel') }}
+                  </div>
+                  <div v-if="item.badge" class="badge" v-for="i in item.badge.split(',')">
                     {{ i | hotelBadge }}
                   </div>
                 </div>

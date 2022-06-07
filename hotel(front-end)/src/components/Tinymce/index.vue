@@ -18,7 +18,7 @@ import toolbar from './toolbar'
 import load from './dynamicLoadScript'
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
+const tinymceCDN = 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.0.3/tinymce.min.js'
 
 export default {
   name: 'Tinymce',
@@ -117,6 +117,7 @@ export default {
       window.tinymce.init({
         selector: `#${this.tinymceId}`,
         language: this.languageTypeList['en'],
+        // language_url: '/js/tinymce/langs/zh_CN.js',
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,
