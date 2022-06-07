@@ -14,11 +14,29 @@
             end-placeholder="结束日期">
         </el-date-picker>
       </div>
+      <div class="block search">
+        <p>物品名称：</p>
+        <el-input v-model="searchParams.applyThing" placeholder="请输入物品名称"></el-input>
+      </div>
+      <div class="block search">
+        <p>审核结果：</p>
+        <el-select v-model="searchParams.reviewStatus" placeholder="请选择">
+          <el-option
+              v-for="item in reviewStatusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
       <el-button-group class="d-flex justify-content">
         <el-button type="primary" icon="el-icon-search" @click="getReviewList">查询</el-button>
         <el-button type="info" icon="el-icon-refresh" @click="reset">重置</el-button>
-        <el-button type="primary" icon="el-icon-search" @click="add">添加</el-button>
+        <!--        <el-button type="primary" icon="el-icon-search" @click="add">添加</el-button>-->
       </el-button-group>
+    </div>
+    <div class="d-flex justify-content-end" style="padding: 10px;">
+      <el-button type="primary" style="width: 100px;" @click="openFormDialog('add')">添加</el-button>
     </div>
 
     <!-- 表格 -->
@@ -58,12 +76,12 @@
           :formatter="eTableDateTime"
           label="申请时间">
       </el-table-column>
-      <el-table-column
-          align="center"
-          prop="updateTime"
-          :formatter="eTableDateTime"
-          label="审核时间">
-      </el-table-column>
+<!--      <el-table-column-->
+<!--          align="center"-->
+<!--          prop="updateTime"-->
+<!--          :formatter="eTableDateTime"-->
+<!--          label="审核时间">-->
+<!--      </el-table-column>-->
       <el-table-column
           align="center"
           prop="reviewStatus"
@@ -76,12 +94,17 @@
       </el-table-column>
       <el-table-column
           label="操作"
-          width="100"
+          width="146"
           align="center">
         <template slot-scope="scope">
           <el-button
               size="mini"
+              @click="openFormDialog('check',scope.row)">查看
+          </el-button>
+          <el-button
+              size="mini"
               type="danger"
+              :disabled="scope.row.reviewStatus!=0"
               @click="handleDelete(scope.$index, scope.row)">删除
           </el-button>
         </template>
@@ -101,6 +124,7 @@
             <el-input
                 style="width: 350px;"
                 placeholder="请输入物品名称"
+                :disabled="editMode === 'check'"
                 v-model="formApply.name"
                 clearable>
             </el-input>
@@ -110,6 +134,7 @@
             <el-input
                 style="width: 350px;"
                 placeholder="请输入申请数量"
+                :disabled="editMode === 'check'"
                 v-model="formApply.num"
                 clearable>
             </el-input>
@@ -119,6 +144,7 @@
             <el-input
                 style="width: 350px;"
                 placeholder="请输入申请物品单位"
+                :disabled="editMode === 'check'"
                 v-model="formApply.unit"
                 clearable>
             </el-input>
@@ -128,13 +154,14 @@
             <el-input
                 style="width: 350px;"
                 placeholder="请输入申请备注"
+                :disabled="editMode === 'check'"
                 v-model="formApply.remark"
                 clearable>
             </el-input>
           </div>
           <div class="d-flex align-items-center mb-15">
             <p class="w-120 text-left font-16">紧急程度:</p>
-            <el-select style="width:350px;" v-model="formApply.emergencyLevel" placeholder="请选择">
+            <el-select :disabled="editMode === 'check'" style="width:350px;" v-model="formApply.emergencyLevel" placeholder="请选择">
               <el-option
                   v-for="item in situationOptions"
                   :key="item.value"
@@ -143,9 +170,27 @@
               </el-option>
             </el-select>
           </div>
-          <div>
-            <el-button type="primary" @click="confirm">确定</el-button>
+          <div class="d-flex align-items-center mb-15" v-if="editMode === 'check'">
+            <p class="w-120 text-left font-16">审核状态:</p>
+            <el-tag v-if="formApply.reviewStatus == 0" type="warning">待审核</el-tag>
+            <el-tag v-if="formApply.reviewStatus == 1" type="success">审核通过</el-tag>
+            <el-tag v-if="formApply.reviewStatus == 2" type="danger">审核拒绝</el-tag>
           </div>
+          <div class="d-flex align-items-center mb-15" v-if="editMode === 'check'">
+            <p class="w-120 text-left font-16">审批备注:</p>
+            <el-input
+                style="width: 350px;"
+                type="textarea"
+                placeholder="无审批备注"
+                :disabled="editMode === 'check'"
+                v-model="formApply.reviewRemarks"
+                clearable>
+            </el-input>
+          </div>
+        </div>
+        <div class="flex flex-row justify-content-end mt-10 mr-10">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button v-if="editMode !== 'check'" type="primary" @click="confirm">确定</el-button>
         </div>
 
       </div>
@@ -164,30 +209,45 @@
     </el-pagination>
 
 
-
   </div>
 
 
 </template>
 
 <script>
-import { get,post } from "../utils/request";
+import {get, post} from "../utils/request";
 import {dateFormat} from "../utils/dateTime";
 
 export default {
   name: "HotelMaterialInfo",
   data() {
     return {
-      dialogVisible:false,
+      dialogVisible: false,
       currentCheckStatus: 'readOnly',
       materialsApplyData: [], // 列表数据
       searchParams: { // 筛选框数据
         dateRange: '',
         beginTime: '',
         endTime: '',
+        applyThing: '',
+        reviewStatus: '',
         textarea: '',
         switch: false,
       },
+      reviewStatusOptions: [
+        {
+          value: 0,
+          label: '待审核'
+        },
+        {
+          value: 1,
+          label: '审核通过'
+        },
+        {
+          value: 2,
+          label: '审核拒绝'
+        }
+      ],
       situationOptions: [{
         value: 0,
         label: '不紧急'
@@ -205,7 +265,7 @@ export default {
         remark: '',
         status: '',
       },
-
+      editMode: 'add',
       pageNum: 0,
       form: {
         textarea: '',
@@ -223,7 +283,7 @@ export default {
       }
 
     },
-    "form.hotel"(val, oldVal){
+    "form.hotel"(val, oldVal) {
       this.getIsolationRoomType()
     }
   },
@@ -240,6 +300,8 @@ export default {
         },
         beginTime: this.searchParams.beginTime,
         endTime: this.searchParams.endTime,
+        applyThing: this.searchParams.applyThing,
+        reviewStatus: this.searchParams.reviewStatus
       }
       this.page = 1
       this.reviewListRequest(data)
@@ -266,7 +328,6 @@ export default {
             console.log(err);
           })
     },
-
 
 
     // 列表获取函数
@@ -297,6 +358,8 @@ export default {
         },
         beginTime: this.searchParams.beginTime,
         endTime: this.searchParams.endTime,
+        applyThing: this.searchParams.applyThing,
+        reviewStatus: this.searchParams.reviewStatus
       }
       this.reviewListRequest(data)
     },
@@ -312,6 +375,8 @@ export default {
         },
         beginTime: this.searchParams.beginTime,
         endTime: this.searchParams.endTime,
+        applyThing: this.searchParams.applyThing,
+        reviewStatus: this.searchParams.reviewStatus
       }
       this.reviewListRequest(data)
     },
@@ -327,6 +392,8 @@ export default {
         },
         beginTime: this.searchParams.beginTime,
         endTime: this.searchParams.endTime,
+        applyThing: this.searchParams.applyThing,
+        reviewStatus: this.searchParams.reviewStatus
       }
       this.reviewListRequest(data)
     },
@@ -378,18 +445,40 @@ export default {
     },
 
 
-
     // 重置函数
     reset() {
       this.searchParams = {
         dateRange: '',
         beginTime: '',
         endTime: '',
+        reviewStatus: '',
+        applyThing: ''
       }
     },
 
-    add(){
-      return this.dialogVisible=true
+    openFormDialog(val,row) {
+      if (val === 'add') {
+        this.formApply = {
+          name: '',
+          num: '',
+          unit: '',
+          remark: '',
+          status: '',
+        }
+      }else if (val === 'check') {
+        this.formApply = {
+          name: row.applyThing,
+          num: row.applyNum,
+          unit: row.thingUnit,
+          remark: row.applyRemarks,
+          emergencyLevel: row.emergencyLevel,
+          reviewRemarks: row.reviewRemarks,
+          reviewStatus: row.reviewStatus
+        }
+        console.log(row)
+      }
+      this.dialogVisible = true
+      this.editMode = val
     },
     confirm() {
       const data = {
@@ -401,19 +490,14 @@ export default {
         // id: ''?
       }
       post('/api/materialsApply/apply', data)
-          .then( res => {
+          .then(res => {
             console.log(res);
-            this.dialogVisible=false;
+            this.dialogVisible = false;
           })
-          .catch( err => {
+          .catch(err => {
             console.error(err);
           })
     },
-
-
-
-
-
 
 
     // 日期时间格式化

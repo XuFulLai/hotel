@@ -789,7 +789,7 @@
                 <div class="choose-discount-box flex flex-row cursor" v-for="i in confirmOrderData.personalDiscountList"
                      @click="addUseDiscount(i)">
                   <div :class="confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : ''"
-                       class="choose-discount-left flex flex-row justify-content-between align-items-end">
+                       class="choose-discount-left flex flex-row justify-content-between align-items-end" >
                     <div class="choose-discount-name">
                       {{ i.name }}
                       <el-tooltip placement="right" style="margin: 4px 4px 4px 0px;">
@@ -2265,6 +2265,10 @@ h3.sub-title .en {
 
 .comment-user-roomType {
   color: #999;
+}
+
+.choose-discount-cantUse {
+
 }
 
 /* 媒体查询 Start */
