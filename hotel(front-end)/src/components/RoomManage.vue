@@ -29,6 +29,16 @@
             </el-option>
           </el-select>
         </div>
+        <div class="d-flex align-items-center ml-5 mr-5">
+          <p style="white-space: nowrap" class="mr-5 font-16">房间性质:</p>
+          <el-select v-model="isIsolation" placeholder="请选择">
+            <el-option
+                v-for="item in isIsolationOption"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
       </div>
 
       <div class="d-flex align-items-center ml-5 mr-5">
@@ -473,6 +483,14 @@ export default {
       classList: ['status-0', 'status-1', 'status-2','status-3'],
       statusList: ['未入住', '已入住', '已预订','暂定','待消毒'],
       roomNum: '',
+      isIsolation: '',
+      isIsolationOption: [{
+        value: '0',
+        label: '普通房间'
+      }, {
+        value: '1',
+        label: '隔离房间'
+      }],
       options: [{
         value: '选项1',
         label: '黄金糕'
@@ -721,7 +739,8 @@ export default {
       let data = {
         floor: this.floorNum,
         name: this.roomNum,
-        type: this.roomType
+        type: this.roomType,
+        isIsolation: this.isIsolation
       }
       post('/api/room/getAllList', data)
           .then(res => {
@@ -1007,6 +1026,7 @@ export default {
       this.roomType = ''
       this.roomNum = ''
       this.floorNum = ''
+      this.isIsolation = ''
     }
 
     // communication(){
