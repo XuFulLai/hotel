@@ -1,9 +1,9 @@
 <template>
 
   <div class="material-main">
-    <div class="d-flex justify-content" style="padding: 10px;">
+    <div class="d-flex justify-content-between" style="padding: 10px;">
       <div class="block search">
-        <span class="demonstration">申请日期：</span>
+        <span class="demonstration">日期：</span>
         <el-date-picker
             v-model="searchParams.dateRange"
             value-format="yyyy-MM-dd"
@@ -14,24 +14,24 @@
         </el-date-picker>
       </div>
       <div class="block search">
-        <p>审核状态：</p>
-        <el-select v-model="searchParams.status" placeholder="请选择">
+        <p>物品名称：</p>
+        <el-input v-model="searchParams.applyThing" placeholder="请输入物品名称"></el-input>
+      </div>
+      <div class="block search">
+        <p>审核结果：</p>
+        <el-select v-model="searchParams.reviewStatus" placeholder="请选择">
           <el-option
-              v-for="item in statusOptions"
+              v-for="item in reviewStatusOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value">
           </el-option>
         </el-select>
       </div>
-
-      <div class="block search">
-        <p>物品名称：</p>
-        <el-input v-model="searchParams.ApplyThing" placeholder="请输入物品名称"></el-input>
-      </div>
       <el-button-group class="d-flex justify-content">
-        <el-button type="primary" icon="el-icon-search" @click="getIsolationInfo">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="getMaterialInfo">查询</el-button>
         <el-button type="info" icon="el-icon-refresh" @click="reset">重置</el-button>
+        <!--        <el-button type="primary" icon="el-icon-search" @click="add">添加</el-button>-->
       </el-button-group>
     </div>
     <el-table
@@ -217,11 +217,13 @@ export default {
       materialData: [], // 列表数据
 
       searchParams: {
-        dateRange: undefined,
-        beginTime: undefined,
-        endTime: undefined,
-        reviewStatus: undefined,
-        ApplyThing: undefined
+        dateRange: '',
+        beginTime: '',
+        endTime: '',
+        applyThing: '',
+        reviewStatus: '',
+        textarea: '',
+        switch: false,
       },
       pageNum: 0,
       dialogVisible: false,
@@ -231,16 +233,20 @@ export default {
       },
       currentIndex: '',
       page: '',
-      statusOptions: [{
-        value: 0,
-        label: '待审核'
-      }, {
-        value: 1,
-        label: '审核通过'
-      }, {
-        value: 2,
-        label: '审核拒绝'
-      }],
+      reviewStatusOptions: [
+        {
+          value: 0,
+          label: '待审核'
+        },
+        {
+          value: 1,
+          label: '审核通过'
+        },
+        {
+          value: 2,
+          label: '审核拒绝'
+        }
+      ],
     }
   },
   // watch: {
@@ -356,8 +362,8 @@ export default {
                 message: '成功',
                 type: 'success',
                 duration: 2000
-              });          
-            }     
+              });
+            }
             this.dialogVisible = false
             this.$router.go(0);
 
@@ -451,26 +457,25 @@ export default {
         return
       }
     },
-    getIsolationInfo(num) {
-      console.log("num",num)
+    getMaterialInfo() {
+
       let data = {
         page: {
           page: 1,
           size: 10
         },
-        ApplyThing: this.searchParams.ApplyThing,
-        reviewStatus: this.searchParams.reviewStatus,
         beginTime: this.searchParams.beginTime,
         endTime: this.searchParams.endTime,
+        applyThing: this.searchParams.applyThing,
+        reviewStatus: this.searchParams.reviewStatus
 
       }
-      if (num && !isNaN(num)) {
-        data.page.page = num
-      }
-      post("api/isolationInfo/page",data).then(res => {
-        this.isolationData = res.data.data.records
-      })
+      this.page = 1
+      this.materialListRequest(data)
     },
+
+
+
     dateFormatter(val) {
       // console.log(val);
       var d = new Date(val);

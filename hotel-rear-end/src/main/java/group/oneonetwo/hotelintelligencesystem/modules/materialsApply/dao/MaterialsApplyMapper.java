@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MaterialsApplyMapper extends BaseMapper<MaterialsApplyPO> {
 
-    public Page<MaterialsApplyVO> getReviewPage(@Param("page") Page page, @Param("vo") MaterialsApplyVO vo);
+
 
 
 }

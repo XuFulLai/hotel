@@ -169,11 +169,20 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
     public Page<MaterialsApplyVO> getReviewPage(MaterialsApplyVO materialsApplyVO) {
         QueryWrapper<MaterialsApplyPO> wrapper=new QueryWrapper<>();
         if("admin".equals(authUtils.getRole())){
-            wrapper.eq("u_type",1).or().eq("u_type",2);
+            wrapper.and(w -> w.eq("u_type",1).or().eq("u_type",2));
         }else if("hotel_admin".equals(authUtils.getRole())){
             wrapper.eq("hotel_id", authUtils.getUserHotelId());
         }else {
             throw  new CommonException("该角色无权调用getReviewPage");
+        }
+        if (materialsApplyVO.getReviewStatus() != null) {
+            wrapper.eq("review_status",materialsApplyVO.getReviewStatus());
+        }
+        if (!WStringUtils.isBlank(materialsApplyVO.getApplyThing())) {
+            wrapper.like("apply_thing",materialsApplyVO.getApplyThing());
+        }
+        if (!WStringUtils.isBlank(materialsApplyVO.getBeginTime()) && !WStringUtils.isBlank(materialsApplyVO.getEndTime())) {
+            wrapper.between("create_time",materialsApplyVO.getBeginTime(),materialsApplyVO.getEndTime());
         }
         Page<MaterialsApplyPO> page = new Page<>(materialsApplyVO.getPage().getPage(),materialsApplyVO.getPage().getSize());
         Page<MaterialsApplyPO> poiPage= (Page<MaterialsApplyPO>) materialsApplyMapper.selectPage(page,wrapper);
