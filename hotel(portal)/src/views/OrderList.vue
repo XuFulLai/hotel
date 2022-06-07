@@ -158,18 +158,18 @@
 
     <el-dialog
         class="wallet-dialog"
-        title="请输入钱包密码"
+        :title="$t('hotelDetails.payTitle')"
         :visible.sync="payVisible"
         width="95%"
         center
     >
       <div class="flex flex-column pay-box align-items-center">
-        <div>当前支付金额</div>
+        <div>{{ $t('hotelDetails.payment') }}</div>
         <div class="pay-box-price"><span style="font-size: 26px">￥</span>{{ payForm.lastPay }}</div>
-        <el-input placeholder="请输入密码" v-model="payForm.walletPwd" show-password></el-input>
+        <el-input :placeholder="$t('login.passwordTips')" v-model="payForm.walletPwd" show-password></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="pay">确 定</el-button>
+        <el-button type="primary" @click="pay">{{ $t('common.confirm') }}</el-button>
       </span>
 
     </el-dialog>
@@ -566,6 +566,7 @@ export default {
             lastPay: undefined,
             walletPwd: undefined
           }
+          this.$router.go(0)
         } else {
           this.$message({
             message: res.data.msg,
@@ -801,6 +802,15 @@ export default {
 .demonstration {
   display: block;
   margin-bottom: 8px;
+}
+
+.pay-box-price {
+  font-size: 56px;
+  font-weight: 700;
+  color: #ff4d6a;
+  width: 100%;
+  text-align: center;
+  margin: 10px 0 30px 0;
 }
 
 @media screen and (max-width: 767.9px) { /* 页面测试无法显示767，实际是767.2px */ 

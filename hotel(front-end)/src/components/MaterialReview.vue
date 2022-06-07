@@ -127,10 +127,9 @@
       <div class="content">
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">紧急程度:</p>
-          <el-tag v-if="form.emergencyLevel==0" type="danger">紧急</el-tag>
-          <el-tag v-if="form.emergencyLevel==1" type="warning">应隔离人员</el-tag>
-          <el-tag v-if="form.emergencyLevel==2" type="info">入境人员</el-tag>
-          <el-tag v-if="form.emergencyLevel==3">中高风险地区人员</el-tag>
+          <el-tag v-if="form.emergencyLevel==0" type="success">不紧急</el-tag>
+          <el-tag v-if="form.emergencyLevel==1" type="warning">普通紧急</el-tag>
+          <el-tag v-if="form.emergencyLevel==2" type="danger">非常紧急</el-tag>
         </div>
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">申请物品:</p>

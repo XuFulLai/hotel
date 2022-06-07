@@ -119,6 +119,14 @@ export default {
         email: 'email',
         tips: 'Need to submit 48 hours in advance',
         submitBtn: 'Submit',
+
+        unitPrice: 'Unit Price',
+        price: 'Price',
+        spend: 'Spend',
+        confirmOrder: 'Confirm Order',
+        coupon: 'Coupon',
+        payTitle: 'Please enter the wallet password',
+        payment: 'Payment'
         
     },    
     isolationList: {
@@ -126,7 +134,7 @@ export default {
     },
     orderList: {
         orderId: 'OrderID:',
-        goPayOrder:'go pay order',
+        goPayOrder:'Go to pay',
         cancelOrder: 'Cancel the order',
         writeComment: 'Write comment',
         hotelName: 'Hotel name:',

@@ -38,7 +38,7 @@
             and is_deleted = 0
 
             )
-          and is_deleted = 0
+          and is_deleted = 0 and visible = 1
         order by p_id,sort
     </select>
 </mapper>

@@ -14,6 +14,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.po.M
 import group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.vo.MaterialsApplyVO;
 import group.oneonetwo.hotelintelligencesystem.modules.materialsApply.service.IMaterialsApplyService;
 import group.oneonetwo.hotelintelligencesystem.tools.ConvertUtils;
+import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,15 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
     public Page<MaterialsApplyVO> getPage(MaterialsApplyVO materialsApplyVO) {
         QueryWrapper<MaterialsApplyPO> wrapper=new QueryWrapper<>();
         wrapper.eq("create_by",authUtils.getUid());
+        if (!WStringUtils.isBlank(materialsApplyVO.getApplyThing())) {
+            wrapper.like("apply_thing",materialsApplyVO.getApplyThing());
+        }
+        if (materialsApplyVO.getReviewStatus() != null) {
+            wrapper.eq("review_status",materialsApplyVO.getReviewStatus());
+        }
+        if (!WStringUtils.isBlank(materialsApplyVO.getBeginTime()) && !WStringUtils.isBlank(materialsApplyVO.getEndTime())) {
+            wrapper.between("create_time",materialsApplyVO.getBeginTime(),materialsApplyVO.getEndTime());
+        }
         Page<MaterialsApplyPO> page = new Page<>(materialsApplyVO.getPage().getPage(),materialsApplyVO.getPage().getSize());
         Page<MaterialsApplyPO> poiPage= (Page<MaterialsApplyPO>) materialsApplyMapper.selectPage(page,wrapper);
         return ConvertUtils.transferPage(poiPage, MaterialsApplyVO.class);
