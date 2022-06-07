@@ -1,26 +1,39 @@
 <template>
 
   <div class="material-main">
+    <div class="d-flex justify-content" style="padding: 10px;">
+      <div class="block search">
+        <span class="demonstration">申请日期：</span>
+        <el-date-picker
+            v-model="searchParams.dateRange"
+            value-format="yyyy-MM-dd"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+        </el-date-picker>
+      </div>
+      <div class="block search">
+        <p>审核状态：</p>
+        <el-select v-model="searchParams.status" placeholder="请选择">
+          <el-option
+              v-for="item in statusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
 
-    <!-- <div class="d-flex justify-content-between" style="padding: 10px;">
-        <div class="block search">
-            <span class="demonstration">日期：</span>
-            <el-date-picker
-                v-model="searchParams.dateRange"
-                value-format="yyyy-MM-dd"
-                type="daterange"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期">
-            </el-date-picker>
-        </div>
-        <el-button-group class="d-flex justify-content">
-            <el-button type="primary" icon="el-icon-search" @click="getMaterialList">查询</el-button>
-            <el-button type="info" icon="el-icon-refresh" @click="reset">重置</el-button>
-        </el-button-group>
-    </div> -->
-
-    <!-- 表格 -->
+      <div class="block search">
+        <p>物品名称：</p>
+        <el-input v-model="searchParams.ApplyThing" placeholder="请输入物品名称"></el-input>
+      </div>
+      <el-button-group class="d-flex justify-content">
+        <el-button type="primary" icon="el-icon-search" @click="getIsolationInfo">查询</el-button>
+        <el-button type="info" icon="el-icon-refresh" @click="reset">重置</el-button>
+      </el-button-group>
+    </div>
     <el-table
         stripe
         border
@@ -52,6 +65,7 @@
           <el-tag v-if="scope.row.emergencyLevel==2" type="danger">非常紧急</el-tag>
         </template>
       </el-table-column>
+
       <el-table-column
           align="center"
           prop="applyRemarks"
@@ -65,6 +79,14 @@
           <el-tag v-if="scope.row.reviewStatus==0" type="warning">待审核</el-tag>
           <el-tag v-if="scope.row.reviewStatus==1" type="success">审核通过</el-tag>
           <el-tag v-if="scope.row.reviewStatus==2" type="danger">审核拒绝</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+          align="center"
+          prop="createTime"
+          label="申请时间">
+        <template slot-scope="scope">
+          {{ dateFormatter(scope.row.createTime) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -168,8 +190,8 @@
       </div>
       <span slot="footer" class="dialog-footer d-flex justify-content-between">
           <div>
-            <!-- <el-button @click="prev">上一条</el-button>
-            <el-button @click="next">下一条</el-button> -->
+            <el-button @click="prev">上一条</el-button>
+            <el-button @click="next">下一条</el-button>
           </div>
 
           <div v-if="currentCheckStatus == 'check'">
@@ -194,10 +216,13 @@ export default {
     return {
       currentCheckStatus:"readOnly",
       materialData: [], // 列表数据
-      searchParams: { // 筛选框数据
-        dateRange: '',
-        beginTime: '',
-        endTime: '',
+
+      searchParams: {
+        dateRange: undefined,
+        beginTime: undefined,
+        endTime: undefined,
+        reviewStatus: undefined,
+        ApplyThing: undefined
       },
       pageNum: 0,
       dialogVisible: false,
@@ -206,7 +231,17 @@ export default {
         switch: false,
       },
       currentIndex: '',
-      page: ''
+      page: '',
+      statusOptions: [{
+        value: 0,
+        label: '待审核'
+      }, {
+        value: 1,
+        label: '审核通过'
+      }, {
+        value: 2,
+        label: '审核拒绝'
+      }],
     }
   },
   // watch: {
@@ -325,6 +360,7 @@ export default {
               });          
             }     
             this.dialogVisible = false
+            this.$router.go(0);
 
           })
           .catch(err => {
@@ -350,6 +386,14 @@ export default {
       post('/api/materialsApply/review', data)
           .then(res => {
             console.log(res);
+            if (res.data.code == 200) {
+              this.$message({
+                message: '成功',
+                type: 'success',
+                duration: 2000
+              });
+            }
+            this.dialogVisible=false;
           })
           .catch(err => {
             console.error(err);
@@ -364,6 +408,106 @@ export default {
         endTime: '',
       }
     },
+    prev() {
+      this.currentIndex--
+      let row = this.materialData[this.currentIndex]
+      console.log(row);
+      if (row) {
+        this.form = row
+      } else if (this.currentIndex == -1 && row == undefined) {
+        this.page--
+        this.prevPage(this.page)
+        this.currentIndex = 9
+        row = this.materialData[this.currentIndex]
+        this.form = row
+      } else {
+        this.$message({
+          message: '已经是第一条了！',
+          type: 'warning',
+          duration: 2000
+        });
+        return
+      }
+    },
+
+    // 下一条
+    next() {
+      this.currentIndex++
+      let row = this.materialData[this.currentIndex]
+      console.log(row);
+      if (row) {
+        this.form = row
+      } else if (this.currentIndex == 10 && row == undefined) {
+        this.page++
+        this.nextPage(this.page)
+        this.currentIndex = 0
+        row = this.materialData[this.currentIndex]
+        this.form = row
+      } else {
+        this.$message({
+          message: '已经是最后一条了！',
+          type: 'warning',
+          duration: 2000
+        });
+        return
+      }
+    },
+    getIsolationInfo(num) {
+      console.log("num",num)
+      let data = {
+        page: {
+          page: 1,
+          size: 10
+        },
+        ApplyThing: this.searchParams.ApplyThing,
+        reviewStatus: this.searchParams.reviewStatus,
+        beginTime: this.searchParams.beginTime,
+        endTime: this.searchParams.endTime,
+
+      }
+      if (num && !isNaN(num)) {
+        data.page.page = num
+      }
+      post("api/isolationInfo/page",data).then(res => {
+        this.isolationData = res.data.data.records
+      })
+    },
+    dateFormatter(val) {
+      // console.log(val);
+      var d = new Date(val);
+
+      var year = d.getFullYear();       //年
+      var month = d.getMonth() + 1;     //月
+      var day = d.getDate();            //日
+
+      var hh = d.getHours();            //时
+      var mm = d.getMinutes();          //分
+      var ss = d.getSeconds();           //秒
+
+      var clock = year + "/";
+
+      if (month < 10)
+        clock += "0";
+
+      clock += month + "/";
+
+      if (day < 10)
+        clock += "0";
+
+      clock += day + " ";
+
+      if (hh < 10)
+        clock += "0";
+
+      clock += hh + ":";
+      if (mm < 10) clock += '0';
+      clock += mm + ":";
+
+      if (ss < 10) clock += '0';
+      clock += ss;
+      return (clock);
+    }
+
 
   }
 }
@@ -378,5 +522,14 @@ export default {
   height: 100%;
   background: #FFFFFF;
   box-shadow: 0px 5px 30px 0px rgba(22, 115, 255, 0.1);
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 10px;
+  font-size: 14px;
+  white-space: nowrap;
 }
 </style>

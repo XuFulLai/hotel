@@ -469,6 +469,7 @@ export default {
                     duration: 2000
                 });                        
             }
+            this.dialogVisible=false
             // this.dialogVisible = false
           })
           .catch(err => {
@@ -496,6 +497,7 @@ export default {
           .then(res => {
             console.log(res);
             this.form.reviewStatus = 2
+            this.dialogVisible=false
           })
           .catch(err => {
             console.error(err);

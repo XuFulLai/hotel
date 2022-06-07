@@ -1,8 +1,12 @@
 package group.oneonetwo.hotelintelligencesystem.modules.materialsApply.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.po.MaterialsApplyPO;
+import group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.vo.MaterialsApplyVO;
+import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,6 +18,8 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface MaterialsApplyMapper extends BaseMapper<MaterialsApplyPO> {
+
+    public Page<MaterialsApplyVO> getReviewPage(@Param("page") Page page, @Param("vo") MaterialsApplyVO vo);
 
 
 }

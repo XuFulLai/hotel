@@ -30,4 +30,23 @@
         review_remarks,create_by,create_time,
         update_by,update_time,is_deleted,hotel_id
     </sql>
+    <select id="getPage" resultType="group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.vo.MaterialsApplyVO">
+        select <include refid="Base_Column_List"/> from materials_apply
+        <where>
+            <if test="vo.beginTime != null and vo.beginTime != '' and vo.endTime != null and vo.endTime != ''">
+                and create_time between #{vo.beginTime} and #{vo.endTime}
+            </if>
+            <if test="vo.reviewStatus != null and vo.reviewStatus != ''">
+                and review_status = #{vo.reviewStatus}
+            </if>
+
+            <if test="vo.ApplyThing != null and vo.ApplyThing != ''">
+                and Apply_thing like concat('%', #{vo.ApplyThing}, '%')
+            </if>
+            and is_deleted = 0
+        </where>
+        order by create_time DESC
+
+    </select>
+
 </mapper>
