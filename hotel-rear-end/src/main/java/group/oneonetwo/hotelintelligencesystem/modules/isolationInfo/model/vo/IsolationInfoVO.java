@@ -37,6 +37,7 @@ public class IsolationInfoVO  implements Serializable {
     @ApiModelProperty("隔离人员id")
     private String uId;
 
+    @ExcelIgnore()
     @ApiModelProperty("用户名")
     private String userName;
 
@@ -122,7 +123,7 @@ public class IsolationInfoVO  implements Serializable {
     /**
      * 房间id
      */
-    @ExcelProperty(value = "人员状态",index = 9)
+    @ExcelProperty(value = "人员状态(0:正在隔离;1,解除隔离;2,阳性入院)",index = 9)
     @ApiModelProperty("人员状态(0:正在隔离;1,解除隔离;2,阳性入院)")
     private  Integer status;
 
@@ -130,40 +131,41 @@ public class IsolationInfoVO  implements Serializable {
     @ApiModelProperty("房间id")
     private String roomId;
 
+    @ExcelProperty(value = "酒店名字",index = 10)
+    @ApiModelProperty("酒店名字")
+    private String hotelName;
+
     /**
      * 房间名称
      */
-    @ExcelProperty(value = "房间名称",index = 10)
+    @ExcelProperty(value = "房间名称",index = 11)
     @ApiModelProperty("房间名称")
     private String roomName;
+
+    @ExcelProperty(value = "房间类型",index = 12)
+    @ApiModelProperty("房间类型")
+    private String roomTypeName;
 
     /**
      * 省份
      */
-    @ExcelProperty(value = "省份",index = 11)
+    @ExcelProperty(value = "省份",index = 13)
     @ApiModelProperty("省份")
     private String province;
 
     /**
      * 城市
      */
-    @ExcelProperty(value = "城市",index = 12)
+    @ExcelProperty(value = "城市",index = 14)
     @ApiModelProperty("城市")
     private String city;
 
+    @ExcelIgnore()
     @ApiModelProperty("来源(0,防疫人员分配,1,自己申报)")
     private Integer way;
 
-    /**
-     * 是否删除
-     */
-    @ExcelProperty(value = "酒店名字",index = 14)
-    @ApiModelProperty("酒店名字")
-    private String hotelName;
 
-    @ExcelProperty(value = "房间号",index = 15)
-    @ApiModelProperty("房间号")
-    private String roomTypeName;
+
 
 
 
@@ -189,7 +191,7 @@ public class IsolationInfoVO  implements Serializable {
     /**
      * 创建时间
      */
-    @ExcelProperty(value = "创建时间",index = 13)
+    @ExcelProperty(value = "创建时间",index = 15)
     @ApiModelProperty("创建时间")
     private Date createTime;
 
@@ -208,39 +210,8 @@ public class IsolationInfoVO  implements Serializable {
     private Date updateTime;
 
 
-    public Integer getStatus() {
-        return status;
-    }
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-
-    public String getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(String beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public Integer getWay() {
-        return way;
-    }
-
-    public void setWay(Integer way) {
-        this.way = way;
-    }
-
+    @ExcelIgnore()
     private Page page;
 
     public Page getPage() {
@@ -434,6 +405,40 @@ public class IsolationInfoVO  implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public Integer getWay() {
+        return way;
+    }
+
+    public void setWay(Integer way) {
+        this.way = way;
     }
 
     @Override

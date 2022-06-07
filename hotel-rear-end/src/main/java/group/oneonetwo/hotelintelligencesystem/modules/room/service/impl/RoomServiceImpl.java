@@ -457,7 +457,7 @@ public class RoomServiceImpl implements IRoomService {
             if (!WStringUtils.isBlank(roomType)) {
                 wrapper.eq("type", roomType);
             }
-            wrapper.eq("hotel_id", hotelId).eq("is_isolation", 1);
+            wrapper.eq("hotel_id", hotelId).eq("is_isolation", 1).eq("status",RoomStatus.UNUSED.getCode());
             List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
             if (roomPOS.isEmpty()) {
                 throw new CommonException("该隔离酒店符合条件的房间不足,请重新选择!");

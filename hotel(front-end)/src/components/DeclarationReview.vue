@@ -168,9 +168,9 @@
               clearable>
           </el-input>
         </div>
-        <div v-if="form.type==0 || form.type==1" class="d-flex align-items-center mb-15">
+        <div  class="d-flex align-items-center mb-15">
             <p class="w-100 text-left font-16">酒店:</p>
-            <el-select style="width:350px;" v-model="form.hotel" placeholder="请选择">
+            <el-select style="width:350px;" v-model="form.hotelId" placeholder="请选择" :disabled="(form.type!=0 && form.type!=1) || ((form.type==0 || form.type==1) && form.reviewStatus != 0) || currentCheckStatus == 'readOnly'">
                 <el-option
                     v-for="item in hotelOptions"
                     :key="item.id"
@@ -181,7 +181,7 @@
         </div>
         <div v-if="form.type==0 || form.type==1" class="d-flex align-items-center mb-15">
             <p class="w-100 text-left font-16">房间类型:</p>
-            <el-select style="width:350px;" v-model="form.roomType" placeholder="请选择">
+            <el-select style="width:350px;" v-model="form.roomType" placeholder="请选择" :disabled="(form.type!=0 && form.type!=1) || ((form.type==0 || form.type==1) && form.reviewStatus != 0) || currentCheckStatus == 'readOnly'">
                 <el-option
                     v-for="item in roomTypeOptions"
                     :key="item.id"
@@ -261,7 +261,7 @@ export default {
       }
 
     },
-    "form.hotel"(val, oldVal){
+    "form.hotelId"(val, oldVal){
         this.getIsolationRoomType()
     }    
   },
@@ -439,7 +439,7 @@ export default {
       const data = {
           isIsolation: 1
       }
-      get(`api/roomType/currentRoomTypeList/${this.form.hotel}`, data)
+      get(`api/roomType/currentRoomTypeList/${this.form.hotelId}`, data)
         .then( res => {
             console.log(res);
             this.roomTypeOptions = res.data.data
