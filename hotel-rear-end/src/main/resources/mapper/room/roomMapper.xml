@@ -90,7 +90,7 @@
                 <if test="vo.isIsolation != null and (vo.isIsolation == 0 or vo.isIsolation == 1)">
                     and r.is_isolation = #{vo.isIsolation}
                 </if>
-                <if test="vo.status!=null and vo.status!=''">
+                <if test="vo.status!=null">
                     and r.status=#{vo.status}
                 </if>
                     and r.is_deleted = 0

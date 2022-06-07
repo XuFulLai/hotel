@@ -237,7 +237,7 @@ public class RoomServiceImpl implements IRoomService {
             }
         }
 
-        int[] pays = new int[2];
+        double[] pays = new double[2];
         RoomVO thisRoom = selectOneByIdReturnVO(checkInVO.getId());
         //当该房间是被预定且订单id不同时,重新分配房间
         if (thisRoom.getStatus() == 2 && (WStringUtils.isBlank(checkInVO.getOrderId()) || !thisRoom.getOrderId().equals(checkInVO.getOrderId()))) {
@@ -308,8 +308,8 @@ public class RoomServiceImpl implements IRoomService {
         RoomPO thisRoom = selectOneById(id);
         OrderVO thisOrder = orderService.selectOneByIdReturnVO(thisRoom.getOrderId());
         Integer btTime = 0;
-        int[] pays = new int[2];
-        int extraFee = 0;
+        double[] pays = new double[2];
+        double extraFee = 0;
         RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(thisRoom.getType());
         //计算基本房费
         pays[0] = Integer.parseInt(thisOrder.getPay());

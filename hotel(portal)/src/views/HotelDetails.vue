@@ -789,7 +789,7 @@
                 <div class="choose-discount-box flex flex-row cursor" v-for="i in confirmOrderData.personalDiscountList"
                      @click="addUseDiscount(i)">
                   <div :class="confirmOrderData.useDiscountMap.has(i.id) ? 'choose-discount-chosen' : ''"
-                       class="choose-discount-left flex flex-row justify-content-between align-items-end">
+                       class="choose-discount-left flex flex-row justify-content-between align-items-end" >
                     <div class="choose-discount-name">
                       {{ i.name }}
                       <el-tooltip placement="right" style="margin: 4px 4px 4px 0px;">
@@ -986,6 +986,7 @@ export default {
       totalFee: 0,
       provinceVal: '',
       pageNum: 0,
+      userInfo: {},
       options: [
         {
           value: this.$t('hotelList.beijing'),
@@ -1121,6 +1122,16 @@ export default {
     },
   },
   watch: {
+    "switchType"(val, oldVal) {
+      // console.log(val)
+      if(!val) {
+        this.phoneNum = this.userInfo.phone
+        this.userEmail = this.userInfo.email
+        console.log(this.userInfo)
+      }
+
+
+    },
     "dateValue"(val, oldVal) {//普通的watch监听
       // console.log("a: "+val, oldVal);
       this.bookDay = 0
@@ -1186,6 +1197,7 @@ export default {
     this.getHotelDiscountList()
     this.getHotelAvgScore()
     this.getCommentsList()
+    this.getUserInfo()
   },
   methods: {
     // 评论展开按钮
@@ -1563,6 +1575,18 @@ export default {
         }
 
       })
+    },
+    //根据id获取用户信息
+    getUserInfo() {
+      let id = localStorage.getItem('userId')
+      get('/api/user/get/' + id)
+          .then(res => {
+            this.userInfo = res.data.data
+            this.userInfo.password = ''
+          })
+          .catch(err => {
+            console.log(err);
+          })
     },
 
     confirm() {
@@ -2241,6 +2265,10 @@ h3.sub-title .en {
 
 .comment-user-roomType {
   color: #999;
+}
+
+.choose-discount-cantUse {
+
 }
 
 /* 媒体查询 Start */

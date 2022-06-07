@@ -8,6 +8,7 @@ import group.oneonetwo.hotelintelligencesystem.enums.DiscountEnums;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 
+import group.oneonetwo.hotelintelligencesystem.modules.discountUser.model.vo.DiscountUserAndDiscountsVO;
 import group.oneonetwo.hotelintelligencesystem.modules.discountUser.service.IDiscountUserService;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.dao.DiscountsMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.discounts.model.po.DiscountsPO;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
@@ -136,13 +138,33 @@ public class DiscountsServiceImpl implements IDiscountsService {
      * @return int[0]为原价, int[1]为折后价
      */
     @Override
-    public int[] countPay(Integer days, Integer price, String discount) {
-        int[] pays = new int[2];
+    public double[] countPay(Integer days, double price, String discount) {
+        //检查使用的优惠券是否合法
+        discountGroupIsIllegal(discount,price,days);
+        double[] pays = new double[2];
         pays[0] = days * price;
         //下面可写优惠政策
-
-
-        pays[1] = pays[0];
+        if (WStringUtils.isBlank(discount)) {
+            pays[1] = pays[0];
+        }else {
+            double reduceFee = 0;
+            List<String> discountIds = Arrays.stream(discount.split(",")).collect(Collectors.toList());
+            QueryWrapper<DiscountsPO> wrapper = new QueryWrapper<DiscountsPO>();
+            wrapper.in("id",discountIds);
+            List<DiscountsPO> discountsPOS = discountsMapper.selectList(wrapper);
+            Iterator<DiscountsPO> iterator = discountsPOS.iterator();
+            while(iterator.hasNext()) {
+                DiscountsPO item = iterator.next();
+                if (DiscountEnums.DISCOUNTS_TYPE_DISCOUNT.getCode().equals(item.getDiscountsType())) {
+                    reduceFee += price*(1-item.getDiscounts());
+                }else if (DiscountEnums.DISCOUNTS_TYPE_REDUCTION.getCode().equals(item.getDiscountsType())) {
+                    reduceFee += item.getDiscounts();
+                }
+            }
+            pays[1] = price - reduceFee;
+        }
+        //标记优惠券使用
+        discountUserService.changeDiscountStatus(discount,DiscountEnums.DISCOUNT_USER_USED.getCode());
         return pays;
     }
 
@@ -272,6 +294,66 @@ public class DiscountsServiceImpl implements IDiscountsService {
         }
 
         return res;
+    }
+
+    /**
+     * 优惠券组是否非法(检测是否拥有未使用的、是否过期、是否互斥、是否满足满减条件)
+     * @param discount
+     * @return 合法：false
+     */
+    private boolean discountGroupIsIllegal(String discount,double price,Integer days) {
+        //不用券时百分百合法
+        if (WStringUtils.isBlank(discount)) {
+            return false;
+        }
+        String[] split = discount.split(",");
+        Set<String> discounts = Arrays.stream(split).collect(Collectors.toSet());
+        Set<String> myDiscounts = discountUserService.getMyDiscount().stream()
+                .map(DiscountUserAndDiscountsVO::getId).collect(Collectors.toSet());
+        if (myDiscounts.isEmpty()) {
+            throw new CommonException("没有可用的优惠券");
+        }
+        for (String s : split) {
+            DiscountsPO discountsPO = selectOneById(s);
+            //检查存在性
+            if (discountsPO == null) {
+                throw new CommonException("ID为" + s + "的优惠券不存在");
+            }
+            //检查是否拥有未使用(包括检查过期)
+            if (!myDiscounts.contains(s)) {
+                throw new CommonException("你没有名为\"" + discountsPO.getName() + "\"优惠券或该优惠券已过期");
+            }
+            //检查互斥
+            if (DiscountEnums.EXCLUSIVE_TYPE_NONE.getCode().equals(discountsPO.getExclusiveType())) {
+                //不互斥
+
+            }else if (DiscountEnums.EXCLUSIVE_TYPE_ALL.getCode().equals(discountsPO.getExclusiveType())) {
+                //全互斥
+                if (discounts.size() > 1) {
+                    throw new CommonException("\"" + discountsPO.getName() + "\"优惠券与所选优惠券互斥");
+                }
+            }else {
+                //部分互斥
+                String[] exclusive = discountsPO.getExclusiveRange().split(",");
+                for (String s1 : exclusive) {
+                    if (discounts.contains(s1)) {
+                        throw new CommonException("\"" + discountsPO.getName() + "\"优惠券与所选优惠券互斥");
+                    }
+                }
+            }
+            //检查使用条件
+            if (DiscountEnums.EFFECT_TYPE_MONEY.getCode().equals(discountsPO.getEffectType())) {
+                if (discountsPO.getEffectCondition() > price) {
+                    throw new CommonException("\"" + discountsPO.getName() + "\"优惠券未满足使用条件");
+                }
+            }else if (DiscountEnums.EFFECT_TYPE_DAYS.getCode().equals(discountsPO.getEffectType())) {
+                if (discountsPO.getEffectCondition() > days) {
+                    throw new CommonException("\"" + discountsPO.getName() + "\"优惠券未满足使用条件");
+                }
+            }
+        }
+
+        return false;
     }
 
 

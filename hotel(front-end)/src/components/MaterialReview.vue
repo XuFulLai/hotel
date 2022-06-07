@@ -179,6 +179,7 @@
     </span>
     </el-dialog>
 
+
   </div>
 
 </template>
@@ -236,7 +237,7 @@ export default {
 
     // 列表获取函数
     materialListRequest(data) {
-      post('/api/materialsApply/page', data)
+      post('/api/materialsApply/reviewPage', data)
           .then(res => {
             console.log(res);
             this.materialData = res.data.data.records

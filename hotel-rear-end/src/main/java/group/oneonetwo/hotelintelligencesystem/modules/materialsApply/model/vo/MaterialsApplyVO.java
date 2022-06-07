@@ -1,5 +1,6 @@
 package group.oneonetwo.hotelintelligencesystem.modules.materialsApply.model.vo;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import group.oneonetwo.hotelintelligencesystem.tools.Page;
@@ -89,6 +90,27 @@ public class MaterialsApplyVO implements Serializable {
     @ApiModelProperty("创建时间")
     private Date createTime;
 
+    @ApiModelProperty("起始时间")
+    private String beginTime;
+
+    @ApiModelProperty("结束时间")
+    private String endTime;
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 
     public String getHotelId() {
         return hotelId;

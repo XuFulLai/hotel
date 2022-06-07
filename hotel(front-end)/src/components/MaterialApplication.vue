@@ -42,7 +42,7 @@
             </div>
             <div class="d-flex align-items-center mb-15">
                 <p class="w-120 text-left font-16">紧急程度:</p>
-                <el-select style="width:350px;" v-model="form.status" placeholder="请选择">
+                <el-select style="width:350px;" v-model="form.emergencyLevel" placeholder="请选择">
                     <el-option
                         v-for="item in situationOptions"
                         :key="item.value"
@@ -76,13 +76,13 @@ export default {
             },
             situationOptions: [{
                 value: 0,
-                label: '紧急'
+                label: '不紧急'
             }, {
                 value: 1,
-                label: '一般'
+                label: '普通紧急'
             }, {
                 value: 2,
-                label: '普通'
+                label: '非常紧急'
             }],
         }
     },
@@ -96,7 +96,7 @@ export default {
                 applyRemarks: this.form.remark,
                 applyThing: this.form.name,
                 thingUnit: this.form.unit,
-                reviewStatus: this.form.status,
+                emergencyLevel: this.form.emergencyLevel,
                 // id: ''?
             }
             post('/api/materialsApply/apply', data)

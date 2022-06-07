@@ -23,12 +23,6 @@ public class MaterialsApplyPO implements Serializable {
     @TableField("u_type")
     private Integer uType;
 
-    /**
-     * 申请人
-     */
-    /**
-     * 申请物品
-     */
     @TableField("apply_thing")
     private String applyThing;
 

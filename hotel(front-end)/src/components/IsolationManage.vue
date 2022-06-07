@@ -88,7 +88,9 @@
       <el-table-column
           align="center"
           prop="province"
-          label="隔离酒店">
+          label="隔离酒店"
+          min-width="150px"
+      >
         <template slot-scope="scope">
           {{ scope.row.hotelName }} - {{ scope.row.roomName }}
         </template>

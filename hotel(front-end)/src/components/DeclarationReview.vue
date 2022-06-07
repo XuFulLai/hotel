@@ -372,7 +372,7 @@ export default {
     // 上一条
     prev() {
       this.currentIndex--
-      const row = this.reviewData[this.currentIndex]
+      let row = this.reviewData[this.currentIndex]
       console.log(row);
       if (row) {
         this.form = row

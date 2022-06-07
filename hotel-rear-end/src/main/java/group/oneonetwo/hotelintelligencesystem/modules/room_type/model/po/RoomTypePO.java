@@ -6,6 +6,9 @@ import io.swagger.models.auth.In;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author 文
+ */
 @TableName("room_type")
 public class RoomTypePO implements Serializable {
     @TableId("id")
@@ -54,7 +57,7 @@ public class RoomTypePO implements Serializable {
     private String cover;
 
     @TableField("fee")
-    private Integer fee;
+    private Double fee;
 
     @TableField("sort")
     private Integer sort;
@@ -196,11 +199,11 @@ public class RoomTypePO implements Serializable {
         this.cover = cover;
     }
 
-    public Integer getFee() {
+    public Double getFee() {
         return fee;
     }
 
-    public void setFee(Integer fee) {
+    public void setFee(Double fee) {
         this.fee = fee;
     }
 
