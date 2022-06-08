@@ -115,15 +115,15 @@
           <p class="w-100 text-left">折扣类型:</p>
           <div>
 <!--            <el-radio v-model="form.type" label="0">酒店折扣</el-radio>-->
-            <el-radio v-model="form.type" label="1">酒店内个人折扣</el-radio>
+            <el-radio v-model="form.type" :label="1">酒店内个人折扣</el-radio>
 <!--            <el-radio v-model="form.type" label="2">折扣</el-radio>-->
           </div>
         </div>
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">折扣方式:</p>
           <div>
-            <el-radio v-model="form.discountsType" label="0">立减</el-radio>
-            <el-radio v-model="form.discountsType" label="1">折扣</el-radio>
+            <el-radio v-model="form.discountsType" :label="0">立减</el-radio>
+            <el-radio v-model="form.discountsType" :label="1">折扣</el-radio>
           </div>
         </div>
         <div class="d-flex align-items-center mb-15">
@@ -139,9 +139,9 @@
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">生效条件类型:</p>
           <div>
-            <el-radio v-model="form.effectType" label="0">满?天立减</el-radio>
-            <el-radio v-model="form.effectType" label="1">满?钱立减</el-radio>
-            <el-radio v-model="form.effectType" label="2">无门槛</el-radio>
+            <el-radio v-model="form.effectType" :label="0">满?天立减</el-radio>
+            <el-radio v-model="form.effectType" :label="1">满?钱立减</el-radio>
+            <el-radio v-model="form.effectType" :label="2">无门槛</el-radio>
           </div>
         </div>
         <div class="d-flex align-items-center mb-15" v-if="form.effectType && !(form.effectType == '2')">
@@ -156,9 +156,9 @@
         <div class="d-flex align-items-center mb-15">
           <p class="w-100 text-left">互斥性:</p>
           <div>
-            <el-radio v-model="form.exclusiveType" label="0">不互斥</el-radio>
-            <el-radio v-model="form.exclusiveType" label="1">与所有优惠券互斥</el-radio>
-            <el-radio v-model="form.exclusiveType" label="2">与指定优惠券互斥</el-radio>
+            <el-radio v-model="form.exclusiveType" :label="0">不互斥</el-radio>
+            <el-radio v-model="form.exclusiveType" :label="1">与所有优惠券互斥</el-radio>
+            <el-radio v-model="form.exclusiveType" :label="2">与指定优惠券互斥</el-radio>
           </div>
         </div>
         <div class="d-flex align-items-center mb-15" v-if="form.exclusiveType == '2'">
@@ -300,17 +300,17 @@ export default {
       this.discountValue = 'add'
       this.dialogVisible = true
     },
-    //修改床信息
+    //修改折扣信息
     handleModify(index, row) {
       console.log(index);
       console.log(row);
       this.form = row
       this.form.discountId = row.id
-      this.title = '修改床信息'
+      this.title = '修改折扣信息'
       this.discountValue = 'modify'
       this.dialogVisible = true
     },
-    //删除床方法
+    //删除折扣方法
     handleDelete(index, row) {
       get('/api/discounts/delete/' + row.id)
           .then(res => {
