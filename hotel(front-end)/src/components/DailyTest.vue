@@ -255,12 +255,12 @@ export default {
       testData: [], // 列表数据
       resultOptions: [
         {
-          value: 1,
-          label: '正常'
+          value: 0,
+          label: '阴性'
         },
         {
-          value: 2,
-          label: '异常'
+          value: 1,
+          label: '阳性'
         }
       ],
       testOptions: [
