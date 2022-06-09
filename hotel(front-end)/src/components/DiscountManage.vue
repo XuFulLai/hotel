@@ -144,7 +144,7 @@
             <el-radio v-model="form.effectType" :label="2">无门槛</el-radio>
           </div>
         </div>
-        <div class="d-flex align-items-center mb-15" v-if="form.effectType && !(form.effectType == '2')">
+        <div class="d-flex align-items-center mb-15" v-if="form.effectType == 0 || form.effectType == 1">
           <p class="w-100 text-left">生效条件:</p>
           <el-input
               placeholder="请输入生效的天数或钱数"
@@ -350,7 +350,7 @@ export default {
       if (value == 'add') {
         this.discountRequest(value, data)
       } else if (value == 'modify') {
-        data.id = this.discountId
+        data.id = this.form.discountId
         this.discountRequest(value, data)
       }
     },
