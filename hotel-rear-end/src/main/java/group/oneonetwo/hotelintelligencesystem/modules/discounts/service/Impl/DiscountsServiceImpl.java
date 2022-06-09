@@ -139,10 +139,10 @@ public class DiscountsServiceImpl implements IDiscountsService {
      */
     @Override
     public double[] countPay(Integer days, double price, String discount) {
-        //检查使用的优惠券是否合法
-        discountGroupIsIllegal(discount,price,days);
         double[] pays = new double[2];
         pays[0] = days * price;
+        //检查使用的优惠券是否合法
+        discountGroupIsIllegal(discount,pays[0],days);
         //下面可写优惠政策
         if (WStringUtils.isBlank(discount)) {
             pays[1] = pays[0];
