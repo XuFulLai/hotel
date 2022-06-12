@@ -1,0 +1,82 @@
+spring:
+  redis:
+    host: ## 你家服务器地址(本机则填127.0.0.1) ##
+    password: ## 你家redis密码 ##
+    port: ## 你家redis端口号,默认6379 ##
+  datasource:
+    username: ## 你家数据库密码 ##
+    password: ## 你家数据库密码 ##
+    url: jdbc:mysql://## 数据库地址 ##:## 数据库端口号 ##/## 数据库名称 ##?useAffectedRows=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  sql:
+    init:
+      mode: never
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      location: /data/temp
+  mail:
+    host: ## 邮箱域名,QQ邮箱为smtp.qq.com,其他自行baidu或者google ##
+    username: ## 邮箱名 ##
+    password: ## 服务密码 ##
+    senderName: 防疫酒店管控系统-1
+email-group:
+  configs:
+    mail-0:
+      host: ## 邮箱域名,QQ邮箱为smtp.qq.com,其他自行baidu或者google ##
+      username: ## 邮箱名 ##
+      password: ## 服务密码 ##
+      senderName: 防疫酒店管控系统-1
+    mail-1:
+      host: ## 邮箱域名,QQ邮箱为smtp.qq.com,其他自行baidu或者google ##
+      username: ## 邮箱名 ##
+      password: ## 服务密码 ##
+      senderName: 防疫酒店管控系统-2
+
+
+
+mybatis-plus:
+  configuration:
+    # 驼峰
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  global-config:
+    # 逻辑删除配置
+    db-config:
+      # 未删除
+      logic-not-delete-value: 0
+      # 删除
+      logic-delete-value: 1
+      # id类型
+      id-type: id_worker_str
+
+# token配置
+jwt:
+  # 令牌自定义标识
+  header: Authorization
+  # 令牌秘钥
+  secret: 12d8sxsm+xswxyy+2d8sxswxyybmaik/2dwzmztbdwtb/3rggdxfnjppspaparggdxfnjppspapapa+hbgwjybqyl+++++
+  # 令牌有效期（默认30分钟）
+  expireTime: 7200000
+  token-prefix: Bearer
+  iss: tomato
+  roleClaims: rol
+server:
+  port: 8080
+  tomcat:
+    basedir: /data/temp
+
+qiniuyun:
+  ak: ## 七牛云ak ##
+  sk: ## 七牛云sk ##
+  bucket: ## 云空间名 ##
+  domain: ## 域名 ##
+
+
+
+
+
