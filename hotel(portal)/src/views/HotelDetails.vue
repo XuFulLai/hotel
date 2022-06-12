@@ -1604,7 +1604,7 @@ export default {
         estimatedCheckIn: this.dateValue[0],
         estimatedCheckOut: this.dateValue[1],
         province: this.provinceVal,
-        discount: this.map2String(this.confirmOrderData.useDiscountMap) || (this.confirmOrderData.totalFee - this.confirmOrderData.discountFee)
+        discount: this.map2String(this.confirmOrderData.useDiscountMap)
       }
       // console.log("data=========", data)
       post('/api/order/create', data)

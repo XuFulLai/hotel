@@ -410,7 +410,7 @@ public class RoomServiceImpl implements IRoomService {
                 wrapper.ne("id", roomVO.getId());
             }
         }
-        wrapper.eq("type", roomVO.getType()).eq("status", RoomStatus.UNUSED.getCode());
+        wrapper.eq("type", roomVO.getType()).eq("status", RoomStatus.UNUSED.getCode()).eq("is_isolation",0);
         List<RoomPO> roomPOS = roomMapper.selectList(wrapper);
         if (roomPOS.size() > 0) {
             RoomVO vo = new RoomVO();
