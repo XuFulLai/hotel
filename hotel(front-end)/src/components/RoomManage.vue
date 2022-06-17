@@ -84,7 +84,7 @@
       <el-button
           type="success"
           class="mr-10 mt-10"
-          :disabled="current.status != 0"
+          :disabled="current.status == 1 || current.status == 4"
           v-if="current.isIsolation == 0"
           @click="checkInHandler"
       >登记入住
