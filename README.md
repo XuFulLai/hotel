@@ -1,4 +1,4 @@
-# HotelIntelligenceSystem
+# Hotel-Intelligence-System
 
 ### 介绍
 > 酒店智慧系统，于2021.12完成。
@@ -21,30 +21,7 @@
 10. 把日志分门别类嵌入与各个模块中，形成一个可供管理员筛查的日志管理系统
 11. ......
 
-
-### 软件架构
-![系统架构图](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/xtjg.png)
-
-
-
-
-### 安装教程
-
-1.  hotel(front-end)项目安装依赖可能会报错，目前有一种解决方法：删除掉该目录下的package.json文件第15行代码,"vue-qr": "^3.2.4",然后终端键入命令：npm install,成功安装之后，在终端输入命令：npm install vue-qr，安装完成，完成该项目依赖的安装。
-2.  由于Websocket是使用get请求去握手的，所以单独需要在“hotel(front-end)/src/components/RoomManage.vue”文件下的initWebsocket()方法下修改服务端ip地址。其他ip地址到对应的request.js中或者application.yaml中修改即可
-3.  xxxx
-
-
-
-### 使用说明
-
-1. 数据库相关
-
-   - dept表:
-     - role列的值用作鉴权，系统设计为admin（管理员）、hotel_admin（酒店管理员）和hotel_member（酒店员工）。若要自定义，需同步修改后端代码。
-2. 二维码登录相关
-   - 使用轮询方式访问redis（可改为websocket推送），使用UUID的方式生成码作为redis的key，对应的value为0时为未扫描，1为已扫描，2为确认登录
-3. xxxx
+------
 
 
 
@@ -59,16 +36,106 @@
 
 - **fuxiao_lee (925194376@qq.com)（main）**
 - tomato-simon (1499602163@qq.com)（Secondary main）
-- lingyu1412 (9770826+lingyu1412@user.noreply.gitee.com)
+
+#### **APP端（客户端）:**
+
+- **houttuynia（[327849132@qq.com](mailto:327849132@qq.com)）（main）**
+- tomato-simon ([1499602163@qq.com](mailto:1499602163@qq.com))（part of Scan-code-login）
+
+------
 
 
 
-### 参与贡献
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+### 软件架构
+![系统架构图](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/xtjg.png)
+
+------
+
+
+
+### 酒店2.0更新详情
+
+1. 增加了APP端
+2. 门户端增加国际化，实现汉英转换
+3. 门户端增加页面自适应（兼容手机、平板等设备）
+4. 门户端酒店详情页完善
+5. 增加了订单评价功能
+6. 增加了收藏功能
+7. 增加了酒店列表定位功能，现在可以搜索某个范围内的酒店了
+8. 增加了钱包模块
+9. 增加了优惠券模块
+10. 增加了日志管理模块
+11. 增加了防疫相关模块
+12. 更多更新自行摸索...
+
+
+
+### 安装必看
+
+#### 数据库
+
+创建完数据库后，把根目录下的 **hotel-plus.sql** 导入即可
+
+注：开发环境数据库版本为 Ver 8.0.24
+
+#### hotel-rear-end：
+
+1. 将 **.\hotel-plus\hotel-rear-end\src\main\resources** 下的application-base.yml改名为application.yml，并将里面 “####” 替换成描述的对应信息
+   1. 其中，邮箱相关请进入邮箱开通POP3 / IMAP / SMTP服务，并获取授权码，有更多邮箱可以按格式增加
+   2. 七牛云账号需要自行申请，现在存储方式为先调用 **upload/img** 接口，然后获取url再存进数据库，若需要存储本地，修改前端对应逻辑即可
+
+#### hotel-front-end & hotel-portal：
+
+1.  hotel(front-end)项目安装依赖可能会报错，目前有一种解决方法：删除掉该目录下的package.json文件第15行代码,"vue-qr": "^3.2.4",然后终端键入命令：npm install,成功安装之后，在终端输入命令：npm install vue-qr，安装完成，完成该项目依赖的安装。
+2.  由于Websocket是使用get请求去握手的，所以单独需要在“hotel(front-end)/src/components/RoomManage.vue”文件下的initWebsocket()方法下修改服务端ip地址。其他ip地址到对应的request.js中或者application.yaml中修改即可
+
+------
+
+
+
+### 使用说明
+
+1. 系统内可用的账号密码（账号/密码）
+
+   1. **管理员：**
+
+      admin/123456
+
+   2. **酒店管理员：**
+
+      1. OneOneTwo国际度假酒店：
+
+         hotel_admin/123456
+
+      2. SixOneFour国际度假酒店：
+
+         sof_hotel_admin/123456
+
+   3. **防疫人员：**
+
+      fangyi1/123456
+
+   4. **普通成员：**
+
+      1. 普通成员1：
+
+         jing/123
+
+      2. 普通成员2：
+
+         lee/123
+
+2. 数据库相关
+
+   - dept表:
+     - role列的值用作鉴权，系统设计为admin（管理员）、hotel_admin（酒店管理员）、hotel_member（酒店员工）和anti-epidemic（防疫人员）。若要自定义，需同步修改后端代码。
+
+3. 二维码登录相关
+
+   - 使用轮询方式访问redis（可改为websocket推送），使用UUID的方式生成码作为redis的key，对应的value为0时为未扫描，1为已扫描，2为确认登录
+
+------
 
 
 
@@ -84,14 +151,13 @@
 
 ![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/dept.png)
 
+------
 
 
 
-### 特技
+### 参与贡献
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目.
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+1.  Fork 本仓库
+2.  新建 Feat_xxx 分支
+3.  提交代码
+4.  新建 Pull Request
