@@ -2158,7 +2158,7 @@ h3.sub-title .en {
 }
 
 .choose-discount-box {
-  margin: 6px;
+  margin: 6px 0px;
   width: 96%;
   height: 40px;
   background: #fff;
@@ -2229,7 +2229,7 @@ h3.sub-title .en {
 }
 
 .choose-discount-name {
-  font-size: 16px;
+  font-size: 1.4rem;
   font-weight: 700;
   margin: auto 0;
   margin-left: 8px;
