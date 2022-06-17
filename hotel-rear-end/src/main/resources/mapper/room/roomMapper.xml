@@ -100,7 +100,7 @@
 
     <update id="unlockRoom">
         update room
-        set status = 0 , order_id = null
+        set status = 4 , order_id = null
         where id = #{id}
     </update>
 

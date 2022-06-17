@@ -312,8 +312,8 @@ public class RoomServiceImpl implements IRoomService {
         double extraFee = 0;
         RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(thisRoom.getType());
         //计算基本房费
-        pays[0] = Integer.parseInt(thisOrder.getPay());
-        pays[1] = Integer.parseInt(thisOrder.getLastPay());
+        pays[0] = Double.parseDouble(thisOrder.getPay());
+        pays[1] = Double.parseDouble(thisOrder.getLastPay());
         OrderVO updateOrder = new OrderVO();
 
         //超时的情况
