@@ -4,10 +4,10 @@
 			<u-notice-bar v-show="hotel.badge" :text="hotelBadge" mode="closable"></u-notice-bar>
 		</view>
 		<view class="image">
-			<image
+			<!-- <image
 				src="https://images-new-cdn.123rf.com.cn/450wm/naturestudio/naturestudio2103/naturestudio210300005.jpg"
-				mode=""></image>
-			<!-- <image :src="hotel.cover" mode=""></image> -->
+				mode=""></image> -->
+			<image :src="hotel.cover" mode=""></image>
 		</view>
 		<view class="header">
 			<view class="position">

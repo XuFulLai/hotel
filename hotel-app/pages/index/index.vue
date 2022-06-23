@@ -219,6 +219,9 @@
 					if (!item.cover) {
 						item.cover = 'http://r3ac7i7fr.hn-bkt.clouddn.com/hotel_cover_1639463752314'
 					}
+					if (item.name.length > 12){
+						item.name = item.name.substring(0,14) + '...'
+					}
 				}
 				if (res.data.data.records.length < 10) {
 					this.flag = true

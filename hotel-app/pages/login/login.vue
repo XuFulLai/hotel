@@ -56,7 +56,8 @@
 		},
 		methods: {
 			async login(){
-				 let userData = {
+				console.log("11111")
+				let userData = {
 					"username":this.username,
 					"password":this.password,
 				}

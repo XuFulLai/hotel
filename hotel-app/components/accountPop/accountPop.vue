@@ -72,11 +72,11 @@
 						icon_src: 'https://z1.muscache.cn/pictures/fcdb0b6a-da8d-4a9d-acb8-d15d63abc110.jpg',
 						to: 'wishList'
 					},
-					{
-						name: '语言',
-						icon_src: "https://z1.muscache.cn/pictures/ca1d518e-4d50-4fd5-9205-48ab3a5f26a8.jpg",
-						to: '#/pages/order/personal'
-					},
+					// {
+					// 	name: '语言',
+					// 	icon_src: "https://z1.muscache.cn/pictures/ca1d518e-4d50-4fd5-9205-48ab3a5f26a8.jpg",
+					// 	to: '#/pages/order/personal'
+					// },
 					{
 						name: '关于',
 						icon_src: "https://z1.muscache.cn/pictures/f521016a-3cb8-416c-ae8d-41189a386501.jpg",
