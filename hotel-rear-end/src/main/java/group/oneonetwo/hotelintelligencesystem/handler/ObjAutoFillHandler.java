@@ -18,7 +18,7 @@ import java.util.Date;
 public class ObjAutoFillHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
-        //this.setFieldValByName("createTime", randomDate("2022-1-5","2022-3-18"), metaObject);
+//        this.setFieldValByName("createTime", randomDate("2022-5-1","2022-6-19"), metaObject);
         this.setFieldValByName("createTime", new Date(), metaObject);
         String uid = SecurityContextHolder.getContext().getAuthentication().getName();
         if (uid == null) {

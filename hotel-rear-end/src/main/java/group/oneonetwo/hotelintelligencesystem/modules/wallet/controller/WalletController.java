@@ -5,8 +5,8 @@ import group.oneonetwo.hotelintelligencesystem.modules.wallet.service.WalletServ
 import group.oneonetwo.hotelintelligencesystem.tools.Reply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +34,20 @@ public class WalletController {
     @PostMapping("editPwd")
     public Reply editPwd(String oldPwd,String newPwd) {
         return walletService.editPwd(oldPwd,newPwd);
+    }
+
+    /**
+     * 支付宝预创建接口
+     * @param mode 0: 订单支付
+     *              1: 充值支付
+     * @param value 当mode为0时,为订单号
+     *               当mode为1时,为充值金额(后期统一订单时可规整为订单号)
+     * @return
+     */
+    @ApiOperation("支付宝预创建接口")
+    @PostMapping("alipay/preCreate")
+    public Reply alipayPreCreate(String mode,String value) {
+        return Reply.success(walletService.alipayPreCreate(mode,value));
     }
 
 }

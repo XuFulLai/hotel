@@ -65,6 +65,17 @@ public class OrderPO implements Serializable {
     @TableField("room_name")
     private  String roomName;
 
+    @TableField("pay_way")
+    private Integer payWay;
+
+    public Integer getPayWay() {
+        return payWay;
+    }
+
+    public void setPayWay(Integer payWay) {
+        this.payWay = payWay;
+    }
+
     public Date getEstimatedCheckIn() {
         return estimatedCheckIn;
     }

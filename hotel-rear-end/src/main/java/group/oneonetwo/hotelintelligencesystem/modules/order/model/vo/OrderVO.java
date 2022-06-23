@@ -138,7 +138,19 @@ public class OrderVO implements Serializable {
     @ApiModelProperty("订单次数")
     private String counts;
 
-//    public String getHotelDiscount() {
+    @ExcelIgnore
+    @ApiModelProperty("支付方式")
+    private Integer payWay;
+
+    public Integer getPayWay() {
+        return payWay;
+    }
+
+    public void setPayWay(Integer payWay) {
+        this.payWay = payWay;
+    }
+
+    //    public String getHotelDiscount() {
 //        return hotelDiscount;
 //    }
 //

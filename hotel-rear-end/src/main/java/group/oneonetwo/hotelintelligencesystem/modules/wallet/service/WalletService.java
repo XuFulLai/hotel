@@ -21,4 +21,6 @@ public interface WalletService {
     WalletPO save(WalletPO walletPO);
 
     void editBalance(Integer mode,Double num);
+
+    String alipayPreCreate(String mode, String value);
 }

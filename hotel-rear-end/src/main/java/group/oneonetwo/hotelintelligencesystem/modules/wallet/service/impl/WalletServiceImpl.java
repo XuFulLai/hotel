@@ -132,4 +132,9 @@ public class WalletServiceImpl implements WalletService{
         }
         WalletPO save = save(walletPO);
     }
+
+    @Override
+    public String alipayPreCreate(String mode, String value) {
+        return null;
+    }
 }

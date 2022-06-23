@@ -19,7 +19,7 @@
 8. 拥有可改进的订单优惠计费功能
 9. 后台管理端拥有基于**e-chart**的订单大屏可视化，其中有以地图形式的订单来源地统计、有条形图+折线图混合的订单量和营业额统计、有各房型订单统计的玫瑰图等
 10. 把日志分门别类嵌入与各个模块中，形成一个可供管理员筛查的日志管理系统
-11. ......
+11. 引进**支付宝支付**接口，实现与支付宝对接
 
 ------
 
@@ -67,7 +67,8 @@
 9. 增加了优惠券模块
 10. 增加了日志管理模块
 11. 增加了防疫相关模块
-12. 更多更新自行摸索...
+12. 增加了支付宝支付功能
+13. 更多更新自行摸索...
 
 
 
@@ -84,6 +85,7 @@
 1. 将 **.\hotel-plus\hotel-rear-end\src\main\resources** 下的application-base.yml改名为application.yml，并将里面 “####” 替换成描述的对应信息
    1. 其中，邮箱相关请进入邮箱开通POP3 / IMAP / SMTP服务，并获取授权码，有更多邮箱可以按格式增加
    2. 七牛云账号需要自行申请，现在存储方式为先调用 **upload/img** 接口，然后获取url再存进数据库，若需要存储本地，修改前端对应逻辑即可
+   3. 支付宝相关沙箱配置，请在https://open.alipay.com/develop/sandbox/app下获取，注意需要查看文档下载对应的沙箱支付宝配合使用
 
 #### hotel-front-end & hotel-portal：
 
@@ -141,7 +143,7 @@
 
 ### 项目预览
 
-![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/sy1.png)
+![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/index-chart.png)
 
 ![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/menu.png)
 
@@ -150,6 +152,12 @@
 ![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/order.png)
 
 ![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/dept.png)
+
+![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/detail-1.png)
+
+![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/detail-2.png)
+
+![首页](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/wallet.png)
 
 ------
 

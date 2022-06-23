@@ -10,7 +10,7 @@
 
 
       <div class="big-box">
-        <!--        <el-button @click="confirmOrder"></el-button>-->
+                <el-button @click="payForAlipay">Test</el-button>
         <!--        <p>酒店id：{{ hotelDetails.hotelId }}</p>-->
         <div class="hotel-title">
           {{ hotelDetails.name }}
@@ -860,6 +860,10 @@
       <div class="flex flex-column pay-box align-items-center">
         <div>{{ $t('hotelDetails.payment') }}</div>
         <div class="pay-box-price"><span style="font-size: 26px">￥</span>{{ payForm.lastPay }}</div>
+        <div class="flex flex-row">
+          <el-button @click="payForAlipay">打开支付宝付款</el-button>
+          <el-button @click="alipayCheck">支付后按此按钮</el-button>
+        </div>
         <el-input :placeholder="$t('login.passwordTips')" v-model="payForm.walletPwd" show-password></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -994,6 +998,8 @@ export default {
       provinceVal: '',
       pageNum: 0,
       userInfo: {},
+      alipayData: undefined,
+      alipayVisible: false,
       options: [
         {
           value: this.$t('hotelList.beijing'),
@@ -1207,6 +1213,36 @@ export default {
     this.getUserInfo()
   },
   methods: {
+    //支付宝支付
+    payForAlipay() {
+      get(`api/order/payOrder/alipay/pre/${this.payForm.orderId}`).then(res => {
+        if (res.data.code == 200) {
+          let newWindow = window.open("", '_blank','width=1000,height=600');
+          const div = newWindow.document.createElement('div');
+          div.innerHTML = res.data.data;
+          newWindow.document.body.appendChild(div);
+          newWindow.document.forms[0].submit();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+    },
+    //确认支付状态
+    alipayCheck() {
+      get(`api/order/payOrder/alipay/check/${this.payForm.orderId}`).then(res => {
+        if (res.data.code == 200) {
+          if (res.data.data == true) {
+            this.$message.success("订单支付成功!");
+            this.payVisible = false
+          }else {
+            this.$message.warning("订单仍未支付!");
+          }
+
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      })
+    },
     // 评论展开按钮
     // commentBtn() {
     //   this.comment = !this.comment
@@ -2261,7 +2297,7 @@ h3.sub-title .en {
   color: #ff4d6a;
   width: 100%;
   text-align: center;
-  margin: 10px 0 30px 0;
+  margin: 10px 0 20px 0;
 }
 
 .comment-box {

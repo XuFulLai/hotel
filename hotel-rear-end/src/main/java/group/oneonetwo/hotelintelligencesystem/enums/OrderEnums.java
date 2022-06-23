@@ -14,7 +14,10 @@ public enum OrderEnums {
     STATUS_DONE(4),
     //way
     WAY_OFFLINE(0),
-    WAY_ONLINE(1)
+    WAY_ONLINE(1),
+    //pay_way
+    PAY_WAY_SYS(0),
+    PAY_WAY_ALIPAY(1),
     ;
 
     private Integer code;

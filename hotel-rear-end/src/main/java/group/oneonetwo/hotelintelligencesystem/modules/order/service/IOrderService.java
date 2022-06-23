@@ -1,11 +1,9 @@
 package group.oneonetwo.hotelintelligencesystem.modules.order.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import group.oneonetwo.hotelintelligencesystem.modules.hotel.model.vo.HotelVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.po.OrderPO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 
-import java.util.Collection;
 import java.util.List;
 
 
@@ -30,4 +28,10 @@ public interface IOrderService {
     List<OrderVO> count(OrderVO orderVO);
 
     void payOrder(String orderId,String walletPwd);
+
+    String prePayOrderForAlipay(String orderId) throws Exception;
+
+    Boolean checkPayOrderForAlipay(String orderId) throws Exception;
+
+    String cancelOrderForAlipay(String orderId) throws Exception;
 }

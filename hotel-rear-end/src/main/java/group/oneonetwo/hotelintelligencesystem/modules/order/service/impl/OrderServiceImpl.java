@@ -1,7 +1,18 @@
 package group.oneonetwo.hotelintelligencesystem.modules.order.service.impl;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradePagePayResponse;
+import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
+import group.oneonetwo.hotelintelligencesystem.config.AlipayConfig;
+import group.oneonetwo.hotelintelligencesystem.enums.AlipayEnums;
 import group.oneonetwo.hotelintelligencesystem.enums.BalanceHandleMode;
 import group.oneonetwo.hotelintelligencesystem.enums.DiscountEnums;
 import group.oneonetwo.hotelintelligencesystem.enums.OrderEnums;
@@ -17,6 +28,7 @@ import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.order.service.IOrderService;
 import group.oneonetwo.hotelintelligencesystem.modules.room.model.vo.RoomVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room.service.IRoomService;
+import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.po.RoomTypePO;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.model.vo.RoomTypeVO;
 import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTypeServeice;
 import group.oneonetwo.hotelintelligencesystem.modules.user.model.vo.UserVO;
@@ -25,12 +37,19 @@ import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.vo.WalletVO;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.service.WalletService;
 import group.oneonetwo.hotelintelligencesystem.tools.TimeUtils;
 import group.oneonetwo.hotelintelligencesystem.tools.WStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -62,6 +81,11 @@ public class OrderServiceImpl implements IOrderService {
 
     @Autowired
     IDiscountUserService discountUserService;
+
+    @Autowired
+    AlipayConfig alipayConfig;
+
+    private static final Logger logger = LoggerFactory.getLogger(Object.class);
 
     @Override
     public OrderPO add(OrderVO orderVO){
@@ -171,7 +195,9 @@ public class OrderServiceImpl implements IOrderService {
     public void payOrder(String orderId, String walletPwd) {
         //查询订单
         OrderVO orderVO = selectOneByIdReturnVO(orderId);
-
+        if (orderVO.getPayWay() != null) {
+            throw new CommonException("该订单已被支付,请刷新页面获取订单最新状态!");
+        }
         if (!(OrderEnums.STATUS_UNPAID.getCode().toString().equals(orderVO.getStatus()))) {
             throw new CommonException("该订单不允许该操作");
         }
@@ -191,7 +217,128 @@ public class OrderServiceImpl implements IOrderService {
         OrderVO update = new OrderVO();
         update.setId(orderVO.getId());
         update.setStatus(OrderEnums.STATUS_PAID.getCode().toString());
+        update.setPayWay(OrderEnums.PAY_WAY_SYS.getCode());
         OrderPO save = save(update);
+    }
+
+    @Override
+    public String prePayOrderForAlipay(String orderId) throws AlipayApiException, JSONException {
+        OrderPO orderPO = orderMapper.selectById(orderId);
+        //防止重复支付
+        if (orderPO.getPayWay() != null) {
+            throw new CommonException("该订单已被支付,请刷新页面获取订单最新状态!");
+        }
+
+        //请求创建支付二维码
+        AlipayClient alipayClient = alipayConfig.getAlipayClient();
+        AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
+        request.setNotifyUrl("");
+        request.setReturnUrl("");
+        JSONObject bizContent = new JSONObject();
+        bizContent.put("out_trade_no", orderId);
+        bizContent.put("total_amount", orderPO.getLastPay());
+        bizContent.put("subject", "智慧酒店-预订房间");
+        bizContent.put("product_code", "FAST_INSTANT_TRADE_PAY");
+        bizContent.put("qr_pay_mode",1);
+    //bizContent.put("time_expire", "2022-08-01 22:00:00");
+
+//        // 商品明细信息，按需传入
+//        RoomTypePO roomTypePO = roomTypeServeice.selectOneById(orderPO.getRoomType());
+//        JSONArray goodsDetail = new JSONArray();
+//        JSONObject goods1 = new JSONObject();
+//        goods1.put("goods_id", orderPO.getHotelId() + orderPO.getRoomType());
+//        goods1.put("goods_name", hotelService.selectOneById(orderPO.getHotelId()).getName()
+//                + "-" + roomTypePO.getName());
+//        goods1.put("quantity", orderPO.getDays());
+//        goods1.put("price", roomTypePO.getFee());
+//        goodsDetail.put(goods1);
+//        bizContent.put("goods_detail", goodsDetail);
+
+    //// 扩展信息，按需传入
+    //JSONObject extendParams = new JSONObject();
+    //extendParams.put("sys_service_provider_id", "2088511833207846");
+    //bizContent.put("extend_params", extendParams);
+
+        request.setBizContent(bizContent.toString());
+        AlipayTradePagePayResponse response = alipayClient.pageExecute(request);
+        logger.info("alipay-response:",response.getBody());
+        if(response.isSuccess()){
+            logger.info("prePayOrderForAlipay调用成功");
+            return response.getBody().toString();
+        } else {
+            logger.warn("prePayOrderForAlipay调用失败");
+        }
+        return null;
+    }
+
+    @Override
+    public Boolean checkPayOrderForAlipay(String orderId) throws AlipayApiException, JSONException {
+        OrderVO orderVO = selectOneByIdReturnVO(orderId);
+        if (orderVO.getPayWay() != null) {
+            throw new CommonException("该订单已被支付,请刷新页面获取订单最新状态!");
+        }
+
+        //预分配房间(防止交易成功后发现没房间的情况)
+        //因为没房间时抛出的运行时异常只会回滚系统数据库中的操作,对于发出给支付宝请求无法进行回滚,只能实行退款操作
+        //所以这里先预分配
+        RoomVO roomVO = new RoomVO();
+        roomVO.setType(orderVO.getRoomType());
+        roomVO.setOrderId(orderVO.getId());
+        roomService.assignRoom(roomVO);
+
+        //请求查询
+        AlipayClient alipayClient = alipayConfig.getAlipayClient();
+        AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
+        JSONObject bizContent = new JSONObject();
+        bizContent.put("out_trade_no", orderId);//订单号
+        //bizContent.put("trade_no", "2014112611001004680073956707");//交易号
+        request.setBizContent(bizContent.toString());
+        AlipayTradeQueryResponse response = alipayClient.execute(request);
+        if(response.isSuccess()){
+            logger.info("checkPayOrderForAlipay调用成功");
+            Gson gson = new Gson();
+            Map<String,String> responseMap = (Map<String, String>) gson.fromJson(response.getBody(), new HashMap<String, String>().getClass()).get("alipay_trade_query_response");
+            //交易成功
+            if (AlipayEnums.TRADE_SUCCESS.equals(responseMap.get("trade_status"))){
+                //更新订单状态
+                OrderVO update = new OrderVO();
+                update.setId(orderVO.getId());
+                update.setStatus(OrderEnums.STATUS_PAID.getCode().toString());
+                update.setPayWay(OrderEnums.PAY_WAY_ALIPAY.getCode());
+                OrderPO save = save(update);
+                logger.info("交易成功");
+                return true;
+            }
+        } else {
+            logger.warn("checkPayOrderForAlipay调用失败");
+        }
+        throw new CommonException("支付失败,请重试!");
+    }
+
+    @Override
+    public String cancelOrderForAlipay(String orderId) throws Exception {
+        OrderPO thisOrder = baseCancelOrder(orderId);
+        AlipayClient alipayClient = alipayConfig.getAlipayClient();
+        AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+        JSONObject bizContent = new JSONObject();
+        bizContent.put("trade_no", orderId);
+        bizContent.put("refund_amount", thisOrder.getLastPay());
+//        bizContent.put("out_request_no", "HZ01RF001");
+
+        //// 返回参数选项，按需传入
+        //JSONArray queryOptions = new JSONArray();
+        //queryOptions.add("refund_detail_item_list");
+        //bizContent.put("query_options", queryOptions);
+
+        request.setBizContent(bizContent.toString());
+        AlipayTradeRefundResponse response = alipayClient.execute(request);
+        if(response.isSuccess()){
+            logger.info("cancelOrderForAlipay调用成功");
+        } else {
+            logger.warn("cancelOrderForAlipay调用失败");
+            throw new CommonException("退款失败,请重试!");
+        }
+        return "退款成功,请在支付宝App查看退款详情!";
     }
 
 
@@ -239,19 +386,30 @@ public class OrderServiceImpl implements IOrderService {
         return orderVO;
     }
 
-    @Override
-    public String cancelOrder(String id) {
+    /**
+     * 基础取消订单方法
+     * @param orderId
+     * @return 返回当前订单便于后续操作
+     */
+    private OrderPO baseCancelOrder(String orderId) {
         RoomVO roomVO = new RoomVO();
-        roomVO.setOrderId(id);
+        roomVO.setOrderId(orderId);
         roomService.cancelRoom(roomVO);
         OrderVO orderVO = new OrderVO();
         orderVO.setStatus(OrderEnums.STATUS_CLOSE.getCode().toString());
-        orderVO.setId(id);
+        orderVO.setId(orderId);
         OrderPO save = save(orderVO);
         OrderPO thisOrder = orderMapper.selectById(save.getId());
+        discountUserService.changeDiscountStatus(thisOrder.getDiscount(), DiscountEnums.DISCOUNT_USER_UNUSED.getCode());
+        return thisOrder;
+    }
+
+
+    @Override
+    public String cancelOrder(String id) {
+        OrderPO thisOrder = baseCancelOrder(id);
         //退款和优惠券
         walletService.editBalance(BalanceHandleMode.ADD.getCode(), Double.valueOf(thisOrder.getLastPay()));
-        discountUserService.changeDiscountStatus(thisOrder.getDiscount(), DiscountEnums.DISCOUNT_USER_UNUSED.getCode());
         return "取消订单成功,退款" + thisOrder.getLastPay() + "元将在0-3个工作日内原路退还。";
     }
 
@@ -285,15 +443,15 @@ public class OrderServiceImpl implements IOrderService {
                 "广东省","海南省","四川省","贵州省","云南省","陕西省","甘肃省","青海省",
                 "台湾省","内蒙古自治区","广西壮族自治区","西藏自治区","宁夏回族自治区",
                 "新疆维吾尔自治区","北京市","天津市","上海市","重庆市","香港特别行政区","澳门特别行政区"};
-        String[] members = {"3","4","5","6","7","1506647494363246593","10086"};
+        String[] members = {"3","4","5","6","7","1506647494363246593"};
         String hotel = "1";
         Integer[] ways = {1,2};
-        String[] roomTypes = {"1463764265293885441","1463764265293885441","1463764265293885441","1463764265293885441", "1463764265293885441","1463764265293885441",
+        String[] roomTypes = { "1463764265293885441","1463764265293885441",
                 "1463890996549947394", "1463890996549947394","1463890996549947394","1463890996549947394",
                 "1463891142348148737","1463891142348148737","1463891142348148737",
                 "1470613302300102658","1470613302300102658",
                 "1470613446756126722"};
-        for (int i = 0; i < 1500; i++) {
+        for (int i = 0; i < 350; i++) {
             OrderVO orderVO = new OrderVO();
             Random random = new Random();
             orderVO.setHotelId(hotel);
