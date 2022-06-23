@@ -89,6 +89,7 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
         if (!WStringUtils.isBlank(materialsApplyVO.getBeginTime()) && !WStringUtils.isBlank(materialsApplyVO.getEndTime())) {
             wrapper.between("create_time",materialsApplyVO.getBeginTime(),materialsApplyVO.getEndTime());
         }
+        wrapper.orderByDesc("create_time");
         Page<MaterialsApplyPO> page = new Page<>(materialsApplyVO.getPage().getPage(),materialsApplyVO.getPage().getSize());
         Page<MaterialsApplyPO> poiPage= (Page<MaterialsApplyPO>) materialsApplyMapper.selectPage(page,wrapper);
         return ConvertUtils.transferPage(poiPage, MaterialsApplyVO.class);
@@ -184,6 +185,7 @@ public class MaterialsApplyServiceImpl implements IMaterialsApplyService {
         if (!WStringUtils.isBlank(materialsApplyVO.getBeginTime()) && !WStringUtils.isBlank(materialsApplyVO.getEndTime())) {
             wrapper.between("create_time",materialsApplyVO.getBeginTime(),materialsApplyVO.getEndTime());
         }
+        wrapper.orderByDesc("create_time");
         Page<MaterialsApplyPO> page = new Page<>(materialsApplyVO.getPage().getPage(),materialsApplyVO.getPage().getSize());
         Page<MaterialsApplyPO> poiPage= (Page<MaterialsApplyPO>) materialsApplyMapper.selectPage(page,wrapper);
         return ConvertUtils.transferPage(poiPage, MaterialsApplyVO.class);
