@@ -241,7 +241,10 @@ public class RoomServiceImpl implements IRoomService {
         RoomVO thisRoom = selectOneByIdReturnVO(checkInVO.getId());
         //当该房间是被预定且订单id不同时,重新分配房间
         if (thisRoom.getStatus() == 2 && (WStringUtils.isBlank(checkInVO.getOrderId()) || !thisRoom.getOrderId().equals(checkInVO.getOrderId()))) {
-            assignRoom(thisRoom);
+            boolean assignRoom = assignRoom(thisRoom);
+            if (!assignRoom) {
+                throw new CommonException("已没同类型房间,请选择其他类型房间进行入住");
+            }
         }
         RoomTypeVO roomTypeVO = roomTypeServeice.selectOneByIdReturnVO(thisRoom.getType());
         OrderVO updateOrder = new OrderVO();
@@ -400,8 +403,13 @@ public class RoomServiceImpl implements IRoomService {
     }
 
 
+    /**
+     * 分配房间
+     * @param roomVO
+     * @return true分配成功,false分配失败
+     */
     @Override
-    public void assignRoom(RoomVO roomVO) {
+    public boolean assignRoom(RoomVO roomVO) {
         QueryWrapper<RoomPO> wrapper = new QueryWrapper<RoomPO>();
         //解锁原来锁定的房间
         if (!WStringUtils.isBlank(roomVO.getOrderId())) {
@@ -419,8 +427,9 @@ public class RoomServiceImpl implements IRoomService {
             vo.setOrderId(roomVO.getOrderId());
             save(vo);
         } else {
-            throw new CommonException("已没同类型房间,请选择其他类型房间进行入住");
+            return false;
         }
+        return true;
     }
 
     /**

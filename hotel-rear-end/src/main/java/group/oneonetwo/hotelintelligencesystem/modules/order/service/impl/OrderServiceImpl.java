@@ -211,7 +211,10 @@ public class OrderServiceImpl implements IOrderService {
         RoomVO roomVO = new RoomVO();
         roomVO.setType(orderVO.getRoomType());
         roomVO.setOrderId(orderVO.getId());
-        roomService.assignRoom(roomVO);
+        boolean assignRoom = roomService.assignRoom(roomVO);
+        if (!assignRoom) {
+            throw new CommonException("已没同类型房间,请选择其他类型房间进行入住");
+        }
 
         //更新订单状态
         OrderVO update = new OrderVO();
@@ -272,19 +275,12 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public Boolean checkPayOrderForAlipay(String orderId) throws AlipayApiException, JSONException {
+    public Boolean checkPayOrderForAlipay(String orderId) throws Exception {
         OrderVO orderVO = selectOneByIdReturnVO(orderId);
         if (orderVO.getPayWay() != null) {
             throw new CommonException("该订单已被支付,请刷新页面获取订单最新状态!");
         }
 
-        //预分配房间(防止交易成功后发现没房间的情况)
-        //因为没房间时抛出的运行时异常只会回滚系统数据库中的操作,对于发出给支付宝请求无法进行回滚,只能实行退款操作
-        //所以这里先预分配
-        RoomVO roomVO = new RoomVO();
-        roomVO.setType(orderVO.getRoomType());
-        roomVO.setOrderId(orderVO.getId());
-        roomService.assignRoom(roomVO);
 
         //请求查询
         AlipayClient alipayClient = alipayConfig.getAlipayClient();
@@ -300,6 +296,15 @@ public class OrderServiceImpl implements IOrderService {
             Map<String,String> responseMap = (Map<String, String>) gson.fromJson(response.getBody(), new HashMap<String, String>().getClass()).get("alipay_trade_query_response");
             //交易成功
             if (AlipayEnums.TRADE_SUCCESS.equals(responseMap.get("trade_status"))){
+                //分配房间
+                RoomVO roomVO = new RoomVO();
+                roomVO.setType(orderVO.getRoomType());
+                roomVO.setOrderId(orderVO.getId());
+                boolean assignRoom = roomService.assignRoom(roomVO);
+                if (!assignRoom) {
+                    cancelOrderForAlipay(orderId);
+                    throw new CommonException("已没同类型房间,请选择其他类型房间进行入住!交易金额已原路返回!");
+                }
                 //更新订单状态
                 OrderVO update = new OrderVO();
                 update.setId(orderVO.getId());

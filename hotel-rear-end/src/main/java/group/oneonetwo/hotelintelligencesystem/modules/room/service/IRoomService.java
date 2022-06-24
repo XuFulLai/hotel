@@ -26,7 +26,7 @@ public interface IRoomService {
     List<RoomVO> getRoomTypeList( RoomVO roomVO);
     OrderVO checkIn(CheckInVO checkInVO);
     String checkOut(String id);
-    void assignRoom(RoomVO roomVO);
+    boolean assignRoom(RoomVO roomVO);
     void cancelRoom(RoomVO roomVO);
     List<String> getFloor();
     void cleanRoom(String roomId);
