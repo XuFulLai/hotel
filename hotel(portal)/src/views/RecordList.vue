@@ -93,7 +93,12 @@
                   <p class="mb-10">
                     {{ $t("orderList.hotelName") }} {{ item.hotelName }}
                   </p>
-                  <p class="mb-10">{{ $t("recordList.isolateID") }} {{ item.id }}</p>
+
+                  <div class="flex flex-row align-items-center mb-10">
+                    <p class="mr-10">{{ $t("recordList.isolateID") }} {{ item.id }}</p>
+                    <p class="ml-10 cursor" @click="openBarcode(item.id)"><i class="el-icon-full-screen flex flex-row align-items-end"><span class="font-14">&nbsp;条形码</span></i></p>
+                  </div>
+
                   <p class="isolation-time mb-10">
                     <span class="mr-10">{{ $t("recordList.isolateStartTime") }} {{ item.checkInTime | dateTimeFormat }}</span>
                     <span>{{ $t("recordList.isolateEndTime") }} {{ item.checkOutTime | dateTimeFormat }}</span>
@@ -140,7 +145,10 @@
                   <p class="mb-10">{{ $t('recordList.applicantName') }} {{ item.name }}</p>
                   <p class="mb-10">{{ $t('recordList.idNum') }} {{ item.idCard }}</p>
                   <p class="mb-10">{{ $t('recordList.tel') }} {{ item.phone }}</p>
-                  <p class="mb-10">{{ $t('recordList.declareID') }} {{ item.id }}</p>
+                  <div class="flex flex-row align-items-center mb-10">
+                    <p class="mr-10">{{ $t('recordList.declareID') }} {{ item.id }}</p>
+                    <p class="ml-10 cursor" @click="openBarcode(item.id)"><i class="el-icon-full-screen flex flex-row align-items-end"><span class="font-14">&nbsp;条形码</span></i></p>
+                  </div>
                   <p class="mb-10">{{ $t('recordList.source') }} {{ item.province }}{{ item.city }}</p>
                   <p class="isolation-time mb-10">
                     <span class="mr-10">{{ $t('recordList.isolateStartTime') }} {{ item.checkInTime | dateTimeFormat }}</span>
@@ -398,6 +406,21 @@
       </el-drawer>         
 
     </div>
+
+    <el-dialog
+        class="wallet-dialog"
+        :visible.sync="barcodeVisible"
+        width="95%"
+        center
+    >
+      <div class="m-auto">
+        <barcode :value="barcodeValue" class="m-auto">
+          ID获取异常,请重新打开!
+        </barcode>
+      </div>
+
+
+    </el-dialog>
   </div>
 </template>
 
@@ -405,15 +428,19 @@
 import { get, post } from "../utils/request";
 import TopNav from "../components/TopNav";
 import Footer from "../components/Footer.vue";
+import VueBarcode from 'vue-barcode';
 
 export default {
   name: "RecordList",
   components: {
     TopNav,
     Footer,
+    'barcode': VueBarcode
   },
   data() {
     return {
+      barcodeVisible: false,
+      barcodeValue: undefined,
       currentPage1: 1,
       currentPage2: 1,
       currentPage3: 1,
@@ -662,6 +689,10 @@ export default {
     }    
   },
   methods: {
+    openBarcode(id) {
+      this.barcodeValue = id
+      this.barcodeVisible = true
+    },
     // 隔离记录 Start
     // 点击隔离记录大按钮函数
     isolationRecordsHandle(val) {

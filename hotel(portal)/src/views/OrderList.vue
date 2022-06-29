@@ -42,7 +42,10 @@
               <div>
                 <p class="mb-10">{{ $t('orderList.hotelName') }}{{ item.hotelName }}</p>
                 <!-- <p class="mb-10">订单ID：{{ item.id }}</p> -->
-                <p class="mb-10">{{ $t('orderList.orderId') }}{{ item.id }}</p>
+                <div class="flex flex-row align-items-center mb-10">
+                  <p class="mr-10">{{ $t('orderList.orderId') }}{{ item.id }}</p>
+                  <p class="ml-10 cursor" @click="openBarcode(item.id)"><i class="el-icon-full-screen flex flex-row align-items-end"><span class="font-14">&nbsp;条形码</span></i></p>
+                </div>
                 <div class="d-flex align-items-center">
                   <p>{{ $t('orderList.roomType') }}{{ item.roomTypeName | roomNameFormat }}</p>
                   <p class="ml-10 mr-10" style="color: #e0e0e0"> | </p>
@@ -174,6 +177,21 @@
 
     </el-dialog>
 
+    <el-dialog
+        class="wallet-dialog"
+        :visible.sync="barcodeVisible"
+        width="95%"
+        center
+    >
+      <div class="m-auto">
+        <barcode :value="barcodeValue" class="m-auto">
+          订单ID获取异常,请重新打开!
+        </barcode>
+      </div>
+
+
+    </el-dialog>
+
   </div>
 </template>
 
@@ -181,16 +199,20 @@
 import {formDataPost, get, post} from "../utils/request";
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer.vue';
+import VueBarcode from 'vue-barcode';
 
 export default {
   name: "OrderList",
   components: {
     TopNav,
-    Footer
+    Footer,
+    'barcode': VueBarcode
   },
   data() {
     return {
       payVisible:false,
+      barcodeVisible: false,
+      barcodeValue: undefined,
       payForm: {
         orderId: undefined,
         lastPay: undefined,
@@ -423,6 +445,12 @@ export default {
             console.log(err);
           })
     },
+
+    openBarcode(id) {
+      this.barcodeValue = id
+      this.barcodeVisible = true
+    },
+
     writeComment(order) {
       this.writeCommentVisible = true
       this.currentOrder = order
