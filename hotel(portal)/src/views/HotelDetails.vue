@@ -10,7 +10,7 @@
 
 
       <div class="big-box">
-                <el-button @click="payForAlipay">Test</el-button>
+<!--                <el-button @click="payForAlipay">Test</el-button>-->
         <!--        <p>酒店id：{{ hotelDetails.hotelId }}</p>-->
         <div class="hotel-title">
           {{ hotelDetails.name }}
