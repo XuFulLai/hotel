@@ -1,0 +1,185 @@
+2022-07-08 19:43:28:                            _ooOoo_
+2022-07-08 19:43:28:                           o8888888o
+2022-07-08 19:43:28:                           88" . "88
+2022-07-08 19:43:28:                           (| -_- |)
+2022-07-08 19:43:28:                           O\  =  /O
+2022-07-08 19:43:28:                        ____/`---'\____
+2022-07-08 19:43:28:                      .'  \\|     |//  `.
+2022-07-08 19:43:28:                     /  \\|||  :  |||//  \
+2022-07-08 19:43:28:                    /  _||||| -:- |||||-  \
+2022-07-08 19:43:28:                    |   | \\\  -  /// |   |
+2022-07-08 19:43:28:                    | \_|  ''\---/''  |   |
+2022-07-08 19:43:28:                    \  .-\__  `-`  ___/-. /
+2022-07-08 19:43:28:                  ___`. .'  /--.--\  `. . __
+2022-07-08 19:43:28:               ."" '<  `.___\_<|>_/___.'  >'"".
+2022-07-08 19:43:28:              | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+2022-07-08 19:43:28:              \  \ `-.   \_ __\ /__ _/   .-` /  /
+2022-07-08 19:43:28:         ======`-.____`-.___\_____/___.-`____.-'======
+2022-07-08 19:43:28:                            `=---='
+2022-07-08 19:43:28:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2022-07-08 19:43:28:              // 心中有佛 怕你碌柒 永不宕机 永无BUG //
+2022-07-08 19:43:28: 
+2022-07-08 19:43:28: 2022-07-08 19:43:28.370  INFO 20290 --- [           main] g.o.h.HotelIntelligenceSystemApplication : Starting HotelIntelligenceSystemApplication v0.0.1-SNAPSHOT using Java 1.8.0_311 on VM-20-8-centos with PID 20290 (/usr/local/src/tomato/hotel-plus/jar/hotel.jar started by root in /usr/local/src/tomato/hotel-plus)
+2022-07-08 19:43:28: 2022-07-08 19:43:28.373  INFO 20290 --- [           main] g.o.h.HotelIntelligenceSystemApplication : No active profile set, falling back to default profiles: default
+2022-07-08 19:43:29: 2022-07-08 19:43:29.897  INFO 20290 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-07-08 19:43:29: 2022-07-08 19:43:29.900  INFO 20290 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-07-08 19:43:29: 2022-07-08 19:43:29.938  INFO 20290 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22 ms. Found 0 Redis repository interfaces.
+2022-07-08 19:43:30: 2022-07-08 19:43:30.650  INFO 20290 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@625732' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-07-08 19:43:30: 2022-07-08 19:43:30.657  INFO 20290 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-07-08 19:43:31: 2022-07-08 19:43:31.047  INFO 20290 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8105 (http)
+2022-07-08 19:43:31: 2022-07-08 19:43:31.064  INFO 20290 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-07-08 19:43:31: 2022-07-08 19:43:31.065  INFO 20290 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.52]
+2022-07-08 19:43:31: 2022-07-08 19:43:31.140  INFO 20290 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-07-08 19:43:31: 2022-07-08 19:43:31.140  INFO 20290 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2678 ms
+2022-07-08 19:43:31: Logging initialized using 'class org.apache.ibatis.logging.stdout.StdOutImpl' adapter.
+2022-07-08 19:43:31: 2022-07-08 19:43:31.533  INFO 20290 --- [           main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2022-07-08 19:43:31: 2022-07-08 19:43:31.707  INFO 20290 --- [           main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2022-07-08 19:43:31: Registered plugin: 'AbstractSqlParserHandler(sqlParserList=null, sqlParserFilter=null)'
+2022-07-08 19:43:31: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/bed_type/bedTypeMapper.xml]'
+2022-07-08 19:43:31: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/chart/chartMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/checkRecords/CheckRecordsMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/collection/CollectionMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/dept/deptMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/discounts/discountsMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/discountUser/DiscountUserMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/hotel/hotelMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/isolationInfo/IsolationInfoMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/materialsApply/MaterialsApplyMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/menu/menuMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/menu_dept/menuDeptMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/order/orderMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/orderComment/OrderCommentMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/review/ReviewMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/room/roomMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/room_type/roomTypeMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/sys_logs/logsMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/user/userMapper.xml]'
+2022-07-08 19:43:32: Parsed mapper file: 'URL [jar:file:/usr/local/src/tomato/hotel-plus/jar/hotel.jar!/BOOT-INF/classes!/mapper/wallet/WalletMapper.xml]'
+2022-07-08 19:43:32:  _ _   |_  _ _|_. ___ _ |    _ 
+2022-07-08 19:43:32: 
+2022-07-08 19:43:32: | | |\/|_)(_| | |_\  |_)||_|_\ 
+2022-07-08 19:43:32:      /               |         
+2022-07-08 19:43:32:                         3.2.0 
+2022-07-08 19:43:32: 2022-07-08 19:43:32.792  INFO 20290 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static final java.lang.String group.oneonetwo.hotelintelligencesystem.components.security.utils.JwtTokenUtils.ISS
+2022-07-08 19:43:33: 2022-07-08 19:43:33.298  WARN 20290 --- [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'checkRecordsController': Unsatisfied dependency expressed through field 'checkRecordsService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'checkRecordsServiceImpl': Unsatisfied dependency expressed through field 'isolationInfoService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'isolationInfoServiceImpl': Unsatisfied dependency expressed through field 'roomService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'roomServiceImpl': Unsatisfied dependency expressed through field 'orderService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderServiceImpl': Lookup method resolution failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [group.oneonetwo.hotelintelligencesystem.modules.order.service.impl.OrderServiceImpl] from ClassLoader [org.springframework.boot.loader.LaunchedURLClassLoader@7daf6ecc]
+2022-07-08 19:43:33: 2022-07-08 19:43:33.321  INFO 20290 --- [           main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2022-07-08 19:43:33: 2022-07-08 19:43:33.322  INFO 20290 --- [           main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2022-07-08 19:43:33: 2022-07-08 19:43:33.325  INFO 20290 --- [           main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2022-07-08 19:43:33: 2022-07-08 19:43:33.346  INFO 20290 --- [           main] ConditionEvaluationReportLoggingListener : 
+2022-07-08 19:43:33: 
+2022-07-08 19:43:33: Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-07-08 19:43:33: 2022-07-08 19:43:33.373 ERROR 20290 --- [           main] o.s.boot.SpringApplication               : Application run failed
+2022-07-08 19:43:33: 
+2022-07-08 19:43:33: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'checkRecordsController': Unsatisfied dependency expressed through field 'checkRecordsService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'checkRecordsServiceImpl': Unsatisfied dependency expressed through field 'isolationInfoService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'isolationInfoServiceImpl': Unsatisfied dependency expressed through field 'roomService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'roomServiceImpl': Unsatisfied dependency expressed through field 'orderService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderServiceImpl': Lookup method resolution failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [group.oneonetwo.hotelintelligencesystem.modules.order.service.impl.OrderServiceImpl] from ClassLoader [org.springframework.boot.loader.LaunchedURLClassLoader@7daf6ecc]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:660) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:640) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1413) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:944) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:918) ~[spring-context-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145) ~[spring-boot-2.5.4.jar!/:2.5.4]
+2022-07-08 19:43:33: 	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-2.5.4.jar!/:2.5.4]
+2022-07-08 19:43:33: 	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:434) [spring-boot-2.5.4.jar!/:2.5.4]
+2022-07-08 19:43:33: 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:338) [spring-boot-2.5.4.jar!/:2.5.4]
+2022-07-08 19:43:33: 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) [spring-boot-2.5.4.jar!/:2.5.4]
+2022-07-08 19:43:33: 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1332) [spring-boot-2.5.4.jar!/:2.5.4]
+2022-07-08 19:43:33: 	at group.oneonetwo.hotelintelligencesystem.HotelIntelligenceSystemApplication.main(HotelIntelligenceSystemApplication.java:15) [classes!/:0.0.1-SNAPSHOT]
+2022-07-08 19:43:33: 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_311]
+2022-07-08 19:43:33: 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_311]
+2022-07-08 19:43:33: 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_311]
+2022-07-08 19:43:33: 	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_311]
+2022-07-08 19:43:33: 	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:49) [hotel.jar:0.0.1-SNAPSHOT]
+2022-07-08 19:43:33: 	at org.springframework.boot.loader.Launcher.launch(Launcher.java:108) [hotel.jar:0.0.1-SNAPSHOT]
+2022-07-08 19:43:33: 	at org.springframework.boot.loader.Launcher.launch(Launcher.java:58) [hotel.jar:0.0.1-SNAPSHOT]
+2022-07-08 19:43:33: 	at org.springframework.boot.loader.JarLauncher.main(JarLauncher.java:88) [hotel.jar:0.0.1-SNAPSHOT]
+2022-07-08 19:43:33: Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'checkRecordsServiceImpl': Unsatisfied dependency expressed through field 'isolationInfoService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'isolationInfoServiceImpl': Unsatisfied dependency expressed through field 'roomService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'roomServiceImpl': Unsatisfied dependency expressed through field 'orderService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderServiceImpl': Lookup method resolution failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [group.oneonetwo.hotelintelligencesystem.modules.order.service.impl.OrderServiceImpl] from ClassLoader [org.springframework.boot.loader.LaunchedURLClassLoader@7daf6ecc]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:660) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:640) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1413) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1380) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1300) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:657) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	... 28 common frames omitted
+2022-07-08 19:43:33: Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'isolationInfoServiceImpl': Unsatisfied dependency expressed through field 'roomService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'roomServiceImpl': Unsatisfied dependency expressed through field 'orderService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderServiceImpl': Lookup method resolution failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [group.oneonetwo.hotelintelligencesystem.modules.order.service.impl.OrderServiceImpl] from ClassLoader [org.springframework.boot.loader.LaunchedURLClassLoader@7daf6ecc]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:660) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:640) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1413) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1380) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1300) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:657) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	... 42 common frames omitted
+2022-07-08 19:43:33: Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'roomServiceImpl': Unsatisfied dependency expressed through field 'orderService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderServiceImpl': Lookup method resolution failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [group.oneonetwo.hotelintelligencesystem.modules.order.service.impl.OrderServiceImpl] from ClassLoader [org.springframework.boot.loader.LaunchedURLClassLoader@7daf6ecc]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:660) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:640) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1413) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1380) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1300) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:657) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	... 56 common frames omitted
+2022-07-08 19:43:33: Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderServiceImpl': Lookup method resolution failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [group.oneonetwo.hotelintelligencesystem.modules.order.service.impl.OrderServiceImpl] from ClassLoader [org.springframework.boot.loader.LaunchedURLClassLoader@7daf6ecc]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:289) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1284) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1201) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:564) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1380) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1300) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:657) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	... 70 common frames omitted
+2022-07-08 19:43:33: Caused by: java.lang.IllegalStateException: Failed to introspect Class [group.oneonetwo.hotelintelligencesystem.modules.order.service.impl.OrderServiceImpl] from ClassLoader [org.springframework.boot.loader.LaunchedURLClassLoader@7daf6ecc]
+2022-07-08 19:43:33: 	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:481) ~[spring-core-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:321) ~[spring-core-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:267) ~[spring-beans-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	... 82 common frames omitted
+2022-07-08 19:43:33: Caused by: java.lang.NoClassDefFoundError: org/springframework/boot/configurationprocessor/json/JSONException
+2022-07-08 19:43:33: 	at java.lang.Class.getDeclaredMethods0(Native Method) ~[na:1.8.0_311]
+2022-07-08 19:43:33: 	at java.lang.Class.privateGetDeclaredMethods(Class.java:2701) ~[na:1.8.0_311]
+2022-07-08 19:43:33: 	at java.lang.Class.getDeclaredMethods(Class.java:1975) ~[na:1.8.0_311]
+2022-07-08 19:43:33: 	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:463) ~[spring-core-5.3.9.jar!/:5.3.9]
+2022-07-08 19:43:33: 	... 84 common frames omitted
+2022-07-08 19:43:33: Caused by: java.lang.ClassNotFoundException: org.springframework.boot.configurationprocessor.json.JSONException
+2022-07-08 19:43:33: 	at java.net.URLClassLoader.findClass(URLClassLoader.java:387) ~[na:1.8.0_311]
+2022-07-08 19:43:33: 	at java.lang.ClassLoader.loadClass(ClassLoader.java:418) ~[na:1.8.0_311]
+2022-07-08 19:43:33: 	at org.springframework.boot.loader.LaunchedURLClassLoader.loadClass(LaunchedURLClassLoader.java:151) ~[hotel.jar:0.0.1-SNAPSHOT]
+2022-07-08 19:43:33: 	at java.lang.ClassLoader.loadClass(ClassLoader.java:351) ~[na:1.8.0_311]
+2022-07-08 19:43:33: 	... 88 common frames omitted

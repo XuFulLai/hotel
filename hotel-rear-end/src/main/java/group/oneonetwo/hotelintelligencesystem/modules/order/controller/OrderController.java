@@ -83,44 +83,45 @@ public class OrderController {
         return Reply.success();
     }
 
-    /**
-     * 通过传入订单号,当orders表中payWay字段为空时,创建该订单的支付宝付款二维码
-     * 扫码付款成功后,可以通过异步让支付宝官方通过POST请求通知我们(这里懒得跟前端做websocket连接,所以暂时抛弃这个做法)
-     * 也可以通过手动调用查询接口(checkPayOrderForAlipay)去进行该订单交易状态查询(在这也称确定支付)
-     * @return
-     * @throws Exception
-     */
-    @ApiOperation("支付宝支付订单")
-    @GetMapping("payOrder/alipay/pre/{orderId}")
-    public Reply prePayOrderForAlipay(@PathVariable("orderId") String orderId) throws Exception {
-        return Reply.success(orderService.prePayOrderForAlipay(orderId));
-    }
-
-    /**
-     * 支付宝查询订单状态(确认支付)
-     * 当调用这个接口时,若为交易成功,且orders表中payWay字段为空(防止重复分配房间),则标记订单状态为已支付并分配房间
-     * 若为其他,直接抛出异常
-     * @param orderId
-     * @return
-     * @throws Exception
-     */
-    @ApiOperation("支付宝确认支付")
-    @GetMapping("payOrder/alipay/check/{orderId}")
-    public Reply checkPayOrderForAlipay(@PathVariable("orderId") String orderId) throws Exception {
-        return Reply.success(orderService.checkPayOrderForAlipay(orderId));
-    }
-
-    /**
-     * 支付宝退款操作,
-     * @param orderId
-     * @return
-     * @throws Exception
-     */
-    @ApiOperation("支付宝退款")
-    @GetMapping("cancel/alipay/{orderId}")
-    public Reply cancelOrderForAlipay(@PathVariable("orderId") String orderId) throws Exception {
-        return Reply.success(orderService.cancelOrderForAlipay(orderId));
-    }
+    //    暂时注释支付宝相关代码
+//    /**
+//     * 通过传入订单号,当orders表中payWay字段为空时,创建该订单的支付宝付款二维码
+//     * 扫码付款成功后,可以通过异步让支付宝官方通过POST请求通知我们(这里懒得跟前端做websocket连接,所以暂时抛弃这个做法)
+//     * 也可以通过手动调用查询接口(checkPayOrderForAlipay)去进行该订单交易状态查询(在这也称确定支付)
+//     * @return
+//     * @throws Exception
+//     */
+//    @ApiOperation("支付宝支付订单")
+//    @GetMapping("payOrder/alipay/pre/{orderId}")
+//    public Reply prePayOrderForAlipay(@PathVariable("orderId") String orderId) throws Exception {
+//        return Reply.success(orderService.prePayOrderForAlipay(orderId));
+//    }
+//
+//    /**
+//     * 支付宝查询订单状态(确认支付)
+//     * 当调用这个接口时,若为交易成功,且orders表中payWay字段为空(防止重复分配房间),则标记订单状态为已支付并分配房间
+//     * 若为其他,直接抛出异常
+//     * @param orderId
+//     * @return
+//     * @throws Exception
+//     */
+//    @ApiOperation("支付宝确认支付")
+//    @GetMapping("payOrder/alipay/check/{orderId}")
+//    public Reply checkPayOrderForAlipay(@PathVariable("orderId") String orderId) throws Exception {
+//        return Reply.success(orderService.checkPayOrderForAlipay(orderId));
+//    }
+//
+//    /**
+//     * 支付宝退款操作,
+//     * @param orderId
+//     * @return
+//     * @throws Exception
+//     */
+//    @ApiOperation("支付宝退款")
+//    @GetMapping("cancel/alipay/{orderId}")
+//    public Reply cancelOrderForAlipay(@PathVariable("orderId") String orderId) throws Exception {
+//        return Reply.success(orderService.cancelOrderForAlipay(orderId));
+//    }
 
     @ApiOperation("取消订单")
     @GetMapping("cancel/{id}")

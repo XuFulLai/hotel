@@ -29,9 +29,10 @@ public interface IOrderService {
 
     void payOrder(String orderId,String walletPwd);
 
-    String prePayOrderForAlipay(String orderId) throws Exception;
-
-    Boolean checkPayOrderForAlipay(String orderId) throws Exception;
-
-    String cancelOrderForAlipay(String orderId) throws Exception;
+    //    暂时注释支付宝相关代码
+//    String prePayOrderForAlipay(String orderId) throws Exception;
+//
+//    Boolean checkPayOrderForAlipay(String orderId) throws Exception;
+//
+//    String cancelOrderForAlipay(String orderId) throws Exception;
 }

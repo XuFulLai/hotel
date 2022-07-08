@@ -85,7 +85,7 @@
 1. 将 **.\hotel-plus\hotel-rear-end\src\main\resources** 下的application-base.yml改名为application.yml，并将里面 “####” 替换成描述的对应信息
    1. 其中，邮箱相关请进入邮箱开通POP3 / IMAP / SMTP服务，并获取授权码，有更多邮箱可以按格式增加
    2. 七牛云账号需要自行申请，现在存储方式为先调用 **upload/img** 接口，然后获取url再存进数据库，若需要存储本地，修改前端对应逻辑即可
-   3. 支付宝相关沙箱配置，请在https://open.alipay.com/develop/sandbox/app下获取，注意需要查看文档下载对应的沙箱支付宝配合使用
+   3. 支付宝相关沙箱配置，请在https://open.alipay.com/develop/sandbox/app下获取，注意需要查看文档下载对应的沙箱支付宝App配合使用
 
 #### hotel-front-end & hotel-portal：
 
@@ -136,6 +136,11 @@
 3. 二维码登录相关
 
    - 使用轮询方式访问redis（可改为websocket推送），使用UUID的方式生成码作为redis的key，对应的value为0时为未扫描，1为已扫描，2为确认登录
+   
+4. 支付宝相关
+
+   - 因不明原因，开发的支付宝支付功能在服务器部署时无法部署成功（错误日志见`issue/alipay_issue_out_log.log`），所以支付宝相关以及配置项已注释。（知道解决方案希望大大们能告知我，谢谢啦）
+   - **本地执行时可完美使用支付宝相关功能**，需要使用的话可以全局搜索“**暂时注释支付宝相关代码**”关键字进行取消注释。
 
 ------
 
