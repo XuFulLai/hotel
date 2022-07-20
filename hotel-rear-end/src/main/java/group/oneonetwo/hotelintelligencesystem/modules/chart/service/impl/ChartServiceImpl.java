@@ -113,7 +113,12 @@ public class ChartServiceImpl implements IChartService {
             return null;
 //            return chartMapper.statusOnIsolationOfWeek(status,hotelId);
         }else if ("month".equals(range)){
-            return chartMapper.statusOnIsolationOfMonth(status,hotelId);
+            if (status == 0) {
+                return chartMapper.statusZeroOnIsolationOfMonth(hotelId);
+            }else {
+                return chartMapper.statusOnIsolationOfMonth(status,hotelId);
+            }
+
         }else {
             throw new CommonException(Integer.valueOf(ResultCode.NOT_FOUND.getCode()),ResultCode.NOT_FOUND.getMsg());
         }

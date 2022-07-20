@@ -39,4 +39,6 @@ public interface ChartMapper {
     List<ChartVO> statusOnIsolationOfMonth(Integer status, String hotelId);
 
     List<ChartVO> numOnIsolationOfWeek(String hotelId);
+
+    List<ChartVO> statusZeroOnIsolationOfMonth(String hotelId);
 }

@@ -520,5 +520,135 @@
             ) d ON base_date.`NAME` = d.`NAME`
         ORDER BY NAME ASC
     </select>
+    <select id="statusZeroOnIsolationOfMonth"
+            resultMap="chartMap">
+        SELECT *
+        FROM (
+                 SELECT CURDATE() name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (CURDATE() BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 1 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 2 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 3 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 4 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 5 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 6 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 7 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 7 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 8 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 8 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 9 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 9 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 10 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 10 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 11 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 11 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 12 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 12 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 13 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 13 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 14 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 14 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 15 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 15 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 16 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 16 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 17 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 17 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 18 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 18 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 19 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 19 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 20 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 20 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 21 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 21 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 22 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 22 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 23 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 23 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 24 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 24 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 25 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 25 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 26 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 26 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 27 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 27 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 28 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 28 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 29 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 29 DAY) BETWEEN check_in_time and check_out_time)
+                 UNION ALL
+                 SELECT DATE_SUB(CURDATE(), INTERVAL 30 DAY) name,count(*) value
+                 FROM isolation_info
+                 where status = 0 and (DATE_SUB(CURDATE(), INTERVAL 30 DAY) BETWEEN check_in_time and check_out_time)
+             )t
+        ORDER BY name ASC
+    </select>
 
 </mapper>
