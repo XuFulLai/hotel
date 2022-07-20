@@ -22,9 +22,15 @@ public interface IChartService {
 
     List<ChartVO> incomeOf7Day();
 
-    List<ChartVO> wayOnIsolationOf7Day(Integer way);
+    List<ChartVO> wayOnIsolation(String range, Integer way);
 
     List<ChartVO> isolationIncome();
 
     List<ChartVO> isolationCheckIn();
+
+    List<ChartVO> typeOnIsolation(String range, Integer type);
+
+    List<ChartVO> statusOnIsolation(String range, Integer status);
+
+    List<ChartVO> numOnIsolation(String range);
 }

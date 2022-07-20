@@ -1,6 +1,8 @@
 package group.oneonetwo.hotelintelligencesystem.modules.chart.service.impl;
 
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
+import group.oneonetwo.hotelintelligencesystem.enums.ResultCode;
+import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.modules.chart.dao.ChartMapper;
 import group.oneonetwo.hotelintelligencesystem.modules.chart.model.vo.ChartVO;
 import group.oneonetwo.hotelintelligencesystem.modules.chart.service.IChartService;
@@ -52,12 +54,21 @@ public class ChartServiceImpl implements IChartService {
     }
 
     @Override
-    public List<ChartVO> wayOnIsolationOf7Day(Integer way) {
+    public List<ChartVO> wayOnIsolation(String range, Integer way) {
         String hotelId = null;
         if (!"admin".equals(authUtils.getRole())) {
             hotelId = authUtils.getUserHotelId();
         }
-        return chartMapper.wayOnIsolationOf7Day(way,hotelId);
+        if ("all".equals(range)) {
+            return chartMapper.wayOnIsolation(hotelId);
+        }else if ("day".equals(range)){
+            return chartMapper.wayOnIsolationOfDay(way,hotelId);
+        }else if ("month".equals(range)){
+            return null;
+//            return chartMapper.wayOnIsolationOfMonth(way,hotelId);
+        }else {
+            throw new CommonException(Integer.valueOf(ResultCode.NOT_FOUND.getCode()),ResultCode.NOT_FOUND.getMsg());
+        }
     }
 
     @Override
@@ -68,5 +79,64 @@ public class ChartServiceImpl implements IChartService {
     @Override
     public List<ChartVO> isolationCheckIn() {
         return chartMapper.isolationCheckIn();
+    }
+
+    @Override
+    public List<ChartVO> typeOnIsolation(String range, Integer type) {
+        String hotelId = null;
+        if (!"admin".equals(authUtils.getRole())) {
+            hotelId = authUtils.getUserHotelId();
+        }
+        if ("all".equals(range)) {
+            return chartMapper.typeOnIsolation(hotelId);
+        }else if ("week".equals(range)){
+            return chartMapper.typeOnIsolationOfWeek(type,hotelId);
+        }else if ("month".equals(range)){
+            return chartMapper.typeOnIsolationOfMonth(type,hotelId);
+        }else {
+            throw new CommonException(Integer.valueOf(ResultCode.NOT_FOUND.getCode()),ResultCode.NOT_FOUND.getMsg());
+        }
+    }
+
+    @Override
+    public List<ChartVO> statusOnIsolation(String range, Integer status) {
+        String hotelId = null;
+        if (!"admin".equals(authUtils.getRole())) {
+            hotelId = authUtils.getUserHotelId();
+        }
+        if ("all".equals(range)) {
+            //需要的可以对照chartMapper.typeOnIsolation来改造
+            return null;
+//            return chartMapper.statusOnIsolation(hotelId);
+        }else if ("week".equals(range)){
+            //需要的可以对照chartMapper.typeOnIsolationOfWeek来改造
+            return null;
+//            return chartMapper.statusOnIsolationOfWeek(status,hotelId);
+        }else if ("month".equals(range)){
+            return chartMapper.statusOnIsolationOfMonth(status,hotelId);
+        }else {
+            throw new CommonException(Integer.valueOf(ResultCode.NOT_FOUND.getCode()),ResultCode.NOT_FOUND.getMsg());
+        }
+    }
+
+    @Override
+    public List<ChartVO> numOnIsolation(String range) {
+        String hotelId = null;
+        if (!"admin".equals(authUtils.getRole())) {
+            hotelId = authUtils.getUserHotelId();
+        }
+        if ("all".equals(range)) {
+            //需要的可以对照chartMapper.typeOnIsolation来改造
+            return null;
+//            return chartMapper.statusOnIsolation(hotelId);
+        }else if ("week".equals(range)){
+            return chartMapper.numOnIsolationOfWeek(hotelId);
+        }else if ("month".equals(range)){
+            //需要的可以对照chartMapper.typeOnIsolationOfMonth来改造
+//            return chartMapper.numOnIsolationOfMonth(hotelId);
+            return null;
+        }else {
+            throw new CommonException(Integer.valueOf(ResultCode.NOT_FOUND.getCode()),ResultCode.NOT_FOUND.getMsg());
+        }
     }
 }

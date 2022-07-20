@@ -70,24 +70,26 @@
 12. 增加了支付宝支付功能
 13. 更多更新自行摸索...
 
+------
+
 
 
 ### 安装必看
 
-#### 数据库
+#### 1. 数据库
 
 创建完数据库后，把根目录下的 **hotel-plus.sql** 导入即可
 
 注：开发环境数据库版本为 Ver 8.0.24
 
-#### hotel-rear-end：
+#### 2. hotel-rear-end：
 
 1. 将 **.\hotel-plus\hotel-rear-end\src\main\resources** 下的application-base.yml改名为application.yml，并将里面 “####” 替换成描述的对应信息
    1. 其中，邮箱相关请进入邮箱开通POP3 / IMAP / SMTP服务，并获取授权码，有更多邮箱可以按格式增加
    2. 七牛云账号需要自行申请，现在存储方式为先调用 **upload/img** 接口，然后获取url再存进数据库，若需要存储本地，修改前端对应逻辑即可
    3. 支付宝相关沙箱配置，请在https://open.alipay.com/develop/sandbox/app下获取，注意需要查看文档下载对应的沙箱支付宝App配合使用
 
-#### hotel-front-end & hotel-portal：
+#### 3. hotel-front-end & hotel-portal：
 
 1.  hotel(front-end)项目安装依赖可能会报错，目前有一种解决方法：删除掉该目录下的package.json文件第15行代码,"vue-qr": "^3.2.4",然后终端键入命令：npm install,成功安装之后，在终端输入命令：npm install vue-qr，安装完成，完成该项目依赖的安装。
 2.  由于Websocket是使用get请求去握手的，所以单独需要在“hotel(front-end)/src/components/RoomManage.vue”文件下的initWebsocket()方法下修改服务端ip地址。其他ip地址到对应的request.js中或者application.yaml中修改即可

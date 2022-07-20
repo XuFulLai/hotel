@@ -7,10 +7,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 /**
@@ -61,10 +61,10 @@ public class ChartController {
         return Reply.success(chartService.incomeOf7Day());
     }
 
-    @ApiOperation("近一周隔离人员分配/自申报统计")
-    @GetMapping("isolation/way/day/7/{way}")
-    public Reply<List<ChartVO>> wayOnIsolationOf7Day(@PathParam("way") Integer way) {
-        return Reply.success(chartService.wayOnIsolationOf7Day(way));
+    @ApiOperation("隔离人员分配/自申报统计")
+    @GetMapping("isolation/way/{range}/{way}")
+    public Reply<List<ChartVO>> wayOnIsolation(@PathVariable("range") String range, @PathVariable("way") Integer way) {
+        return Reply.success(chartService.wayOnIsolation(range,way));
     }
 
     @ApiOperation("各地酒店接收隔离人员情况")
@@ -78,5 +78,24 @@ public class ChartController {
     public Reply<List<ChartVO>> isolationIncome() {
         return Reply.success(chartService.isolationIncome());
     }
+
+    @ApiOperation("隔离人员类型统计")
+    @GetMapping("isolation/type/{range}/{type}")
+    public Reply<List<ChartVO>> typeOnIsolation(@PathVariable("range") String range, @PathVariable("type") Integer type) {
+        return Reply.success(chartService.typeOnIsolation(range,type));
+    }
+
+    @ApiOperation("隔离人员类型统计")
+    @GetMapping("isolation/status/{range}/{status}")
+    public Reply<List<ChartVO>> statusOnIsolation(@PathVariable("range") String range, @PathVariable("status") Integer status) {
+        return Reply.success(chartService.statusOnIsolation(range,status));
+    }
+
+    @ApiOperation("隔离人员数量统计")
+    @GetMapping("isolation/num/{range}")
+    public Reply<List<ChartVO>> numOnIsolation(@PathVariable("range") String range) {
+        return Reply.success(chartService.numOnIsolation(range));
+    }
+
 
 }

@@ -58,7 +58,7 @@
     <select id="wayChart" resultMap="chartMap">
         select (
                    case way
-                       when way = 1 then '到店'
+                       when 1 then '到店'
                        else '网单'
                        end
                    ) name,count(way) value
@@ -114,7 +114,7 @@
         group by name
         order by name
     </select>
-    <select id="wayOnIsolationOf7Day" resultMap="chartMap">
+    <select id="wayOnIsolationOfDay" resultMap="chartMap">
         SELECT i.name,COUNT(i.way) value
         from (
             SELECT
@@ -149,6 +149,376 @@
             and hotel_id = #{hotelId}
         </if>
         GROUP BY province
+    </select>
+    <select id="wayOnIsolation"
+            resultMap="chartMap">
+        SELECT
+            (
+                CASE way
+                    WHEN 1 THEN
+                        '防疫人员分配'
+                    WHEN 2 THEN
+                        '自申报'
+                    END
+                ) NAME,COUNT(way) VALUE
+        FROM
+            isolation_info
+        <where>
+            <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+                and hotel_id = #{hotelId}
+            </if>
+            and is_deleted = 0
+        </where>
+        GROUP BY
+            way
+    </select>
+    <select id="typeOnIsolation"
+            resultMap="chartMap">
+        SELECT
+            (
+                CASE type
+                    WHEN 3 THEN
+                        '中高风险人员'
+                    WHEN 2 THEN
+                        '入境人员'
+                    WHEN 1 THEN
+                        '应隔离人员'
+                    ELSE
+                        '密接'
+                    END
+                ) NAME,COUNT(type) VALUE
+        FROM
+            isolation_info
+        <where>
+            <if test='hotelId != "0" and hotelId != null and hotelId != ""'>
+                and hotel_id = #{hotelId}
+            </if>
+            and is_deleted = 0
+        </where>
+        GROUP BY
+            type
+        ORDER BY
+            VALUE DESC
+    </select>
+
+    <select id="typeOnIsolationOfWeek"
+            resultMap="chartMap">
+        SELECT
+        base_date. NAME,
+        IFNULL(d.VALUE,0) VALUE
+        FROM
+        (
+            SELECT
+            CURDATE() NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 1 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 2 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 3 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 4 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 5 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 6 DAY) NAME
+        ) base_date
+        LEFT JOIN (
+            SELECT
+                DATE_FORMAT(check_in_time, '%Y-%m-%d') NAME,count(*) VALUE
+            FROM
+                isolation_info
+            WHERE
+                DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(check_in_time)
+            AND is_deleted = 0
+            AND type = #{type}
+            GROUP BY
+            DATE_FORMAT(check_in_time, '%Y-%m-%d')
+        ) d ON base_date.`NAME` = d.`NAME`
+        ORDER BY NAME ASC
+    </select>
+    <select id="typeOnIsolationOfMonth"
+            resultMap="chartMap">
+        SELECT
+            base_date. NAME,
+            IFNULL(d. VALUE, 0) VALUE
+        FROM
+        (
+            SELECT
+            CURDATE() NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 1 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 2 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 3 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 4 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 5 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 6 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 7 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 8 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 9 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 10 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 11 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 12 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 13 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 14 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 15 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 16 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 17 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 18 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 19 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 20 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 21 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 22 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 23 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 24 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 25 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 26 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 27 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 28 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 29 DAY) NAME
+            UNION ALL
+            SELECT
+            DATE_SUB(CURDATE(), INTERVAL 30 DAY) NAME
+        ) base_date
+        LEFT JOIN (
+            SELECT
+                DATE_FORMAT(check_in_time, '%Y-%m-%d') NAME,
+                count(*) VALUE
+            FROM
+                isolation_info
+            WHERE
+                DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(check_in_time)
+            AND is_deleted = 0
+            AND type = #{type}
+            GROUP BY
+                DATE_FORMAT(check_in_time, '%Y-%m-%d')
+        ) d ON base_date.`NAME` = d.`NAME`
+        ORDER BY NAME ASC
+    </select>
+    <select id="statusOnIsolationOfMonth"
+            resultMap="chartMap">
+        SELECT
+            base_date. NAME,
+            IFNULL(d. VALUE, 0) VALUE
+        FROM
+            (
+                SELECT
+                CURDATE() NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 1 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 2 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 3 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 4 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 5 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 6 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 7 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 8 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 9 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 10 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 11 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 12 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 13 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 14 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 15 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 16 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 17 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 18 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 19 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 20 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 21 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 22 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 23 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 24 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 25 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 26 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 27 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 28 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 29 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 30 DAY) NAME
+            ) base_date
+            LEFT JOIN (
+            SELECT
+                DATE_FORMAT(check_in_time, '%Y-%m-%d') NAME,
+                count(*) VALUE
+            FROM
+                isolation_info
+            WHERE
+                DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(check_in_time)
+                AND is_deleted = 0
+                AND status = #{status}
+            GROUP BY
+                <if test="status == 0">
+                    DATE_FORMAT(check_in_time, '%Y-%m-%d')
+                </if>
+                <if test="status == 1 or status == 2">
+                    DATE_FORMAT(update_time, '%Y-%m-%d')
+                </if>
+
+            ) d ON base_date.`NAME` = d.`NAME`
+        ORDER BY NAME ASC
+    </select>
+    <select id="numOnIsolationOfWeek"
+            resultMap="chartMap">
+        SELECT
+            base_date. NAME,
+            IFNULL(d.VALUE,0) VALUE
+        FROM
+            (
+                SELECT
+                CURDATE() NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 1 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 2 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 3 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 4 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 5 DAY) NAME
+                UNION ALL
+                SELECT
+                DATE_SUB(CURDATE(), INTERVAL 6 DAY) NAME
+            ) base_date
+            LEFT JOIN (
+            SELECT
+                DATE_FORMAT(check_in_time, '%Y-%m-%d') NAME,count(*) VALUE
+            FROM
+                isolation_info
+            WHERE
+                DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(check_in_time)
+            AND is_deleted = 0
+            GROUP BY
+                DATE_FORMAT(check_in_time, '%Y-%m-%d')
+            ) d ON base_date.`NAME` = d.`NAME`
+        ORDER BY NAME ASC
     </select>
 
 </mapper>
