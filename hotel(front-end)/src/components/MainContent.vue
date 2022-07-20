@@ -149,7 +149,7 @@ export default {
       Promise.all([mission0, mission1, mission2]).then(res => {
         console.log("promise: then", res)
         console.log("series", series)
-        console.log("xAxis", xAxis)
+        console.log("xAxis", xAxis)    
         stackedLineChart.setOption({
           title: {
             text: '隔离人员状态统计'
@@ -158,6 +158,7 @@ export default {
             trigger: 'axis'
           },
           legend: {
+            right: '1%',
             data: ['正在隔离', '解除隔离', '阳性入院']
           },
           grid: {
@@ -167,9 +168,9 @@ export default {
             containLabel: true
           },
           toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
+            // feature: {
+            //   saveAsImage: {}
+            // }
           },
           xAxis: {
             type: 'category',
@@ -181,6 +182,7 @@ export default {
           },
           series: series
         })
+        stackedLineChart.resize();
       }).catch(err => {
         console.log("promise: err", err)
       })
@@ -325,7 +327,7 @@ export default {
       Promise.all([mission0, mission1, mission2, mission3, mission4]).then(res => {
         console.log("promise: then", res)
         console.log("series", series)
-        console.log("xAxis", xAxis)
+        console.log("xAxis", xAxis)        
         stackedColumnChart.setOption({
           title: {
             text: '隔离人数统计图'
@@ -336,7 +338,9 @@ export default {
               type: 'shadow'
             }
           },
-          legend: {},
+          legend: {
+            right: '1%'
+          },
           grid: {
             left: '3%',
             right: '4%',
@@ -356,6 +360,7 @@ export default {
           ],
           series: series
         })
+        stackedColumnChart.resize();
       })
           .catch(err => {
             console.log("promise: err", err)
@@ -906,6 +911,10 @@ export default {
   background: #FFFFFF;
   padding: 15px 0px;
 }
+
+/* #stacked-column-chart, #stacked-line-chart {
+  min-width: 450px;
+} */
 
 #map-box {
   width: 100%;
