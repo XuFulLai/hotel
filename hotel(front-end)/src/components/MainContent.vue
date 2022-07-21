@@ -84,7 +84,8 @@ export default {
           let item = {
             name: '正在隔离',
             type: 'line',
-            stack: 'Total',
+            // stack: 'Total',
+            color: '#edd600',
             smooth: true,
             data: data
           }
@@ -108,7 +109,8 @@ export default {
           let item = {
             name: '解除隔离',
             type: 'line',
-            stack: 'Total',
+            // stack: 'Total',
+            color: '#9fe080',
             smooth: true,
             data: data
           }
@@ -132,7 +134,8 @@ export default {
           let item = {
             name: '阳性入院',
             type: 'line',
-            stack: 'Total',
+            // stack: 'Total',
+            color: '#f06767',
             smooth: true,
             data: data
           }
@@ -149,7 +152,7 @@ export default {
       Promise.all([mission0, mission1, mission2]).then(res => {
         console.log("promise: then", res)
         console.log("series", series)
-        console.log("xAxis", xAxis)    
+        console.log("xAxis", xAxis)
         stackedLineChart.setOption({
           title: {
             text: '隔离人员状态统计'
@@ -159,18 +162,14 @@ export default {
           },
           legend: {
             right: '1%',
-            data: ['正在隔离', '解除隔离', '阳性入院']
+            data: ['正在隔离','解除隔离', '阳性入院']
           },
+          // color: ['#edd600', '#9fe080', '#f06767'],
           grid: {
             left: '3%',
             right: '4%',
             bottom: '3%',
             containLabel: true
-          },
-          toolbox: {
-            // feature: {
-            //   saveAsImage: {}
-            // }
           },
           xAxis: {
             type: 'category',
@@ -330,7 +329,7 @@ export default {
         console.log("xAxis", xAxis)        
         stackedColumnChart.setOption({
           title: {
-            text: '隔离人数统计图'
+            text: '每日新增隔离人员统计图'
           },
           tooltip: {
             trigger: 'axis',
