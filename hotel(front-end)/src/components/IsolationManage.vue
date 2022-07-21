@@ -578,6 +578,7 @@ export default {
       }
       post("api/isolationInfo/page",data).then(res => {
         this.isolationData = res.data.data.records
+        this.pageNum = res.data.data.total        
       })
     },
     getIsolationRoom() {
