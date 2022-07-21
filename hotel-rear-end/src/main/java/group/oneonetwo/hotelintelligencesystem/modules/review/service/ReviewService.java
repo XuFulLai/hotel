@@ -19,9 +19,13 @@ public interface ReviewService  {
     ReviewVO save(ReviewVO reviewVO);
     Integer deleteById(String id);
     Page<ReviewVO> getPage(ReviewVO reviewVO);
-    void  getCheck(ReviewVO reviewVO);
+    ReviewVO getCheck(ReviewVO reviewVO);
     void getReviews(ReviewVO reviewVO);
 
     ReviewPO selectByUID(String id);
     Page<ReviewVO> my(ReviewVO reviewVO);
+
+    void payDeclaration(String id,String walletPwd);
+    String payDeclarationForAlipay(String id) throws Exception;
+    Boolean checkDeclarationPayStatusForAlipay(String id) throws Exception;
 }

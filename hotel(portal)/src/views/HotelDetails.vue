@@ -512,7 +512,7 @@
 
             <el-switch
                 style="display: block;padding: 16px;"
-                v-model="appSwitchType"
+                v-model="switchType"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
                 :active-text="$t('hotelDetails.reserve')"
@@ -520,7 +520,7 @@
             </el-switch>
 
             <!-- app 预定 -->
-            <div v-show="appSwitchType" class="app-booking-main">
+            <div v-show="switchType" class="app-booking-main">
               <!-- 表单主体 -->
               <div class="app-booking-form">
 
@@ -622,7 +622,7 @@
             </div>
 
             <!-- app 自申报 -->
-            <div v-show="appSwitchType == false" class="app-booking-main">
+            <div v-show="switchType == false" class="app-booking-main">
               <!-- 表单主体 -->
               <div class="app-booking-form">
 
@@ -964,7 +964,7 @@ export default {
 
       minDate: new Date(),
 
-      appSwitchType: true,
+      // appSwitchType: true,
       appBooking: false,
       smallPagination: false,
       circleUrlSize: 50,
@@ -1255,7 +1255,14 @@ export default {
   methods: {
     //支付宝支付
     payForAlipay() {
-      get(`api/order/payOrder/alipay/pre/${this.payForm.orderId}`).then(res => {
+      console.log("this.payForm",this.payForm)
+      let url = undefined
+      if (this.switchType) {
+        url = `api/order/payOrder/alipay/pre/${this.payForm.orderId}`
+      }else {
+        url = `api/review/pay/alipay/pre/${this.payForm.orderId}`
+      }
+      get(url).then(res => {
         if (res.data.code == 200) {
           let newWindow = window.open("", '_blank', 'width=1000,height=600');
           const div = newWindow.document.createElement('div');
@@ -1269,7 +1276,13 @@ export default {
     },
     //确认支付状态
     alipayCheck() {
-      get(`api/order/payOrder/alipay/check/${this.payForm.orderId}`).then(res => {
+      let url = undefined
+      if (this.switchType) {
+        url = `api/order/payOrder/alipay/check/${this.payForm.orderId}`
+      }else {
+        url = `api/review/pay/alipay/check/${this.payForm.orderId}`
+      }
+      get(url).then(res => {
         if (res.data.code == 200) {
           if (res.data.data == true) {
             this.$message.success("订单支付成功!");
@@ -1518,6 +1531,14 @@ export default {
           .then(res => {
             console.log(res);
             if (res.data.code == 200) {
+              if (res.data.data.payStatus == 0) {
+                this.payForm = {
+                  orderId: res.data.data.id,
+                  lastPay: res.data.data.totalFee,
+                  walletPwd: undefined
+                }
+                this.payVisible = true
+              }
               this.$message({
                 message: this.$t('common.success'),
                 type: 'success'
@@ -1632,32 +1653,63 @@ export default {
           })
     },
     pay() {
-      let data = {
-        orderId: this.payForm.orderId,
-        walletPwd: this.payForm.walletPwd
-      }
-      formDataPost("/api/order/payOrder", data).then(res => {
-        if (res.data.code == 200) {
-          this.$message({
-            message: this.$t('hotelList.success'),
-            type: 'success'
-          });
-          this.payVisible = false
-          this.confirmOrderVisible = false
-          this.payForm = {
-            orderId: undefined,
-            lastPay: undefined,
-            walletPwd: undefined
-          }
-        } else {
-          this.$message({
-            message: res.data.msg,
-            type: 'warning',
-            duration: 4000
-          });
+      if (switchType){
+        let data = {
+          orderId: this.payForm.orderId,
+          walletPwd: this.payForm.walletPwd
         }
+        formDataPost("/api/order/payOrder", data).then(res => {
+          if (res.data.code == 200) {
+            this.$message({
+              message: this.$t('hotelList.success'),
+              type: 'success'
+            });
+            this.payVisible = false
+            this.confirmOrderVisible = false
+            this.payForm = {
+              orderId: undefined,
+              lastPay: undefined,
+              walletPwd: undefined
+            }
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: 'warning',
+              duration: 4000
+            });
+          }
+        })
+      } else {
+        let data = {
+          id: this.payForm.orderId,
+          walletPwd: this.payForm.walletPwd
+        }
+        formDataPost("/api/review/pay", data).then(res => {
+          if (res.data.code == 200) {
+            this.$message({
+              message: this.$t('hotelList.success'),
+              type: 'success'
+            });
+            this.payVisible = false
+            this.confirmOrderVisible = false
+            this.payForm = {
+              orderId: undefined,
+              lastPay: undefined,
+              walletPwd: undefined
+            }
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: 'warning',
+              duration: 4000
+            });
+          }
 
-      })
+        })
+      }
+
+
+
     },
     //根据id获取用户信息
     getUserInfo() {

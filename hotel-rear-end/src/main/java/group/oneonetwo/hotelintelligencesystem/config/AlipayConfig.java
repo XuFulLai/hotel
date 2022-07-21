@@ -1,5 +1,7 @@
 package group.oneonetwo.hotelintelligencesystem.config;
 
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -44,14 +46,14 @@ public class AlipayConfig {
     }
 
 //    暂时注释支付宝相关代码
-//    /**
-//     * 获取alipay客户端
-//     * @return
-//     */
-//    public AlipayClient getAlipayClient() {
-//        AlipayClient alipayClient = new DefaultAlipayClient(gateway,appId,privateKey,format,charset,alipayPublicKey,signType);
-//        return alipayClient;
-//    }
+    /**
+     * 获取alipay客户端
+     * @return
+     */
+    public AlipayClient getAlipayClient() {
+        AlipayClient alipayClient = new DefaultAlipayClient(gateway,appId,privateKey,format,charset,alipayPublicKey,signType);
+        return alipayClient;
+    }
 
     public String getGateway() {
         return gateway;

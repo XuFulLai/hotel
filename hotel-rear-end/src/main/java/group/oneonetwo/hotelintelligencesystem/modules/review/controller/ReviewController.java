@@ -55,10 +55,8 @@ public class ReviewController {
 
     @ApiOperation("customer提交审核接口")
     @PostMapping("check")
-    public Reply getCheck(@RequestBody ReviewVO reviewVO){
-        reviewService.getCheck(reviewVO);
-
-        return Reply.success();
+    public Reply<ReviewVO> getCheck(@RequestBody ReviewVO reviewVO){
+        return Reply.success(reviewService.getCheck(reviewVO));
     }
 
     @ApiOperation("hotel_admin审核提交的信息")
@@ -72,6 +70,26 @@ public class ReviewController {
     public Reply<Page<ReviewVO>> my(@RequestBody ReviewVO reviewVO){
         return  Reply.success(reviewService.my(reviewVO));
     }
+
+    @ApiOperation("支付隔离费用")
+    @PostMapping("pay")
+    public Reply payDeclaration(String id,String walletPwd) {
+        reviewService.payDeclaration(id,walletPwd);
+        return Reply.success();
+    }
+
+    @ApiOperation("支付宝支付隔离费用")
+    @GetMapping("pay/alipay/pre/{id}")
+    public Reply payDeclarationForAlipay(@PathVariable("id") String id) throws Exception {
+        return Reply.success(reviewService.payDeclarationForAlipay(id));
+    }
+
+    @ApiOperation("支付宝确认支付状态")
+    @GetMapping("pay/alipay/check/{id}")
+    public Reply checkDeclarationPayStatusForAlipay(@PathVariable("id") String id) throws Exception {
+        return Reply.success(reviewService.checkDeclarationPayStatusForAlipay(id));
+    }
+
 
 
 

@@ -1,13 +1,26 @@
 package group.oneonetwo.hotelintelligencesystem.modules.review.service.impl;
 
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.alipay.api.response.AlipayTradePagePayResponse;
+import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import group.oneonetwo.hotelintelligencesystem.components.security.utils.AuthUtils;
+import group.oneonetwo.hotelintelligencesystem.config.AlipayConfig;
+import group.oneonetwo.hotelintelligencesystem.enums.AlipayEnums;
+import group.oneonetwo.hotelintelligencesystem.enums.BalanceHandleMode;
+import group.oneonetwo.hotelintelligencesystem.enums.OrderEnums;
 import group.oneonetwo.hotelintelligencesystem.exception.CommonException;
 import group.oneonetwo.hotelintelligencesystem.exception.SavaException;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.model.vo.IsolationInfoVO;
 import group.oneonetwo.hotelintelligencesystem.modules.isolationInfo.service.IsolationInfoService;
+import group.oneonetwo.hotelintelligencesystem.modules.order.model.po.OrderPO;
+import group.oneonetwo.hotelintelligencesystem.modules.order.model.vo.OrderVO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.po.ReviewPO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.model.vo.ReviewVO;
 import group.oneonetwo.hotelintelligencesystem.modules.review.service.ReviewService;
@@ -19,11 +32,18 @@ import group.oneonetwo.hotelintelligencesystem.modules.room_type.service.IRoomTy
 import group.oneonetwo.hotelintelligencesystem.modules.user.service.IUserService;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.model.po.WalletPO;
 import group.oneonetwo.hotelintelligencesystem.modules.wallet.service.WalletService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author 文
@@ -32,6 +52,9 @@ import java.util.List;
 */
 @Service
 public class ReviewServiceImpl implements ReviewService{
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     IRoomService roomService;
@@ -58,6 +81,11 @@ public class ReviewServiceImpl implements ReviewService{
     @Autowired
     IUserService userService;
 
+    @Autowired
+    AlipayConfig alipayConfig;
+
+    private static final Logger logger = LoggerFactory.getLogger(Object.class);
+
     @Override
     public ReviewPO selectOneById(String id) {
         ReviewPO reviewPO = reviewMapper.selectById(id);
@@ -72,6 +100,7 @@ public class ReviewServiceImpl implements ReviewService{
         ReviewPO reviewPO = new ReviewPO();
         BeanUtils.copyProperties(reviewVO,reviewPO);
         int insert=reviewMapper.insert(reviewPO);
+        reviewVO.setId(reviewPO.getId());
         if(insert>0){
             return reviewVO;
         }
@@ -128,10 +157,12 @@ public class ReviewServiceImpl implements ReviewService{
     }
     //id
     @Override
-    public void getCheck(ReviewVO reviewVO) {
+    public ReviewVO getCheck(ReviewVO reviewVO) {
         reviewVO.setUid(authUtils.getUid());
+        ReviewVO add = null;
         if(reviewVO.getType()==0 || reviewVO.getType()==1){
-            add(reviewVO);
+            reviewVO.setPayStatus(2);
+            add = add(reviewVO);
         }else {
 
             if(userService.selectOneById(reviewVO.getUid())==null){
@@ -139,20 +170,114 @@ public class ReviewServiceImpl implements ReviewService{
             }
             RoomTypePO roomTypePO = roomTypeServeice.selectOneById(reviewVO.getRoomType());
             Integer isolationFee = roomTypePO.getIsolationFee();
-            WalletPO walletPO = walletService.getWalletPOByUid(reviewVO.getUid());
-
-            double balances=0;
-            balances=walletPO.getBalance()-isolationFee*14;
-            if(balances<=0.0){
-                throw new CommonException(502,"账户余额不足");
-            }
-            //这里貌似查了个更新
-            walletPO.setBalance(balances);
-            walletService.save(walletPO);
+            reviewVO.setPayStatus(0);
             reviewVO.setTotalFee((int)isolationFee*14);
-            add(reviewVO);
+            add = add(reviewVO);
+        }
+        return add;
+    }
+
+    /**
+     * 支付自费隔离
+     * @param id
+     * @param walletPwd
+     */
+    @Override
+    public void payDeclaration(String id, String walletPwd) {
+        ReviewPO reviewPO = selectOneById(id);
+        //如果免费类型或已付费类型直接跳过
+        if (reviewPO.getPayStatus() == 2 || reviewPO.getPayStatus() == 1) {
+            return;
+        }
+        WalletPO walletPO = walletService.getWalletPOByUid(authUtils.getUid());
+        boolean matches = bCryptPasswordEncoder.matches(walletPwd, walletPO.getPassword());
+        if (matches) {
+            walletService.editBalance(BalanceHandleMode.REDUCE.getCode(), Double.valueOf(reviewPO.getTotalFee()));
+
+            //更改支付状态信息
+            ReviewVO changeStatus = new ReviewVO();
+            changeStatus.setPayStatus(1);
+            save(changeStatus);
+        }else {
+            throw new CommonException("支付密码错误");
         }
 
+    }
+
+    //    暂时注释支付宝相关代码
+    /**
+     * 支付宝支付隔离费用
+     * @param id
+     */
+    @Override
+    public String payDeclarationForAlipay(String id) throws JSONException, AlipayApiException {
+        ReviewPO reviewPO = selectOneById(id);
+        //如果免费类型或已付费类型直接跳过
+        if (reviewPO.getPayStatus() == 2 || reviewPO.getPayStatus() == 1) {
+            throw new CommonException("此次隔离免费或已支付,请直接输入钱包密码确认申请");
+        }
+        //请求创建支付二维码
+        AlipayClient alipayClient = alipayConfig.getAlipayClient();
+        AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
+        request.setNotifyUrl("");
+        request.setReturnUrl("");
+        JSONObject bizContent = new JSONObject();
+        bizContent.put("out_trade_no", id);
+        bizContent.put("total_amount", reviewPO.getTotalFee());
+        bizContent.put("subject", "智慧酒店-隔离费用");
+        bizContent.put("product_code", "FAST_INSTANT_TRADE_PAY");
+        bizContent.put("qr_pay_mode",1);
+        request.setBizContent(bizContent.toString());
+        AlipayTradePagePayResponse response = alipayClient.pageExecute(request);
+        logger.info("alipay-response:",response.getBody());
+        if(response.isSuccess()){
+            logger.info("prePayOrderForAlipay调用成功");
+            return response.getBody().toString();
+        } else {
+            logger.warn("prePayOrderForAlipay调用失败");
+        }
+        return null;
+    }
+
+    /**
+     * 检查支付宝支付状态
+     * @param id
+     */
+    @Override
+    public Boolean checkDeclarationPayStatusForAlipay(String id) throws AlipayApiException, JSONException {
+        ReviewPO reviewPO = selectOneById(id);
+        //如果免费类型或已付费类型直接跳过
+        if (reviewPO.getPayStatus() == 2 || reviewPO.getPayStatus() == 1) {
+            return true;
+        }
+
+        //请求查询
+        AlipayClient alipayClient = alipayConfig.getAlipayClient();
+        AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
+        JSONObject bizContent = new JSONObject();
+        bizContent.put("out_trade_no", id);//订单号
+        //bizContent.put("trade_no", "2014112611001004680073956707");//交易号
+        request.setBizContent(bizContent.toString());
+        AlipayTradeQueryResponse response = alipayClient.execute(request);
+        if (response.isSuccess()) {
+            logger.info("checkPayOrderForAlipay调用成功");
+            Gson gson = new Gson();
+            Map<String,String> responseMap = (Map<String, String>) gson.fromJson(response.getBody(), new HashMap<String, String>().getClass()).get("alipay_trade_query_response");
+            //交易成功
+            if (AlipayEnums.TRADE_SUCCESS.equals(responseMap.get("trade_status"))){
+                //更改支付状态信息
+                ReviewVO changeStatus = new ReviewVO();
+                changeStatus.setPayStatus(1);
+                changeStatus.setId(id);
+                save(changeStatus);
+
+                logger.info("交易成功");
+                return true;
+            }
+        }else {
+            logger.warn("checkPayOrderForAlipay调用失败");
+        }
+        throw new CommonException("支付失败,请重试!");
     }
 
     //admin  id  review_status

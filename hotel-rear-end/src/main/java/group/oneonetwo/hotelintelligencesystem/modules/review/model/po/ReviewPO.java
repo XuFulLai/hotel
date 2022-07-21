@@ -150,8 +150,19 @@ public class ReviewPO implements Serializable {
     @TableField(value = "update_by",fill = FieldFill.UPDATE)
     private String updateBy;
 
+    @TableField("pay_status")
+    private Integer payStatus;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public Integer getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(Integer payStatus) {
+        this.payStatus = payStatus;
+    }
 
     /**
      * 申报id
