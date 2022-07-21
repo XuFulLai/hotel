@@ -31,13 +31,13 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 <!--        暂时注释支付宝相关代码-->
-<!--        &lt;!&ndash;alipay&ndash;&gt;-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.alipay.sdk</groupId>-->
-<!--            <artifactId>alipay-sdk-java</artifactId>-->
-<!--            <version>4.23.26.ALL</version>-->
-<!--        </dependency>-->
+        <!--alipay-->
+        <!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>4.23.26.ALL</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>

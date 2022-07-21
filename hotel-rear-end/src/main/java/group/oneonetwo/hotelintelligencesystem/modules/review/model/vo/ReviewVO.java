@@ -120,6 +120,8 @@ public class ReviewVO implements Serializable {
     @ApiModelProperty("拒绝的理由")
     private String remark;
 
+    private Integer payStatus;
+
     /**
      * 是否删除
      */
@@ -156,6 +158,14 @@ public class ReviewVO implements Serializable {
 
     @ApiModelProperty("结束时间")
     private String endTime;
+
+    public Integer getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(Integer payStatus) {
+        this.payStatus = payStatus;
+    }
 
     public String getBeginTime() {
         return beginTime;

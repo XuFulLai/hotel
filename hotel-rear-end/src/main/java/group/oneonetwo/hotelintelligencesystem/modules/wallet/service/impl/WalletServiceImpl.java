@@ -126,6 +126,9 @@ public class WalletServiceImpl implements WalletService{
                 break;
             case 2:
                 walletPO.setBalance(current.getBalance()-num);
+                if (walletPO.getBalance() < 0.00) {
+                    throw new CommonException("余额不足");
+                }
                 break;
             default:
                 throw new CommonException("非法操作");
