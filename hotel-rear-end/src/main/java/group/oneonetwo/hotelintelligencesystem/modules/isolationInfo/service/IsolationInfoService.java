@@ -41,4 +41,5 @@ public interface IsolationInfoService{
 
     IsolationInfoVO selectByRoomIdAndStaus(String roomId);
 
+    IsolationInfoVO test();
 }
