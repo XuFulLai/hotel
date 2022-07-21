@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,6 +84,7 @@ public class IsolationInfoServiceImpl implements IsolationInfoService{
             if (isolationInfoVO.getStatus() != 0) {
                 String roomId = check.getRoomId();
                 roomService.leaveIsolationRoom(roomId);
+                isolationInfoVO.setCheckOutTime(new Date());
             }
         }
 

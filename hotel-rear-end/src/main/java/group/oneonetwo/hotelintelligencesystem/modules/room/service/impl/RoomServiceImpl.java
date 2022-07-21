@@ -603,6 +603,8 @@ public class RoomServiceImpl implements IRoomService {
     public void isolationCheckOut(Integer status,String roomId) {
         IsolationInfoVO isolationInfoVO = isolationInfoService.selectByRoomIdAndStaus(roomId);
         isolationInfoVO.setStatus(status);
+        //修改退房时间为实际退房时间
+        isolationInfoVO.setCheckOutTime(new Date());
 //        IsolationInfoVO isolationInfoVO = new IsolationInfoVO();
 //        BeanUtils.copyProperties(isolationInfoPO,isolationInfoVO);
         //保存人员时状态改变会直接改变当前房间的状态!!!!!!!!!!!!!!!!!!!!!

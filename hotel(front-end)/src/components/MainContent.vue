@@ -84,7 +84,7 @@ export default {
           let item = {
             name: '正在隔离',
             type: 'line',
-            stack: 'Total',
+            // stack: 'Total',
             color: '#edd600',
             smooth: true,
             data: data
@@ -109,7 +109,7 @@ export default {
           let item = {
             name: '解除隔离',
             type: 'line',
-            stack: 'Total',
+            // stack: 'Total',
             color: '#9fe080',
             smooth: true,
             data: data
@@ -329,7 +329,7 @@ export default {
         console.log("xAxis", xAxis)        
         stackedColumnChart.setOption({
           title: {
-            text: '隔离人数统计图'
+            text: '每日新增隔离人员统计图'
           },
           tooltip: {
             trigger: 'axis',

@@ -465,17 +465,10 @@
             FROM
                 isolation_info
             WHERE
-                DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(check_in_time)
-                AND is_deleted = 0
+                is_deleted = 0
                 AND status = #{status}
             GROUP BY
-                <if test="status == 0">
-                    DATE_FORMAT(check_in_time, '%Y-%m-%d')
-                </if>
-                <if test="status == 1 or status == 2">
-                    DATE_FORMAT(update_time, '%Y-%m-%d')
-                </if>
-
+                DATE_FORMAT(check_out_time, '%Y-%m-%d')
             ) d ON base_date.`NAME` = d.`NAME`
         ORDER BY NAME ASC
     </select>
