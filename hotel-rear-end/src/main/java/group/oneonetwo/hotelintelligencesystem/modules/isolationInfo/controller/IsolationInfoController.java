@@ -34,6 +34,11 @@ public class IsolationInfoController {
     public Reply<IsolationInfoVO> add(@RequestBody IsolationInfoVO hotelVO){
         return Reply.success(isolationInfoService.add(hotelVO));
     }
+    @GetMapping("test")
+    @ApiOperation("测试")
+    public Reply<IsolationInfoVO> test(){
+        return Reply.success(isolationInfoService.test());
+    }
 
     @GetMapping("get/{id}")
     @ApiOperation("根据id查隔离人员信息")
