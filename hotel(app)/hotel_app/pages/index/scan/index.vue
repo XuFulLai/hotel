@@ -1,14 +1,14 @@
 <template>
 	<view v-if="!confirmFlag" class="content">
-		<button style="width: 30vw;margin-top: 100rpx;" @click="scan">扫码登录</button>
+		<button style="width: 30vw;margin-top: 100rpx;margin-bottom: 30rpx;" @click="scan">扫码登录</button>
 		<button @click="showInfo">test</button>
 		<p style="color:red;margin-top: 12rpx;">{{msg}}</p>
 		<p>{{token}}</p>
 	</view>
 	<view v-else>
-		<button style="background-color: #007AFF;color: #FFFFFF;width: 30vw;margin-top: 100rpx;" @click="confirm">确认登录</button>
-		<p style="color:red;margin-top: 12rpx;">{{msg}}</p>
-		<button @click="showInfo">test</button>
+		<button style="background-color: #007AFF;color: #FFFFFF;width: 30vw;margin-top: 100rpx;margin-bottom: 30rpx;" @click="confirm">确认登录</button>
+		<p style="color:red;margin-top: 12rpx;word-wrap: break-word;">{{msg}}</p>
+		<view style="width: 30vw;"><button @click="showInfo">test</button></view>
 		<p>{{token}}</p>
 	</view>
 </template>
@@ -33,6 +33,11 @@
 		methods: {
 			showInfo() {
 				console.log("c.token======",c.token)
+				if(c.token) {
+					this.msg = "已成功获取到Token"
+				}else {
+					this.msg = "Token is undefine"
+				}
 			},
 			login() {
 				let data = {

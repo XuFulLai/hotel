@@ -24,7 +24,7 @@
 		data() {
 			return {
 				title: 'Hotel',
-				username: "Lee",
+				username: "jing",
 				password: "123"
 			}
 		},
