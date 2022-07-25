@@ -1,6 +1,11 @@
-# Hotel-Intelligence-System
+# Hotel-Intelligence-System 2.0
+
+> Hotel 2.0 来了，如果这个对你的学习有帮助的话，可以给个免费的watch，star，fork三连支持下噢。或者可以[打赏](#donate)一杯咖啡给作者噢。
+
+
 
 ### 介绍
+
 > 酒店智慧系统，于2021.12完成。
 >
 > a hotel-intelligence-system , finish on 2021.12
@@ -87,7 +92,7 @@
 1. 将 **.\hotel-plus\hotel-rear-end\src\main\resources** 下的application-base.yml改名为application.yml，并将里面 “####” 替换成描述的对应信息
    1. 其中，邮箱相关请进入邮箱开通POP3 / IMAP / SMTP服务，并获取授权码，有更多邮箱可以按格式增加
    2. 七牛云账号需要自行申请，现在存储方式为先调用 **upload/img** 接口，然后获取url再存进数据库，若需要存储本地，修改前端对应逻辑即可
-   3. 支付宝相关沙箱配置，请在https://open.alipay.com/develop/sandbox/app下获取，注意需要查看文档下载对应的沙箱支付宝App配合使用
+   3. 支付宝相关沙箱配置，请在[https://open.alipay.com/develop/sandbox/app](https://open.alipay.com/develop/sandbox/app)下获取，注意需要查看文档下载对应的沙箱支付宝App配合使用
 
 #### 3. hotel-front-end & hotel-portal：
 
@@ -176,3 +181,18 @@
 2.  新建 Feat_xxx 分支
 3.  提交代码
 4.  新建 Pull Request
+
+------
+
+
+
+### 打赏
+
+> 如果你觉得这个项目对你学习有帮助，可以donate一杯coffee来支持一下我们噢！
+
+<span id = "donate"> </span>
+
+![微信](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/wechat.png)
+
+![支付宝](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/wechat.png)
+
