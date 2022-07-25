@@ -1,6 +1,6 @@
 # Hotel-Intelligence-System 2.0
 
-> Hotel 2.0 来了，如果这个对你的学习有帮助的话，可以给个免费的watch，star，fork三连支持下噢。或者可以[打赏](#donate)一杯咖啡给作者噢。
+> Hotel 2.0 来了，如果这个对你的学习有帮助的话，可以给个免费的watch，star，fork三连支持下噢。或者可以[打赏](#打赏)一杯咖啡给作者噢。
 
 
 
@@ -190,9 +190,10 @@
 
 > 如果你觉得这个项目对你学习有帮助，可以donate一杯coffee来支持一下我们噢！
 
-<span id="donate"></span>
+<img src="https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/wechat.png" alt="微信" style="zoom:33%;" />
 
-![微信](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/wechat.png)
+<div style="text-align:center;color:#999">微信扫码</div>
 
-![支付宝](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/alipay.jpg)
+<img src="https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/alipay.jpg" alt="支付宝" style="zoom:33%;" />
 
+<div style="text-align:center;color:#999">支付宝扫码</div>
