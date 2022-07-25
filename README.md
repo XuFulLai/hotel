@@ -190,9 +190,9 @@
 
 > 如果你觉得这个项目对你学习有帮助，可以donate一杯coffee来支持一下我们噢！
 
-<span id = "donate"> </span>
+<span id="donate"></span>
 
 ![微信](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/wechat.png)
 
-![支付宝](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/wechat.png)
+![支付宝](https://gitee.com/tomato-simon/hotel-intelligence-system/raw/dev/temp_image/alipay.jpg)
 
